@@ -41,6 +41,7 @@ class UserManager(BaseUserManager):
 
 # 使用者
 class User(AbstractBaseUser):
+    reg_id = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=20, blank=True, null=True)
     gender = models.PositiveSmallIntegerField(blank=True, null=True)
     privilege = models.PositiveSmallIntegerField(default=0)
@@ -52,10 +53,10 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'reg_id'
 
     def get_short_name(self):
-        return self.reg_id
+        return self.name
 
     def get_full_name(self):
-        return self.reg_id
+        return self.name
 
     def has_perm(self, require_privilege: UserType):
         # if require_privilege is UserType.SystemManager:
@@ -63,7 +64,7 @@ class User(AbstractBaseUser):
         #
         # else:
         #     return (self.privilege & require_privilege.value[0]) > 0
-        return (self.priviledge & require_privilege.value[0]) > 0
+        return (self.privilege & require_privilege.value[0]) > 0
 
 
 # 學系
@@ -78,11 +79,14 @@ class Squadron(models.Model):
 
 # 學生
 class Student(models.Model):
-    reg_id = models.CharField(max_length=10, unique=True)
+    stu_id = models.CharField(max_length=10, unique=True)
     user = models.OneToOneField("User", on_delete=models.CASCADE)
     department = models.ForeignKey("Department", on_delete=models.PROTECT, blank=True, null=True)
     grade = models.PositiveSmallIntegerField(default=time.localtime().tm_year - 1911)
     squadron = models.ForeignKey("Squadron", on_delete=models.PROTECT, blank=True, null=True)
+
+    def get_ID(self):
+        return self.stu_id
 
 
 # 試卷
@@ -90,7 +94,7 @@ class TestPaper(models.Model):
     name = models.CharField(max_length=100, unique=True)
     created_time = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey("User", on_delete=models.PROTECT, related_name='testee_created')
-    is_testpaper = models.BooleanField(default=1)
+    is_testpaper = models.BooleanField(default=0)
     update_time = models.DateTimeField(auto_now=True)
     valid = models.BooleanField(default=False)
 
@@ -126,11 +130,9 @@ class Exam(models.Model):
 
 # 題目
 class Question(models.Model):
-    question_type = models.PositiveSmallIntegerField()
-    question_file = models.TextField(blank=True, null=True)
-    question = models.TextField(blank=True, null=True)
-    option = models.TextField()
-    answer = models.PositiveSmallIntegerField()
+    q_type = models.PositiveSmallIntegerField()
+    q_file = models.TextField(blank=True, null=True)
+    q_content = models.TextField(blank=True, null=True)
     difficulty = models.PositiveSmallIntegerField(default=0)
     issued_freq = models.IntegerField(default=0)
     correct_freq = models.IntegerField(default=0)
@@ -152,25 +154,58 @@ class Question(models.Model):
     state = models.SmallIntegerField(choices=STATES_CHOICES, default=0)
 
     class Meta:
-        ordering = ('-question',)
+        ordering = ('-q_content',)
 
     @property
     def correct_rate(self):
         return self.correct_freq / self.issued_freq * 100
+
+    def __str__(self):
+        return self.q_content
+
+
+# 選項
+class Choice(models.Model):
+    c_content = models.CharField(max_length=255)
+    question = models.ForeignKey('Question', on_delete=models.PROTECT)
+    is_answer = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.c_content
 
 
 # 答案卷
 class AnswerSheet(models.Model):
     exam = models.ForeignKey('Exam', on_delete=models.CASCADE, blank=True)
     user = models.ForeignKey('Student', on_delete=models.CASCADE)
-    questions = models.TextField(blank=True, null=True)
-    answers = models.TextField(blank=True, null=True)
     finish_time = models.DateTimeField(auto_now_add=True)
     is_finished = models.BooleanField(default=False)
     score = models.PositiveSmallIntegerField()
 
     def __str__(self):
         return str(self.user) + '\'s' + str(self.exam)
+
+
+# 單題答題內容
+class Answer(models.Model):
+    answer_sheet = models.ForeignKey('AnswerSheet', on_delete=models.PROTECT)
+    question = models.ForeignKey('Question', on_delete=models.PROTECT)
+    selected = models.SmallIntegerField(default=-1)
+
+    def __str__(self):
+        return self.question.q_content
+
+
+class OptionList(models.Model):
+    answer = models.ForeignKey('Answer', on_delete=models.PROTECT)
+    choice = models.ForeignKey('Choice', on_delete=models.PROTECT)
+    added_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('added_time', )
+
+    def __str__(self):
+        return self.choice.c_content
 
 
 # 受測名單

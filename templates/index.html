@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <table align="center">
+        <thead>
+            <tr>
+                <th style="width:300px">
+                    <h4>公告標題</h4>
+                </th>
+                <th><h4>公告人</h4></th>
+                <th><h4>公告時間</h4></th>
+            </tr>
+        </thead>
+
+        {% for proclamation in proclamations %}
+            <tr style="cursor: pointer">
+                <td>{{ proclamation.title }}</td>
+                <td>{{ proclamation.created_by.name}}</td>
+                <td>{{ proclamation.created_time }}</td>
+                <td>
+                    <a href=""><i class="fa fa-pencil fa-fw mb-2"></i></a>&nbsp;
+                    <a href=""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

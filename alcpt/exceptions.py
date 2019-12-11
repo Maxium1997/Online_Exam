@@ -1,5 +1,5 @@
 class BaseError(Exception):
-    def __init__(self, message, redirect: bool=False):
+    def __init__(self, message, redirect: bool = False):
         self.message = message
         self.redirect_url = '/' if redirect else None
 
@@ -13,7 +13,7 @@ class ObjectNotFoundError(BaseError):
 
 
 class PermissionWrongError(BaseError):
-    def __init__(self, redirect: bool=False):
+    def __init__(self, redirect: bool = False):
         super().__init__(message='Permission denied.', redirect=redirect)
 
 
