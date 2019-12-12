@@ -116,7 +116,6 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'alcpt/media')
 
-LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
 
-# AUTH_USER_MODEL = 'alcpt.User'
+AUTH_USER_MODEL = 'alcpt.User'

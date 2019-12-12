@@ -5,6 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <title>線上英文考試系統</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/SystemCSS.css' %}">
 
     {% block stylesheets %}
     {% endblock %}
@@ -13,66 +16,82 @@
     {% endblock %}
 </head>
 <body>
-    <div class="hint_bar">
-        {# 圖片按鈕#}
-        <section class="container" style="background-color: rgba(255,255,255,0.5)">
-            {% if messages %}
-                {% for message in messages %}
-                    {% if message.tags == "error" %}
-                        <div class="alert alert-danger mt-3" role="alert">
-                            <i class="fa fa-window-close" aria-hidden="true"></i> {{ message }}
-                        </div>
-                    {% elif message.tags == "success" %}
-                        <div class="alert alert-success mt-3" role="alert">
-                            {{ message }}
-                        </div>
-                    {% elif message.tags == "warning" %}
-                        <div class="alert alert-warning mt-3" role="alert">
-                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ message }}
-                        </div>
-                    {% else %}
-                        <div class="alert mt-3" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endif %}
-                {% endfor %}
+    <div class="container">
+        <a href="/">ALCPT線上練習平台</a>
+
+        <div class="registration_block">
+            {% if user.is_authenticated %}
+                <p>Welcome, {{ user.name }}({{ user.reg_id }}) / <a title="即將登出" href="{% url 'logout' %}">Logout</a> </p>
             {% else %}
-                <div style="height: 60px;"></div>
+                <p><a title="我要登入" href="{% url 'login' %}">Login</a></p>
             {% endif %}
-
-            {% block content %}
-
-            {% endblock %}
-            <div style="height: 40px;"></div>
-        </section>
+        </div>
     </div>
+
+    <div class="path_bar">
+        <a href="{% url 'Homepage' %}">主頁</a>
+        {% block path %}
+        {% endblock %}
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == "error" %}
+{#                <script language="javascript">alert("{{ message }}")</script>#}
+                {{ message }}
+            {% elif message.tags == "success" %}
+{#                <script language="javascript">alert("{{ message }}")</script>#}
+                {{ message }}
+            {% elif message.tags == "warning" %}
+{#                <script language="javascript">alert("{{ message }}")</script>#}
+                {{ message }}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 
     <div class="permission_toolbar">
         <ul>
             <li>
-                {% if request.user|has_perm:'SystemManager' %}
-                    <a href="/user">系統管理員</a>
+{#                {% if request.user|has_perm:'SystemManager' %}#}
+                    <a href="">系統管理員</a>
                     <ul>
                         <li><a href="{% url 'user_list' %}" >使用者列表</a></li>
                         <li><a href="{% url 'unit_list' %}">單位列表</a></li>
                     </ul>
-                {% endif %}
+{#                {% endif %}#}
             </li>
 
+{#            <li>#}
+{#                {% if request.user|has_perm:'TestManager' %}#}
+{#                    <a href="">考試管理員</a>#}
+{#                    <ul>#}
+{#                        <li><a href="{% url 'exam_list' %}">考試列表</a></li>#}
+{#                        <li><a href="{% url 'testpaper_list' %}">考卷列表</a></li>#}
+{#                        <li><a href="{% url 'testee_group_list' %}">受測者群組</a></li>#}
+{#                        <li><a href="{% url 'proclamation_list' %}">考試公告</a></li>#}
+{#                    </ul>#}
+{#                {% endif %}#}
+{#            </li>#}
+
             <li>
-                {% if request.user|has_perm:'TestManager' %}
-                    <a href="{% url 'exam_list' %}">考試管理員</a>
+{#                {% if request.user|has_perm:'Testee' %}#}
+                    <a href="">受測者</a>
                     <ul>
-                        <li><a href="{% url 'exam_list' %}">考試列表</a></li>
-                        <li><a href="{% url 'testpaper_list' %}">考卷列表</a></li>
-                        <li><a href="{% url 'testee_group_list' %}">受測者群組</a></li>
-                        <li><a href="{% url 'proclamation_list' %}">考試公告</a></li>
+                        <li><a href="{% url 'testee_exam_score' %}">檢閱成績</a></li>
+                        <li><a href="{% url 'testee_practice_selected' 'listening' %}">聽力練習</a></li>
+                        <li><a href="{% url 'testee_practice_selected' 'reading' %}">閱讀練習</a></li>
+{#                        <li><a href="/tester/practice/integration">綜合練習</a></li>#}
+{#                        <li><a href="/tester/simulation-exam">模擬鑑測</a></li>#}
                     </ul>
-                {% endif %}
+{#                {% endif %}#}
             </li>
 
         </ul>
     </div>
+
+    {% block content %}
+
+    {% endblock %}
 </body>
 
 {% include "footer.html" %}

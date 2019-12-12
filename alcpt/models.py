@@ -71,10 +71,22 @@ class User(AbstractBaseUser):
 class Department(models.Model):
     name = models.CharField(max_length=10, unique=True)
 
+    class Meta:
+        ordering = ('id',)
+
+    def __str__(self):
+        return self.name
+
 
 # 中隊
 class Squadron(models.Model):
     name = models.CharField(max_length=10, unique=True)
+
+    class Meta:
+        ordering = ('id',)
+
+    def __str__(self):
+        return self.name
 
 
 # 學生

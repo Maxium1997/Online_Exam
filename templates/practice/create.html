@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+{% block path %}
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="{% url 'testee_exam_score' %}">受測者</a>
+    <a href="">{{ practice_type }}</a>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <form action="{% url 'testee_practice_selected' practice_type %}" method="post">
+            <h1>題型</h1>
+            {% csrf_token %}
+            <select name="question_type">
+                {% if practice_type == 'listening' %}
+                    <option value="1">問答</option>
+                    <option value="2">簡短對話</option>
+                {% elif practice_type == 'reading' %}
+                    <option value="3">文法</option>
+                    <option value="4">名詞片語</option>
+                    <option value="5">段落理解</option>
+                {% endif %}
+            </select>
+
+            <h1>題數</h1>
+            <select name="question_num">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
+
+            <input type="submit" value="開始練習">
+        </form>
+    </div>
+
+{% endblock %}

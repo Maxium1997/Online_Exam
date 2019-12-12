@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+
+{% block path %}
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="{% url 'testee_exam_score' %}">受測者</a>
+{% endblock %}
+
+{% block content %}
+
+    <div class="testee_score">
+        <h1>檢閱成績</h1>
+        <table>
+            <tr>
+                <th>測驗名稱</th>
+                <th>測驗成績</th>
+                <th>受測者</th>
+                <th>考試時間</th>
+            </tr>
+            {% for sheet in sheets %}
+                <tr>
+                    <td>{{ sheet.exam.name }}</td>
+                    <td>{{ sheet.score }}</td>
+                    <td>{{ request.user.name }}</td>
+                    <td>{{ sheet.finish_time|date:'Y年m月d日, H時m分' }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <a href="?page=1">&laquo; first</a>
+
+        {% if sheets.has_previous %}
+            <a href="?page={{ sheets.previous_page_number }}">Prev</a>
+        {% else %}
+            <a href="">Prev</a>
+        {% endif %}
+
+        {% for page in paginator.page_range %}
+            {% if page == sheets.number %}
+                <a class="active" href="?page={{ page }}">{{ page }}</a>
+            {% else %}
+                <a href="?page={{ page }}">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+
+
+        {% if sheets.has_next %}
+            <a href="?page={{ sheets.next_page_number }}">Next</a>
+        {% else %}
+            <a href="">Next</a>
+        {% endif %}
+        <a href="?page={{ sheets.paginator.num_pages }}">last &raquo;</a>
+    </div>
+{% endblock %}
