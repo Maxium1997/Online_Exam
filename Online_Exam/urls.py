@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from alcpt import registration, system, views, testee
+from alcpt import registration, system, views, exam, testee
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -34,11 +34,11 @@ urlpatterns = [
         # url(r'^create$', system.create_user, name='user_create'),
         # url(r'^(?P<reg_id>[a-zA-Z0-9]+)$', system.edit_user, name='user_edit'),
         # url(r'^(?P<reg_id>[a-zA-Z0-9]+)/delete$', system.delete_user, name='delete'),
-        #
+
         url(r'^unit_list/$', system.unit, name='unit_list'),
         url(r'^unit_list/', include([
             url(r'^create$', system.create_unit, name='unit_create'),
-        #
+
             # url(r'^(?P<department_id>[0-9]+)/', include([
             #     url(r'^edit$', system.department_edit, name='department_edit'),
             #     url(r'^delete$', system.delete_department, name='department_delete'),
@@ -57,4 +57,12 @@ urlpatterns = [
             url(r'^(?P<practice_type>(listening|reading))$', testee.practice_create, name='testee_practice_selected'),
         ]))
     ])),
+
+    # 考試管理員
+    url(r'^exam$', exam.exam_list, name='exam_list'),
+    url(r'^exam/', include([
+        url(r'^testpaper_list', exam.testpaper_list, name='testpaper_list'),
+
+        url(r'^testee_group$', exam.testee_group_list, name='testee_group_list'),
+    ]))
 ]

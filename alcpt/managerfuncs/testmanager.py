@@ -1,5 +1,8 @@
-from alcpt.models import User, TestPaper, Question
-from alcpt.definitions import QuestionType
+from django.db.models import Q
+from django.utils import timezone
+
+from alcpt.models import User, TestPaper, Question, Exam
+from alcpt.definitions import QuestionType, ExamType
 
 
 # OK

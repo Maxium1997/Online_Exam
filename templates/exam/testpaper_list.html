@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block path %}
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="">考試管理員</a>
+    <a class="fa fa-angle-right fa-lg box"></a>
+    <a href="">考卷列表</a>
+{% endblock %}
+
+{% block content %}
+    <div class="search_bar">
+        <form action="" method="get">
+            <div>
+                <input type="text" name="testpaper_name" {% if testpaper_name %}value="{{ testpaper_name }}" {% else %}value="" {% endif %} placeholder="考試名稱">
+            </div>
+
+            <div>
+                <button type="submit">搜尋</button>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        {% if testpapers %}
+            <h1>考試列表</h1>
+            <table border="1">
+                <tr>
+                    <th>名稱</th>
+                    <th>有效考卷</th>
+                    <th>建立時間</th>
+                    <th>更新時間</th>
+                    <th>建立者</th>
+                </tr>
+                {% for testpaper in testpaperList %}
+                    <tr>
+                        <td>{{ testpaper.name }}</td>
+                        <td>{{ testpaper.valid }}</td>
+                        <td>{{ testpaper.created_time|date:'Y年m月d日, H時i分' }}</td>
+                        <td>{{ testpaper.update_time|date:'Y年m月d日, H時i分' }}</td>
+                        <td>{{ testpaper.created_by.name }}</td>
+                        <td>
+                            {% if testpaper.is_testpaper %}
+                                <a href=""><i class="fa fa-pencil fa-fw mb-2"></i></a>
+                            {% endif %}
+                            <a href=""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h2>目前暫無資料</h2>
+        {% endif %}
+    </div>
+
+    <div class="pagination">
+        <a href="?page=1">&laquo; first</a>
+        {% if testpaperList.has_previous %}
+            <a href="?page={{ testpaperList.previous_page_number }}">Prev</a>
+        {% else %}
+            <a href="">Prev</a>
+        {% endif %}
+
+        {% for page in paginator.page_range %}
+            {% if page == testpaperList.number %}
+                <a class="active" href="?page={{ page }}">{{ page }}</a>
+            {% else %}
+                <a href="?page={{ page }}">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if examList.has_next %}
+            <a href="?page={{ testpaperList.next_page_number }}">Next</a>
+        {% else %}
+            <a href="">Next</a>
+        {% endif %}
+        <a href="?page={{ testpaperList.paginator.num_pages }}">last &raquo;</a>
+    </div>
+{% endblock %}
