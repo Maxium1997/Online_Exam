@@ -42,34 +42,34 @@
         </form>
     </div>
 
-    <div class="user_list">
-    {% if users %}
-        <h1>使用者列表</h1>
-        <table border="1">
-            <tr>
-                <th>帳號</th>
-                <th>姓名</th>
-                <th>年班</th>
-                <th>學系</th>
-                <th>中隊</th>
-                <th>權限</th>
-                <th>最後登入時間</th>
-            </tr>
-            {% for user in userList %}
+    <div>
+        {% if users %}
+            <h1>使用者列表</h1>
+            <table border="1">
                 <tr>
-                    <td>{{ user.reg_id }}</td>
-                    <td>{{ user.name }}</td>
-                    <td>{% if user.student %}{{ user.student.grade }}{% else %}None{% endif %}</td>
-                    <td>{% if user.student %}{{ user.student.department }}{% else %}None{% endif %}</td>
-                    <td>{% if user.student %}{{ user.student.squadron }}{% else %}None{% endif %}</td>
-                    <td>{{ user.privilege }}</td>
-                    <td>{{ user.last_login|date:'Y年m月d日, H時i分' }}</td>
+                    <th>帳號</th>
+                    <th>姓名</th>
+                    <th>年班</th>
+                    <th>學系</th>
+                    <th>中隊</th>
+                    <th>權限</th>
+                    <th>最後登入時間</th>
                 </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <h2>目前暫無資料</h2>
-    {% endif %}
+                {% for user in userList %}
+                    <tr>
+                        <td>{{ user.reg_id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{% if user.student %}{{ user.student.grade }}{% else %}None{% endif %}</td>
+                        <td>{% if user.student %}{{ user.student.department }}{% else %}None{% endif %}</td>
+                        <td>{% if user.student %}{{ user.student.squadron }}{% else %}None{% endif %}</td>
+                        <td>{{ user.privilege }}</td>
+                        <td>{{ user.last_login|date:'Y年m月d日, H時i分' }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h2>目前暫無資料</h2>
+        {% endif %}
     </div>
 
     <div class="pagination">

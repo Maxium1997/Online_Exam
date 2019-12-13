@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from alcpt import registration, system, views, exam, testee
+from alcpt import registration, system, views, exam, question, testee
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -64,5 +64,8 @@ urlpatterns = [
         url(r'^testpaper_list', exam.testpaper_list, name='testpaper_list'),
 
         url(r'^testee_group$', exam.testee_group_list, name='testee_group_list'),
-    ]))
+    ])),
+
+    # 題庫管理員
+    url(r'^question$', question.manager_index, name='tbmanager_question_list'),
 ]

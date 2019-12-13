@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% load web_filters %}
+
+{% block path %}
+
+{% endblock %}
+
+{% block content%}
+    <div class="search_bar">
+        <form action="" method="get">
+            <select name="question_type">
+                    <option value="" selected>請選擇試題類型</option>
+                    {% for q_type in question_types %}
+                        <option value="{{ q_type.value.0 }}" {% if keywords.question_type %} selected {% endif %}>{{ q_type.value.1 }}</option>
+                    {% endfor %}
+            </select>
+
+            <div>
+                <input type="text" name="question_content" {% if keywords.question_content %}value="{{ keywords.question_content }}" {% else %}value="" {% endif %} placeholder="試題內容">
+            </div>
+
+            <div>
+                <select name="difficulty">
+                    <option value="" selected>所有難度試題</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+
+            <div>
+                <select name="state">
+                    <option value="" selected>所有狀態試題</option>
+                    {% for state in state_choices %}
+                        <option value="{{ state.0 }}">{{ state.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <button type="submit">搜尋</button>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        {% if questions %}
+            <h1>題目列表</h1>
+            <table border="1">
+                <tr>
+                    <th>題目</th>
+                    <th>類型</th>
+                    <th>難度</th>
+                    <th>被回報次數</th>
+                    <th>正確次數</th>
+                    <th>建立者</th>
+                    <th>更新時間</th>
+                    <th>狀態</th>
+                    <th>選項</th>
+                </tr>
+                {% for question in questionList %}
+                    <tr>
+                        <td>{% if question.q_file %}{{ question.q_file }}{% else %}{{ question.q_content }}{% endif %}</td>
+                        <td>{{ question.q_type|readable_question_type }}</td>
+                        <td>{{ question.difficulty }}</td>
+                        <td>{{ question.issued_freq }}</td>
+                        <td>{{ question.correct_freq }}</td>
+                        <td>{{ question.created_by.name }}</td>
+                        <td>{{ question.update_time|date:'Y年m月d日, H時i分' }}</td>
+                        <td>{{ question.state|readable_state }}</td>
+                        <td>
+                            {% for option in question.choice_set.all %}
+                                <li>{{ option }}</li>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+
+        {% endif %}
+    </div>
+
+
+{% endblock %}
