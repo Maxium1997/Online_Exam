@@ -12,7 +12,7 @@
             <select name="question_type">
                     <option value="" selected>請選擇試題類型</option>
                     {% for q_type in question_types %}
-                        <option value="{{ q_type.value.0 }}" {% if keywords.question_type %} selected {% endif %}>{{ q_type.value.1 }}</option>
+                        <option value="{{ q_type.value.0 }}" {% if q_type.value.0 == keywords.question_type %} selected {% endif %}>{{ q_type.value.1 }}</option>
                     {% endfor %}
             </select>
 
@@ -20,22 +20,22 @@
                 <input type="text" name="question_content" {% if keywords.question_content %}value="{{ keywords.question_content }}" {% else %}value="" {% endif %} placeholder="試題內容">
             </div>
 
-            <div>
-                <select name="difficulty">
-                    <option value="" selected>所有難度試題</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </div>
+            {% if request.user|has_perm:'TBManager' %}
+                <div>
+                    <select name="difficulty" selected>
+                        <option value="" selected>所有難度試題</option>
+                        {% for difficulty in difficulty_choices %}
+                            <option value="{{ difficulty.0 }}" {% if difficulty.0 == keywords.difficulty %} selected {% endif %}>{{ difficulty.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
 
             <div>
                 <select name="state">
                     <option value="" selected>所有狀態試題</option>
                     {% for state in state_choices %}
-                        <option value="{{ state.0 }}">{{ state.1 }}</option>
+                        <option value="{{ state.0 }}" {% if state.0 == keywords.state %} selected {% endif %}>{{ state.1 }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -54,12 +54,15 @@
                     <th>題目</th>
                     <th>類型</th>
                     <th>難度</th>
-                    <th>被回報次數</th>
+                    <th>錯誤回報次數</th>
                     <th>正確次數</th>
                     <th>建立者</th>
                     <th>更新時間</th>
                     <th>狀態</th>
-                    <th>選項</th>
+                    <th>題目選項</th>
+                    {% if request.user|has_perm:'TBOperator' %}
+                        <th>是否提交審核</th>
+                    {% endif %}
                 </tr>
                 {% for question in questionList %}
                     <tr>
@@ -76,13 +79,42 @@
                                 <li>{{ option }}</li>
                             {% endfor %}
                         </td>
+                        {% if request.user|has_perm:'TBOperator' %}
+                            <td>
+                                {% if question.state == 0 %}
+                                    <a href="{% url 'question_submit' question.id %}" onclick="return confirm('是否提交給題庫管理員審核')">提交</a>
+                                {% endif %}
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </table>
         {% else %}
-
+            <h2>目前暫無資料</h2>
         {% endif %}
     </div>
 
+    <div class="pagination">
+        <a href="?page=1">&laquo; first</a>
+        {% if questionList.has_previous %}
+            <a href="?page={{ questionList.previous_page_number }}">Prev</a>
+        {% else %}
+            <a href="">Prev</a>
+        {% endif %}
 
+        {% for page in paginator.page_range %}
+            {% if page == questionList.number %}
+                <a class="active" href="?page={{ page }}">{{ page }}</a>
+            {% else %}
+                <a href="?page={{ page }}">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if userList.has_next %}
+            <a href="?page={{ questionList.next_page_number }}">Next</a>
+        {% else %}
+            <a href="">Next</a>
+        {% endif %}
+        <a href="?page={{ questionList.paginator.num_pages }}">last &raquo;</a>
+    </div>
 {% endblock %}

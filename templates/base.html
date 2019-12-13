@@ -83,6 +83,15 @@
                 </li>
             {% endif %}
 
+            {% if request.user|has_perm:'TBOperator' %}
+                <li>
+                    <a href="">題目操作員</a>
+                    <ul>
+                        <li><a href="{% url 'tboperator_question_list' %}">題目列表</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+
             {% if request.user|has_perm:'Testee' %}
                 <li>
                     <a href="">受測者</a>

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load web_filters %}
+
 {% block path %}
     <a class="fa fa-angle-double-right fa-lg box"></a>
     <a href="">系統管理員</a>
@@ -62,7 +64,26 @@
                         <td>{% if user.student %}{{ user.student.grade }}{% else %}None{% endif %}</td>
                         <td>{% if user.student %}{{ user.student.department }}{% else %}None{% endif %}</td>
                         <td>{% if user.student %}{{ user.student.squadron }}{% else %}None{% endif %}</td>
-                        <td>{{ user.privilege }}</td>
+                        <td>
+                            {% if user|has_perms:privileges.SystemManager %}
+                                <span>{{ privileges.SystemManager.value.1 }}</span>
+                            {% endif %}
+                            {% if user|has_perms:privileges.TestManager %}
+                                <span>{{ privileges.TestManager.value.1 }}</span>
+                            {% endif %}
+                            {% if user|has_perms:privileges.TBManager %}
+                                <span>{{ privileges.TBManager.value.1 }}</span>
+                            {% endif %}
+                            {% if user|has_perms:privileges.TBOperator %}
+                                <span>{{ privileges.TBOperator.value.1 }}</span>
+                            {% endif %}
+                            {% if user|has_perms:privileges.Viewer %}
+                                <span>{{ privileges.Viewer.value.1 }}</span>
+                            {% endif %}
+                            {% if user|has_perms:privileges.Testee %}
+                                <span>{{ privileges.Testee.value.1 }}</span>
+                            {% endif %}
+                        </td>
                         <td>{{ user.last_login|date:'Y年m月d日, H時i分' }}</td>
                     </tr>
                 {% endfor %}

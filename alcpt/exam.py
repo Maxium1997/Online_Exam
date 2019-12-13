@@ -12,7 +12,7 @@ from alcpt.definitions import UserType
 from alcpt.models import Exam, TestPaper, Group
 
 
-# @permission_check(UserType.TestManager)
+@permission_check(UserType.TestManager)
 @require_http_methods(["GET"])
 def exam_list(request):
     exam_name = request.GET.get('exam_name')
@@ -35,7 +35,7 @@ def exam_list(request):
     return render(request, 'exam/exam_list.html', locals())
 
 
-# @permission_check(UserType.TestManager)
+@permission_check(UserType.TestManager)
 @require_http_methods(["GET"])
 def testpaper_list(request):
     testpaper_name = request.GET.get('testpaper_name')
@@ -58,7 +58,7 @@ def testpaper_list(request):
     return render(request, 'exam/testpaper_list.html', locals())
 
 
-# @permission_check(UserType.TestManager)
+@permission_check(UserType.TestManager)
 @require_http_methods(["GET"])
 def testee_group_list(request):
     group_name = request.GET.get('group_name')

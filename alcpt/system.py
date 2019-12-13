@@ -14,6 +14,7 @@ from alcpt.decorators import permission_check
 
 
 # 使用者列表
+@permission_check(UserType.SystemManager)
 def user_list(request):
     keywords = {
         'name': request.GET.get('name')
@@ -60,7 +61,7 @@ def user_list(request):
 
 
 # 單位列表
-# @permission_check(UserType.SystemManager)
+@permission_check(UserType.SystemManager)
 @require_http_methods(["GET"])
 def unit(request):
     departments = Department.objects.all()
@@ -69,7 +70,7 @@ def unit(request):
 
 
 # 新增單位（學系、中隊）
-# @permission_check(UserType.SystemManager)
+@permission_check(UserType.SystemManager)
 @require_http_methods(["GET", "POST"])
 def create_unit(request):
     name = request.POST.get('unit_name')

@@ -51,7 +51,7 @@ urlpatterns = [
     ])),
 
     # 受測者部分(尚未完成)
-    url(r'^testee$', testee.index, name='testee_exam_score'),       # 受測者主頁（顯示自我成績）
+    url(r'^testee$', testee.index, name='testee_exam_score'),  # 受測者主頁（顯示自我成績）
     url(r'^testee/', include([
         url(r'^practice/', include([
             url(r'^(?P<practice_type>(listening|reading))$', testee.practice_create, name='testee_practice_selected'),
@@ -68,4 +68,13 @@ urlpatterns = [
 
     # 題庫管理員
     url(r'^question$', question.manager_index, name='tbmanager_question_list'),
+    # url(r'^question/', include([
+    # url(r'^(?P<question_id>[0-9]+)/review$', question.review, name='review_question'),
+    # ])),
+
+    # 題目操作員
+    url(r'^operator$', question.operator_index, name='tboperator_question_list'),
+    url(r'^operator/', include([
+        url(r'^submit/(?P<question_id>[0-9]+)$', question.question_submit, name='question_submit'),
+    ])),
 ]
