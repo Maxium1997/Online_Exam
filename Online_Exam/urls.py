@@ -68,9 +68,12 @@ urlpatterns = [
 
     # 題庫管理員
     url(r'^question$', question.manager_index, name='tbmanager_question_list'),
-    # url(r'^question/', include([
-    # url(r'^(?P<question_id>[0-9]+)/review$', question.review, name='review_question'),
-    # ])),
+    url(r'^question/', include([
+        url(r'^review$', question.review, name='question_review'),
+        url(r'^(?P<question_id>[0-9]+)/pass$', question.question_pass, name='question_pass'),
+        url(r'^(?P<question_id>[0-9]+)/reject$', question.question_reject, name='question_reject'),
+        url(r'^(?P<question_id>[0-9]+)/edit$', question.question_edit, name='question_edit'),
+    ])),
 
     # 題目操作員
     url(r'^operator$', question.operator_index, name='tboperator_question_list'),

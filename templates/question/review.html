@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load web_filters %}
+
+{% block path %}
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="">題庫管理員</a>
+    <a class="fa fa-angle-right fa-lg box"></a>
+    <a href="">審核試題</a>
+{% endblock %}
+
+{% block content%}
+    <div>
+        {% if reviewed_questions %}
+            <h1>題目列表</h1>
+            <table border="1">
+                <tr>
+                    <th>題目</th>
+                    <th>類型</th>
+                    <th>難度</th>
+                    <th>錯誤回報次數</th>
+                    <th>正確次數</th>
+                    <th>建立者</th>
+                    <th>更新時間</th>
+                    <th>狀態</th>
+                    <th>題目選項</th>
+                    <th></th>
+                </tr>
+                {% for question in questionList %}
+                    <tr>
+                        <td>{% if question.q_file %}{{ question.q_file }}{% else %}{{ question.q_content }}{% endif %}</td>
+                        <td>{{ question.q_type|readable_question_type }}</td>
+                        <td>{{ question.difficulty }}</td>
+                        <td>{{ question.issued_freq }}</td>
+                        <td>{{ question.correct_freq }}</td>
+                        <td>{{ question.created_by.name }}</td>
+                        <td>{{ question.update_time|date:'Y年m月d日, H時i分' }}</td>
+                        <td>{{ question.state|readable_state }}</td>
+                        <td>
+                            {% for option in question.choice_set.all %}
+                                <li>{{ option }}</li>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a href="{% url 'question_pass' question.id %}" onclick="return confirm('確認審核通過？')">Pass</a>
+                            <a href="{% url 'question_reject' question.id %}">Reject</a>
+                            <a href="{% url 'question_edit' question.id %}">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h2>目前暫無資料</h2>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -60,12 +60,66 @@ def manager_index(request):
     return render(request, 'question/question_list.html', locals())
 
 
-# @permission_check(UserType.TBManager)
-# @require_http_methods(["GET"])
-# def review(request):
-#
+@permission_check(UserType.TBManager)
+@require_http_methods(["GET"])
+def review(request):
+    reviewed_questions = Question.objects.exclude(state=0).exclude(state=1).exclude(state=2).exclude(state=5)    # 過濾掉狀態為"暫存"、"審核通過"、"被回報錯誤，已處理"
+    page = request.GET.get('page', 0)
+    paginator = Paginator(reviewed_questions, 10)  # the second parameter is used to display how many items. Now is 10
+
+    try:
+        questionList = paginator.page(page)
+    except PageNotAnInteger:
+        questionList = paginator.page(1)
+    except EmptyPage:
+        questionList = paginator.page(paginator.num_pages)
+
+    return render(request, 'question/review.html', locals())
 
 
+@permission_check(UserType.TBManager)
+def question_pass(request, question_id):
+    try:
+        question = Question.objects.get(id=question_id)
+    except ObjectDoesNotExist:
+        messages.error(request, 'Question does not exist, question id: {}'.format(question_id))
+
+    question.state = 1
+    question.save()
+
+    return redirect('question_review')
+
+
+@permission_check(UserType.TBManager)
+def question_reject(request, question_id):
+    try:
+        question = Question.objects.get(id=question_id)
+    except ObjectDoesNotExist:
+        messages.error(request, 'Question does not exist, question id: {}'.format(question_id))
+
+    if request.method == "POST":
+        question.faulted_reason = request.POST.get('reason')
+        question.state = 2
+        question.save()
+        return redirect('question_review')
+    else:
+        return render(request, 'question/reject_reason.html', locals())
+
+
+@permission_check(UserType.TBManager)
+def question_edit(request, question_id):
+    try:
+        question = Question.objects.get(id=question_id)
+    except ObjectDoesNotExist:
+        messages.error(request, 'Question does not exist, question id: {}'.format(question_id))
+
+    if request.method == 'POST':
+        question.q_content = request.POST.get('q_content',)
+    else:
+        return render(request, 'question/question_edit.html', locals())
+
+
+# 以下為「題目操作員」
 @permission_check(UserType.TBOperator)
 @require_http_methods(["GET"])
 def operator_index(request):

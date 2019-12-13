@@ -3,7 +3,10 @@
 {% load web_filters %}
 
 {% block path %}
-
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="">{% if request.user|has_perm:'TBManager' %}題庫管理員{% else %}題目操作員{% endif %}</a>
+    <a class="fa fa-angle-right fa-lg box"></a>
+    <a href="">題目列表</a>
 {% endblock %}
 
 {% block content%}
@@ -63,6 +66,7 @@
                     {% if request.user|has_perm:'TBOperator' %}
                         <th>是否提交審核</th>
                     {% endif %}
+                    <th>備註</th>
                 </tr>
                 {% for question in questionList %}
                     <tr>
@@ -85,6 +89,9 @@
                                     <a href="{% url 'question_submit' question.id %}" onclick="return confirm('是否提交給題庫管理員審核')">提交</a>
                                 {% endif %}
                             </td>
+                        {% endif %}
+                        {% if question.faulted_reason %}
+                            <td>{{ question.faulted_reason }}</td>
                         {% endif %}
                     </tr>
                 {% endfor %}

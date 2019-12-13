@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="" method="post">
+        <label for="q_content">Question Content</label>
+        <input type="textarea" id="q_content" name="q_content" value="{{ question.q_content }}">
+
+        <label for="q_choice">Choice</label>
+        <input type="text" id="choice1" name="choice1" value="{{ q_content }}">
+    </form>
+
+{% endblock %}

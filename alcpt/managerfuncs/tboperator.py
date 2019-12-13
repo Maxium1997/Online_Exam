@@ -21,6 +21,6 @@ def query_questions(*, question_type: int, question_content: str, difficulty: in
     if state:
         queries &= Q(state=state)
 
-    questions = Question.objects.exclude(state=1).exclude(state=3).exclude(state=5).filter(queries)       # 題庫操作員需顯示狀態為"暫存"的題目
+    questions = Question.objects.exclude(state=1).exclude(state=3).exclude(state=5).filter(queries)
 
     return questions

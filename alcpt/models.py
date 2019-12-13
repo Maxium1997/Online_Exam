@@ -155,6 +155,7 @@ class Question(models.Model):
                                         related_name='last_updated')
     is_valid = models.BooleanField(default=False)
     used_to = models.ManyToManyField(TestPaper)
+    faulted_reason = models.CharField(max_length=255, blank=True, null=True, default="")
     STATES_CHOICES = (
         (0, '暫存'),
         (1, '審核通過'),

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        <form action="{% url 'question_reject' question.id %}" method="post">
+            {% csrf_token %}
+            <label for="reject_reason">Reject Reason</label>
+            <textarea cols="50" rows="4" name="reason" placeholder="請輸入退回原因"></textarea>
+            <input type="submit" onclick="return confirm('確認退回？')" value="送出">
+        </form>
+    </div>
+{% endblock %}
