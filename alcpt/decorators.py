@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from .exceptions import PermissionWrongError
 
 
+# Function's permission authorize users to use that function
 def permission_check(required_privilege):
     def decorator(view):
         @login_required
@@ -18,6 +19,7 @@ def permission_check(required_privilege):
     return decorator
 
 
+# customized redirect
 def custom_redirect(url_name, *args, **kwargs):
     from django.core.urlresolvers import reverse
     import urllib
