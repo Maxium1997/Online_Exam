@@ -80,7 +80,7 @@
                         <td>{{ question.state|readable_state }}</td>
                         <td>
                             {% for option in question.choice_set.all %}
-                                <li>{{ option }}</li>
+                                <li>{{ option }}{% if option.is_answer %}*{% endif %}</li>
                             {% endfor %}
                         </td>
                         {% if request.user|has_perm:'TBOperator' %}

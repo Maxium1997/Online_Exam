@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block path %}
+
+{% endblock %}
+
+{% block content %}
+    <div>
+        <form action="{% url 'question_create' kind %}" method="post">
+            {% csrf_token %}
+            <label for="set_answer">Choose one choice to be answer</label>
+            <select name="is_answer">
+                <option value="{{ option1 }}">{{ option1 }}</option>
+                <option value="{{ option2 }}">{{ option2 }}</option>
+                <option value="{{ option3 }}">{{ option3 }}</option>
+                <option value="{{ option4 }}">{{ option4 }}</option>
+            </select>
+
+            <input type="submit" value="送出">
+        </form>
+    </div>
+{% endblock %}

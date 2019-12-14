@@ -88,6 +88,8 @@
                     <a href="">題目操作員</a>
                     <ul>
                         <li><a href="{% url 'tboperator_question_list' %}">題目列表</a></li>
+                        <li><a href="{% url 'question_create' 'listening' %}">新增聽力試題</a></li>
+                        <li><a href="{% url 'question_create' 'reading' %}">新增閱讀試題</a></li>
                     </ul>
                 </li>
             {% endif %}

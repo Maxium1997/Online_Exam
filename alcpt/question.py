@@ -6,7 +6,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.views.decorators.http import require_http_methods
 
-from .models import Question
+from .models import Question, Choice
 from .exceptions import *
 from .decorators import permission_check
 from .definitions import UserType, QuestionType
@@ -175,3 +175,37 @@ def question_submit(request, question_id):
 
     return redirect('tboperator_question_list')
 
+
+@permission_check(UserType.TBOperator)
+def question_create(request, kind):
+    if request.method == 'POST':
+        if request.POST.get('is_answer',):
+            choice = Choice.objects.get(c_content=request.POST.get('is_answer',))
+            choice.is_answer = 1
+            choice.save()
+        else:
+            try:
+                q_content = request.POST.get('question_content',)
+            except:
+                messages.error(request, 'The question content had been the same with other one.')
+
+            q_type = request.POST.get('question_type',)
+            q_difficulty = request.POST.get('question_difficulty',)
+            choice1 = request.POST.get('choice1',)
+            choice2 = request.POST.get('choice2',)
+            choice3 = request.POST.get('choice3',)
+            choice4 = request.POST.get('choice4',)
+            question = Question.objects.create(q_content=q_content, q_type=q_type, difficulty=q_difficulty,
+                                               created_by=request.user, last_updated_by=request.user)
+            question.save()
+            option1 = Choice.objects.create(c_content=choice1, question=question)
+            option2 = Choice.objects.create(c_content=choice2, question=question)
+            option3 = Choice.objects.create(c_content=choice3, question=question)
+            option4 = Choice.objects.create(c_content=choice4, question=question)
+            option1.save()
+            option2.save()
+            option3.save()
+            option4.save()
+            return render(request, 'question/set_answer.html', locals())
+    else:
+        return render(request, 'question/create.html', locals())

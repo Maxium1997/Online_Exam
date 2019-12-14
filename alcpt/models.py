@@ -144,7 +144,7 @@ class Exam(models.Model):
 class Question(models.Model):
     q_type = models.PositiveSmallIntegerField()
     q_file = models.TextField(blank=True, null=True)
-    q_content = models.TextField(blank=True, null=True)
+    q_content = models.TextField(blank=True, null=True, unique=True)
     difficulty = models.PositiveSmallIntegerField(default=0)
     issued_freq = models.IntegerField(default=0)
     correct_freq = models.IntegerField(default=0)
