@@ -6,9 +6,6 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from alcpt.definitions import UserType
 
 
-# Create your models here.
-
-
 class UserManager(BaseUserManager):
     def create_user(self, reg_id, password=None):
         """
@@ -40,6 +37,10 @@ class UserManager(BaseUserManager):
 
 
 # 使用者
+# red_id: user's registration id
+# privilege: different roles have different privilege
+# created_time: user's registration time
+# update_time: user update its profile time
 class User(AbstractBaseUser):
     reg_id = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=20, blank=True, null=True)
@@ -68,6 +69,7 @@ class User(AbstractBaseUser):
 
 
 # 學系
+# department is ordered by id
 class Department(models.Model):
     name = models.CharField(max_length=10, unique=True)
 
@@ -79,6 +81,7 @@ class Department(models.Model):
 
 
 # 中隊
+# squadron is ordered by id
 class Squadron(models.Model):
     name = models.CharField(max_length=10, unique=True)
 
@@ -90,6 +93,11 @@ class Squadron(models.Model):
 
 
 # 學生
+# stu_id: student's registration id
+# user: student is related to the user
+# department: user's department
+# grade: user's grade
+# squadrum: user's squadrum
 class Student(models.Model):
     stu_id = models.CharField(max_length=10, unique=True)
     user = models.OneToOneField("User", on_delete=models.CASCADE)
@@ -102,6 +110,8 @@ class Student(models.Model):
 
 
 # 試卷
+# is_testpaper: 0 = False = practice; 1 = True = testpaper
+# valid: True = testpaper is valid and can be used; False is the opposite
 class TestPaper(models.Model):
     name = models.CharField(max_length=100, unique=True)
     created_time = models.DateTimeField(auto_now_add=True)
@@ -115,6 +125,14 @@ class TestPaper(models.Model):
 
 
 # 模擬考
+# exam_type: types of the exam be defined in alcpt/definitions.py
+# testpaper: testpaper be used in this exam
+# group: the group for the exam
+# use_freq: How often this exam is used
+# start_time: start time od this exam
+# duration: duration of this exam
+# finish_time: finish time od this exam
+# is_public: if value is False the exam can't be used; True is the opposite
 class Exam(models.Model):
     name = models.CharField(max_length=100, unique=True)
     exam_type = models.PositiveSmallIntegerField(default=2)
@@ -141,6 +159,17 @@ class Exam(models.Model):
 
 
 # 題目
+# q_type: type of the question be defined in alcpt/definitions.py
+# q_file: question path of the english listening
+# q_content: content of the question
+# difficulty: difficulty of the question
+# issued_freq: frequency of the question being issued
+# correct_freq: fault of frequency of the question
+# lasted_updated_by: user of last change the question
+# is_valid: if value is False the question can't be used; True is the opposite
+# used_to: question is used in what test paper
+# faulted_reason: reason of the question fault
+# state: state of the question
 class Question(models.Model):
     q_type = models.PositiveSmallIntegerField()
     q_file = models.TextField(blank=True, null=True)
@@ -178,6 +207,9 @@ class Question(models.Model):
 
 
 # 選項
+# c_content: content of this option
+# question: this option is related to what question
+# is_answer: if value is False that this option can't answer; True is the opposite
 class Choice(models.Model):
     c_content = models.CharField(max_length=255)
     question = models.ForeignKey('Question', on_delete=models.PROTECT)
@@ -188,6 +220,11 @@ class Choice(models.Model):
 
 
 # 答案卷
+# exam: this answer sheet is related to what exam
+# user: this answer sheet is related to what user
+# finish_time: finished time of the answer sheet
+# is_finished: if value is False that this answer sheet does not finish; True is the opposite
+# score: score of the anser sheet
 class AnswerSheet(models.Model):
     exam = models.ForeignKey('Exam', on_delete=models.CASCADE, blank=True)
     user = models.ForeignKey('Student', on_delete=models.CASCADE)
@@ -200,6 +237,9 @@ class AnswerSheet(models.Model):
 
 
 # 單題答題內容
+# answer_sheet: this answer is related to what answer sheet
+# question: this answer is related to what question
+# selected: selected option id this question
 class Answer(models.Model):
     answer_sheet = models.ForeignKey('AnswerSheet', on_delete=models.PROTECT)
     question = models.ForeignKey('Question', on_delete=models.PROTECT)
@@ -209,6 +249,10 @@ class Answer(models.Model):
         return self.question.q_content
 
 
+# 試卷上的選項順序
+# answer: the option list is related to what answer
+# choice: the option list is related to what choice
+# added_time: time of the option list is added
 class OptionList(models.Model):
     answer = models.ForeignKey('Answer', on_delete=models.PROTECT)
     choice = models.ForeignKey('Choice', on_delete=models.PROTECT)
@@ -222,6 +266,10 @@ class OptionList(models.Model):
 
 
 # 受測名單
+# member: members of the group
+# create_by: user of creating the group
+# update_time: time of updating group profile
+# create_time: create time of the group
 class Group(models.Model):
     name = models.CharField(max_length=255, unique=True)
     member = models.ManyToManyField('Student', blank=True)
@@ -237,6 +285,10 @@ class Group(models.Model):
 
 
 # 公告
+# text: content of the proclamation
+# is_public: if value is False the proclamation can't be showed; True is the opposite
+# create_time: create time of the proclamation
+# creaty_by: user of creating the proclamation
 class Proclamation(models.Model):
     title = models.TextField(max_length=255)
     text = models.TextField(max_length=512)
