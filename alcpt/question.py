@@ -183,6 +183,7 @@ def question_create(request, kind):
             choice = Choice.objects.get(c_content=request.POST.get('is_answer',))
             choice.is_answer = 1
             choice.save()
+            return redirect('tboperator_question_list')
         else:
             try:
                 q_content = request.POST.get('question_content',)

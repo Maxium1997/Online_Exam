@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 
+{% load web_filters %}
+
 {% block content %}
-    <div class="container">
+    {% if request.user|has_perm:'SystemManager' %}
+    <div>
+        <a href="{% url 'proclamation_create' %}">新增公告</a>
+    </div>
+    {% endif %}
+
+    <div>
         <table border="1">
             <tr>
                 <th><h4>公告標題</h4></th>
@@ -10,13 +18,13 @@
             </tr>
 
             {% for pro in pros %}
-                <tr style="cursor: pointer">
+                <tr style="cursor: pointer" onclick="window.location.href='{% url 'proclamation_detail' pro.id %}'">
                     <td>{{ pro.title }}</td>
                     <td>{{ pro.created_by.name}}</td>
                     <td>{{ pro.created_time|date:'Y年m月d日, H時i分' }}</td>
                     <td>
-                        <a href=""><i class="fa fa-pencil fa-fw mb-2"></i></a>&nbsp;
-                        <a href=""><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                        <a href="{% url 'proclamation_edit' pro.id %}"><i class="fa fa-pencil fa-fw mb-2"></i></a>&nbsp;
+                        <a href="{% url 'proclamation_delete' pro.id %}" onclick="return confirm('確認刪除此公告:{{ pro.title }}?')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     </td>
                 </tr>
             {% endfor %}

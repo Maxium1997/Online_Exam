@@ -47,6 +47,13 @@ urlpatterns = [
             #     url(r'^edit$', system.squadron_edit, name='squadron_edit'),
             #     url(r'^delete$', system.delete_squadron, name='squadron_delete'),
             # ])),
+        ])),
+
+        url(r'^proclamation/', include([
+            url(r'^create$', system.proclamation_create, name='proclamation_create'),
+            url(r'^(?P<proclamation_id>[0-9]+)/detail$', system.proclamation_detail, name='proclamation_detail'),
+            url(r'^(?P<proclamation_id>[0-9]+)/delete$', system.proclamation_delete, name='proclamation_delete'),
+            url(r'^(?P<proclamation_id>[0-9]+)/edit$', system.proclamation_edit, name='proclamation_edit'),
         ]))
     ])),
 

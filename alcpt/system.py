@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 
 from alcpt.managerfuncs import systemmanager
-from alcpt.models import User, Student, Department, Squadron
+from alcpt.models import User, Student, Department, Squadron, Proclamation
 from alcpt.definitions import UserType
 from alcpt.decorators import permission_check
 
@@ -68,6 +68,59 @@ def unit(request):
     squadrons = Squadron.objects.all()
     return render(request, 'user/unit_list.html', locals())
 
+
+# 新增公告
+@permission_check(UserType.SystemManager)
+def proclamation_create(request):
+    if request.method == 'POST':
+        title = request.POST.get('p_title')
+        text = request.POST.get('p_text')
+        Proclamation.objects.create(title=title, text=text, is_public=True, created_by=request.user)
+
+        return redirect('/')
+    else:
+        return render(request, 'proclamation_create.html', locals())
+
+
+# 公告內容
+def proclamation_detail(request, proclamation_id):
+    try:
+        proclamation = Proclamation.objects.get(id=proclamation_id)
+        return render(request, 'proclamation_detail.html', locals())
+    except ObjectDoesNotExist:
+        messages.error(request, 'Proclamation doesn\'t exist, proclamation id: {}'.format(proclamation_id))
+        return redirect('/')
+
+
+# 刪除公告
+@permission_check(UserType.SystemManager)
+def proclamation_delete(request, proclamation_id):
+    try:
+        proclamation = Proclamation.objects.get(id=proclamation_id)
+        proclamation.delete()
+        messages.success(request, 'Delete proclamation successfully, proclamation title: {}.'.format(proclamation.title))
+    except ObjectDoesNotExist:
+        messages.error(request, 'Proclamation doesn\'t exist, proclamation id: {}'.format(proclamation_id))
+
+    return redirect('/')
+
+
+# 編輯公告
+@permission_check(UserType.SystemManager)
+def proclamation_edit(request, proclamation_id):
+    try:
+        proclamation = Proclamation.objects.get(id=proclamation_id)
+    except ObjectDoesNotExist:
+        messages.error(request, 'Proclamation doesn\'t exist, proclamation id: {}'.format(proclamation_id))
+        return redirect('/')
+
+    if request.method == 'POST':
+        proclamation.title = request.POST.get('proclamation_title',)
+        proclamation.text = request.POST.get('proclamation_text',)
+        messages.success(request, 'Update Successfully. proclamation title: {}'.format(proclamation.title))
+        return redirect('/')
+    else:
+        return render(request, 'proclamation_edit.html', locals())
 
 # 新增單位（學系、中隊）
 @permission_check(UserType.SystemManager)
