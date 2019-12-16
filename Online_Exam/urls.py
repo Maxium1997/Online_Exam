@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from alcpt import registration, system, views, exam, question, testee
+from alcpt import registration, system, views, exam, question, viewer, testee
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -31,7 +31,8 @@ urlpatterns = [
     # 系統管理員部分
     url(r'^user/', include([
         url(r'^list$', system.user_list, name='user_list'),
-        # url(r'^create$', system.create_user, name='user_create'),
+        url(r'^create$', system.user_create, name='user_create'),
+        url(r'^multiCreate$', system.user_multiCreate, name='user_multiCreate'),
         # url(r'^(?P<reg_id>[a-zA-Z0-9]+)$', system.edit_user, name='user_edit'),
         # url(r'^(?P<reg_id>[a-zA-Z0-9]+)/delete$', system.delete_user, name='delete'),
 
@@ -57,14 +58,6 @@ urlpatterns = [
         ]))
     ])),
 
-    # 受測者部分(尚未完成)
-    url(r'^testee$', testee.index, name='testee_exam_score'),  # 受測者主頁（顯示自我成績）
-    url(r'^testee/', include([
-        url(r'^practice/', include([
-            url(r'^(?P<practice_type>(listening|reading))$', testee.practice_create, name='testee_practice_selected'),
-        ]))
-    ])),
-
     # 考試管理員
     url(r'^exam$', exam.exam_list, name='exam_list'),
     url(r'^exam/', include([
@@ -87,5 +80,16 @@ urlpatterns = [
     url(r'^operator/', include([
         url(r'^submit/(?P<question_id>[0-9]+)$', question.question_submit, name='question_submit'),
         url(r'^(?P<kind>(listening|reading))/question_create$', question.question_create, name='question_create'),
+    ])),
+
+    # 成績檢閱者
+    url(r'^viewer$', viewer.index, name='exam_score_list'),
+
+    # 受測者部分(尚未完成)
+    url(r'^testee$', testee.index, name='testee_exam_score'),  # 受測者主頁（顯示自我成績）
+    url(r'^testee/', include([
+        url(r'^practice/', include([
+            url(r'^(?P<practice_type>(listening|reading))$', testee.practice_create, name='testee_practice_selected'),
+        ]))
     ])),
 ]

@@ -94,6 +94,15 @@
                 </li>
             {% endif %}
 
+            {% if request.user|has_perm:'Viewer' %}
+                <li>
+                    <a href="">成績檢閱者</a>
+                    <ul>
+                        <li><a href="{% url 'exam_score_list' %}">考試成績列表</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+
             {% if request.user|has_perm:'Testee' %}
                 <li>
                     <a href="">受測者</a>

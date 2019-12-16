@@ -1,3 +1,5 @@
+import re
+
 from string import punctuation
 
 from django.shortcuts import render, redirect
@@ -5,12 +7,14 @@ from django.views.decorators.http import require_http_methods
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 from django.contrib import messages
 
 from alcpt.managerfuncs import systemmanager
 from alcpt.models import User, Student, Department, Squadron, Proclamation
 from alcpt.definitions import UserType
 from alcpt.decorators import permission_check
+from alcpt.exceptions import IllegalArgumentError
 
 
 # 使用者列表
@@ -58,6 +62,74 @@ def user_list(request):
         userList = paginator.page(paginator.num_pages)
 
     return render(request, 'user/index.html', locals())
+
+
+# 新增使用者（單一）
+@permission_check(UserType.SystemManager)
+def user_create(request):
+    if request.method == 'POST':
+        reg_id = request.POST.get('reg_id',)
+
+        privilege_value = 0
+        i = 0
+        for privilege in UserType.__members__.values():
+            if privilege and request.POST.get('privilege_{}'.format(i)):
+                privilege_value |= privilege.value[0]
+            i += 1
+
+        try:
+            new_user = User.objects.create_user(reg_id=reg_id, privilege=privilege_value, password=reg_id)
+            new_user.save()
+        except IntegrityError:
+            messages.error(request, "Existed user reg_id: {}".format(reg_id))
+            privileges = UserType.__members__
+            return render(request, 'user/create_user.html', locals())
+
+        messages.success(request, 'Create user "{}" successful.'.format(new_user))
+
+        return redirect('user_list')
+    else:
+        privileges = UserType.__members__
+        return render(request, 'user/create_user.html', locals())
+
+
+# 新增使用者（多重）
+@permission_check(UserType.SystemManager)
+def user_multiCreate(request):
+    if request.method == 'POST':
+        new_accounts = []
+        for account in request.POST.get('reg_ids').split(','):
+            account = account.strip().lower()
+            if not re.match('[a-z0-9]+', account):
+                raise IllegalArgumentError('Account can only contain letters and numbers.')
+
+            new_accounts.append(account)
+
+        privilege_value = 0
+        if request.user.has_perm(UserType.SystemManager):
+            i = 0
+            for privilege in UserType.__members__.values():
+                if privilege and request.POST.get('privilege_{}'.format(i)):
+                    privilege_value |= privilege.value[0]
+                i += 1
+
+        else:
+            privilege_value = UserType.Testee.value[0]
+
+        new_users = systemmanager.create_users(reg_ids=new_accounts,
+                                               privilege=privilege_value,)
+
+        if privilege_value & UserType.Testee.value[0]:
+            Student.objects.bulk_create([Student(stu_id=new_user.reg_id, user=new_user) for new_user in new_users])
+
+        messages.success(request, 'Create user "{}" successful.'.format(len(new_users)))
+
+        return redirect('user_list')
+
+    else:
+        privileges = UserType.__members__
+
+        return render(request, 'user/multi_create_user.html', locals())
 
 
 # 單位列表
@@ -121,6 +193,7 @@ def proclamation_edit(request, proclamation_id):
         return redirect('/')
     else:
         return render(request, 'proclamation_edit.html', locals())
+
 
 # 新增單位（學系、中隊）
 @permission_check(UserType.SystemManager)

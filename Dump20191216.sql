@@ -64,7 +64,7 @@ CREATE TABLE `alcpt_answersheet` (
   KEY `alcpt_answersheet_user_id_8e290a44_fk_alcpt_student_id` (`user_id`),
   CONSTRAINT `alcpt_answersheet_exam_id_147bc9a1_fk_alcpt_exam_id` FOREIGN KEY (`exam_id`) REFERENCES `alcpt_exam` (`id`),
   CONSTRAINT `alcpt_answersheet_user_id_8e290a44_fk_alcpt_student_id` FOREIGN KEY (`user_id`) REFERENCES `alcpt_student` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +73,7 @@ CREATE TABLE `alcpt_answersheet` (
 
 LOCK TABLES `alcpt_answersheet` WRITE;
 /*!40000 ALTER TABLE `alcpt_answersheet` DISABLE KEYS */;
-INSERT INTO `alcpt_answersheet` VALUES (1,'2019-05-19 22:21:43.643000',0,0,7,1);
+INSERT INTO `alcpt_answersheet` VALUES (1,'2019-05-19 22:21:43.643000',0,0,7,1),(2,'2019-12-11 21:09:26.585031',0,47,1,1);
 /*!40000 ALTER TABLE `alcpt_answersheet` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,7 +92,7 @@ CREATE TABLE `alcpt_choice` (
   PRIMARY KEY (`id`),
   KEY `alcpt_choice_question_id_cdc3736d_fk_alcpt_question_id` (`question_id`),
   CONSTRAINT `alcpt_choice_question_id_cdc3736d_fk_alcpt_question_id` FOREIGN KEY (`question_id`) REFERENCES `alcpt_question` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,7 +101,7 @@ CREATE TABLE `alcpt_choice` (
 
 LOCK TABLES `alcpt_choice` WRITE;
 /*!40000 ALTER TABLE `alcpt_choice` DISABLE KEYS */;
-INSERT INTO `alcpt_choice` VALUES (1,'officer',0,1),(2,'officers',0,1),(3,'a officer',0,1),(4,'an officer',1,1);
+INSERT INTO `alcpt_choice` VALUES (1,'officer',0,1),(2,'officers',0,1),(3,'a officer',0,1),(4,'an officer',1,1),(5,'ICBM',0,2),(6,'IRBM',1,2),(7,'MRBM',0,2),(8,'SRBM',0,2),(9,'machine gun',0,3),(10,'pistol',1,3),(11,'grenade',0,3),(12,'tank',0,3);
 /*!40000 ALTER TABLE `alcpt_choice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,7 +117,7 @@ CREATE TABLE `alcpt_department` (
   `name` varchar(10) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +126,7 @@ CREATE TABLE `alcpt_department` (
 
 LOCK TABLES `alcpt_department` WRITE;
 /*!40000 ALTER TABLE `alcpt_department` DISABLE KEYS */;
-INSERT INTO `alcpt_department` VALUES (1,'法律系'),(4,'財管系'),(2,'資管系'),(3,'運籌系');
+INSERT INTO `alcpt_department` VALUES (1,'法律系'),(4,'財管系'),(5,'資工系'),(2,'資管系'),(3,'運籌系');
 /*!40000 ALTER TABLE `alcpt_department` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,7 +146,7 @@ CREATE TABLE `alcpt_exam` (
   `start_time` datetime(6) DEFAULT NULL,
   `created_time` datetime(6) NOT NULL,
   `duration` smallint(5) unsigned NOT NULL,
-  `finish_time` datetime(6) NOT NULL,
+  `finish_time` datetime(6) DEFAULT NULL,
   `is_public` tinyint(1) NOT NULL,
   `created_by_id` int(11) NOT NULL,
   `group_id` int(11) DEFAULT NULL,
@@ -168,7 +168,7 @@ CREATE TABLE `alcpt_exam` (
 
 LOCK TABLES `alcpt_exam` WRITE;
 /*!40000 ALTER TABLE `alcpt_exam` DISABLE KEYS */;
-INSERT INTO `alcpt_exam` VALUES (7,'第六次',1,0,0,'2019-11-19 21:49:00.000000','2019-05-19 21:53:29.086000',100,'2019-11-11 06:46:30.942000',0,1,1,1);
+INSERT INTO `alcpt_exam` VALUES (1,'第一次模擬鑑測',1,0,0,'2019-12-10 21:25:58.384919','2019-12-09 08:30:53.139483',60,'2019-12-10 22:25:58.384919',1,1,1,1),(7,'第六次',1,0,0,'2019-11-19 21:49:00.000000','2019-05-19 21:53:29.086000',40,'2019-11-19 22:29:00.000000',1,1,1,1);
 /*!40000 ALTER TABLE `alcpt_exam` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -277,7 +277,7 @@ CREATE TABLE `alcpt_proclamation` (
   PRIMARY KEY (`id`),
   KEY `alcpt_proclamation_created_by_id_02e079a0_fk_alcpt_user_id` (`created_by_id`),
   CONSTRAINT `alcpt_proclamation_created_by_id_02e079a0_fk_alcpt_user_id` FOREIGN KEY (`created_by_id`) REFERENCES `alcpt_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -286,6 +286,7 @@ CREATE TABLE `alcpt_proclamation` (
 
 LOCK TABLES `alcpt_proclamation` WRITE;
 /*!40000 ALTER TABLE `alcpt_proclamation` DISABLE KEYS */;
+INSERT INTO `alcpt_proclamation` VALUES (5,'12月份體測','1、12月份體測已公布，各教授班確認好施測時間。\r\n2、所有人務必做好自身暖身，勿有受傷情事。\r\n3、請各位同學務必遵守榮譽信條，勿有謊報成績之情事。',1,'2019-12-15 16:02:43.579695',1);
 /*!40000 ALTER TABLE `alcpt_proclamation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -310,12 +311,13 @@ CREATE TABLE `alcpt_question` (
   `state` smallint(6) NOT NULL,
   `created_by_id` int(11) NOT NULL,
   `last_updated_by_id` int(11) DEFAULT NULL,
+  `faulted_reason` varchar(255),
   PRIMARY KEY (`id`),
   KEY `alcpt_question_created_by_id_2c7db757_fk_alcpt_user_id` (`created_by_id`),
   KEY `alcpt_question_last_updated_by_id_7e7caa2c_fk_alcpt_user_id` (`last_updated_by_id`),
   CONSTRAINT `alcpt_question_created_by_id_2c7db757_fk_alcpt_user_id` FOREIGN KEY (`created_by_id`) REFERENCES `alcpt_user` (`id`),
   CONSTRAINT `alcpt_question_last_updated_by_id_7e7caa2c_fk_alcpt_user_id` FOREIGN KEY (`last_updated_by_id`) REFERENCES `alcpt_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,7 +326,7 @@ CREATE TABLE `alcpt_question` (
 
 LOCK TABLES `alcpt_question` WRITE;
 /*!40000 ALTER TABLE `alcpt_question` DISABLE KEYS */;
-INSERT INTO `alcpt_question` VALUES (1,4,NULL,'He is ____ in the military service.',1,0,0,'2019-05-19 16:18:54.592000','2019-05-19 16:18:54.592000',0,0,1,1);
+INSERT INTO `alcpt_question` VALUES (1,3,NULL,'He is ____ in the military service.',1,0,0,'2019-05-19 16:18:54.592000','2019-12-13 11:47:06.039081',0,1,1,1,NULL),(2,4,NULL,'What kind of missile that distance is from 1000 km to 3000km?',1,0,0,'2019-12-13 12:34:07.004452','2019-12-13 11:39:29.823873',0,2,1,1,'飛彈距離不夠長@@'),(3,4,NULL,'Which of the following options matches accuracy, durability, and fitness?',1,0,0,'2019-12-14 06:48:42.496852','2019-12-14 10:04:25.072662',0,3,1,1,'');
 /*!40000 ALTER TABLE `alcpt_question` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -403,7 +405,7 @@ CREATE TABLE `alcpt_student` (
   CONSTRAINT `alcpt_student_department_id_257bfbd3_fk_alcpt_department_id` FOREIGN KEY (`department_id`) REFERENCES `alcpt_department` (`id`),
   CONSTRAINT `alcpt_student_squadron_id_4bbcc05a_fk_alcpt_squadron_id` FOREIGN KEY (`squadron_id`) REFERENCES `alcpt_squadron` (`id`),
   CONSTRAINT `alcpt_student_user_id_c43c5a79_fk_alcpt_user_id` FOREIGN KEY (`user_id`) REFERENCES `alcpt_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -412,7 +414,7 @@ CREATE TABLE `alcpt_student` (
 
 LOCK TABLES `alcpt_student` WRITE;
 /*!40000 ALTER TABLE `alcpt_student` DISABLE KEYS */;
-INSERT INTO `alcpt_student` VALUES (1,'1090630218',109,2,3,1);
+INSERT INTO `alcpt_student` VALUES (1,'1090630218',109,2,3,1),(4,'1090630201',108,NULL,NULL,12),(5,'1090630202',108,NULL,NULL,13);
 /*!40000 ALTER TABLE `alcpt_student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -467,7 +469,7 @@ CREATE TABLE `alcpt_user` (
   `update_time` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `reg_id` (`reg_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -476,7 +478,7 @@ CREATE TABLE `alcpt_user` (
 
 LOCK TABLES `alcpt_user` WRITE;
 /*!40000 ALTER TABLE `alcpt_user` DISABLE KEYS */;
-INSERT INTO `alcpt_user` VALUES (1,'pbkdf2_sha256$36000$4zEHqf8SAJFQ$OKTlAhNLNfeYxlM107ZYk9LDhOy+SsndWBQx5N2QwBY=','2019-12-10 11:39:12.816615','1090630218','蘇典煒',0,1,'2019-10-15 12:44:32.551000','2019-11-13 12:05:08.798616');
+INSERT INTO `alcpt_user` VALUES (1,'pbkdf2_sha256$36000$4zEHqf8SAJFQ$OKTlAhNLNfeYxlM107ZYk9LDhOy+SsndWBQx5N2QwBY=','2019-12-16 12:31:42.043927','1090630218','蘇典煒',0,59,'2019-10-15 12:44:32.551000','2019-11-13 12:05:08.798616'),(2,'pbkdf2_sha256$36000$yoX8FUYBKEBE$0SpUdzLVt1A+ipbOutYamo03sVbKui4P3YelCIlialU=','2019-05-19 20:08:08.429000','mcndu01','教師',0,27,'2019-05-19 18:41:47.152000','2019-05-19 18:42:18.440000'),(12,'pbkdf2_sha256$36000$7EVGxGb00JYI$kJtP5tBX8El7tULJCwzM3qpevI1BPHRbREAbbCFu78s=',NULL,'1090630201',NULL,NULL,1,'2019-12-16 13:22:40.739726','2019-12-16 13:22:40.739759'),(13,'pbkdf2_sha256$36000$BxXsKtylZDp3$foYRyg+hDEON6Id81qT7QrlAvUaMj72NhlllFK1OQ3M=',NULL,'1090630202',NULL,NULL,1,'2019-12-16 13:22:40.739788','2019-12-16 13:22:40.739800'),(14,'pbkdf2_sha256$36000$nRWB1MwQSFDm$FuzO9v3Wvt3xxPIgM6Xr/vZUuffCrR2UuY3nTmmjlVA=',NULL,'mcndu0001',NULL,NULL,26,'2019-12-16 13:42:44.546743','2019-12-16 13:42:44.559293');
 /*!40000 ALTER TABLE `alcpt_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -721,7 +723,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -730,7 +732,7 @@ CREATE TABLE `django_migrations` (
 
 LOCK TABLES `django_migrations` WRITE;
 /*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
-INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2019-12-11 06:45:06.093900'),(2,'auth','0001_initial','2019-12-11 06:45:06.386045'),(3,'admin','0001_initial','2019-12-11 06:45:06.469952'),(4,'admin','0002_logentry_remove_auto_add','2019-12-11 06:45:06.493655'),(5,'alcpt','0001_initial','2019-12-11 06:45:07.580557'),(6,'contenttypes','0002_remove_content_type_name','2019-12-11 06:45:07.656881'),(7,'auth','0002_alter_permission_name_max_length','2019-12-11 06:45:07.693015'),(8,'auth','0003_alter_user_email_max_length','2019-12-11 06:45:07.730940'),(9,'auth','0004_alter_user_username_opts','2019-12-11 06:45:07.753866'),(10,'auth','0005_alter_user_last_login_null','2019-12-11 06:45:07.791635'),(11,'auth','0006_require_contenttypes_0002','2019-12-11 06:45:07.794423'),(12,'auth','0007_alter_validators_add_error_messages','2019-12-11 06:45:07.812398'),(13,'auth','0008_alter_user_username_max_length','2019-12-11 06:45:07.852193'),(14,'sessions','0001_initial','2019-12-11 06:45:07.876841'),(15,'alcpt','0002_auto_20191211_1515','2019-12-11 07:15:28.993398');
+INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2019-12-11 06:45:06.093900'),(2,'auth','0001_initial','2019-12-11 06:45:06.386045'),(3,'admin','0001_initial','2019-12-11 06:45:06.469952'),(4,'admin','0002_logentry_remove_auto_add','2019-12-11 06:45:06.493655'),(5,'alcpt','0001_initial','2019-12-11 06:45:07.580557'),(6,'contenttypes','0002_remove_content_type_name','2019-12-11 06:45:07.656881'),(7,'auth','0002_alter_permission_name_max_length','2019-12-11 06:45:07.693015'),(8,'auth','0003_alter_user_email_max_length','2019-12-11 06:45:07.730940'),(9,'auth','0004_alter_user_username_opts','2019-12-11 06:45:07.753866'),(10,'auth','0005_alter_user_last_login_null','2019-12-11 06:45:07.791635'),(11,'auth','0006_require_contenttypes_0002','2019-12-11 06:45:07.794423'),(12,'auth','0007_alter_validators_add_error_messages','2019-12-11 06:45:07.812398'),(13,'auth','0008_alter_user_username_max_length','2019-12-11 06:45:07.852193'),(14,'sessions','0001_initial','2019-12-11 06:45:07.876841'),(15,'alcpt','0002_auto_20191211_1515','2019-12-11 07:15:28.993398'),(16,'alcpt','0003_auto_20191213_1715','2019-12-13 09:15:13.751913');
 /*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -756,6 +758,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
+INSERT INTO `django_session` VALUES ('0veeoeji3wb2nfuc6qe9oqmgq8mz2aw3','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-29 04:00:07.817450'),('3arwht0j8v0qs7s2cqgkyfwg9m7x0ks7','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-25 13:30:13.580620'),('4i9xub4ez2yah5ei9wnfgywqk6p6pnqn','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-29 04:02:51.062693'),('5r8zdvtgcwm7owy47k90c7ac0n44k9nn','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-25 23:42:41.863050'),('5x42pyn4akdhn50m4c8bypn3e583x254','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 03:55:48.773107'),('6t66gm6pkv2ut582fgvjh8qxm84m3yoa','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-30 12:31:42.054066'),('70im5puoo9q1ug2tz63h0gm9khkoxxxp','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 07:49:34.063181'),('8nsgozlc40m8hb520qf1s0sptk3mnb02','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-25 13:03:30.343816'),('8va3pu44hiazp3aptza48ngkksyt5drt','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 09:05:21.239909'),('9i0sscl0wrcjmpgwzii7peum2ewanih9','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-30 07:41:16.558036'),('9ib1668m2oydtis2dzvg0av043sjkosf','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 09:18:26.510459'),('a3a6a4nayglc9x65rnwuy74rb930pv8e','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-26 06:52:50.816391'),('awozklgrqpswfpeail11nnvlx54fko7p','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 16:18:15.418631'),('b2pwnuhnp6i515ns9nyqxejryl5vvpbb','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 16:01:37.234928'),('b6mavq95pukmduk7v9cdzgkgmlqmt40o','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 16:09:07.941016'),('df4w13zo0j1sl5khxf2tx7f2v6z39qbu','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-29 15:45:12.540765'),('ecss2clo5mrcz6umznj74swtk4dht63c','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-28 06:05:50.043900'),('epe94oagt6sdx7dx2yh4tlqvud7qad5v','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 00:36:11.355384'),('hefyq6q6bj479tj9ak2veaeh87fav49h','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-26 06:59:54.520278'),('ia83pzla8zdf2p4x54qc8nye6u45jq2r','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-26 07:32:17.685807'),('iu2e1mhr434dmgrrhrch24cqpm9pe3sy','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-30 05:05:43.889120'),('jhyh2qe53modfleljqmbf5lk13bnbb7h','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 05:46:25.319505'),('lh1rrroa0r4tnfnsvq117i99rv9b8981','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-26 00:12:48.959859'),('ln6dhjj2te29f9xflszgo99u7sbgj55o','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-25 14:57:08.825304'),('na3leiq48g0l5sfvtol10xx3prk83poz','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 07:39:44.767182'),('pn6t9kviqnthm23dhbmuwdve6o8j4wt1','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 02:57:54.328539'),('pynpainw5v2nfe1o9rjo8n4o9l32qpcr','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-25 15:18:24.177363'),('q902zu5e1y09jklszy6vr36baprv4s7b','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-26 06:39:06.200696'),('sf0tmmb5oj2hikvlmnm92tzqqbmgkr2m','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-30 07:46:32.409752'),('t4jbhqp9yawgxbgus7rlziz6mwthoa1q','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 04:40:52.917480'),('t51q3pan3c14p39sldec0nv6lj4e96uj','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 01:01:16.083843'),('u29or6l9f0r9o8xmvc80152uhd27i2wn','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-26 10:36:56.565146'),('uwq7a7mh3wtzxscqkgrkeshidzvdz0aa','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 16:08:55.779832'),('v5vbleenm1f0k3nitxza5u95x6vw0zk0','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-25 15:10:29.676317'),('v7i387yl9x45vgylqaeybft8bwzrw6ve','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-27 15:48:18.491601'),('vumpp4uwy37ubimm2t23aolojp74v03n','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-25 23:39:57.936251'),('xcus9ip3yh7ucffym1d0g2hrczvolb9g','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-26 08:41:28.550917'),('y59b0h25h70moal7wjxqvhjv7ibpcolj','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-26 02:05:54.531797'),('z01u2t1b0oa858unkpx4587khcdc9cdf','YWFiNTRjNjE4NjI0MGY2NjAzZDY5ZTk2MzE0NWUzZmRkMzFjOGQ2Nzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI5MzBkNWM3NzA3NTYzYjkzNzc3MmIzYTk1MjIwOWU1NTY1Y2E5ZmNiIn0=','2019-12-26 09:09:51.560080');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -768,4 +771,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-11 15:29:08
+-- Dump completed on 2019-12-16 22:17:29

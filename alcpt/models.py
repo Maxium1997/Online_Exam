@@ -7,13 +7,14 @@ from alcpt.definitions import UserType
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, reg_id, password=None):
+    def create_user(self, reg_id, privilege, password=None):
         """
         Creates and saves a user with the given serial number.
         """
 
         user = self.model(
             reg_id=reg_id,
+            privilege=privilege
         )
 
         user.set_password(password)
@@ -97,7 +98,7 @@ class Squadron(models.Model):
 # user: student is related to the user
 # department: user's department
 # grade: user's grade
-# squadrum: user's squadrum
+# squadron: user's squadron
 class Student(models.Model):
     stu_id = models.CharField(max_length=10, unique=True)
     user = models.OneToOneField("User", on_delete=models.CASCADE)
@@ -144,7 +145,7 @@ class Exam(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     duration = models.PositiveSmallIntegerField(default=-1)
     created_by = models.ForeignKey('User', on_delete=models.PROTECT, related_name='exam_created')
-    finish_time = models.DateTimeField(auto_now=True)
+    finish_time = models.DateTimeField(blank=True, null=True)
     is_public = models.BooleanField(default=False)
 
     class Meta:
@@ -173,7 +174,7 @@ class Exam(models.Model):
 class Question(models.Model):
     q_type = models.PositiveSmallIntegerField()
     q_file = models.TextField(blank=True, null=True)
-    q_content = models.TextField(blank=True, null=True, unique=True)
+    q_content = models.TextField(blank=True, null=True)
     difficulty = models.PositiveSmallIntegerField(default=0)
     issued_freq = models.IntegerField(default=0)
     correct_freq = models.IntegerField(default=0)
@@ -224,7 +225,7 @@ class Choice(models.Model):
 # user: this answer sheet is related to what user
 # finish_time: finished time of the answer sheet
 # is_finished: if value is False that this answer sheet does not finish; True is the opposite
-# score: score of the anser sheet
+# score: score of the answer sheet
 class AnswerSheet(models.Model):
     exam = models.ForeignKey('Exam', on_delete=models.CASCADE, blank=True)
     user = models.ForeignKey('Student', on_delete=models.CASCADE)
@@ -288,7 +289,7 @@ class Group(models.Model):
 # text: content of the proclamation
 # is_public: if value is False the proclamation can't be showed; True is the opposite
 # create_time: create time of the proclamation
-# creaty_by: user of creating the proclamation
+# created_by: user of creating the proclamation
 class Proclamation(models.Model):
     title = models.TextField(max_length=255)
     text = models.TextField(max_length=512)
