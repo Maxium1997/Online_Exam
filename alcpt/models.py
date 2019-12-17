@@ -141,6 +141,7 @@ class Exam(models.Model):
     group = models.ForeignKey('Group', on_delete=models.CASCADE, null=True)
     use_freq = models.IntegerField(default=0)
     modified_times = models.IntegerField(default=0)
+    average_score = models.FloatField(default=0)     # 資料庫我有加一欄，不影響可以不用刪掉
     start_time = models.DateTimeField(blank=True, null=True)
     created_time = models.DateTimeField(auto_now_add=True)
     duration = models.PositiveSmallIntegerField(default=-1)
