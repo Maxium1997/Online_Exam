@@ -8,6 +8,9 @@
     <div>
         <form action="{% url 'question_create' kind %}" method="post">
             {% csrf_token %}
+            <label for="question">題目</label>
+            <label>{{ question.q_content }}</label>
+
             <label for="set_answer">Choose one choice to be answer</label>
             <select name="is_answer">
                 <option value="{{ option1 }}">{{ option1 }}</option>

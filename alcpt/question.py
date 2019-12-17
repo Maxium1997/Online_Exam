@@ -110,11 +110,33 @@ def question_reject(request, question_id):
 def question_edit(request, question_id):
     try:
         question = Question.objects.get(id=question_id)
+        if question.state == 1:
+            messages.warning(request, 'The question had been passed, can\'t be edited.')
+            return redirect('tbmanager_question_list')
+
     except ObjectDoesNotExist:
         messages.error(request, 'Question does not exist, question id: {}'.format(question_id))
 
     if request.method == 'POST':
         question.q_content = request.POST.get('q_content',)
+
+        for choice in question.choice_set.all():
+            choice.is_answer = 0
+            choice.save()
+
+        try:
+            choice = Choice.objects.get(id=request.POST.get('answer_choice'))
+            choice.is_answer = 1
+            choice.save()
+            question.state = 1
+            question.save()
+
+            messages.success(request, 'Successful Update.')
+
+            return redirect('tbmanager_question_list')
+        except ObjectDoesNotExist:
+            messages.error(request, 'Choice does not exist, choice id: {}'.format(request.POST.get('answer_choice')))
+            return render(request, 'question/question_edit.html', locals())
     else:
         return render(request, 'question/question_edit.html', locals())
 
@@ -179,34 +201,71 @@ def question_submit(request, question_id):
 @permission_check(UserType.TBOperator)
 def question_create(request, kind):
     if request.method == 'POST':
-        if request.POST.get('is_answer',):
-            choice = Choice.objects.get(c_content=request.POST.get('is_answer',))
-            choice.is_answer = 1
-            choice.save()
-            return redirect('tboperator_question_list')
-        else:
-            try:
-                q_content = request.POST.get('question_content',)
-            except:
-                messages.error(request, 'The question content had been the same with other one.')
+        if kind == 'listening':
+            pass
 
-            q_type = request.POST.get('question_type',)
-            q_difficulty = request.POST.get('question_difficulty',)
-            choice1 = request.POST.get('choice1',)
-            choice2 = request.POST.get('choice2',)
-            choice3 = request.POST.get('choice3',)
-            choice4 = request.POST.get('choice4',)
-            question = Question.objects.create(q_content=q_content, q_type=q_type, difficulty=q_difficulty,
-                                               created_by=request.user, last_updated_by=request.user)
-            question.save()
-            option1 = Choice.objects.create(c_content=choice1, question=question)
-            option2 = Choice.objects.create(c_content=choice2, question=question)
-            option3 = Choice.objects.create(c_content=choice3, question=question)
-            option4 = Choice.objects.create(c_content=choice4, question=question)
-            option1.save()
-            option2.save()
-            option3.save()
-            option4.save()
-            return render(request, 'question/set_answer.html', locals())
+        elif kind == 'reading':
+            if request.POST.get('is_answer',):
+                choice = Choice.objects.get(c_content=request.POST.get('is_answer',))
+                choice.is_answer = 1
+                choice.save()
+                return redirect('tboperator_question_list')
+            else:
+                try:
+                    q_content = request.POST.get('question_content',)
+                except:
+                    messages.error(request, 'The question content had been the same with other one.')
+
+                q_type = request.POST.get('question_type',)
+                q_difficulty = request.POST.get('question_difficulty',)
+                choice1 = request.POST.get('choice1',)
+                choice2 = request.POST.get('choice2',)
+                choice3 = request.POST.get('choice3',)
+                choice4 = request.POST.get('choice4',)
+                question = Question.objects.create(q_content=q_content, q_type=q_type, difficulty=q_difficulty,
+                                                   created_by=request.user, last_updated_by=request.user)
+                question.save()
+                option1 = Choice.objects.create(c_content=choice1, question=question)
+                option2 = Choice.objects.create(c_content=choice2, question=question)
+                option3 = Choice.objects.create(c_content=choice3, question=question)
+                option4 = Choice.objects.create(c_content=choice4, question=question)
+                option1.save()
+                option2.save()
+                option3.save()
+                option4.save()
+                return render(request, 'question/set_answer.html', locals())
+        else:
+            messages.error(request, 'The kind can not be found.')
+            return redirect('Homepage')
     else:
         return render(request, 'question/create.html', locals())
+
+
+@permission_check(UserType.TBOperator)
+def operator_edit(request, question_id):
+    try:
+        question = Question.objects.get(id=question_id)
+    except ObjectDoesNotExist:
+        messages.error(request, 'Question does not exist, question id: {}'.format(question_id))
+
+    if request.method == 'POST':
+        question.q_content = request.POST.get('q_content', )
+        for choice in question.choice_set.all():
+            choice.is_answer = 0
+            choice.save()
+        try:
+            choice = Choice.objects.get(id=request.POST.get('answer_choice'))
+            choice.is_answer = 1
+            choice.save()
+            question.state = 0
+            question.save()
+
+            messages.success(request, 'Successful Update.')
+
+            return redirect('tboperator_question_list')
+        except ObjectDoesNotExist:
+            messages.error(request, 'Choice does not exist, choice id: {}'.format(request.POST.get('answer_choice')))
+            return render(request, 'question/operator_edit.html', locals())
+    else:
+        return render(request, 'question/operator_edit.html', locals())
+

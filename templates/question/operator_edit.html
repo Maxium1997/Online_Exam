@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
+{% block path %}
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="{% url 'tboperator_question_list' %}">題目操作員</a>
+    <a class="fa fa-angle-right fa-lg box"></a>
+    <a href="">編輯試題</a>
+{% endblock %}
+
 {% block content %}
     <form action="" method="post">
         {% csrf_token %}
@@ -17,7 +24,7 @@
 
         <br>
 
-        <input type="submit" value="確認更改" onclick="return confirm('確認更改此試題並通過審核？')">
+        <input type="submit" value="確認更改" onclick="return confirm('確認更改此試題並進入暫存階段？')">
     </form>
 
 {% endblock %}
