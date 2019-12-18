@@ -22,7 +22,7 @@
 
         <div class="registration_block">
             {% if user.is_authenticated %}
-                <p>Welcome, {{ user.name }}({{ user.reg_id }}) / <a title="即將登出" href="{% url 'logout' %}">Logout</a> </p>
+                <p>Welcome, {{ user.name }}(<a href="{% url 'profile' %}">{{ user.reg_id }}</a>) / <a title="即將登出" href="{% url 'logout' %}">Logout</a> </p>
             {% else %}
                 <p><a title="我要登入" href="{% url 'login' %}">Login</a></p>
             {% endif %}

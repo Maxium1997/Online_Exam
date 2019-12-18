@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
 from Online_Exam.settings import LOGIN_REDIRECT_URL
+from alcpt.definitions import UserType
 
 
 # Create your views here.
@@ -49,3 +50,13 @@ def logout(request):
     auth.logout(request)
 
     return redirect('Homepage')
+
+
+# 檢視個人資料
+@login_required
+def profile(request):
+    user = request.user
+    privileges = UserType.__members__
+    return render(request, 'registration/profile.html', locals())
+
+

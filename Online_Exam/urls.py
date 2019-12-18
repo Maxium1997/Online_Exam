@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^accounts/', include([
         url(r'^login/', registration.login, name='login'),  # 登入
         url(r'^logout/', registration.logout, name='logout'),  # 登出
+        url(r'^profile$', registration.profile, name='profile'),
     ])),
 
     # 系統管理員部分
