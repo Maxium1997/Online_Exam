@@ -28,7 +28,15 @@
                 </tr>
                 {% for question in questionList %}
                     <tr>
-                        <td>{% if question.q_file %}{{ question.q_file }}{% else %}{{ question.q_content }}{% endif %}</td>
+                        <td>
+                            {% if question.q_file %}
+                                <audio controls preload="none">
+                                    <source src="{{ question.q_file }}" type="audio/mpeg">
+                                    Your browser does not support the audio tag.
+                                </audio>
+                            {% else %}
+                                {{ question.q_content }}
+                            {% endif %}</td>
                         <td>{{ question.q_type|readable_question_type }}</td>
                         <td>{{ question.difficulty }}</td>
                         <td>{{ question.issued_freq }}</td>

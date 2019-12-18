@@ -6,14 +6,14 @@
 
 {% block content %}
     <div>
-        <form action="{% url 'question_create' kind %}" method="post">
+        <form ENCTYPE="multipart/form-data" action="{% url 'question_create' kind %}" method="post">
             {% csrf_token %}
             <label for="question">題目</label>
             {% if reading_question %}
                 <label>{{ reading_question.q_content }}</label>
             {% elif listening_question %}
                 <audio controls preload="none">
-                    <source src="{{ listening_question.q_file }}">
+                    <source src="{{ listening_question.q_file }}.mp3">
                 </audio>
             {% endif %}
 

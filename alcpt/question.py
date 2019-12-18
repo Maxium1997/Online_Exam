@@ -6,8 +6,6 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.views.decorators.http import require_http_methods
 
-from alcpt.utility import save_file
-
 from .models import Question, Choice
 from .exceptions import *
 from .decorators import permission_check
@@ -49,8 +47,8 @@ def manager_index(request):
     state = request.GET.get('state',)
 
     questions = tbmanager.query_questions(**keywords)
-    page = request.GET.get('page', 0)
-    paginator = Paginator(questions, 10)  # the second parameter is used to display how many items. Now is display 10
+    page = request.GET.get('page', 1)
+    paginator = Paginator(questions, 3)  # the second parameter is used to display how many items. Now is display 10
 
     try:
         questionList = paginator.page(page)
@@ -87,6 +85,7 @@ def question_pass(request, question_id):
         messages.error(request, 'Question does not exist, question id: {}'.format(question_id))
 
     question.state = 1
+    question.faulted_reason = ""
     question.last_updated_by = request.user
     question.save()
 
@@ -174,7 +173,7 @@ def operator_index(request):
     state = request.GET.get('state', )
 
     questions = tboperator.query_questions(**keywords)
-    page = request.GET.get('page', 0)
+    page = request.GET.get('page', 1)
     paginator = Paginator(questions,
                           10)  # the second parameter is used to display how many items. Now is display 10
 
