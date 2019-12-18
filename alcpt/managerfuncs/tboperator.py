@@ -21,7 +21,7 @@ def query_questions(*, question_type: int, question_content: str, difficulty: in
     if state:
         queries &= Q(state=state)
 
-    questions = Question.objects.exclude(state=1).exclude(state=3).exclude(state=5).filter(queries)
+    questions = Question.objects.exclude(state=1).exclude(state=3).exclude(state=5).filter(queries).order_by('-created_time')
 
     return questions
 

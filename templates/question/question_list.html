@@ -54,6 +54,7 @@
             <h1>題目列表</h1>
             <table border="1">
                 <tr>
+                    <th>ＩＤ</th>
                     <th>題目</th>
                     <th>類型</th>
                     <th>難度</th>
@@ -74,9 +75,9 @@
                 </tr>
                 {% for question in questionList %}
                     <tr>
+                        <td>{{ question.id }}</td>
                         <td>
                             {% if question.q_file %}
-{#                                {{ question.q_file }}#}
                                 <audio controls preload="none">
                                     <source src="{{ question.q_file }}" type="audio/mpeg">
                                     Your browser does not support the audio tag.
@@ -142,7 +143,7 @@
             {% endif %}
         {% endfor %}
 
-        {% if userList.has_next %}
+        {% if questionList.has_next %}
             <a href="?page={{ questionList.next_page_number }}">Next</a>
         {% else %}
             <a href="">Next</a>

@@ -21,6 +21,6 @@ def query_questions(*, question_type: int, question_content: str, difficulty: in
     if state:
         queries &= Q(state=state)
 
-    questions = Question.objects.exclude(state=0).filter(queries)       # 題庫管理員不需狀態為"暫存"的題目
+    questions = Question.objects.exclude(state=0).filter(queries).order_by('created_time')       # 題庫管理員不需狀態為"暫存"的題目
 
     return questions

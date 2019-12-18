@@ -2,6 +2,7 @@ from math import ceil
 
 from django.db.models import Q
 from django.utils import timezone
+from datetime import datetime
 from django.contrib.auth.hashers import make_password
 
 from alcpt.models import User, Department, Squadron, Student
@@ -29,6 +30,7 @@ def query_users(*, department: Department, grade: int, squadron: Squadron, name:
 
     for user in users:
         user.update_time = timezone.localtime(user.update_time)
+        user.update_time = datetime.now()
         user.created_time = timezone.localtime(user.created_time)
 
     if filter_func:
