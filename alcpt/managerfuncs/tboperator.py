@@ -24,3 +24,26 @@ def query_questions(*, question_type: int, question_content: str, difficulty: in
     questions = Question.objects.exclude(state=1).exclude(state=3).exclude(state=5).filter(queries)
 
     return questions
+
+
+def create_reading_question(q_content: str, q_type: str, created_by: User, difficulty: int):
+    reading_question = Question.objects.create(q_content=q_content,
+                                               q_type=q_type,
+                                               created_by=created_by,
+                                               difficulty=difficulty)
+    reading_question.save()
+
+    return reading_question
+
+
+def create_listening_question(q_file, q_type: str, created_by: User, difficulty: int):
+    listening_question = Question.objects.create(q_type=q_type,
+                                                 created_by=created_by,
+                                                 difficulty=difficulty)
+    listening_question.q_file = save_file(file=q_file, path='question_{}'.format(listening_question.id))
+
+    listening_question.save()
+
+    return listening_question
+
+

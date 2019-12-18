@@ -6,6 +6,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.views.decorators.http import require_http_methods
 
+from alcpt.utility import save_file
+
 from .models import Question, Choice
 from .exceptions import *
 from .decorators import permission_check
@@ -85,6 +87,7 @@ def question_pass(request, question_id):
         messages.error(request, 'Question does not exist, question id: {}'.format(question_id))
 
     question.state = 1
+    question.last_updated_by = request.user
     question.save()
 
     return redirect('question_review')
@@ -100,6 +103,7 @@ def question_reject(request, question_id):
     if request.method == "POST":
         question.faulted_reason = request.POST.get('reason')
         question.state = 2
+        question.last_updated_by = request.user
         question.save()
         return redirect('question_review')
     else:
@@ -129,6 +133,7 @@ def question_edit(request, question_id):
             choice.is_answer = 1
             choice.save()
             question.state = 1
+            question.last_updated_by = request.user
             question.save()
 
             messages.success(request, 'Successful Update.')
@@ -202,7 +207,39 @@ def question_submit(request, question_id):
 def question_create(request, kind):
     if request.method == 'POST':
         if kind == 'listening':
-            pass
+            if request.POST.get('is_answer',):
+                choice = Choice.objects.get(c_content=request.POST.get('is_answer',))
+                choice.is_answer = 1
+                choice.save()
+                return redirect('tboperator_question_list')
+            else:
+                try:
+                    q_file = request.FILES.get('question_file',)
+                except:
+                    messages.error(request, 'Missing file field "question_file"')
+
+                q_type = request.POST.get('question_type',)
+                q_difficulty = request.POST.get('question_difficulty',)
+                choice1 = request.POST.get('choice1',)
+                choice2 = request.POST.get('choice2',)
+                choice3 = request.POST.get('choice3',)
+                choice4 = request.POST.get('choice4',)
+
+                listening_question = tboperator.create_listening_question(q_file,
+                                                                          q_type=q_type,
+                                                                          created_by=request.user,
+                                                                          difficulty=q_difficulty)
+
+                option1 = Choice.objects.create(c_content=choice1, question=listening_question)
+                option2 = Choice.objects.create(c_content=choice2, question=listening_question)
+                option3 = Choice.objects.create(c_content=choice3, question=listening_question)
+                option4 = Choice.objects.create(c_content=choice4, question=listening_question)
+                option1.save()
+                option2.save()
+                option3.save()
+                option4.save()
+
+                return render(request, 'question/set_answer.html', locals())
 
         elif kind == 'reading':
             if request.POST.get('is_answer',):
@@ -222,17 +259,20 @@ def question_create(request, kind):
                 choice2 = request.POST.get('choice2',)
                 choice3 = request.POST.get('choice3',)
                 choice4 = request.POST.get('choice4',)
-                question = Question.objects.create(q_content=q_content, q_type=q_type, difficulty=q_difficulty,
-                                                   created_by=request.user, last_updated_by=request.user)
-                question.save()
-                option1 = Choice.objects.create(c_content=choice1, question=question)
-                option2 = Choice.objects.create(c_content=choice2, question=question)
-                option3 = Choice.objects.create(c_content=choice3, question=question)
-                option4 = Choice.objects.create(c_content=choice4, question=question)
+                reading_question = tboperator.create_reading_question(q_content=q_content,
+                                                                      q_type=q_type,
+                                                                      created_by=request.user,
+                                                                      difficulty=q_difficulty)
+
+                option1 = Choice.objects.create(c_content=choice1, question=reading_question)
+                option2 = Choice.objects.create(c_content=choice2, question=reading_question)
+                option3 = Choice.objects.create(c_content=choice3, question=reading_question)
+                option4 = Choice.objects.create(c_content=choice4, question=reading_question)
                 option1.save()
                 option2.save()
                 option3.save()
                 option4.save()
+
                 return render(request, 'question/set_answer.html', locals())
         else:
             messages.error(request, 'The kind can not be found.')
