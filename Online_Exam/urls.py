@@ -91,10 +91,13 @@ urlpatterns = [
     url(r'^viewer$', viewer.index, name='exam_score_list'),
 
     # 受測者部分(尚未完成)
-    url(r'^testee$', testee.index, name='testee_exam_score'),  # 受測者主頁（顯示自我成績）
+    url(r'^testee$', testee.score_list, name='testee_score_list'),  # 受測者主頁（顯示自我成績）
     url(r'^testee/', include([
+        url(r'^exam_list', testee.exam_list, name='testee_exam_list'),
+        url(r'^(?P<answersheet_id>[0-9]+)/content$', testee.view_answersheet_content, name='view_answersheet_content'),
         url(r'^practice/', include([
-            url(r'^(?P<practice_type>(listening|reading))$', testee.practice_create, name='testee_practice_selected'),
+            url(r'^(?P<kind>(listening|reading))$', testee.practice_create, name='testee_practice_create'),
+            url(r'^(?P<exam_id>[0-9]+)', testee.start_practice, name='testee_start_practice'),
         ]))
     ])),
 ]

@@ -232,7 +232,7 @@ class AnswerSheet(models.Model):
     user = models.ForeignKey('Student', on_delete=models.CASCADE)
     finish_time = models.DateTimeField(auto_now_add=True)
     is_finished = models.BooleanField(default=False)
-    score = models.PositiveSmallIntegerField()
+    score = models.PositiveSmallIntegerField(null=True)
 
     def __str__(self):
         return str(self.user) + '\'s' + str(self.exam)

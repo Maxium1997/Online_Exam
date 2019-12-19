@@ -64,7 +64,7 @@ def manager_index(request):
 @require_http_methods(["GET"])
 def review(request):
     reviewed_questions = Question.objects.exclude(state=0).exclude(state=1).exclude(state=2).exclude(state=5)    # 過濾掉狀態為"暫存"、"審核通過"、"被回報錯誤，已處理"
-    page = request.GET.get('page', 0)
+    page = request.GET.get('page', 1)
     paginator = Paginator(reviewed_questions, 5)  # the second parameter is used to display how many items. Now is 10
 
     try:

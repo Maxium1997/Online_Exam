@@ -1,6 +1,6 @@
 from django import template
 
-from alcpt.definitions import UserType, QuestionType
+from alcpt.definitions import UserType, QuestionType, ExamType
 from alcpt.models import User, Student, Question
 from alcpt.utility import set_query_parameter
 from alcpt.exceptions import IllegalArgumentError, ObjectNotFoundError
@@ -44,6 +44,15 @@ def readable_user_type(privilege):
             raise IllegalArgumentError(message='Unknown user type {}.'.format(privilege))
     else:
         raise IllegalArgumentError(message='Unknown user type argument which type is {}'.format(type(privilege)))
+
+
+@register.filter(name='readable_exam_type')
+def readable_state(exam_type: int):
+    for et in ExamType.__members__.values():
+        if exam_type is et.value[0]:
+            return et.value[1]
+    else:
+        raise IllegalArgumentError(message='Unknown question type {}.'.format(exam_type))
 
 
 @register.filter(name='replace_page')

@@ -1,33 +1,31 @@
 {% extends 'base.html' %}
 
-
 {% block path %}
     <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="{% url 'testee_exam_score' %}">受測者</a>
+    <a href="">受測者</a>
     <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="">檢閱成績</a>
+    <a href="">測驗成績紀錄</a>
 {% endblock %}
 
 {% block content %}
 
-    <div class="testee_score">
-        <h1>檢閱成績</h1>
-        <table>
+    <div>
+        <h1>測驗紀錄</h1>
+        <table border="1">
             <tr>
                 <th>測驗名稱</th>
                 <th>測驗成績</th>
-                <th>受測者</th>
-                <th>考試時間</th>
+                <th>測驗時間</th>
+                <th>試卷內容</th>
             </tr>
-            {% for sheet in sheets %}
+            {% for answersheet in answersheetList %}
                 <tr>
-                    <td>{{ sheet.exam.name }}</td>
-                    <td>{{ sheet.score }}</td>
-                    <td>{{ request.user.name }}</td>
-                    <td>{{ sheet.finish_time|date:'Y年m月d日, H時m分' }}</td>
+                    <td>{{ answersheet.exam }}</td>
+                    <td>{{ answersheet.score }}</td>
+                    <td>{{ answersheet.finish_time|date:'Y年m月d日, H時m分' }}</td>
+                    <td><a href="{% url 'view_answersheet_content' answersheet.id %}">{{ answersheet.exam.testpaper }}</a></td>
                 </tr>
             {% endfor %}
-        </table>
         </table>
     </div>
 

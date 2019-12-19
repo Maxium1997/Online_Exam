@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.utils import timezone
+import random
 
 from alcpt.models import User, TestPaper, Question, Exam
 from alcpt.definitions import QuestionType, ExamType
@@ -17,30 +18,26 @@ def create_testpaper(name: str, created_by: User, is_testpaper: int):
 
 
 # Not yet
-def random_select(types_counts: list, question_type: QuestionType, testpaper: TestPaper = None):
-    reach_limit = types_counts[question_type.value[0] - 1]
+def random_select(types_counts: list):
+    passed_questions = Question.objects.filter(state=1)
 
-    if testpaper:
-        selected_questions = testpaper.question_set.filter(question_type=question_type.value[0])
+    qaList = list(passed_questions.filter(q_type=1))
+    shortConversationList = list(passed_questions.filter(q_type=2))
+    grammarList = list(passed_questions.filter(q_type=3))
+    phraseList = list(passed_questions.filter(q_type=4))
+    paragraphUnderstandingList = list(passed_questions.filter(q_type=5))
 
-        selected_num = reach_limit - selected_questions.count()
+    random.shuffle(qaList)
+    random.shuffle(shortConversationList)
+    random.shuffle(grammarList)
+    random.shuffle(phraseList)
+    random.shuffle(paragraphUnderstandingList)
 
-        if selected_num:
-            questions = Question.objects.filter(question_type=question_type.value[0], is_valid=True).exclude(id__in=selected_questions)
+    questions = []
+    questions.extend(qaList[:types_counts[0]])
+    questions.extend(shortConversationList[:types_counts[1]])
+    questions.extend(grammarList[:types_counts[2]])
+    questions.extend(phraseList[:types_counts[3]])
+    questions.extend(paragraphUnderstandingList[:types_counts[4]])
 
-            if questions:
-                questions = sample(list(questions), min(len(questions), selected_num))
-                for question in questions:
-                    testpaper.question_set.add(question)
-
-                selected_num = len(questions)
-
-        return selected_num
-
-    else:
-        selected_questions = Question.objects.filter(question_type=question_type.value[0], is_valid=True)
-
-        if selected_questions:
-            selected_questions = sample(list(selected_questions), reach_limit)
-
-        return selected_questions
+    return questions

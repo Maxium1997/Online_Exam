@@ -107,9 +107,10 @@
                 <li>
                     <a href="">受測者</a>
                     <ul>
-                        <li><a href="{% url 'testee_exam_score' %}">檢閱成績</a></li>
-                        <li><a href="{% url 'testee_practice_selected' 'listening' %}">聽力練習</a></li>
-                        <li><a href="{% url 'testee_practice_selected' 'reading' %}">閱讀練習</a></li>
+                        <li><a href="{% url 'testee_exam_list' %}">測驗紀錄</a></li>
+                        <li><a href="{% url 'testee_score_list' %}">成績紀錄</a></li>
+                        <li><a href="{% url 'testee_practice_create' 'listening' %}">聽力練習</a></li>
+                        <li><a href="{% url 'testee_practice_create' 'reading' %}">閱讀練習</a></li>
 {#                        <li><a href="/tester/practice/integration">綜合練習</a></li>#}
 {#                        <li><a href="/tester/simulation-exam">模擬鑑測</a></li>#}
                     </ul>

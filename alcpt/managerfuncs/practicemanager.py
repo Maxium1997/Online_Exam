@@ -4,50 +4,64 @@ from datetime import datetime
 
 from ..managerfuncs import testmanager
 from .testmanager import random_select
-from alcpt.models import User, Exam
+from alcpt.models import User, Exam, Question, TestPaper, AnswerSheet
 from alcpt.definitions import QuestionType, ExamType, QuestionTypeCounts
 from alcpt.exceptions import IllegalArgumentError
 
 
-# 尚未完成
-def create_practice(*, user: User, practice_type: ExamType, question_types: list, question_num: int, integration: False):
+def create_practice(*, user: User, practice_type: ExamType, question_types: list, question_num: int, integration: bool = False):
     now = datetime.now()
-    name = "{}-practice-{}-{}".format(practice_type.value[1], user.reg_id, now)
-    question_type_counts = QuestionTypeCounts.Exam.value[0] if integration else []      # [40, 20, 15, 15, 10] or []
 
-    if not integration:     # 非綜合練習
+    practice_name = "{}-practice-{}-{}".format(practice_type.value[1], user.reg_id, now)
+
+    question_type_counts = QuestionTypeCounts.Exam.value[0] if integration else []
+
+    if not integration:
+        # how many questions will be selected in any question_type
         for question_type in QuestionType.__members__.values():
-            if question_type in question_types:
+            if str(question_type.value[0]) in question_types:
                 question_type_counts.append(int(question_num / len(question_types)))
             else:
                 question_type_counts.append(0)
 
         if sum(question_type_counts) != question_num:
-            i = list(QuestionType.__members__.values()).index(question_types[len(question_types) - 1])
+            q_ts = []
+            for q_t in QuestionType:
+                q_ts.append(q_t.value[0])
+            i = q_ts.index(int(question_types[len(question_types) - 1]))
             question_type_counts[i] += question_num - sum(question_type_counts)
 
-        question_num_selected = 0
-        selected_questions = []
-        for question_type in question_types:
-            selected_questions += random_select(question_type_counts, question_type)
-            question_num_selected += len(selected_questions)
-        if question_num_selected < question_num:
-            raise IllegalArgumentError(message="There is too few questions in the database.")
+    selected_questions = testmanager.random_select(question_type_counts)
 
-        testpaper = testmanager.create_testpaper(name=name,
-                                                 created_by=user,
-                                                 is_testpaper=0)
+    practice_testpaper = TestPaper.objects.create(name=practice_name, created_by=user, is_testpaper=False)
 
-        testpaper_id = testpaper.id
-        for question in selected_questions:
-            testpaper.question_set.add(question)
+    for question in selected_questions:
+        practice_testpaper.question_set.add(question)
 
-        practice = Exam.objects.create(name=name,
-                                       exam_type=practice_type.value[0],
-                                       start_time=timezone.now(),
-                                       testpaper_id=testpaper_id,
-                                       duration=0,
-                                       is_public=1,
-                                       created_by_id=user.id)
+    practice_exam = Exam.objects.create(name=practice_name, exam_type=practice_type.value[0], testpaper=practice_testpaper,
+                                        duration=0, created_by=user)
 
-        return practice, selected_questions
+    return practice_exam
+
+
+def calculate_score(exam_id: int, answer_sheet: AnswerSheet):
+    answers = answer_sheet.answer_set.all()
+
+    score = 0
+    for answer in answers:
+        tmp = []
+        for choice in answer.question.choice_set.all():
+            tmp.append(choice)
+
+        if tmp[answer.selected-1].is_answer:
+            score += 1
+        else:
+            pass
+
+    answer_sheet.score = int(score / len(answers)*100)
+    answer_sheet.save()
+    exam = Exam.objects.get(id=exam_id)
+    exam.average_score = answer_sheet.score
+    exam.save()
+
+    return answer_sheet.score

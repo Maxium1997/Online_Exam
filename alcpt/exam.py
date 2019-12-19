@@ -18,9 +18,9 @@ def exam_list(request):
     exam_name = request.GET.get('exam_name')
 
     if exam_name:
-        exams = Exam.objects.filter(name__contains=exam_name)
+        exams = Exam.objects.filter(is_public=True).filter(name__contains=exam_name)
     else:
-        exams = Exam.objects.all()
+        exams = Exam.objects.filter(is_public=True)
 
     page = request.GET.get('page', 0)
     paginator = Paginator(exams, 10)  # the second parameter is used to display how many items. Now is display 10
@@ -41,9 +41,9 @@ def testpaper_list(request):
     testpaper_name = request.GET.get('testpaper_name')
 
     if testpaper_name:
-        testpapers = TestPaper.objects.filter(name__contains=testpaper_name)
+        testpapers = TestPaper.objects.filter(is_testpaper=True).filter(name__contains=testpaper_name)
     else:
-        testpapers = TestPaper.objects.all()
+        testpapers = TestPaper.objects.filter(is_testpaper=True)
 
     page = request.GET.get('page', 0)
     paginator = Paginator(testpapers, 10)  # the second parameter is used to display how many items. Now is display 10
