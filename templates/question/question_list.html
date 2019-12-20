@@ -59,7 +59,7 @@
                     <th>類型</th>
                     <th>難度</th>
                     <th>錯誤回報次數</th>
-                    <th>正確次數</th>
+                    <th>使用次數</th>
                     <th>建立者</th>
                     <th>更新時間</th>
                     <th>狀態</th>
@@ -89,7 +89,7 @@
                         <td>{{ question.q_type|readable_question_type }}</td>
                         <td>{{ question.difficulty }}</td>
                         <td>{{ question.issued_freq }}</td>
-                        <td>{{ question.correct_freq }}</td>
+                        <td>{{ question.used_freq }}</td>
                         <td>{{ question.created_by.name }}</td>
                         <td>{{ question.update_time|date:'Y年m月d日, H時i分' }}</td>
                         <td>{{ question.state|readable_state }}</td>

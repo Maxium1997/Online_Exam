@@ -179,6 +179,7 @@ class Question(models.Model):
     difficulty = models.PositiveSmallIntegerField(default=0)
     issued_freq = models.IntegerField(default=0)
     correct_freq = models.IntegerField(default=0)
+    used_freq = models.IntegerField(default=0)
     created_time = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey('User', on_delete=models.PROTECT, related_name='question_created')
     update_time = models.DateTimeField(auto_now=True)
