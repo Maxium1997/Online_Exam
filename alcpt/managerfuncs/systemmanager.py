@@ -10,35 +10,29 @@ from alcpt.definitions import UserType
 from alcpt.exceptions import IllegalArgumentError
 
 
-def query_users(*, department: Department, grade: int, squadron: Squadron, name: str, filter_func=None):
+# A Q objects(django.db.models.Q) is an object used to encapsulate a collection of keyword arguments.
+def query_users(*, department: Department, grade: int, squadron: Squadron, name: str):
     queries = Q()
 
     if department:
         queries &= Q(student__department=department)
 
-    if grade is not None:
+    if grade:
         queries &= Q(student__grade=grade)
 
     if squadron:
         queries &= Q(student__squadron=squadron)
 
-    if name is not None:
+    if name:
         queries &= Q(reg_id__icontains=name) | Q(name__icontains=name)
 
-    users = User.objects.filter(queries)
-    users = users.order_by('-reg_id')
-
-    for user in users:
-        user.update_time = timezone.localtime(user.update_time)
-        user.update_time = datetime.now()
-        user.created_time = timezone.localtime(user.created_time)
-
-    if filter_func:
-        users = list(filter(filter_func, users))
+    users = User.objects.filter(queries).order_by('-reg_id')
 
     return users
 
 
+# systemmanager create many users
+# A Q objects(django.db.models.Q) is an object used to encapsulate a collection of keyword arguments.
 def create_users(reg_ids: list, privilege: int):
     queries = Q()
 
@@ -50,6 +44,7 @@ def create_users(reg_ids: list, privilege: int):
     if existed_users:
         raise IllegalArgumentError("Existed user: {}".format(', '.join([user.reg_id for user in existed_users])))
 
+    # bulk_create an object manager method which takes as input an array of objects created using the class constructor
     User.objects.bulk_create([User(reg_id=reg_id,
                                    privilege=privilege,
                                    password=make_password(reg_id)) for reg_id in reg_ids])

@@ -9,6 +9,7 @@ from alcpt.definitions import QuestionType, ExamType, QuestionTypeCounts
 from alcpt.exceptions import IllegalArgumentError
 
 
+# practicemanager create a practice
 def create_practice(*, user: User, practice_type: ExamType, question_types: list, question_num: int, integration: bool = False):
     now = datetime.now()
 
@@ -31,10 +32,12 @@ def create_practice(*, user: User, practice_type: ExamType, question_types: list
             i = q_ts.index(int(question_types[len(question_types) - 1]))
             question_type_counts[i] += question_num - sum(question_type_counts)
 
+    # use testmanager.random_select to shuffle question
     selected_questions = testmanager.random_select(question_type_counts)
 
     practice_testpaper = TestPaper.objects.create(name=practice_name, created_by=user, is_testpaper=False)
 
+    # add the relationship of questions and practice_testpaper
     for question in selected_questions:
         practice_testpaper.question_set.add(question)
 
@@ -44,6 +47,7 @@ def create_practice(*, user: User, practice_type: ExamType, question_types: list
     return practice_exam
 
 
+# practicemanager calculate score of practice, not for exam
 def calculate_score(exam_id: int, answer_sheet: AnswerSheet):
     answers = answer_sheet.answer_set.all()
 
@@ -58,6 +62,7 @@ def calculate_score(exam_id: int, answer_sheet: AnswerSheet):
         else:
             pass
 
+    # calculate average score of practice
     answer_sheet.score = int(score / len(answers)*100)
     answer_sheet.save()
     exam = Exam.objects.get(id=exam_id)

@@ -24,9 +24,17 @@ def exam_list(request):
 @permission_check(UserType.Testee)
 @require_http_methods(["GET"])
 def score_list(request):
+    qualified = 0
+    unqualified = 0
     answer_sheets = AnswerSheet.objects.all().filter(user=request.user.student)
     page = request.GET.get('page', 1)
     paginator = Paginator(answer_sheets, 10)
+
+    for answer_sheet in answer_sheets:
+        if answer_sheet.score >= 60:
+            qualified += 1
+        else:
+            unqualified += 1
 
     try:
         answersheetList = paginator.page(page)

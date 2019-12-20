@@ -6,6 +6,7 @@ from alcpt.models import Question, TestPaper, User
 from alcpt.utility import save_file
 
 
+# A Q objects(django.db.models.Q) is an object used to encapsulate a collection of keyword arguments.
 def query_questions(*, question_type: int, question_content: str, difficulty: int, state: int):
     queries = Q()
 
@@ -21,6 +22,8 @@ def query_questions(*, question_type: int, question_content: str, difficulty: in
     if state:
         queries &= Q(state=state)
 
-    questions = Question.objects.exclude(state=0).filter(queries).order_by('created_time')       # 題庫管理員不需狀態為"暫存"的題目
+    # tbmanager doesn't need question.state == 0 ("暫存")
+    # use Q to filter Question.objects and order by created time
+    questions = Question.objects.exclude(state=0).filter(queries).order_by('created_time')
 
     return questions

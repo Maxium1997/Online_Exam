@@ -6,7 +6,7 @@ from alcpt.models import User, TestPaper, Question, Exam
 from alcpt.definitions import QuestionType, ExamType
 
 
-# OK
+# testmanager create a testpaper in db
 def create_testpaper(name: str, created_by: User, is_testpaper: int):
     testpaper = TestPaper.objects.create(name=name,
                                          created_by_id=created_by.id,
@@ -17,7 +17,7 @@ def create_testpaper(name: str, created_by: User, is_testpaper: int):
     return testpaper
 
 
-# Not yet
+# use random.shuffle to change order of list
 def random_select(types_counts: list):
     passed_questions = Question.objects.filter(state=1)
 

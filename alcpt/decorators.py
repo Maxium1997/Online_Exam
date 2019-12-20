@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from .exceptions import PermissionWrongError
 
 
-# Function's permission authorize users to use that function
+# Function's permission authorize user to use that function
 def permission_check(required_privilege):
     def decorator(view):
         @login_required

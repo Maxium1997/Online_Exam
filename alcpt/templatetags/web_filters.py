@@ -8,16 +8,19 @@ from alcpt.exceptions import IllegalArgumentError, ObjectNotFoundError
 register = template.Library()
 
 
+# Returns True if the user has the specified permission, where perm is in the format "<app label>.<permission codename>"
 @register.filter(name='has_perm')
 def has_perm(user: User, required_privilege: UserType):
     return user.has_perm(UserType[required_privilege])
 
 
+# Returns True if the user has the specified permission, where perm is in the format "<app label>.<permission codename>"
 @register.filter(name='has_perms')
 def has_perms(user: User, required_privilege: UserType):
     return user.has_perm(required_privilege)
 
 
+# check whether question_type is readable question_type
 @register.filter(name='readable_question_type')
 def readable_question_type(question_type: int):
     for q in QuestionType.__members__.values():
@@ -27,6 +30,7 @@ def readable_question_type(question_type: int):
         raise IllegalArgumentError(message='Unknown question type {}.'.format(question_type))
 
 
+# check whether user_type is readable user_type(int or str)
 @register.filter(name='readable_privilege')
 def readable_user_type(privilege):
     if type(privilege) is str:
@@ -46,6 +50,7 @@ def readable_user_type(privilege):
         raise IllegalArgumentError(message='Unknown user type argument which type is {}'.format(type(privilege)))
 
 
+# check whether exam_type is readable type
 @register.filter(name='readable_exam_type')
 def readable_state(exam_type: int):
     for et in ExamType.__members__.values():
@@ -70,6 +75,7 @@ def range_to(arr: list, i: int):
     return arr[i]
 
 
+# check whether user is student
 @register.filter(name='is_student')
 def is_student(user: User):
     try:
@@ -90,6 +96,7 @@ def student_data(user: User):
     except Exception:
         data = ['None', student.grade, 'None']
         return data
+
 
 
 @register.filter(name='check_correct')

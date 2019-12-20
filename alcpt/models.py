@@ -125,7 +125,7 @@ class TestPaper(models.Model):
         return self.name
 
 
-# 模擬考
+# 測驗
 # exam_type: types of the exam be defined in alcpt/definitions.py
 # testpaper: testpaper be used in this exam
 # group: the group for the exam
@@ -144,7 +144,7 @@ class Exam(models.Model):
     average_score = models.FloatField(default=0)     # 資料庫我有加一欄，不影響可以不用刪掉
     start_time = models.DateTimeField(blank=True, null=True)
     created_time = models.DateTimeField(auto_now_add=True)
-    duration = models.PositiveSmallIntegerField(default=-1)
+    duration = models.PositiveSmallIntegerField(default=0)
     created_by = models.ForeignKey('User', on_delete=models.PROTECT, related_name='exam_created')
     finish_time = models.DateTimeField(blank=True, null=True)
     is_public = models.BooleanField(default=False)
