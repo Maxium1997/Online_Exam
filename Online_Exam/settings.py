@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'alcpt',
-    # 'captcha',
+    'captcha',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -89,6 +89,23 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
+
+CAPTCHA_NOISE_FUNCTIONS = (
+    'captcha.helpers.noise_null',   #沒有樣式
+    # 'captcha.helpers.noise_arcs',   #線
+    'captcha.helpers.noise_dots',   #點
+)
+
+# CAPTCHA_IMAGE_SIZE = (150, 200)    #驗證碼圖片大小
+
+CAPTCHA_BACKGROUND_COLOR = '#000fff'  #驗證碼顏色
+
+# CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge' 數學計算式驗證碼
+
+# CAPTCHA_TIMEOUT = 0.1 驗證碼限制時間
+
+# CAPTCHA_LENGTH = 1 #驗證碼長度
 
 
 # Internationalization

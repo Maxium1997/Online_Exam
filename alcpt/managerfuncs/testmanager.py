@@ -40,4 +40,8 @@ def random_select(types_counts: list):
     questions.extend(phraseList[:types_counts[3]])
     questions.extend(paragraphUnderstandingList[:types_counts[4]])
 
+    for question in questions:
+        question.used_freq += 1
+        question.save()
+
     return questions

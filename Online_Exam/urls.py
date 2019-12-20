@@ -25,6 +25,8 @@ urlpatterns = [
 
     url(r'^$', views.index, name='Homepage'),
 
+    url(r'^captcha/', include('captcha.urls')),
+
     url(r'^accounts/', include([
         url(r'^login/', registration.login, name='login'),  # 登入
         url(r'^logout/', registration.logout, name='logout'),  # 登出
@@ -73,7 +75,7 @@ urlpatterns = [
         url(r'^submit/(?P<question_id>[0-9]+)$', question.question_submit, name='question_submit'),
         url(r'^(?P<kind>(listening|reading))/question_create$', question.question_create, name='question_create'),
         url(r'^(?P<question_id>[0-9]+)/edit$', question.operator_edit, name='operator_edit'),
-
+        url(r'^(?P<question_id>[0-9]+)/delete$', question.question_delete, name='question_delete'),
     ])),
 
     # 成績檢閱者

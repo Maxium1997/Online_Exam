@@ -22,12 +22,13 @@
                     <td>{{ exam }}</td>
                     <td>{{ exam.exam_type|readable_exam_type }}</td>
                     <td>{{ exam.average_score }}</td>
-
-                    {% if not exam.average_score %}
                     <td>
-                        <a href="{% url 'testee_start_practice' exam.id %}">開始測驗</a>
+                        {% if not exam.average_score %}
+                            <a href="{% url 'testee_start_practice' exam.id %}">開始測驗</a>
+                        {% else %}
+                            <label>已完成測驗</label>
+                        {% endif %}
                     </td>
-                    {% endif %}
                 </tr>
             {% endfor %}
         </table>

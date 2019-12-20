@@ -313,3 +313,17 @@ def operator_edit(request, question_id):
     else:
         return render(request, 'question/operator_edit.html', locals())
 
+
+@permission_check(UserType.TBOperator)
+def question_delete(request, question_id):
+    try:
+        question = Question.objects.get(id=question_id)
+        if question.state == 0 or question.state == 2:
+            question.delete()
+            messages.success('Delete question successfully, question id: {}'.format(question.id))
+        else:
+            messages.warning(request, 'Question can not be deleted, question id: {}'.format(question_id))
+    except ObjectDoesNotExist:
+        messages.error(request, 'Question does not exist, question id: {}'.format(question_id))
+
+    return redirect('tboperator_question_list')
