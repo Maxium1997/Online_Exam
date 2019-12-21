@@ -35,9 +35,9 @@ def create_practice(*, user: User, practice_type: ExamType, question_types: list
     # use testmanager.random_select to shuffle question
     selected_questions = testmanager.random_select(question_type_counts)
 
-    practice_testpaper = TestPaper.objects.create(name=practice_name, created_by=user, is_testpaper=False)
+    practice_testpaper = testmanager.create_testpaper(name=practice_name, created_by=user, is_testpaper=0)
 
-    # add the relationship of questions and practice_testpaper
+    # add the questions into practice_testpaper
     for question in selected_questions:
         practice_testpaper.question_set.add(question)
 
