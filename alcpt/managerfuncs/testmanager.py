@@ -17,6 +17,12 @@ def create_testpaper(name: str, created_by: User, is_testpaper: int):
     return testpaper
 
 
+def edit_testpaper(testpaper: TestPaper, name: str):
+    testpaper.name = name
+    testpaper.save()
+
+    return testpaper
+
 # use random.shuffle to change order of list
 def random_select(types_counts: list):
     passed_questions = Question.objects.filter(state=1)

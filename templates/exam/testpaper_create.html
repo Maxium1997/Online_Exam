@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block path %}
+
+{% endblock %}
+
+{% block content %}
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            <label>考卷名稱</label>
+            <input type="text" name="testpaper_name" required>
+
+            <input type="submit" value="送出">
+        </form>
+    </div>
+{% endblock %}

@@ -1,14 +1,15 @@
 from string import punctuation
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from alcpt.managerfuncs import testmanager
 from alcpt.decorators import permission_check
-from alcpt.definitions import UserType
+from alcpt.definitions import UserType, QuestionTypeCounts
 from alcpt.models import Exam, TestPaper, Group
 
 
@@ -56,6 +57,65 @@ def testpaper_list(request):
         testpaperList = paginator.page(paginator.num_pages)
 
     return render(request, 'exam/testpaper_list.html', locals())
+
+
+@permission_check(UserType.TestManager)
+def testpaper_create(request):
+    if request.method == 'POST':
+        testpaper_name = request.POST.get('testpaper_name',)
+
+        try:
+            if TestPaper.objects.filter(name__icontains=testpaper_name):
+                raise MultipleObjectsReturned('Question has existed.')
+        except ObjectDoesNotExist:
+            pass
+
+        testpaper = testmanager.create_testpaper(name=testpaper_name, created_by=request.user, is_testpaper=1)
+
+        return render(request, 'exam/testpaper_edit.html', locals())
+
+    else:
+        return render(request, 'exam/testpaper_create.html', locals())
+
+
+# # 編輯考卷，還沒寫完
+# @permission_check(UserType.TestManager)
+# def testpaper_edit(request, testpaper_id):
+#     try:
+#         testpaper = TestPaper.objects.get(id=testpaper_id)
+#     except ObjectDoesNotExist:
+#         messages.error(request, 'Testpaper does not exist, testpaper id: {}'.format(testpaper_id))
+#         return redirect('testpaper_list')
+#
+#     if testpaper.valid == 1:
+#         messages.warning(request, "This testpaper is valid, it can't not edit again.")
+#         return redirect('testpaper_list')
+#
+#     if request.method == "POST":
+#         testpaper_name = request.POST.get('testpaper_name',)
+#
+#         testpaper = testmanager.edit_testpaper(testpaper, testpaper_name)
+#
+#         testpaper.valid = testpaper.question_set.count() == sum(QuestionTypeCounts.Exam.value[0])
+#
+#         testpaper.save()
+#
+#         messages.success(request, 'Successfully update testpaper: testpaper id: {}'.format(testpaper.id))
+#
+#         return redirect('testpaper_list')
+#
+#     else:
+
+
+# 人工選題
+# @permission_check(UserType.TestManager)
+# def manual_pick(request):
+
+
+# 自動選題
+# @permission_check(UserType.TestManager)
+# def auto_pick(request):
+
 
 
 @permission_check(UserType.TestManager)

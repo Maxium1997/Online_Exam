@@ -56,7 +56,11 @@ urlpatterns = [
     # 考試管理員
     url(r'^exam$', exam.exam_list, name='exam_list'),
     url(r'^exam/', include([
-        url(r'^testpaper_list', exam.testpaper_list, name='testpaper_list'),
+        url(r'^testpaper/', include([
+            url(r'^list$', exam.testpaper_list, name='testpaper_list'),
+            url(r'^create$', exam.testpaper_create, name='testpaper_create'),
+            # url(r'^(?P<testpaper_id>[0-9]+)/edit$', exam.testpaper_edit, name='testpaper_edit'),
+        ])),
         url(r'^testee_group$', exam.testee_group_list, name='testee_group_list'),
     ])),
 
