@@ -46,13 +46,13 @@ def user_list(request):
         except ObjectDoesNotExist:
             keywords['squadron'] = None
 
-    users = systemmanager.query_users(**keywords)
+    query_content, users = systemmanager.query_users(**keywords)
     departments = Department.objects.all()
     squadrons = Squadron.objects.all()
     privileges = UserType.__members__
 
     page = request.GET.get('page', 0)
-    paginator = Paginator(users, 10)  # the second parameter is used to display how many items. Now is display 10
+    paginator = Paginator(users, 2)  # the second parameter is used to display how many items. Now is display 10
 
     try:
         userList = paginator.page(page)

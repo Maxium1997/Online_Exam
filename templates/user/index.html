@@ -96,26 +96,26 @@
     </div>
 
     <div class="pagination">
-        <a href="?page=1">&laquo; first</a>
+        <a href="?page=1{% if query_content %}&{{ query_content }}{% endif %}">&laquo; first</a>
         {% if userList.has_previous %}
-            <a href="?page={{ userList.previous_page_number }}">Prev</a>
+            <a href="?page={{ userList.previous_page_number }}{% if query_content %}&{{ query_content }}{% endif %}">Prev</a>
         {% else %}
             <a href="">Prev</a>
         {% endif %}
 
         {% for page in paginator.page_range %}
             {% if page == userList.number %}
-                <a class="active" href="?page={{ page }}">{{ page }}</a>
+                <a class="active" href="?page={{ page }}{% if query_content %}&{{ query_content }}{% endif %}"></a>
             {% else %}
-                <a href="?page={{ page }}">{{ page }}</a>
+                <a href="?page={{ page }}{% if query_content %}&{{ query_content }}{% endif %}">{{ page }}</a>
             {% endif %}
         {% endfor %}
 
         {% if userList.has_next %}
-            <a href="?page={{ userList.next_page_number }}">Next</a>
+            <a href="?page={{ userList.next_page_number }}{% if query_content %}&{{ query_content }}{% endif %}">Next</a>
         {% else %}
             <a href="">Next</a>
         {% endif %}
-        <a href="?page={{ userList.paginator.num_pages }}">last &raquo;</a>
+        <a href="?page={{ userList.paginator.num_pages }}{% if query_content %}&{{ query_content }}{% endif %}">last &raquo;</a>
     </div>
 {% endblock %}

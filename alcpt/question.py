@@ -46,7 +46,7 @@ def manager_index(request):
     difficulty = request.GET.get('difficulty',)
     state = request.GET.get('state',)
 
-    questions = tbmanager.query_questions(**keywords)
+    query_content, questions = tbmanager.query_questions(**keywords)
     page = request.GET.get('page', 1)
     paginator = Paginator(questions, 5)  # the second parameter is used to display how many items. Now is display 10
 
@@ -178,7 +178,7 @@ def operator_index(request):
     q_type = request.GET.get('question_type', )
     state = request.GET.get('state', )
 
-    questions = tboperator.query_questions(**keywords)
+    query_content, questions = tboperator.query_questions(**keywords)
     page = request.GET.get('page', 1)
     paginator = Paginator(questions, 5)  # the second parameter is used to display how many items. Now is display 10
 

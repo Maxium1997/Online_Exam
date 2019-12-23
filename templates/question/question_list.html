@@ -129,26 +129,26 @@
     </div>
 
     <div class="pagination">
-        <a href="?page=1">&laquo; first</a>
+        <a href="?page=1{% if query_content %}&{{ query_content }}{% endif %}">&laquo; first</a>
         {% if questionList.has_previous %}
-            <a href="?page={{ questionList.previous_page_number }}">Prev</a>
+            <a href="?page={{ questionList.previous_page_number }}{% if query_content %}&{{ query_content }}{% endif %}">Prev</a>
         {% else %}
             <a href="">Prev</a>
         {% endif %}
 
         {% for page in paginator.page_range %}
             {% if page == questionList.number %}
-                <a class="active" href="?page={{ page }}">{{ page }}</a>
+                <a class="active" href="?page={{ page }}{% if query_content %}&{{ query_content }}{% endif %}"></a>
             {% else %}
-                <a href="?page={{ page }}">{{ page }}</a>
+                <a href="?page={{ page }}{% if query_content %}&{{ query_content }}{% endif %}">{{ page }}</a>
             {% endif %}
         {% endfor %}
 
         {% if questionList.has_next %}
-            <a href="?page={{ questionList.next_page_number }}">Next</a>
+            <a href="?page={{ questionList.next_page_number }}{% if query_content %}&{{ query_content }}{% endif %}">Next</a>
         {% else %}
             <a href="">Next</a>
         {% endif %}
-        <a href="?page={{ questionList.paginator.num_pages }}">last &raquo;</a>
+        <a href="?page={{ questionList.paginator.num_pages }}{% if query_content %}&{{ query_content }}{% endif %}">last &raquo;</a>
     </div>
 {% endblock %}
