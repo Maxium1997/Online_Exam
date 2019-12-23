@@ -57,26 +57,26 @@
     </div>
 
     <div class="pagination">
-        <a href="?page=1">&laquo; first</a>
+        <a href="?page=1{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">&laquo; first</a>
         {% if testpaperList.has_previous %}
-            <a href="?page={{ testpaperList.previous_page_number }}">Prev</a>
+            <a href="?page={{ testpaperList.previous_page_number }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">Prev</a>
         {% else %}
             <a href="">Prev</a>
         {% endif %}
 
         {% for page in paginator.page_range %}
             {% if page == testpaperList.number %}
-                <a class="active" href="?page={{ page }}">{{ page }}</a>
+                <a class="active" href="?page={{ page }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">{{ page }}</a>
             {% else %}
-                <a href="?page={{ page }}">{{ page }}</a>
+                <a href="?page={{ page }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">{{ page }}</a>
             {% endif %}
         {% endfor %}
 
         {% if examList.has_next %}
-            <a href="?page={{ testpaperList.next_page_number }}">Next</a>
+            <a href="?page={{ testpaperList.next_page_number }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">Next</a>
         {% else %}
             <a href="">Next</a>
         {% endif %}
-        <a href="?page={{ testpaperList.paginator.num_pages }}">last &raquo;</a>
+        <a href="?page={{ testpaperList.paginator.num_pages }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">last &raquo;</a>
     </div>
 {% endblock %}
