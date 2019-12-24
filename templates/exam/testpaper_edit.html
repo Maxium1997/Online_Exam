@@ -1,9 +1,37 @@
 {% extends 'base.html' %}
 
+{% load web_filters %}
+
 {% block path %}
 
 {% endblock %}
 
 {% block content %}
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            <label for="testpaper_name">考卷名稱</label>
+            <input type="text" id="testpaper_name" name="testpaper_name" placeholder="考卷名稱..." required>
 
+            <br>
+
+            <label for="pick_up_questions">選擇題目</label>
+            <div>
+                {% for i in types_num %}
+                    <div>
+                        <h2>{{ i|readable_question_type }}</h2>
+                        <p>共 {{ question_types|lookup:i }} 題，已選擇 {{ selected_num|lookup:i }} 題</p>
+                        <a href="{% url 'manual_pick' testpaper_id=testpaper.id question_type=i %}">手動選擇</a>
+                        {% if question_types|lookup:i == selected_num|lookup:i %}
+                            <a disabled="{% url 'manual_pick' testpaper_id=testpaper.id question_type=i %}">自動選擇</a>
+                        {% else %}
+                            <a href="{% url 'auto_pick' testpaper_id=testpaper.id question_type=i %}">自動選擇</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <input type="submit" value="確認">
+        </form>
+    </div>
 {% endblock %}

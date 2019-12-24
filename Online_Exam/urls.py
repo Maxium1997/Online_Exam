@@ -59,7 +59,10 @@ urlpatterns = [
         url(r'^testpaper/', include([
             url(r'^list$', exam.testpaper_list, name='testpaper_list'),
             url(r'^create$', exam.testpaper_create, name='testpaper_create'),
-            # url(r'^(?P<testpaper_id>[0-9]+)/edit$', exam.testpaper_edit, name='testpaper_edit'),
+            url(r'^(?P<testpaper_id>[0-9]+)/content$', exam.testpaper_content, name='view_testpaper_content'),
+            url(r'^(?P<testpaper_id>[0-9]+)/edit$', exam.testpaper_edit, name='testpaper_edit'),
+            url(r'^(?P<testpaper_id>[0-9]+)/(?P<question_type>[0-9]+)/auto_pick', exam.auto_pick, name='auto_pick'),
+            url(r'^(?P<testpaper_id>[0-9]+)/(?P<question_type>[0-9]+)/manual_pick', exam.manual_pick, name='manual_pick'),
         ])),
         url(r'^testee_group$', exam.testee_group_list, name='testee_group_list'),
     ])),
