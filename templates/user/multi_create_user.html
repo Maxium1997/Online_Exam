@@ -8,14 +8,18 @@
 
 {% block content %}
     <div>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <label for="reg_ids">帳號清單</label>
-            <textarea name="reg_ids" cols="80" rows="6" placeholder="帳號1, 帳號2, ..." required></textarea>
+            <textarea name="reg_ids" cols="80" rows="6" placeholder="帳號1, 帳號2, ..."></textarea>
+
+            <input type="file" name="users_file" accept=".xls, .xlsx">
 
             <br>
 
-            <small>學號即為帳號，僅限英文、數字，請用全形頓號區隔。<strong>預設密碼為學號。</strong></small><br>
+            <small>學號即為帳號，僅限英文、數字，請用全形頓號區隔。<strong>預設密碼為學號。</strong></small>
+
+            <br>
 
             {% for privilege in privileges.values %}
                 <input type="checkbox" id="{{ privilege.value.0 }}" name="privilege_{{ forloop.counter0 }}" {% if privilege == privileges.Testee %} checked {% endif %}>

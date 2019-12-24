@@ -1,4 +1,6 @@
 import re
+import xlrd
+import os
 
 from string import punctuation
 
@@ -97,13 +99,27 @@ def user_create(request):
 @permission_check(UserType.SystemManager)
 def user_multiCreate(request):
     if request.method == 'POST':
-        new_accounts = []
-        for account in request.POST.get('reg_ids').split(','):
-            account = account.strip().lower()
-            if not re.match('[a-z0-9]+', account):
-                raise IllegalArgumentError('Account can only contain letters and numbers.')
+        if request.POST.get('reg_ids'):
+            new_accounts = []
+            for account in request.POST.get('reg_ids').split(','):
+                account = account.strip().lower()
+                if not re.match('[a-z0-9]+', account):
+                    raise IllegalArgumentError('Account can only contain letters and numbers.')
 
-            new_accounts.append(account)
+                new_accounts.append(account)
+
+        elif request.FILES.get('users_file',):
+            wb = xlrd.open_workbook(filename=None, file_contents=request.FILES['users_file'].read())
+            table = wb.sheets()[0]
+            new_accounts = []
+            for i in range(table.nrows):
+                for j in range(table.ncols):
+                    if isinstance(table.cell_value(i, j), float):
+                        new_accounts.append(int(table.cell_value(i, j)))
+
+        else:
+            messages.warning(request, 'Must enter textarea or load a file.')
+            return redirect('user_multiCreate')
 
         privilege_value = 0
         if request.user.has_perm(UserType.SystemManager):
@@ -218,4 +234,3 @@ def create_unit(request):
 
     else:
         return render(request, 'user/create_unit.html')
-
