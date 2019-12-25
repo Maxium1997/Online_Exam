@@ -92,7 +92,7 @@ def testpaper_create(request):
         return render(request, 'exam/testpaper_create.html', locals())
 
 
-# 編輯考卷，還沒寫完
+# 編輯考卷（未完成）
 @permission_check(UserType.TestManager)
 def testpaper_edit(request, testpaper_id):
     try:
@@ -141,14 +141,14 @@ def testpaper_edit(request, testpaper_id):
         return render(request, 'exam/testpaper_edit.html', locals())
 
 
-# 人工選題
+# 人工選題（未完成）
 @permission_check(UserType.TestManager)
 def manual_pick(request, testpaper_id, question_type):
     messages.success(request, str(question_type))
     return render(request, 'exam/testpaper_manual_pick.html', locals())
 
 
-# 自動選題
+# 自動選題（已完成）
 @permission_check(UserType.TestManager)
 def auto_pick(request, testpaper_id, question_type):
     try:
@@ -175,26 +175,4 @@ def auto_pick(request, testpaper_id, question_type):
 
     return redirect('/exam/testpaper/{}/edit'.format(testpaper_id))
 
-
-@permission_check(UserType.TestManager)
-@require_http_methods(["GET"])
-def testee_group_list(request):
-    group_name = request.GET.get('group_name')
-
-    if group_name:
-        groups = Group.objects.filter(name__contains=group_name)
-    else:
-        groups = Group.objects.all()
-
-    page = request.GET.get('page', 0)
-    paginator = Paginator(groups, 10)
-
-    try:
-        groupList = paginator.page(page)
-    except PageNotAnInteger:
-        groupList = paginator.page(1)
-    except EmptyPage:
-        groupList = paginator.page(paginator.num_pages)
-
-    return render(request, 'exam/testee_group_list.html', locals())
 

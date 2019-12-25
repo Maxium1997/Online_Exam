@@ -39,7 +39,7 @@ def query_users(*, department: Department, grade: int, squadron: Squadron, name:
     else:
         query_content += "&name="
 
-    users = User.objects.filter(queries).order_by('-reg_id')
+    users = User.objects.filter(queries).order_by('reg_id')
 
     return query_content, users
 

@@ -22,11 +22,13 @@
                 <th>權限</th>
                 {% if user.student %}
                     <th>學號</th>
+                    <th>年班</th>
                     <th>科系</th>
                     <th>中隊</th>
                 {% endif %}
                 <th>最近登入</th>
                 <th>加入時間</th>
+                <th>狀態</th>
             </tr>
             <tr>
                 <td>{{ user.reg_id }}</td>
@@ -64,11 +66,21 @@
                 </td>
                 {% if user.student %}
                     <td>{{ user.student.stu_id }}</td>
+                    <td>{{ user.student.grade }}</td>
                     <td>{{ user.student.department }}</td>
                     <td>{{ user.student.squadron }}</td>
                 {% endif %}
                 <td>{{ user.update_time|date:"Y年m月d日, H時i分" }}</td>
                 <td>{{ user.created_time|date:"Y年m月d日, H時i分" }}</td>
+                <td>
+                    {% if user.is_active %}
+                        <span>is active</span>
+                    {% elif user.is_staff %}
+                        <span>is staff</span>
+                    {% elif user.is_superuser %}
+                        <span>is superuser</span>
+                    {% endif %}
+                </td>
             </tr>
         </table>
     </div>

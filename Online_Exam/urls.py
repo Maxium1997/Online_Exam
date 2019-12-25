@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from alcpt import registration, system, views, exam, question, viewer, testee
+from alcpt import registration, system, views, exam, question, viewer, testee, group
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -66,7 +66,12 @@ urlpatterns = [
             url(r'^(?P<testpaper_id>[0-9]+)/(?P<question_type>[0-9]+)/auto_pick', exam.auto_pick, name='auto_pick'),
             url(r'^(?P<testpaper_id>[0-9]+)/(?P<question_type>[0-9]+)/manual_pick', exam.manual_pick, name='manual_pick'),
         ])),
-        url(r'^testee_group$', exam.testee_group_list, name='testee_group_list'),
+        url(r'^testee_group$', group.group_list, name='testee_group_list'),
+        url(r'^testee_group/', include([
+            url(r'^create$', group.group_create, name='testee_group_create'),
+            url(r'edit/(?P<group_id>[0-9]+)$', group.group_edit, name='testee_group_edit'),
+            # url(r'delete/(?P<group_id>[0-9]+)$', group.group_delete, name='testee_group_delete'),
+        ])),
     ])),
 
     # 題庫管理員
