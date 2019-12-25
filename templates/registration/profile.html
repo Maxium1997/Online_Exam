@@ -9,6 +9,11 @@
 
 {% block content %}
     <div>
+        <a href="{% url 'profile_edit' user.reg_id %}">編輯個人檔案</a>
+        <a href="{% url 'password_change' %}">更改密碼</a>
+    </div>
+
+    <div>
         <table>
             <tr>
                 <th>使用者帳號</th>
