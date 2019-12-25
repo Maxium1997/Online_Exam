@@ -10,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from Online_Exam.settings import LOGIN_REDIRECT_URL
 from alcpt.definitions import UserType
 from alcpt.forms import CaptchaForm
-from alcpt.models import User
+from alcpt.models import User, Department, Squadron
 
 # Create your views here.
 
@@ -87,10 +87,19 @@ def edit_profile(request, reg_id):
         user.gender = int(request.POST.get('gender',))
         user.save()
 
-        messages.success(request, 'Update profile successfully.')
+        # if user.check_password():
+        #     messages.success(request, 'Update profile successfully.')
+        #     return redirect('profile')
+        # else:
+        #     messages.error(request, 'Password wrong, Update failed.')
+        #     return redirect('profile_edit')
+        messages.success(request, 'Saved profile successfully.')
         return redirect('profile')
+
     else:
         privileges = UserType.__members__
+        departments = Department.objects.all()
+        squadrons = Squadron.objects.all()
         return render(request, 'registration/edit_profile.html', locals())
 
 

@@ -72,8 +72,20 @@
                     </td>
                     {% if user.student %}
                         <td>{{ user.student.stu_id }}</td>
-                        <td>{{ user.student.department }}</td>
-                        <td>{{ user.student.squadron }}</td>
+                        <td>
+                            <select name="department" required>
+                                {% for department in departments %}
+                                    <option value="{{ department.id }}" {% if department == user.student.department %}selected{% endif %}>{{ department }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <select name="department" required>
+                                {% for squadron in squadrons %}
+                                    <option value="{{ squadron.id }}" {% if squadron == user.student.squadron %}selected{% endif %}>{{ squadron }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
                     {% endif %}
                     <td>{{ user.last_login|date:"Y年m月d日, H時i分" }}</td>
                     <td>{{ user.created_time|date:"Y年m月d日, H時i分" }}</td>
