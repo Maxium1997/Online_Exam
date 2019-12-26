@@ -1,3 +1,5 @@
+import xlrd
+
 from string import punctuation
 
 from django.shortcuts import render, redirect
@@ -212,7 +214,7 @@ def question_create(request, kind):
     if request.method == 'POST':
         if kind == 'listening':
             if request.POST.get('is_answer',):
-                choice = Choice.objects.get(c_content=request.POST.get('is_answer',))
+                choice = Choice.objects.get(id=int(request.POST.get('is_answer',)))
                 choice.is_answer = 1
                 choice.save()
                 return redirect('tboperator_question_list')
@@ -283,6 +285,59 @@ def question_create(request, kind):
             return redirect('Homepage')
     else:
         return render(request, 'question/create.html', locals())
+
+
+@permission_check(UserType.TBOperator)
+def question_multiCreate(request):
+    if request.method == "POST":
+        if request.FILES.get('users_file', ):
+            wb = xlrd.open_workbook(filename=None, file_contents=request.FILES['users_file'].read())
+            table = wb.sheets()[0]
+            all_questions = []
+
+            q_type = request.POST.get('question_type', )
+            q_difficulty = request.POST.get('question_difficulty', )
+
+            for i in range(table.nrows):
+                question = []
+                for j in range(table.ncols):
+                    item = table.cell_value(i, j)
+                    if isinstance(item, float):
+                        item = int(item)
+                    question.append(item)
+                all_questions.append(question)
+
+            for question in all_questions:
+                q_content = question[0]
+                choice1 = question[1]
+                choice2 = question[2]
+                choice3 = question[3]
+                choice4 = question[4]
+
+                reading_question = tboperator.create_reading_question(q_content=q_content,
+                                                                      q_type=q_type,
+                                                                      created_by=request.user,
+                                                                      difficulty=q_difficulty)
+
+                option1 = Choice.objects.create(c_content=choice1, question=reading_question)
+                option2 = Choice.objects.create(c_content=choice2, question=reading_question)
+                option3 = Choice.objects.create(c_content=choice3, question=reading_question)
+                option4 = Choice.objects.create(c_content=choice4, question=reading_question)
+                option1.save()
+                option2.save()
+                option3.save()
+                option4.save()
+
+                choice = Choice.objects.get(id=question[5])
+                choice.is_answer = 1
+                choice.save()
+
+            return redirect('tboperator_question_list')
+        else:
+            messages.warning(request, 'Must load a file.')
+            return redirect('question_multiCreate')
+    else:
+        return render(request, 'question/multi_create.html', locals())
 
 
 @permission_check(UserType.TBOperator)

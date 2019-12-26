@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load web_filters %}
+
+{% block path %}
+
+{% endblock %}
+
+{% block content %}
+    <div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="reg_ids">多重新增題目</label>
+            <input type="file" name="users_file" accept=".xls, .xlsx">
+            <br>
+            <strong>檔案內欄位順序：題目＞選項1＞選項2＞選項3＞選項4＞答案</strong>
+            <br>
+
+            <label for="question_type">試題類型</label>
+            <select name="question_type">
+                <option value="3" selected>文法</option>
+                <option value="4">名詞片語</option>
+                <option value="5">段落理解</option>
+            </select>
+            <br>
+
+            <label for="question_difficulty">試題難度</label>
+            <select name="question_difficulty">
+                <option value="1" selected>簡單</option>
+                <option value="2">中等</option>
+                <option value="3">困難</option>
+            </select>
+            <br>
+
+            <input type="submit" onclick="return confirm('確認送出？')" value="新增試題">
+        </form>
+    </div>
+{% endblock %}

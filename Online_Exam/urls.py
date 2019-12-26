@@ -86,6 +86,7 @@ urlpatterns = [
     # 題目操作員
     url(r'^operator$', question.operator_index, name='tboperator_question_list'),
     url(r'^operator/', include([
+        url(r'^question_multiCreate', question.question_multiCreate, name="question_multiCreate"),
         url(r'^submit/(?P<question_id>[0-9]+)$', question.question_submit, name='question_submit'),
         url(r'^(?P<kind>(listening|reading))/question_create$', question.question_create, name='question_create'),
         url(r'^(?P<question_id>[0-9]+)/edit$', question.operator_edit, name='operator_edit'),
