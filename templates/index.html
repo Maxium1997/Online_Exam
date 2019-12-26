@@ -96,7 +96,7 @@
         <div class="pagination">
             <div class="pager_group1">
                 <ul class="pager">
-                    <li class="previous"><a href="?page=1">&laquo; first</a></li>
+                    <li class="previous" style="color: #2C3232"><a href="?page=1">&laquo; first</a></li>
                     <li style="padding-left: 500px; padding-right: 490px">&nbsp;</li>
                     <li class="next"><a href="?page={{ pros.paginator.num_pages }}">last &raquo;</a></li>
                 </ul>
@@ -136,6 +136,7 @@
 
             <style>
                 .pager_group1{
+                    text-decoration: none;
                     position: absolute;
                     bottom: 0%;
                     left: 1%;
@@ -144,7 +145,10 @@
 
                 .pager_group2{
                     position: absolute;
-                    bottom: 0%;
+                    bottom: 6.5%;
+                    right: 50%;
+
+                    transform: translate(50%,50%);
                 }
 
             </style>
