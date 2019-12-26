@@ -212,7 +212,7 @@ def question_create(request, kind):
     if request.method == 'POST':
         if kind == 'listening':
             if request.POST.get('is_answer',):
-                choice = Choice.objects.get(c_content=request.POST.get('is_answer',))
+                choice = Choice.objects.get(id=int(request.POST.get('is_answer',)))
                 choice.is_answer = 1
                 choice.save()
                 return redirect('tboperator_question_list')
