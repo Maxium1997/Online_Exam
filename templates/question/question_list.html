@@ -15,7 +15,7 @@
     <div class="table-responsive">
     {% if questions %}
         <table class="table table-hover">
-            <caption style="font-size: 30px;">&nbsp;&nbsp;題目列表</caption>
+            <caption style="font-size: 30px;">&nbsp;&nbsp;題目列表（共{% if query_content %}{{ questions.count }}{% elif questions %}{{ questions.count }}{% else %} 0 {% endif %}條結果）</caption>
             <thead class="title">
                 <tr>
                     <th class="col-md-1">ＩＤ</th>

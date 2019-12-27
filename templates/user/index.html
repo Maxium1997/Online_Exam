@@ -48,7 +48,7 @@
 
     <div>
         {% if users %}
-            <h1>使用者列表</h1>
+            <h1>使用者列表（共{% if query_content %}{{ users.count }}{% elif users %}{{ users.count }}{% else %} 0 {% endif %}條結果）</h1>
             <table border="1">
                 <tr>
                     <th>帳號</th>
@@ -105,7 +105,7 @@
 
         {% for page in paginator.page_range %}
             {% if page == userList.number %}
-                <a class="active" href="?page={{ page }}{% if query_content %}&{{ query_content }}{% endif %}"></a>
+                <a class="active" href="?page={{ page }}{% if query_content %}&{{ query_content }}{% endif %}">{{ page }}</a>
             {% else %}
                 <a href="?page={{ page }}{% if query_content %}&{{ query_content }}{% endif %}">{{ page }}</a>
             {% endif %}
