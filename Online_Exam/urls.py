@@ -31,7 +31,7 @@ urlpatterns = [
         url(r'^login/', registration.login, name='login'),  # 登入
         url(r'^logout/', registration.logout, name='logout'),  # 登出
         url(r'^profile$', registration.profile, name='profile'),
-        url(r'^edit/(?P<reg_id>[0-9]+)$', registration.edit_profile, name='profile_edit'),
+        url(r'^edit/(?P<reg_id>[a-zA-Z0-9]+)$', registration.edit_profile, name='profile_edit'),
         url(r'^password/change$', registration.change_password, name='password_change'),
     ])),
 

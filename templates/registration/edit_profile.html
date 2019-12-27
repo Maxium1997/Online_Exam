@@ -74,21 +74,23 @@
                     {% if user.student %}
                         <td>{{ user.student.stu_id }}</td>
                         <td>
+                            <input type="number" name="grade" value="{{ user.student.grade }}" required>
+                        </td>
+                        <td>
                             <select name="department" required>
+                                <option value="" disabled selected>請選擇科系</option>
                                 {% for department in departments %}
                                     <option value="{{ department.id }}" {% if department == user.student.department %}selected{% endif %}>{{ department }}</option>
                                 {% endfor %}
                             </select>
                         </td>
                         <td>
-                            <select name="department" required>
+                            <select name="squadron" required>
+                                <option value="" disabled selected>請選擇連隊單位</option>
                                 {% for squadron in squadrons %}
                                     <option value="{{ squadron.id }}" {% if squadron == user.student.squadron %}selected{% endif %}>{{ squadron }}</option>
                                 {% endfor %}
                             </select>
-                        </td>
-                        <td>
-                            <input type="number" name="grade" value="{{ user.student.grade }}" required>
                         </td>
                     {% endif %}
                     <td>{{ user.last_login|date:"Y年m月d日, H時i分" }}</td>
@@ -106,6 +108,7 @@
             </table>
 
             <input type="submit" value="提交">
+            <input type="submit" value="取消" onclick="history.back()">
         </form>
     </div>
 {% endblock %}

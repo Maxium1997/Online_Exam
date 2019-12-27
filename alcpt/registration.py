@@ -10,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from Online_Exam.settings import LOGIN_REDIRECT_URL
 from alcpt.definitions import UserType
 from alcpt.forms import CaptchaForm
-from alcpt.models import User, Department, Squadron
+from alcpt.models import User, Student, Department, Squadron
 
 # Create your views here.
 
@@ -32,19 +32,22 @@ def login(request):
                     return redirect('login')
 
                 auth.login(request, user)
-                user.last_login = timezone.now()
+                # user.last_login = timezone.now()
                 user.save()
-                messages.success(request, 'Login Success.')
+                if user.last_login:
+                    messages.warning(request, 'First login, please update your profile.')
+                else:
+                    messages.success(request, 'Login Success.')
 
             except ObjectDoesNotExist:
                 return redirect('login')
 
-            if user.last_login is None:     # 看起來好像沒作用誒
-                messages.warning(request, 'First login, please update your profile.')
-                data = {'user': user, 'privileges': UserType.__members__}
-                return render(request, 'registration/edit_profile.html', data)
-            else:
-                return redirect(next_page)
+            # if user.last_login is None:     # 看起來好像沒作用誒
+            #     messages.warning(request, 'First login, please update your profile.')
+            #     data = {'user': user, 'privileges': UserType.__members__}
+            #     return render(request, 'registration/edit_profile.html', data)
+            # else:
+            return redirect(next_page)
         else:
             messages.error(request, '驗證碼錯誤')
             return redirect('login')
@@ -87,12 +90,15 @@ def edit_profile(request, reg_id):
         user.gender = int(request.POST.get('gender',))
         user.save()
 
-        # if user.check_password():
-        #     messages.success(request, 'Update profile successfully.')
-        #     return redirect('profile')
-        # else:
-        #     messages.error(request, 'Password wrong, Update failed.')
-        #     return redirect('profile_edit')
+        try:
+            student = user.student
+            student.grade = int(request.POST.get('grade',))
+            student.department = Department.objects.get(id=int(request.POST.get('department',)))
+            student.squadron = Squadron.objects.get(id=int(request.POST.get('squadron',)))
+            student.save()
+        except ObjectDoesNotExist:
+            pass
+
         messages.success(request, 'Saved profile successfully.')
         return redirect('profile')
 
