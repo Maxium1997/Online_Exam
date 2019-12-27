@@ -38,6 +38,19 @@ def exam_list(request):
 
 
 @permission_check(UserType.TestManager)
+def exam_create(request):
+    if request.method == 'POST':
+        exam_name = request.POST.get('exam_name',)
+        start_time = request.POST.get('start_time',)
+        duration = request.POST.get('duration',)
+        info = exam_name + ", " + start_time + ", " + duration
+        messages.success(request, info)
+        return redirect('exam_list')
+    else:
+        return render(request, 'exam/exam_create.html', locals())
+
+
+@permission_check(UserType.TestManager)
 @require_http_methods(["GET"])
 def testpaper_list(request):
     testpaper_name = request.GET.get('testpaper_name')

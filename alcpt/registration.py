@@ -32,12 +32,9 @@ def login(request):
                     return redirect('login')
 
                 auth.login(request, user)
-                # user.last_login = timezone.now()
+                user.last_login = timezone.now()
                 user.save()
-                if user.last_login:
-                    messages.warning(request, 'First login, please update your profile.')
-                else:
-                    messages.success(request, 'Login Success.')
+                messages.success(request, 'Login Success.')
 
             except ObjectDoesNotExist:
                 return redirect('login')

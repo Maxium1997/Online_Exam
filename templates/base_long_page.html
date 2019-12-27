@@ -69,7 +69,7 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="#" style=" opacity: 1; font-size: 30px;">ALCPT線上練習平台</a>
+                            <a class="navbar-brand" href="{% url 'Homepage' %}" style=" opacity: 1; font-size: 30px;">ALCPT線上練習平台</a>
                         </div>
                         <div class="collapse navbar-collapse" id="myNavbar">
                             <ul class="nav navbar-nav" style="position: absolute; left: 50%">
@@ -274,11 +274,32 @@
             </style>
         </div>
     <!-- 路徑喔 -->
-        <div class="path_bar">
-            <a href="{% url 'Homepage' %}">主頁</a>
-            {% block path %}
-            {% endblock %}
-        </div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'Homepage' %}">主頁</a></li>
+            <li class="breadcrumb-item">
+                {% block path %}
+                {% endblock %}
+            </li>
+          </ol>
+        </nav>
+
+        <style>
+            .breadcrumb{
+                background-color: #FFFEF6;
+                opacity: 0.8;
+                color: #2C3232;
+
+                position: absolute;
+                top: 18%;
+                left: 10%;
+            }
+
+            .breadcrumb-item a{
+                color: #2C3232;
+            }
+        </style>
+    </div>
 
 
     </div>

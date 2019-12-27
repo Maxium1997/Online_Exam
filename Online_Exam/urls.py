@@ -58,6 +58,8 @@ urlpatterns = [
     # 考試管理員
     url(r'^exam$', exam.exam_list, name='exam_list'),
     url(r'^exam/', include([
+        url(r'^create$', exam.exam_create, name='exam_create'),
+
         url(r'^testpaper/', include([
             url(r'^list$', exam.testpaper_list, name='testpaper_list'),
             url(r'^create$', exam.testpaper_create, name='testpaper_create'),

@@ -274,11 +274,34 @@
             </style>
         </div>
     <!-- 路徑喔 -->
-        <div class="path_bar">
-            <a href="{% url 'Homepage' %}">主頁</a>
-            {% block path %}
-            {% endblock %}
-        </div>
+        <!-- 路徑喔 -->
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'Homepage' %}">主頁</a></li>
+            <li class="breadcrumb-item">
+                {% block path %}
+                {% endblock %}
+            </li>
+          </ol>
+        </nav>
+
+        <style>
+            .breadcrumb{
+                background-color: #FFFEF6;
+                opacity: 0.8;
+                color: #2C3232;
+
+                position: absolute;
+                top: 18%;
+                left: 10%;
+            }
+
+            .breadcrumb-item a{
+                color: #2C3232;
+                text-decoration: none;
+            }
+        </style>
+    </div>
 
 
     </div>
