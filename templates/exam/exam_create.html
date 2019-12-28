@@ -4,7 +4,9 @@
     <a class="fa fa-angle-double-right fa-lg box"></a>
     <a href="">考試管理員</a>
     <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="">考試列表</a>
+    <a href="{% url 'exam_list' %}">考試列表</a>
+    <a class="fa fa-angle-right fa-lg box"></a>
+    <a href="">新增考試</a>
 {% endblock %}
 
 {% block content %}
@@ -15,10 +17,10 @@
             <input type="text" name="exam_name" required>
 
             <label>測驗開始時間</label>
-            <input type="text" name="start_time" placeholder="YYYY-MM-DD HH:mm:ss">
+            <input type="text" name="start_time" placeholder="YYYY-MM-DD HH:mm:ss" required>
 
             <label>測驗時間</label>
-            <input type="number" name="duration" value="40">
+            <input type="number" name="duration" value="40" required>
 
             <input type="submit" value="送出">
         </form>

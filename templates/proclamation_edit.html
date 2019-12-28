@@ -3,7 +3,8 @@
 {% load web_filters %}
 
 {% block path %}
-
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="">編輯公告</a>
 {% endblock %}
 
 {% block content %}
@@ -17,7 +18,6 @@
             <textarea cols="100" rows="8" name="proclamation_text" required>{{ proclamation.text }}</textarea>
 
             <input type="submit" onclick="return confirm('確認更改?')">
-            <input type="submit" onclick="history.back()" value="取消編輯">
         </form>
     </div>
 {% endblock %}

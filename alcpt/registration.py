@@ -39,11 +39,6 @@ def login(request):
             except ObjectDoesNotExist:
                 return redirect('login')
 
-            # if user.last_login is None:     # 看起來好像沒作用誒
-            #     messages.warning(request, 'First login, please update your profile.')
-            #     data = {'user': user, 'privileges': UserType.__members__}
-            #     return render(request, 'registration/edit_profile.html', data)
-            # else:
             return redirect(next_page)
         else:
             messages.error(request, '驗證碼錯誤')

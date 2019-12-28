@@ -37,8 +37,8 @@
             <tbody>
             {% for question in questionList %}
                 <tr>
-                    <td>{{ question.id }}</td>
-                    <td style="text-align: left">
+                    <td style="vertical-align: middle">{{ question.id }}</td>
+                    <td style="text-align: left; vertical-align: middle">
                         {% if question.q_file %}
                             <audio controls preload="none">
                                 <source src="{{ question.q_file }}" type="audio/mpeg">
@@ -48,8 +48,8 @@
                             {{ question.q_content }}
                         {% endif %}
                     </td>
-                    <td style="text-align: center">{{ question.q_type|readable_question_type }}</td>
-                    <td style="text-align: left;">
+                    <td style="text-align: center; vertical-align: middle">{{ question.q_type|readable_question_type }}</td>
+                    <td style="text-align: left; vertical-align: middle">
                         {% for option in question.choice_set.all %}
                             {% if option.is_answer %}
                                 <span style="color: red"><li>{{ option }}</li></span>
@@ -58,8 +58,8 @@
                             {% endif %}
                         {% endfor %}
                     </td>
-                    <td style="text-align: center">{{ question.state|readable_state }}</td>
-                    <td>
+                    <td style="text-align: center; vertical-align: middle">{{ question.state|readable_state }}</td>
+                    <td style="vertical-align: middle">
                         {% if question.state == 0 %}
                             <a href="{% url 'question_submit' question.id %}" onclick="return confirm('是否提交給題庫管理員審核')">提交</a> /
                         {% endif %}
@@ -70,7 +70,7 @@
                             <a href="{% url 'question_edit' question.id %}">編輯</a>
                         {% endif %}
                     </td>
-                    <td>
+                    <td style="vertical-align: middle">
                         {% if question.faulted_reason %}
                             {{ question.faulted_reason }}
                         {% else %}
@@ -117,7 +117,10 @@
             </tbody>
         </table>
          {% else %}
-            <h2>目前暫無資料</h2>
+            <table class="table table-hover">
+                <caption style="font-size: 30px;">&nbsp;&nbsp;題目列表（共{% if query_content %}{{ questions.count }}{% elif questions %}{{ questions.count }}{% else %} 0 {% endif %}條結果）</caption>
+                <h2>目前暫無資料</h2>
+            </table>
          {% endif %}
 
         <style>
@@ -343,11 +346,11 @@
             <div class="pager_group2">
                 <nav aria-label="Page navigation">
                   <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
+                    <li {% if not questionList.has_previous %}class="page-item disabled"{% endif %}>
                         {% if questionList.has_previous %}
                             <a class="page-link" href="?page={{ questionList.previous_page_number }}{% if query_content %}&{{ query_content }}{% endif %}" tabindex="-1">Previous</a>
                         {% else %}
-                            <a href="">Previous</a>
+                            <a href="javascript:void(0)">Previous</a>
                         {% endif %}
                     </li>
                     <li class="page-item">
@@ -359,11 +362,11 @@
                             {% endif %}
                         {% endfor %}
                     </li>
-                    <li class="page-item">
+                    <li {% if not questionList.has_next %}class="page-item disabled"{% endif %}>
                         {% if questionList.has_next %}
                             <a class="page-link" href="?page={{ questionList.next_page_number }}{% if query_content %}&{{ query_content }}{% endif %}">Next</a>
                         {% else %}
-                            <a href="">Next</a>
+                            <a href="javascript:void(0)">Next</a>
                         {% endif %}
                     </li>
                   </ul>

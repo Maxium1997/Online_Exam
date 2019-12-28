@@ -50,7 +50,7 @@ def manager_index(request):
 
     query_content, questions = tbmanager.query_questions(**keywords)
     page = request.GET.get('page', 1)
-    paginator = Paginator(questions, 5)  # the second parameter is used to display how many items. Now is display 10
+    paginator = Paginator(questions, 10)  # the second parameter is used to display how many items. Now is display 10
 
     try:
         questionList = paginator.page(page)
@@ -68,7 +68,7 @@ def review(request):
     # 過濾掉狀態為"暫存"、"審核通過"、"被回報錯誤，已處理"
     reviewed_questions = Question.objects.exclude(state=0).exclude(state=1).exclude(state=2).exclude(state=5)
     page = request.GET.get('page', 1)
-    paginator = Paginator(reviewed_questions, 5)  # the second parameter is used to display how many items. Now is 10
+    paginator = Paginator(reviewed_questions, 10)  # the second parameter is used to display how many items. Now is 10
 
     try:
         questionList = paginator.page(page)
@@ -182,7 +182,7 @@ def operator_index(request):
 
     query_content, questions = tboperator.query_questions(**keywords)
     page = request.GET.get('page', 1)
-    paginator = Paginator(questions, 5)  # the second parameter is used to display how many items. Now is display 10
+    paginator = Paginator(questions, 10)  # the second parameter is used to display how many items. Now is display 10
 
     try:
         questionList = paginator.page(page)
