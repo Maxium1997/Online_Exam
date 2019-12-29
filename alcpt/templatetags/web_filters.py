@@ -98,7 +98,6 @@ def student_data(user: User):
         return data
 
 
-
 @register.filter(name='check_correct')
 def check_correct(option: str, question: Question):
     if question.option.index(option) == question.answer:
@@ -119,3 +118,8 @@ def readable_state(state: int):
         (5, '被回報錯誤，已處理'),
     )
     return STATE[state][1]
+
+
+@register.filter(name='trans_int')
+def trans_int(score: float):
+    return int(score)

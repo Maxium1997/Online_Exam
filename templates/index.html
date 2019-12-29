@@ -105,11 +105,11 @@
             <div class="pager_group2">
                 <nav aria-label="Page navigation">
                   <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
+                    <li {% if not pros.has_previous %}class="page-item disabled"{% endif %}>
                         {% if pros.has_previous %}
                             <a class="page-link" href="?page={{ pros.previous_page_number }}" tabindex="-1">Previous</a>
                         {% else %}
-                            <a href="#">Previous</a>
+                            <a href="javascript:void(0)">Previous</a>
                         {% endif %}
                     </li>
                     <li class="page-item">
@@ -121,11 +121,11 @@
                             {% endif %}
                         {% endfor %}
                     </li>
-                    <li class="page-item">
+                    <li {% if not pros.has_next %}class="page-item disabled"{% endif %}>
                         {% if pros.has_next %}
                             <a class="page-link" href="?page={{ pros.next_page_number }}">Next</a>
                         {% else %}
-                            <a href="">Next</a>
+                            <a href="javascript:void(0)">Next</a>
                         {% endif %}
                     </li>
                   </ul>

@@ -1,4 +1,5 @@
 from string import punctuation
+from datetime import datetime, timedelta
 
 from django.shortcuts import render, redirect
 
@@ -37,13 +38,14 @@ def exam_list(request):
     return render(request, 'exam/exam_list.html', locals())
 
 
+# Not yet
 @permission_check(UserType.TestManager)
 def exam_create(request):
     if request.method == 'POST':
-        exam_name = request.POST.get('exam_name',)
         start_time = request.POST.get('start_time',)
         duration = request.POST.get('duration',)
-        info = exam_name + ", " + start_time + ", " + duration
+        info = datetime.strptime(start_time, '%Y-%m-%d %H:%M') + timedelta(minutes=int(duration))
+
         messages.success(request, info)
         return redirect('exam_list')
     else:
