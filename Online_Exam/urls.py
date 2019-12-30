@@ -25,6 +25,8 @@ urlpatterns = [
 
     url(r'^$', views.index, name='Homepage'),
 
+    url(r'^report$', system.report, name='report'),
+
     url(r'^captcha/', include('captcha.urls')),
 
     url(r'^accounts/', include([
@@ -52,6 +54,12 @@ urlpatterns = [
             url(r'^(?P<proclamation_id>[0-9]+)/detail$', system.proclamation_detail, name='proclamation_detail'),
             url(r'^(?P<proclamation_id>[0-9]+)/delete$', system.proclamation_delete, name='proclamation_delete'),
             url(r'^(?P<proclamation_id>[0-9]+)/edit$', system.proclamation_edit, name='proclamation_edit'),
+        ])),
+
+        url(r'^report_category/', include([
+            url(r'^list$', system.report_category_list, name='report_category_list'),
+            url(r'^create$', system.report_category_create, name='report_category_create'),
+            url(r'^detail/(?P<category_id>[0-9]+)$', system.report_category_detail, name='report_category_detail'),
         ]))
     ])),
 

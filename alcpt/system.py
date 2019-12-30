@@ -13,9 +13,9 @@ from django.db import IntegrityError
 from django.contrib import messages
 
 from alcpt.managerfuncs import systemmanager
-from alcpt.models import User, Student, Department, Squadron, Proclamation
+from alcpt.models import User, Student, Department, Squadron, Proclamation, ReportCategory, Report
 from alcpt.definitions import UserType
-from alcpt.decorators import permission_check
+from alcpt.decorators import permission_check, login_required
 from alcpt.exceptions import IllegalArgumentError
 
 
@@ -234,3 +234,77 @@ def create_unit(request):
 
     else:
         return render(request, 'user/create_unit.html')
+
+
+# 回報類別列表
+@permission_check(UserType.SystemManager)
+def report_category_list(request):
+    report_categories = ReportCategory.objects.all()
+    privileges = UserType.__members__
+    return render(request, 'user/report_category_list.html', locals())
+
+
+# 新增回報類別
+@permission_check(UserType.SystemManager)
+def report_category_create(request):
+    if request.method == 'POST':
+        category_name = request.POST.get('category_name',)
+
+        responsibility_value = 0
+        i = 0
+        for privilege in UserType.__members__.values():
+            if privilege and request.POST.get('privilege_{}'.format(i)):
+                responsibility_value |= privilege.value[0]
+            i += 1
+
+        try:
+            new_category = ReportCategory.objects.create(name=category_name,
+                                                         responsibility=responsibility_value)
+            new_category.save()
+        except IntegrityError:
+            messages.error(request, "Existed category name: {}".format(category_name))
+            privileges = UserType.__members__
+            return render(request, 'user/create_user.html', locals())
+
+        messages.success(request, 'Create report category "{}" successful.'.format(new_category))
+
+        return redirect('report_category_list')
+    else:
+        privileges = UserType.__members__
+        return render(request, 'user/create_report_category.html', locals())
+
+
+@login_required
+def report(request):
+    if request.method == 'POST':
+        try:
+            category = ReportCategory.objects.get(id=int(request.POST.get('category',)))
+
+        except ObjectDoesNotExist:
+            messages.error(request, 'Category does not exist, category name: {}'.format(category))
+            categories = ReportCategory.objects.all()
+            return render(request, 'report.html', locals())
+
+        supplement_note = request.POST.get('supplement_note',)
+
+        user_report = Report.objects.create(category=category, supplement_note=supplement_note,
+                                            created_by=request.user, state=1)
+
+        user_report.save()
+
+        messages.success(request, 'Thanks for your advise, we will help you to solve your problem as soon as possible.')
+
+        return redirect('Homepage')
+    else:
+        categories = ReportCategory.objects.all()
+        return render(request, 'report.html', locals())
+
+
+@permission_check(UserType.SystemManager)
+def report_category_detail(request, category_id):
+    try:
+        category = ReportCategory.objects.get(id=category_id)
+        return render(request, 'report_category_detail.html', locals())
+    except ObjectDoesNotExist:
+        messages.error(request, 'Report Category does not exist, report category id: {}'.format(category_id))
+        return redirect('report_category_list')

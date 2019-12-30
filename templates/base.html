@@ -79,6 +79,7 @@
                                         <ul class="dropdown-menu">
                                             <li><a href="{% url 'user_list' %}">使用者列表</a></li>
                                             <li><a href="{% url 'unit_list' %}">單位列表</a></li>
+                                            <li><a href="{% url 'report_category_list' %}">回報類別列表</a></li>
                                         </ul>
                                     </li>
                                 {% endif %}
@@ -243,8 +244,9 @@
             </div>
     <!-- 左邊button -->
         <div class="icon-bar">
-            <a class="active" href="{% url 'Homepage' %}"><i class="fa fa-home"></i></a>
+            <a href="{% url 'Homepage' %}"><i class="fa fa-home"></i></a>
             <a href="{% url 'profile' %}"><i class="fa fa-user-circle"></i></a>
+            <a href="{% url 'report' %}"><i class="fa fa-exclamation-circle"></i></a>
             <style>
                 .icon-bar {
                   width: 90px;

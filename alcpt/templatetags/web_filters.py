@@ -1,7 +1,7 @@
 from django import template
 
 from alcpt.definitions import UserType, QuestionType, ExamType
-from alcpt.models import User, Student, Question
+from alcpt.models import User, Student, Question, ReportCategory
 from alcpt.utility import set_query_parameter
 from alcpt.exceptions import IllegalArgumentError, ObjectNotFoundError
 
@@ -120,6 +120,22 @@ def readable_state(state: int):
     return STATE[state][1]
 
 
+@register.filter(name='readable_report_state')
+def readable_report_state(state: int):
+    STATE = (
+        (0, '暫存'),
+        (1, '待處理'),
+        (2, '處理中'),
+        (3, '已解決'),
+    )
+    return STATE[state][1]
+
+
 @register.filter(name='trans_int')
 def trans_int(score: float):
     return int(score)
+
+
+@register.filter(name='responsible_unit')
+def responsible_unit(category: ReportCategory, required_privilege: UserType):
+    return (category.responsibility & required_privilege.value[0]) > 0

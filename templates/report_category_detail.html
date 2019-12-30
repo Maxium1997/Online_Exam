@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% load web_filters %}
+
+{% block path %}
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="">系統管理員</a>
+    <a class="fa fa-angle-right fa-lg box"></a>
+    <a href="{% url 'report_category_list' %}">回報類別列表</a>
+    <a class="fa fa-angle-right fa-lg box"></a>
+    <a href="">{{ category.name }}</a>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <div class="table-responsive">
+            {% if category.report_set.all %}
+                <table class="table table-hover">
+                    <caption style="font-size: 30px;">回報列表</caption>
+                    <thead class="title">
+                        <tr>
+                            <th class="col-md-1">單號</th>
+                            <th class="col-md-3">使用者代號</th>
+                            <th class="col-md-2">回報類別</th>
+                            <th class="col-md-5">內容</th>
+                            <th class="col-md-1">狀態</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for report in category.report_set.all %}
+                        <tr style="cursor: pointer" onclick="window.location.href=''">
+                            <td>{{ report.id }}</td>
+                            <td>{{ report.created_by }}</td>
+                            <td>{{ report.category }}</td>
+                            <td>{{ report.supplement_note }}</td>
+                            <td>{{ report.state|readable_report_state }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                目前暫無資料
+            {% endif %}
+
+            <style>
+                .table-responsive .table{
+                    text-align: center;
+                }
+
+                .table-hover > tbody > tr:hover > td,
+                .table-hover > tbody > tr:hover > th {
+                    background-color: #4CCABD;
+                }
+
+                .title{
+                    font-size: 25px;
+                }
+
+                .title tr th{
+                    text-align: center;
+                }
+
+                .table tbody{
+                    font-size: 18px;
+                }
+
+                .table tbody td a{
+                    color: #2C3232;
+                }
+            </style>
+        </div>
+    </div>
+{% endblock %}

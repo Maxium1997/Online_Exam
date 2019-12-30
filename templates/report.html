@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block path %}
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="">問題回報</a>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="category">發生問題</label>
+            <select name="category" required>
+                <option value="" disabled selected>請選擇發生問題</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+
+            {% if question %}
+                <input type="hidden" name="question" value="{{ question.id }}">
+            {% endif %}
+
+            <br>
+
+            <label for="supplement_note">補充說明</label><br>
+            <textarea name="supplement_note" cols="100" rows="8" required placeholder="補充說明..."></textarea>
+
+            <input type="submit" value="提出">
+        </form>
+    </div>
+{% endblock %}
