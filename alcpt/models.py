@@ -45,6 +45,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     reg_id = models.CharField(max_length=50, unique=True)
     email = models.EmailField(default="", blank=True, null=True)
+    email_is_verified = models.BooleanField(default=False)
     name = models.CharField(max_length=20, blank=True, null=True)
     gender = models.PositiveSmallIntegerField(blank=True, null=True)
     privilege = models.PositiveSmallIntegerField(default=0)

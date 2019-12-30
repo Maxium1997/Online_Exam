@@ -1,3 +1,5 @@
+import re
+
 from django.shortcuts import render, redirect
 
 from django.utils import timezone
@@ -11,6 +13,7 @@ from Online_Exam.settings import LOGIN_REDIRECT_URL
 from alcpt.definitions import UserType
 from alcpt.forms import CaptchaForm
 from alcpt.models import User, Student, Department, Squadron
+from alcpt.email_verification import email_verified
 
 # Create your views here.
 
@@ -32,8 +35,13 @@ def login(request):
                     return redirect('login')
 
                 auth.login(request, user)
-                user.last_login = timezone.now()
-                user.save()
+                if request.user.email is "":
+                    departments = Department.objects.all()
+                    squadrons = Squadron.objects.all()
+                    messages.warning(request, 'Fist login, please edit your data')
+                    return render(request, 'registration/edit_profile.html', locals())
+                # user.last_login = timezone.now()
+                # user.save()
                 messages.success(request, 'Login Success.')
 
             except ObjectDoesNotExist:
@@ -82,6 +90,21 @@ def edit_profile(request, reg_id):
         user.name = request.POST.get('name',)
         user.gender = int(request.POST.get('gender',))
         user.save()
+
+        email = request.POST.get('email',)
+        if not re.match("[^@]+@[^@]+\.[^@]+", email):
+            messages.warning(request, "email doesn't match regular expression.")
+            departments = Department.objects.all()
+            squadrons = Squadron.objects.all()
+            return render(request, 'registration/edit_profile.html', locals())
+        else:
+            if email == user.email:
+                pass
+            else:
+                user.email = email
+                user.email_is_verified = False
+                messages.warning(request, 'Your have to verify email again.')
+                user.save()
 
         try:
             student = user.student
@@ -133,3 +156,22 @@ def change_password(request):
             return redirect('profile')
     else:
         return render(request, 'registration/password_change.html', locals())
+
+
+@login_required
+def verification(request):
+    if request.method == 'POST':
+        if int(request.POST.get('random_code',)) == int(request.POST.get('verification_code',)):
+            messages.success(request, 'Email Verified successfully.')
+            request.user.email_is_verified = True
+            request.user.save()
+            return redirect('profile')
+        else:
+            departments = Department.objects.all()
+            squadrons = Squadron.objects.all()
+            info = 'Email Verified Failed, check your email.' + str(request.POST.get('random_code',))
+            messages.warning(request, info)
+            return render(request, 'registration/edit_profile.html', locals())
+    else:
+        random_code = email_verified(request.user)
+        return render(request, 'email_verification.html', locals())

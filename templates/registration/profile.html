@@ -18,6 +18,7 @@
             <tr>
                 <th>使用者帳號</th>
                 <th>姓名</th>
+                <th>Email</th>
                 <th>性別</th>
                 <th>權限</th>
                 {% if user.student %}
@@ -33,6 +34,7 @@
             <tr>
                 <td>{{ user.reg_id }}</td>
                 <td>{{ user.name }}</td>
+                <td>{{ user.email }} / {% if user.email_is_verified %}已驗證{% else %}<a href="{% url 'email_verification' %}">驗證{% endif %}</a> </td>
                 <td>
                     {% if user.gender == 0 %}
                     男

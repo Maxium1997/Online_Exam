@@ -27,6 +27,8 @@ urlpatterns = [
 
     url(r'^report$', system.report, name='report'),
 
+    url(r'^email_verification$', registration.verification, name='email_verification'),
+
     url(r'^captcha/', include('captcha.urls')),
 
     url(r'^accounts/', include([
