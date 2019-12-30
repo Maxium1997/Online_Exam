@@ -44,6 +44,7 @@ class UserManager(BaseUserManager):
 # update_time: user update its profile time
 class User(AbstractBaseUser):
     reg_id = models.CharField(max_length=50, unique=True)
+    email = models.EmailField(default="", blank=True, null=True)
     name = models.CharField(max_length=20, blank=True, null=True)
     gender = models.PositiveSmallIntegerField(blank=True, null=True)
     privilege = models.PositiveSmallIntegerField(default=0)
