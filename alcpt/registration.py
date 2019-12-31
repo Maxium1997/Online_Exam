@@ -166,22 +166,23 @@ def reset_password(request):
             messages.error(request, 'Verification error.')
             return redirect('password_reset')
         else:
-            messages.warning(request, request.AnonymousUser())
-            return redirect('password_reset')
+            user = User.objects.get(reg_id=request.POST.get('reg_id', ))
+            user.set_password(new_password)
+            user.save()
+            messages.warning(request, 'Your password update successfully.')
 
-            # messages.success(request, 'Password change successfully. Please login again with new password.')
-            # return redirect('login')
+            return redirect('Homepage')
     else:
-        return redirect('password_reset')
+        return render(request, 'registration/password_reset.html', locals())
 
 
-# @login_required
 def verification(request):
     if request.method == 'POST':
         if int(request.POST.get('random_code',)) == int(request.POST.get('verification_code',)):
             messages.success(request, 'Email Verified successfully.')
 
             if request.POST.get('forget_change_pwd',):
+                reg_id = request.POST.get('reg_id',)
                 return render(request, 'registration/password_reset.html', locals())
 
             request.user.email_is_verified = True
@@ -204,6 +205,7 @@ def forget_password(request):
             user = User.objects.get(reg_id=request.POST.get('reg_id',))
             if user.email_is_verified:
                 random_code = email_verified(user)
+                reg_id = user.reg_id
                 flag = int(request.POST.get('forget_change_pwd',))
                 messages.success(request, 'Please check your email.')
                 return render(request, 'email_verification.html', locals())
@@ -215,3 +217,5 @@ def forget_password(request):
             return redirect('password_forget')
     else:
         return render(request, 'registration/check_id.html', locals())
+
+
