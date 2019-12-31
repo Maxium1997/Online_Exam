@@ -158,11 +158,32 @@ def change_password(request):
         return render(request, 'registration/password_change.html', locals())
 
 
-@login_required
+def reset_password(request):
+    if request.method == 'POST':
+        new_password = request.POST.get('new_password', )
+        verification_password = request.POST.get('verification_password', )
+        if new_password != verification_password:
+            messages.error(request, 'Verification error.')
+            return redirect('password_reset')
+        else:
+            messages.warning(request, request.AnonymousUser())
+            return redirect('password_reset')
+
+            # messages.success(request, 'Password change successfully. Please login again with new password.')
+            # return redirect('login')
+    else:
+        return redirect('password_reset')
+
+
+# @login_required
 def verification(request):
     if request.method == 'POST':
         if int(request.POST.get('random_code',)) == int(request.POST.get('verification_code',)):
             messages.success(request, 'Email Verified successfully.')
+
+            if request.POST.get('forget_change_pwd',):
+                return render(request, 'registration/password_reset.html', locals())
+
             request.user.email_is_verified = True
             request.user.save()
             return redirect('profile')
@@ -175,3 +196,22 @@ def verification(request):
     else:
         random_code = email_verified(request.user)
         return render(request, 'email_verification.html', locals())
+
+
+def forget_password(request):
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(reg_id=request.POST.get('reg_id',))
+            if user.email_is_verified:
+                random_code = email_verified(user)
+                flag = int(request.POST.get('forget_change_pwd',))
+                messages.success(request, 'Please check your email.')
+                return render(request, 'email_verification.html', locals())
+            else:
+                messages.error(request, 'Your email does not verify.')
+                return redirect('password_forget')
+        except ObjectDoesNotExist:
+            messages.error(request, 'User does not exist, user id: {}'.format(request.POST.get('reg_id',)))
+            return redirect('password_forget')
+    else:
+        return render(request, 'registration/check_id.html', locals())

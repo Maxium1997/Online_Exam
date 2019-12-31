@@ -34,7 +34,7 @@
             <tr>
                 <td>{{ user.reg_id }}</td>
                 <td>{{ user.name }}</td>
-                <td>{{ user.email }} / {% if user.email_is_verified %}已驗證{% else %}<a href="{% url 'email_verification' %}">驗證{% endif %}</a> </td>
+                <td>{{ user.email }} / {% if user.email_is_verified %}<i style="color: green" class="fa fa-check-circle"></i>{% else %}<a href="{% url 'email_verification' %}">驗證{% endif %}</a> </td>
                 <td>
                     {% if user.gender == 0 %}
                     男

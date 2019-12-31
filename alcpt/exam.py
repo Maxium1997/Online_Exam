@@ -101,7 +101,8 @@ def testpaper_create(request):
 
         testpaper = testmanager.create_testpaper(name=testpaper_name, created_by=request.user, is_testpaper=1)
 
-        return render(request, 'exam/testpaper_edit.html', locals())
+        messages.success(request, 'Add a testpaper successfully, please edit the new testpaper: {}'.format(testpaper.id))
+        return redirect('testpaper_list')
 
     else:
         return render(request, 'exam/testpaper_create.html', locals())
@@ -154,6 +155,23 @@ def testpaper_edit(request, testpaper_id):
         types_num = range(1, len(QuestionType.__members__)+1)
 
         return render(request, 'exam/testpaper_edit.html', locals())
+
+
+# 刪除考卷
+@permission_check(UserType.TestManager)
+def testpaper_delete(request, testpaper_id):
+    try:
+        testpaper = TestPaper.objects.get(id=testpaper_id)
+        if testpaper.is_testpaper and testpaper.valid:
+            messages.warning(request, 'This testpaper is valid, can not delete.')
+        else:
+            messages.success(request, 'Testpaper has been deleted successfully, testpaper id: {}'.format(testpaper.id))
+            testpaper.delete()
+        return redirect('testpaper_list')
+
+    except ObjectDoesNotExist:
+        messages.error(request, 'Testpaper does not exist, testpaper id: {}'.format(testpaper_id))
+        return redirect('testpaper_list')
 
 
 # 人工選題（未完成）

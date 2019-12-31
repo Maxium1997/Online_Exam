@@ -37,6 +37,8 @@ urlpatterns = [
         url(r'^profile$', registration.profile, name='profile'),
         url(r'^edit/(?P<reg_id>[a-zA-Z0-9]+)$', registration.edit_profile, name='profile_edit'),
         url(r'^password/change$', registration.change_password, name='password_change'),
+        url(r'^password/forget$', registration.forget_password, name='password_forget'),
+        url(r'^password/reset$', registration.reset_password, name='password_reset'),
     ])),
 
     # 系統管理員部分
@@ -75,6 +77,7 @@ urlpatterns = [
             url(r'^create$', exam.testpaper_create, name='testpaper_create'),
             url(r'^(?P<testpaper_id>[0-9]+)/content$', exam.testpaper_content, name='view_testpaper_content'),
             url(r'^(?P<testpaper_id>[0-9]+)/edit$', exam.testpaper_edit, name='testpaper_edit'),
+            url(r'^(?P<testpaper_id>[0-9]+)/delete$', exam.testpaper_delete, name='testpaper_delete'),
             url(r'^(?P<testpaper_id>[0-9]+)/(?P<question_type>[0-9]+)/auto_pick', exam.auto_pick, name='auto_pick'),
             url(r'^(?P<testpaper_id>[0-9]+)/(?P<question_type>[0-9]+)/manual_pick', exam.manual_pick, name='manual_pick'),
         ])),

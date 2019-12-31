@@ -23,7 +23,7 @@
                         <p>共 {{ question_types|lookup:i }} 題，已選擇 {{ selected_num|lookup:i }} 題</p>
                         <a href="{% url 'manual_pick' testpaper_id=testpaper.id question_type=i %}">手動選擇</a>
                         {% if question_types|lookup:i == selected_num|lookup:i %}
-                            <a disabled="{% url 'manual_pick' testpaper_id=testpaper.id question_type=i %}">自動選擇</a>
+                            <label>自動選擇</label>
                         {% else %}
                             <a href="{% url 'auto_pick' testpaper_id=testpaper.id question_type=i %}">自動選擇</a>
                         {% endif %}
