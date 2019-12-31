@@ -349,6 +349,7 @@ def operator_edit(request, question_id):
 
     if request.method == 'POST':
         question.q_content = request.POST.get('q_content', )
+        question.q_type = request.POST.get('question_type',)
         for choice in question.choice_set.all():
             choice.is_answer = 0
             choice.save()

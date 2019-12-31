@@ -23,12 +23,21 @@
         <br>
 
         <label for="change_type">Select the question type</label>
-
+        <select name="question_type" required>
+            {% if question.q_content %}
+                <option value="3" selected>文法</option>
+                <option value="4">名詞片語</option>
+                <option value="5">段落理解</option>
+            {% elif question.q_file %}
+                <option value="1" selected>問答</option>
+                <option value="2">簡短對話</option>
+            {% endif %}
+        </select>
 
         <br>
 
         <label for="select_answer">Select the Answer</label>
-        <select name="answer_choice">
+        <select name="answer_choice" required>
             {% for choice in question.choice_set.all %}
                 <option value="{{ choice.id }}" {% if choice.is_answer %} selected {% endif %}>{{ choice.c_content }}</option>
             {% endfor %}

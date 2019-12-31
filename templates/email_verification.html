@@ -11,9 +11,9 @@
             <label for="email_verification">Email驗證碼</label><br>
             <input type="text" name="verification_code" placeholder="請輸入驗證碼..." required>
 
-            <input type="text" name="random_code" value="{{ random_code }}">
+            <input type="hidden" name="random_code" value="{{ random_code }}">
 
-            <input type="text" name="forget_change_pwd" value="{{ flag }}">
+            <input type="hidden" name="forget_change_pwd" value="{{ flag }}">
 
             <input type="submit" onclick="return confirm('是否送出？')" value="送出">
         </form>
