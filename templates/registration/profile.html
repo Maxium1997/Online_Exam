@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'profile_base.html' %}
 
 {% load web_filters %}
 
@@ -8,9 +8,85 @@
 {% endblock %}
 
 {% block content %}
-    <div>
+    <!--
+    <div class="btn-group-vertical">
+        <button type="button" class="btn btn-default">編輯個人檔案</button>
+        <button type="button" class="btn btn-default">更改密碼</button>
+    </div>
+
+    <style>
+        .btn-group-vertical{
+            width: 300px;
+        }
+    </style>
+    -->
+    <!--
+    <div class="">
         <a href="{% url 'profile_edit' user.reg_id %}">編輯個人檔案</a>
         <a href="{% url 'password_change' %}">更改密碼</a>
+    </div>
+    -->
+    <div class="tool-btn">
+        <ul class="nav nav-pills nav-stacked">
+          <li><a href="#">基本資料</a></li>
+          <li><a href="{% url 'profile_edit' user.reg_id %}">編輯個人檔案</a></li>
+          <li><a href="{% url 'password_change' %}">更改密碼</a></li>
+        </ul>
+
+        <style>
+            .tool-btn{
+                background-color: #F3F3F3;
+                width: 300px;
+                height: 739px;
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+                border-right-style: solid;
+                border-right-width: 0.8px;
+                border-right-color: #c0c0c0;
+                overflow: hidden;
+
+                position: absolute;
+                top: 0%;
+                left: 0%;
+            }
+
+            .tool-btn ul{
+                width: 299px;
+                position: absolute;
+                top: 10px;
+                padding-top: 10px;
+            }
+
+            .nav li a{
+                color: #2C3232;
+                font-size: 20px;
+                text-decoration: none;
+                padding-left: 50px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+
+
+
+        </style>
+    </div>
+    <!-- 大頭貼 -->
+    <div class="photo">
+        <i class="fa fa-user-circle"></i>
+
+        <style>
+            .photo{
+                position: absolute;
+                left: 27%;
+                top: 6%;
+
+            }
+
+            .photo i{
+                font-size: 160px;
+                color: #5e5e5e;
+            }
+        </style>
     </div>
 
     <div>
