@@ -31,7 +31,9 @@ def score_list(request):
     paginator = Paginator(answer_sheets, 10)
 
     for answer_sheet in answer_sheets:
-        if answer_sheet.score >= 60:
+        if answer_sheet.score is None:
+            pass
+        elif answer_sheet.score >= 60:
             qualified += 1
         else:
             unqualified += 1
@@ -105,7 +107,7 @@ def start_practice(request, exam_id):
         if answer_sheet.is_finished:
             messages.warning(request, 'You had done this exam.')
             return redirect('testee_exam_list')
-    except:
+    except ObjectDoesNotExist:
         answer_sheet = AnswerSheet.objects.create(exam=exam, user=request.user.student)
         all_questions = exam.testpaper.question_set.all()
 
@@ -127,7 +129,7 @@ def start_practice(request, exam_id):
         return redirect('testee_exam_list')
 
     answers = Answer.objects.filter(answer_sheet=answer_sheet)
-    page = request.GET.get('page', 0)
+    page = request.GET.get('page', 1)
     paginator = Paginator(answers, 10)
 
     try:

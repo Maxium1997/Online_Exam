@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load web_filters %}
+
 {% block path %}
 
 {% endblock %}
@@ -15,7 +17,19 @@
                 </tr>
                 {% for answer in answerList %}
                 <tr>
-                    <td>{{ answer.question }}</td>
+                    {% if answer.question.q_type|question_kind == 'listening' %}
+                        <td>
+                            <audio controls preload="none">
+                                <source src="{{ answer.question.q_file }}" type="audio/mpeg">
+                                Your browser does not support the audio tag.
+                            </audio>
+                        </td>
+                    {% elif answer.question.q_type|question_kind == 'reading' %}
+                        <td>{{ answer.question }}</td>
+                    {% else %}
+                        <td>Unknown</td>
+                    {% endif %}
+
                     {% for option in answer.question.choice_set.all %}
                         <td>
                             <input type="radio" name="answer_{{ answer.id }}" value="{{ forloop.counter }}" {% if forloop.counter == answer.selected %}checked{% endif %} required>{{ option }}

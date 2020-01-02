@@ -1,7 +1,9 @@
+import random
+
 from email.mime.text import MIMEText
 from smtplib import SMTP, SMTPAuthenticationError, SMTPException
 from alcpt.models import User
-import random
+
 
 def email_verified(user: User):
     # strSmtp = "smtp.gmail.com:587"

@@ -65,7 +65,7 @@
                         {% endif %}
                         {% if request.user|has_perm:'TBOperator' and question.state != 1 %}
                             <a href="{% url 'operator_edit' question.id %}">編輯</a> / 
-                            <a href="{% url 'question_delete' question.id %}" onclick="return confirm('確認是否刪除此試題？{{ question.q_content }}')">刪除</a>
+                            <a href="{% url 'question_delete' question.id %}" onclick="return confirm('確認是否刪除此試題？')">刪除</a>
                         {% elif request.user|has_perm:'TBManager' and question.state != 1 %}
                             <a href="{% url 'question_edit' question.id %}">編輯</a>
                         {% endif %}

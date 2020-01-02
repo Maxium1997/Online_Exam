@@ -349,6 +349,7 @@ def operator_edit(request, question_id):
 
     if request.method == 'POST':
         question.q_content = request.POST.get('q_content', )
+        question.q_type = request.POST.get('question_type',)
         for choice in question.choice_set.all():
             choice.is_answer = 0
             choice.save()
@@ -374,8 +375,12 @@ def question_delete(request, question_id):
     try:
         question = Question.objects.get(id=question_id)
         if question.state == 0 or question.state == 2:
+            choices = question.choice_set.all()
+            for choice in choices:
+                choice.delete()
+
             question.delete()
-            messages.success('Delete question successfully, question id: {}'.format(question.id))
+            messages.success(request, 'Delete question successfully, question id: {}'.format(question.id))
         else:
             messages.warning(request, 'Question can not be deleted, question id: {}'.format(question_id))
     except ObjectDoesNotExist:

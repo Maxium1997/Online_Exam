@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 
+{% load web_filters %}
+
 {% block path %}
     <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="{% url 'testee_score_list' %}">受測者</a>
+    <a href="">受測者</a>
+    <a class="fa fa-angle-right fa-lg box"></a>
+    <a href="{% url 'testee_score_list' %}">成績紀錄</a>
     <a class="fa fa-angle-right fa-lg box"></a>
     <a href="">檢閱試卷內容</a>
 {% endblock %}
@@ -16,7 +20,18 @@
             </tr>
             {% for answer in answersheet.answer_set.all %}
                 <tr>
-                    <td>{{ answer.question }}</td>
+                    {% if answer.question.q_type|question_kind == 'listening' %}
+                        <td>
+                            <audio controls preload="none">
+                                <source src="{{ answer.question.q_file }}" type="audio/mpeg">
+                                Your browser does not support the audio tag.
+                            </audio>
+                        </td>
+                    {% elif answer.question.q_type|question_kind == 'reading' %}
+                        <td>{{ answer.question }}</td>
+                    {% else %}
+                        <td>Unknown</td>
+                    {% endif %}
                     <td>
                     {% for option in answer.question.choice_set.all %}
                         {% if answer.selected == forloop.counter and option.is_answer %}
