@@ -21,9 +21,8 @@
                     <th class="col-md-3">題目</th>
                     <th class="col-md-2">類型</th>
                     <th class="col-md-2">題目選項</th>
-                    <th class="col-md-1">狀態</th>
                     <th class="col-md-2">審核</th>
-                    <th class="col-md-1"></th>
+                    <th class="col-md-2">備註</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,7 +37,8 @@
                                 </audio>
                             {% else %}
                                 {{ question.q_content }}
-                            {% endif %}</td>
+                            {% endif %}
+                        </td>
                         <td style="text-align: center; vertical-align: middle">{{ question.q_type|readable_question_type }}</td>
                         <td style="text-align: left; vertical-align: middle">
                             {% for option in question.choice_set.all %}
@@ -49,12 +49,19 @@
                                 {% endif %}
                             {% endfor %}
                         </td>
-                        <td style="text-align: center; vertical-align: middle">{{ question.state|readable_state }}</td>
 
                         <td style="vertical-align: middle">
                             <a href="{% url 'question_pass' question.id %}" onclick="return confirm('確認審核通過？')">Pass</a> /
                             <a href="{% url 'question_reject' question.id %}">Reject</a> /
                             <a href="{% url 'question_edit' question.id %}">Edit</a>
+                        </td>
+
+                        <td style="text-align: center; vertical-align: middle">
+                            {% if question.fault_reason %}
+                                {{ question.fault_reason }}
+                            {% else %}
+                                無
+                            {% endif %}
                         </td>
 
                         <td>

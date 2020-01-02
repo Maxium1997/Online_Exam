@@ -13,7 +13,8 @@
                 <label>{{ reading_question.q_content }}</label>
             {% elif listening_question %}
                 <audio controls preload="none">
-                    <source src="{{ listening_question.q_file }}.mp3">
+                    <source src="{{ listening_question.q_file }}" type="audio/mpeg">
+                    Your browser does not support the audio tag.
                 </audio>
             {% endif %}
 

@@ -375,8 +375,12 @@ def question_delete(request, question_id):
     try:
         question = Question.objects.get(id=question_id)
         if question.state == 0 or question.state == 2:
+            choices = question.choice_set.all()
+            for choice in choices:
+                choice.delete()
+
             question.delete()
-            messages.success('Delete question successfully, question id: {}'.format(question.id))
+            messages.success(request, 'Delete question successfully, question id: {}'.format(question.id))
         else:
             messages.warning(request, 'Question can not be deleted, question id: {}'.format(question_id))
     except ObjectDoesNotExist:

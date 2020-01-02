@@ -10,7 +10,7 @@
 {% block content %}
 
     <div>
-        <h1>成績紀錄</h1>
+        <h1>成績紀錄（共{{ answer_sheets.count }}條結果）</h1>
         <table border="1">
             <tr>
                 <th>測驗名稱</th>
@@ -18,7 +18,7 @@
                 <th>測驗時間</th>
                 <th>試卷內容</th>
             </tr>
-            {% for answersheet in answersheetList %}
+            {% for answersheet in answer_sheets %}
                 <tr>
                     <td>{{ answersheet.exam }}</td>
                     <td>{{ answersheet.score }}</td>
