@@ -44,9 +44,18 @@ def exam_create(request):
     if request.method == 'POST':
         start_time = request.POST.get('start_time',)
         duration = request.POST.get('duration',)
-        info = datetime.strptime(start_time, '%Y-%m-%d %H:%M') + timedelta(minutes=int(duration))
+        started_time = datetime.strptime(str(start_time)+".000Z", '%Y-%m-%dT%H:%M:%S.%fZ')
+        finish_time = datetime.strptime(str(start_time)+".000Z", '%Y-%m-%dT%H:%M:%S.%fZ') + timedelta(minutes=int(duration))
 
-        messages.success(request, info)
+        exam_name = request.POST.get('exam_name',)
+        Exam.objects.create(name=exam_name,
+                            exam_type=1,
+                            start_time=start_time,
+                            created_time=datetime.now(),
+                            finish_time=finish_time,
+                            created_by=request.user,)
+        messages.success(request, "exam: {} create successfully.".format(exam_name))
+
         return redirect('exam_list')
     else:
         return render(request, 'exam/exam_create.html', locals())
