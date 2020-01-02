@@ -28,7 +28,7 @@
                 <!----------------------------------------------------------------------------------------------------->
 
                 <div class="form-group">
-                    <label for="dtp_input1" class="col-md-2 control-label">測驗開始時間：</label>
+                    <label for="dtp_input1" class="col-md-2 control-label">開始時間：</label>
                     <div class="input-group date form_datetime col-md-4" data-date="" data-date-format="yyyy-mm-ddThh:ii:ss" data-link-field="dtp_input1">
                         <input class="form-control" size="16" type="text" id="start_time" name="start_time" required>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
@@ -41,6 +41,15 @@
                 <div class="time_range">
                     <label>測驗時間：</label>
                     <input type="number" name="duration" value="40" required>
+                </div>
+
+                <div class="choose_test_paper">
+                    <label>測驗試卷：</label>
+                    <select name="seleceed_testpaper">
+                        {% for testpaper in testpapers %}
+                            <option value="{{ testpaper.id }}">{{ testpaper.name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div class="btn">
@@ -99,13 +108,13 @@
 
                 .form-group label{
                     position: absolute;
-                    left: 1.7%;
+                    left: -1.1%;
                     top: 42%;
                 }
 
                 .input-group{
                     position: absolute;
-                    left: 18%;
+                    left: 15%;
                     top: 43%;
                 }
 
@@ -135,6 +144,12 @@
                     position: absolute;
                     top: 70%;
                     left: 45%;
+                }
+
+                .choose_test_paper{
+                    position: absolute;
+                    top: 67%;
+                    left: 5%;
                 }
 
             </style>

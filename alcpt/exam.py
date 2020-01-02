@@ -7,6 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db import IntegrityError
 
 from alcpt.managerfuncs import testmanager
 from alcpt.decorators import permission_check
@@ -18,13 +19,7 @@ from alcpt.exceptions import *
 @permission_check(UserType.TestManager)
 @require_http_methods(["GET"])
 def exam_list(request):
-    exam_name = request.GET.get('exam_name')
-
-    if exam_name:
-        exams = Exam.objects.filter(is_public=True).filter(name__contains=exam_name)
-    else:
-        exams = Exam.objects.filter(is_public=True)
-
+    exams = Exam.objects.filter(is_public=True)
     page = request.GET.get('page', 0)
     paginator = Paginator(exams, 10)  # the second parameter is used to display how many items. Now is display 10
 
@@ -38,7 +33,6 @@ def exam_list(request):
     return render(request, 'exam/exam_list.html', locals())
 
 
-# Not yet
 @permission_check(UserType.TestManager)
 def exam_create(request):
     if request.method == 'POST':
@@ -46,18 +40,26 @@ def exam_create(request):
         duration = request.POST.get('duration',)
         started_time = datetime.strptime(str(start_time)+".000Z", '%Y-%m-%dT%H:%M:%S.%fZ')
         finish_time = datetime.strptime(str(start_time)+".000Z", '%Y-%m-%dT%H:%M:%S.%fZ') + timedelta(minutes=int(duration))
+        testpaper = TestPaper.objects.get(id=int(request.POST.get('seleceed_testpaper',)))
 
         exam_name = request.POST.get('exam_name',)
-        Exam.objects.create(name=exam_name,
-                            exam_type=1,
-                            start_time=start_time,
-                            created_time=datetime.now(),
-                            finish_time=finish_time,
-                            created_by=request.user,)
-        messages.success(request, "exam: {} create successfully.".format(exam_name))
+        try:
+            Exam.objects.create(name=exam_name,
+                                exam_type=1,
+                                start_time=start_time,
+                                created_time=datetime.now(),
+                                duration=duration,
+                                finish_time=finish_time,
+                                testpaper=testpaper,
+                                is_public=True,
+                                created_by=request.user,)
+            messages.success(request, "exam: {} create successfully.".format(exam_name))
+        except IntegrityError:
+            raise IntegrityError("Duplicate entry '%s' for key 'name'".format(exam_name))
 
         return redirect('exam_list')
     else:
+        testpapers = TestPaper.objects.filter(is_testpaper=True, valid=True)
         return render(request, 'exam/exam_create.html', locals())
 
 
