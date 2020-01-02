@@ -98,4 +98,25 @@ def auto_pick(testpaper: TestPaper, type_counts: list, question_type: int):
     return len(questions)
 
 
-# def manual_pick():
+def manual_pick(question_type: int):
+    passed_questions = Question.objects.filter(state=1)
+    questions = []
+
+    if question_type == 1:
+        questions = list(passed_questions.filter(q_type=1))
+
+    if question_type == 2:
+        questions = list(passed_questions.filter(q_type=2))
+
+    if question_type == 3:
+        questions = list(passed_questions.filter(q_type=3))
+
+    if question_type == 4:
+        questions = list(passed_questions.filter(q_type=4))
+
+    if question_type == 5:
+        questions = list(passed_questions.filter(q_type=5))
+
+    return questions
+
+

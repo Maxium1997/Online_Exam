@@ -11,7 +11,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from alcpt.managerfuncs import testmanager
 from alcpt.decorators import permission_check
 from alcpt.definitions import UserType, QuestionType, QuestionTypeCounts
-from alcpt.models import Exam, TestPaper, Group
+from alcpt.models import Exam, TestPaper, Group, Question
 from alcpt.exceptions import *
 
 
@@ -183,11 +183,40 @@ def testpaper_delete(request, testpaper_id):
         return redirect('testpaper_list')
 
 
-# 人工選題（未完成）
+# 人工選題（已完成）
 @permission_check(UserType.TestManager)
 def manual_pick(request, testpaper_id, question_type):
-    messages.success(request, str(question_type))
-    return render(request, 'exam/testpaper_manual_pick.html', locals())
+    try:
+        testpaper = TestPaper.objects.get(id=testpaper_id)
+    except ObjectDoesNotExist:
+        messages.error(request, 'Testpaper does not exist, testpaper id: {}'.format(testpaper_id))
+
+    if request.method == "POST":
+        selected_questions = request.POST.getlist('question',)
+
+        selected_question_list = []
+        for question in selected_questions:
+            selected_question_list.append(Question.objects.get(id=question))
+
+        for question in selected_question_list:
+            testpaper.question_set.add(question)
+        for question in testpaper.question_set.all():
+            if question not in selected_question_list:
+                testpaper.question_set.remove(question)
+        testpaper.save()
+        messages.success(request, "testpaper: {} is successfully selected manually.".format(testpaper.name))
+        return redirect('testpaper_edit', testpaper_id=testpaper_id)
+
+    else:
+        for q_type in QuestionType.__members__.values():
+            if q_type.value[0] == int(question_type):
+                question_type = q_type
+                break
+
+        questionList = testmanager.manual_pick(question_type=question_type.value[0])
+        selected_questions = testpaper.question_set.all()
+
+        return render(request, 'exam/testpaper_manual_pick.html', locals())
 
 
 # 自動選題（已完成）
