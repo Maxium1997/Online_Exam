@@ -25,7 +25,7 @@
                     <td>{{ exam.average_score }}</td>
                     <td>
                         {% if not exam.average_score %}
-                            <a href="{% url 'testee_start_practice' exam.id %}">開始測驗</a>
+                            <a href="{% url 'testee_start_exam' exam.id %}">開始測驗</a>
                         {% elif exam.average_score == 0 %}
                             <label>已完成測驗</label>
                         {% else %}

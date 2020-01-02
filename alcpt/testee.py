@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
@@ -95,9 +96,22 @@ def view_answersheet_content(request, answersheet_id):
 
 @permission_check(UserType.Testee)
 @require_http_methods(["GET", "POST"])
-def start_practice(request, exam_id):
+def start_exam(request, exam_id):
     try:
         exam = Exam.objects.get(id=exam_id)
+
+        now_time = datetime.now()
+        if not exam.is_public:
+            pass
+        elif exam.start_time < now_time < exam.finish_time:
+            pass
+        elif now_time < exam.start_time:
+            messages.warning(request, 'Exam does not start.')
+            return redirect('testee_exam_list')
+        elif now_time > exam.finish_time:
+            messages.warning(request, 'Exam had finished.')
+            return redirect('testee_exam_list')
+
     except ObjectDoesNotExist:
         messages.error(request, 'Exam does not exist, Exam id: {}'.format(exam_id))
         return redirect('testee_exam_list')
