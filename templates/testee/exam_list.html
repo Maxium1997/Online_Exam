@@ -18,7 +18,7 @@
                 <th>測驗成績</th>
                 <th></th>
             </tr>
-            {% for exam in exams %}
+            {% for exam in examList %}
                 <tr>
                     <td>{{ exam }}</td>
                     <td>{{ exam.exam_type|readable_exam_type }}</td>

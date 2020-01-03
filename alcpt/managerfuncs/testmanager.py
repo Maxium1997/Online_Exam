@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.utils import timezone
 import random
 
-from alcpt.models import User, TestPaper, Question, Exam
+from alcpt.models import User, TestPaper, Question, Exam, AnswerSheet
 from alcpt.definitions import QuestionType, ExamType, QuestionTypeCounts
 
 
@@ -99,3 +99,28 @@ def auto_pick(testpaper: TestPaper, type_counts: list, question_type: int):
 
 
 # def manual_pick():
+
+
+def calculate_score(exam_id: int, answer_sheet: AnswerSheet):
+    answers = answer_sheet.answer_set.all()
+
+    score = 0
+    for answer in answers:
+        tmp = []
+        for choice in answer.question.choice_set.all():
+            tmp.append(choice)
+
+        if tmp[answer.selected-1].is_answer:
+            score += 1
+        else:
+            pass
+
+    # calculate average score of practice
+    answer_sheet.score = int(score / len(answers)*100)
+    answer_sheet.is_finished = True
+    answer_sheet.save()
+    exam = Exam.objects.get(id=exam_id)
+    exam.average_score = answer_sheet.score
+    exam.save()
+
+    return answer_sheet.score

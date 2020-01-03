@@ -114,11 +114,14 @@ urlpatterns = [
     # 受測者部分(尚未完成)
     url(r'^testee$', testee.score_list, name='testee_score_list'),  # 受測者主頁（顯示自我成績）
     url(r'^testee/', include([
-        url(r'^exam_list', testee.exam_list, name='testee_exam_list'),
+        url(r'^exam/', include([
+            url(r'^list$', testee.exam_list, name='testee_exam_list'),
+            url(r'^start/(?P<exam_id>[0-9]+)$', testee.start_exam, name='testee_start_exam'),
+            url(r'^answering/(?P<exam_id>[0-9]+)/(?P<answer_id>[0-9]+)$', testee.answering, name='testee_answering'),
+        ])),
         url(r'^(?P<answersheet_id>[0-9]+)/content$', testee.view_answersheet_content, name='view_answersheet_content'),
         url(r'^practice/', include([
             url(r'^(?P<kind>(listening|reading))$', testee.practice_create, name='testee_practice_create'),
-            url(r'^(?P<exam_id>[0-9]+)', testee.start_exam, name='testee_start_exam'),
         ]))
     ])),
 ]

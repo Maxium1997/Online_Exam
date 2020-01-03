@@ -13,7 +13,7 @@ from .models import Question, AnswerSheet, Student, User, Exam, TestPaper, Answe
 from .exceptions import *
 from .decorators import permission_check
 from .definitions import UserType, QuestionType, ExamType
-from .managerfuncs import viewer, practicemanager
+from .managerfuncs import viewer, practicemanager, testmanager
 
 
 @permission_check(UserType.Testee)
@@ -105,7 +105,7 @@ def view_answersheet_content(request, answersheet_id):
 
 
 @permission_check(UserType.Testee)
-@require_http_methods(["GET", "POST"])
+@require_http_methods(["GET"])
 def start_exam(request, exam_id):
     try:
         exam = Exam.objects.get(id=exam_id)
@@ -127,7 +127,7 @@ def start_exam(request, exam_id):
         return redirect('testee_exam_list')
 
     try:
-        answer_sheet = AnswerSheet.objects.get(exam=exam)
+        answer_sheet = AnswerSheet.objects.get(exam=exam, user=request.user.student)
         if answer_sheet.is_finished:
             messages.warning(request, 'You had done this exam.')
             return redirect('testee_exam_list')
@@ -135,32 +135,47 @@ def start_exam(request, exam_id):
         answer_sheet = AnswerSheet.objects.create(exam=exam, user=request.user.student)
         all_questions = exam.testpaper.question_set.all()
 
+        all_questions = list(all_questions)
+        random.shuffle(all_questions)
+
         for question in all_questions:
             Answer.objects.create(answer_sheet=answer_sheet, question=question)
 
-    if request.method == 'POST':
-        for answer in answer_sheet.answer_set.all():
-            answer.selected = int(request.POST.get('answer_{}'.format(answer.id),))
-            answer.save()
+    return redirect('testee_answering',
+                    exam_id=exam.id,
+                    answer_id=Answer.objects.filter(answer_sheet=answer_sheet)[0].id)   # transfer the first question
 
-        answer_sheet.is_finished = True
-        answer_sheet.save()
 
-        tmp = practicemanager.calculate_score(exam_id, answer_sheet)
-
-        messages.success(request, 'Finished the practice. You got {} point.'.format(tmp))
-
-        return redirect('testee_exam_list')
-
-    answers = Answer.objects.filter(answer_sheet=answer_sheet)
-    page = request.GET.get('page', 1)
-    paginator = Paginator(answers, 10)
+@permission_check(UserType.Testee)
+@require_http_methods(["GET", "POST"])
+def answering(request, exam_id, answer_id):
+    exam = Exam.objects.get(id=exam_id)
+    answer = Answer.objects.get(id=answer_id)
+    answer_sheet = AnswerSheet.objects.get(exam=exam, user=request.user.student)
 
     try:
-        answerList = paginator.page(page)
-    except PageNotAnInteger:
-        answerList = paginator.page(1)
-    except EmptyPage:
-        answerList = paginator.page(paginator.num_pages)
+        the_next_question = Answer.objects.filter(answer_sheet=answer_sheet).filter(selected=-1)[0]
 
-    return render(request, 'practice/start.html', locals())
+        if answer.selected != -1:
+            messages.warning(request, 'Please answer from answer id: {}'.format(the_next_question.id))
+            return redirect('testee_answering', exam_id=exam_id, answer_id=the_next_question.id)
+
+    except:
+        messages.success(request, 'You had finished the exam.')
+        score = testmanager.calculate_score(exam.id, answer_sheet)
+        return redirect('testee_exam_list')
+
+    if request.method == 'POST':
+
+        answering_ans = Answer.objects.get(id=answer_id)
+        selected_answer = request.POST.get('answer_{}'.format(answer_id))
+
+        answering_ans.selected = selected_answer
+        answering_ans.save()
+
+        the_next_question = Answer.objects.filter(answer_sheet=answer_sheet).filter(selected=-1)[0]
+        return redirect('testee_answering',
+                        exam_id=exam_id,
+                        answer_id=the_next_question.id)
+    else:
+        return render(request, 'testee/answering.html', locals())
