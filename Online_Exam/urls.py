@@ -118,7 +118,7 @@ urlpatterns = [
         url(r'^(?P<answersheet_id>[0-9]+)/content$', testee.view_answersheet_content, name='view_answersheet_content'),
         url(r'^practice/', include([
             url(r'^(?P<kind>(listening|reading))$', testee.practice_create, name='testee_practice_create'),
-            url(r'^(?P<exam_id>[0-9]+)', testee.start_practice, name='testee_start_practice'),
+            url(r'^(?P<exam_id>[0-9]+)', testee.start_exam, name='testee_start_exam'),
         ]))
     ])),
 ]
