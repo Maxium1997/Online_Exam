@@ -1,4 +1,5 @@
 import json
+import random
 from datetime import datetime
 
 from django.shortcuts import render, redirect
@@ -17,7 +18,16 @@ from .managerfuncs import viewer, practicemanager
 
 @permission_check(UserType.Testee)
 def exam_list(request):
-    exams = Exam.objects.all().filter(created_by=request.user)
+    examList = []
+    exams = Exam.objects.exclude(is_public=False)
+    for exam in exams:
+        examList.append(exam)
+    practices = Exam.objects.filter(created_by=request.user)
+    for practice in practices:
+        if practice in examList:
+            pass
+        else:
+            examList.append(practice)
 
     return render(request, 'testee/exam_list.html', locals())
 
