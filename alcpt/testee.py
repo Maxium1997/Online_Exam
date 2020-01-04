@@ -149,9 +149,13 @@ def start_exam(request, exam_id):
 @permission_check(UserType.Testee)
 @require_http_methods(["GET", "POST"])
 def answering(request, exam_id, answer_id):
-    exam = Exam.objects.get(id=exam_id)
-    answer = Answer.objects.get(id=answer_id)
-    answer_sheet = AnswerSheet.objects.get(exam=exam, user=request.user.student)
+    try:
+        exam = Exam.objects.get(id=exam_id)
+        answer = Answer.objects.get(id=answer_id)
+        answer_sheet = AnswerSheet.objects.get(exam=exam, user=request.user.student)
+    except ObjectDoesNotExist:
+        messages.warning(request, 'Don\'t change the url by yourself.')
+        return redirect('testee_exam_list')
 
     try:
         the_next_question = Answer.objects.filter(answer_sheet=answer_sheet).filter(selected=-1)[0]
@@ -173,15 +177,13 @@ def answering(request, exam_id, answer_id):
         answering_ans.selected = selected_answer
         answering_ans.save()
 
-        try:
-            the_next_question = Answer.objects.filter(answer_sheet=answer_sheet).filter(selected=-1)[0]
-        except:
+        if len(Answer.objects.filter(answer_sheet=answer_sheet).filter(selected=-1)) is 0:
             messages.success(request, 'You had finished the exam.')
             score = testmanager.calculate_score(exam.id, answer_sheet)
             return redirect('testee_exam_list')
-        
-        return redirect('testee_answering',
-                        exam_id=exam_id,
-                        answer_id=the_next_question.id)
+        else:
+            the_next_question = list(Answer.objects.filter(answer_sheet=answer_sheet).filter(selected=-1)).pop(0)
+
+        return redirect('testee_answering', exam_id=exam_id, answer_id=the_next_question.id)
     else:
         return render(request, 'testee/answering.html', locals())
