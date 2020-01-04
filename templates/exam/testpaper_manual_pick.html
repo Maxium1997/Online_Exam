@@ -11,12 +11,44 @@
         <form method="post">
             {% csrf_token %}
             <label for="pick_up_questions">選擇題目</label>
-{#            <div>#}
-{#                {% for question in questions %}#}
-{#                    <div>#}
-{#                    </div>#}
-{#                {% endfor %}#}
-{#            </div>#}
+
+            <div>
+                {% if questionList %}
+                    <div>
+                        <tr>
+                            <th class="col-md-1">ＩＤ</th>
+                            <th class="col-md-3">題目</th>
+                            <th class="col-md-2">題目選項</th>
+                        </tr>
+                    </div>
+                    {% for question in questionList %}
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="question" value="{{ question.id }}" {% if question in selected_questions %}checked{% endif %}>{{ question.id }}
+                            </td>
+                            <td>
+                                {% if question.q_file %}
+                                    <audio controls preload="none">
+                                        <source src="{{ question.q_file }}" type="audio/mpeg">
+                                        Your browser does not support the audio tag.
+                                    </audio>
+                                {% else %}
+                                    {{ question.q_content }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% for option in question.choice_set.all %}
+                                    {% if option.is_answer %}
+                                        <span style="color: red"><li>{{ option }}</li></span>
+                                    {% else %}
+                                        <li>{{ option }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </div>
 
             <input type="submit" value="確認">
         </form>

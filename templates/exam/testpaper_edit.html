@@ -11,7 +11,7 @@
         <form method="post">
             {% csrf_token %}
             <label for="testpaper_name">考卷名稱</label>
-            <input type="text" id="testpaper_name" name="testpaper_name" placeholder="考卷名稱..." required>
+            <input type="text" id="testpaper_name" name="testpaper_name" value="{{ testpaper.name }}" required>
 
             <br>
 
