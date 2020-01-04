@@ -15,14 +15,12 @@
             <tr>
                 <th>測驗名稱</th>
                 <th>測驗類型</th>
-                <th>測驗成績</th>
                 <th></th>
             </tr>
             {% for exam in examList %}
                 <tr>
                     <td>{{ exam }}</td>
                     <td>{{ exam.exam_type|readable_exam_type }}</td>
-                    <td>{{ exam.average_score }}</td>
                     <td>
                         {% if not exam.average_score %}
                             <a href="{% url 'testee_start_exam' exam.id %}">開始測驗</a>

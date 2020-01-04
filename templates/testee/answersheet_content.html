@@ -15,20 +15,31 @@
     <div>
         <table border="1">
             <tr>
+                <th>題序</th>
                 <th>題目</th>
                 <th>選項</th>
             </tr>
             {% for answer in answersheet.answer_set.all %}
                 <tr>
+                    <td>{{ forloop.counter }}</td>
+
                     {% if answer.question.q_type|question_kind == 'listening' %}
                         <td>
+                            {% if answer.selected == -1 %}
+                                <span style="color: red">此題未作答</span>
+                            {% endif %}
                             <audio controls preload="none">
                                 <source src="{{ answer.question.q_file }}" type="audio/mpeg">
                                 Your browser does not support the audio tag.
                             </audio>
                         </td>
                     {% elif answer.question.q_type|question_kind == 'reading' %}
-                        <td>{{ answer.question }}</td>
+                        <td>
+                            {% if answer.selected == -1 %}
+                                <span style="color: red">此題未作答</span>
+                            {% endif %}
+                            {{ answer.question }}
+                        </td>
                     {% else %}
                         <td>Unknown</td>
                     {% endif %}

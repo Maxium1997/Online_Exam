@@ -23,7 +23,20 @@
             {% for question in questions %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ question }}</td>
+                    {% if question.q_type|question_kind == 'listening' %}
+                        <td>
+                            <audio controls preload="none">
+                                <source src="{{ question.q_file }}" type="audio/mpeg">
+                                Your browser does not support the audio tag.
+                            </audio>
+                        </td>
+                    {% elif question.q_type|question_kind == 'reading' %}
+                        <td>
+                            {{ question }}
+                        </td>
+                    {% else %}
+                        <td>Unknown</td>
+                    {% endif %}
                     <td>{{ question.q_type|readable_question_type }}</td>
                     <td>
                     {% for choice in question.choice_set.all %}
