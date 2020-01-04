@@ -1,7 +1,9 @@
 from django import template
 
+from django.core.exceptions import ObjectDoesNotExist
+
 from alcpt.definitions import UserType, QuestionType, ExamType
-from alcpt.models import User, Student, Question, ReportCategory
+from alcpt.models import User, Student, Question, ReportCategory, Exam
 from alcpt.utility import set_query_parameter
 from alcpt.exceptions import IllegalArgumentError, ObjectNotFoundError
 
@@ -156,3 +158,14 @@ def question_kind(question_type: int):
     else:
         return 'unknown'
 
+
+@register.filter(name='is_finished')
+def is_finished(exam: Exam, user: User):
+    try:
+        answer_sheet = exam.answersheet_set.get(user_id=user.student)
+        if answer_sheet.score is None:
+            return False
+        else:
+            return True
+    except ObjectDoesNotExist:
+        return False

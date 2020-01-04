@@ -22,7 +22,11 @@
                     <td>{{ exam }}</td>
                     <td>{{ exam.exam_type|readable_exam_type }}</td>
                     <td>
-                        <a href="{% url 'testee_start_exam' exam.id %}">開始測驗</a>
+                        {% if not exam|is_finished:request.user %}
+                            <a href="{% url 'testee_start_exam' exam.id %}">開始測驗</a>
+                        {% else %}
+                            <label>已完成測驗</label>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
