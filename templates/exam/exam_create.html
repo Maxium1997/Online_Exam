@@ -45,7 +45,8 @@
 
                 <div class="choose_test_paper">
                     <label>測驗試卷：</label>
-                    <select name="seleceed_testpaper">
+                    <select name="seleceed_testpaper" required>
+                        <option value="" disabled selected>請選擇測驗用試卷</option>
                         {% for testpaper in testpapers %}
                             <option value="{{ testpaper.id }}">{{ testpaper.name }}</option>
                         {% endfor %}

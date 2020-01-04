@@ -173,7 +173,13 @@ def answering(request, exam_id, answer_id):
         answering_ans.selected = selected_answer
         answering_ans.save()
 
-        the_next_question = Answer.objects.filter(answer_sheet=answer_sheet).filter(selected=-1)[0]
+        try:
+            the_next_question = Answer.objects.filter(answer_sheet=answer_sheet).filter(selected=-1)[0]
+        except:
+            messages.success(request, 'You had finished the exam.')
+            score = testmanager.calculate_score(exam.id, answer_sheet)
+            return redirect('testee_exam_list')
+        
         return redirect('testee_answering',
                         exam_id=exam_id,
                         answer_id=the_next_question.id)
