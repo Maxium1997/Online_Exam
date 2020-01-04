@@ -92,6 +92,10 @@ def practice_create(request, kind):
 def view_answersheet_content(request, answersheet_id):
     try:
         answersheet = AnswerSheet.objects.get(id=answersheet_id)
+        if answersheet.exam.is_public:
+            if datetime.now() < answersheet.exam.finish_time:
+                messages.warning(request, 'This exam does not finish.')
+                return redirect('testee_score_list')
 
     except ObjectDoesNotExist:
         messages.error(request, 'Answer sheet does not exist, answersheet_id: {}'.format(answersheet_id))
@@ -154,7 +158,7 @@ def answering(request, exam_id, answer_id):
         answer = Answer.objects.get(id=answer_id)
         answer_sheet = AnswerSheet.objects.get(exam=exam, user=request.user.student)
     except ObjectDoesNotExist:
-        messages.warning(request, 'Don\'t change the url by yourself.')
+        messages.warning(request, 'Answer id error, answer id: {}'.format(answer_id))
         return redirect('testee_exam_list')
 
     try:

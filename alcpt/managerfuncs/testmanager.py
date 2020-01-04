@@ -139,6 +139,7 @@ def calculate_score(exam_id: int, answer_sheet: AnswerSheet):
 
     # calculate average score of practice
     answer_sheet.score = int(score / len(answers) * 100)
+    answer_sheet.is_finished = True
     answer_sheet.save()
 
     exam = Exam.objects.get(id=exam_id)
@@ -147,8 +148,6 @@ def calculate_score(exam_id: int, answer_sheet: AnswerSheet):
     else:
         exam.average_score = answer_sheet.score
         exam.save()
-        answer_sheet.is_finished = True
-        answer_sheet.save()
 
     return answer_sheet.score
 
