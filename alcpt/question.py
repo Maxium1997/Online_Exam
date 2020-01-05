@@ -140,7 +140,7 @@ def question_edit(request, question_id):
 
             messages.success(request, 'Successful Update.')
 
-            return redirect('tbmanager_question_list')
+            return redirect('question_review')
         except ObjectDoesNotExist:
             messages.error(request, 'Choice does not exist, choice id: {}'.format(request.POST.get('answer_choice')))
             return render(request, 'question/question_edit.html', locals())

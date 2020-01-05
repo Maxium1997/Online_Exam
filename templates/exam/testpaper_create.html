@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 
 {% block path %}
-
+    <a href="">考試管理員</a>
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="{% url 'testpaper_list' %}">考卷列表</a>
+    <a class="fa fa-angle-right fa-lg box"></a>
+    <a href="">新增考卷</a>
 {% endblock %}
 
 {% block content %}

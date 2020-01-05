@@ -3,7 +3,9 @@
 {% load web_filters %}
 
 {% block path %}
-
+    <a href="">題目操作員</a>
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="">新增{% if kind == 'listening' %}聽力{% else %}閱讀{% endif %}試題（多重）</a>
 {% endblock %}
 
 {% block content %}
