@@ -304,7 +304,7 @@ def report(request):
 def report_category_detail(request, category_id):
     try:
         category = ReportCategory.objects.get(id=category_id)
-        return render(request, 'report_category_detail.html', locals())
+        return render(request, 'user/report_category_detail.html', locals())
     except ObjectDoesNotExist:
         messages.error(request, 'Report Category does not exist, report category id: {}'.format(category_id))
         return redirect('report_category_list')

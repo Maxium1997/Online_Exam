@@ -110,6 +110,7 @@ urlpatterns = [
 
     # 成績檢閱者
     url(r'^viewer$', viewer.index, name='exam_score_list'),
+    url(r'^(?P<exam_id>[0-9]+)/detail$', viewer.exam_score_detail, name='exam_score_detail'),
 
     # 受測者部分
     url(r'^testee$', testee.score_list, name='testee_score_list'),  # 受測者主頁（顯示自我成績）

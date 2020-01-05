@@ -22,7 +22,7 @@
                 <td>Duration</td>
             </tr>
             {% for exam in exams %}
-            <tr>
+            <tr style="cursor: pointer" onclick="window.location.href='{% url 'exam_score_detail' exam.id %}'">
                 <td>{{ exam }}</td>
                 <td>{{ exam.average_score }}</td>
                 <td>{{ exam.group }}</td>

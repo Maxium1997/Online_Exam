@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{#{% load web_filters %}#}
+
+{% block path %}
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="{% url 'exam_score_list' %}">成績檢閱者</a>
+    <a class="fa fa-angle-right fa-lg box"></a>
+    <a href="">考試成績列表</a>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <table border="1">
+            <tr>
+                <th>Stu ID</th>
+                <th>Testee Name</th>
+                <th>Testee Dep.</th>
+                <th>Testee Com.</th>
+                <th>Score</th>
+            </tr>
+            {% for testee, answer_sheet in testeeData %}
+                <tr>
+                    <td>{{ testee.stu_id }}</td>
+                    <td>{{ testee.user.name }}</td>
+                    <td>{{ testee.department }}</td>
+                    <td>{{ testee.squadron }}</td>
+                    {% if answer_sheet.score or answer_sheet.score == 0 %}
+                        <td>{{ answer_sheet.score }}</td>
+                    {% else %}
+                        <td>尚未測驗</td>
+                    {% endif %}
+            {% endfor %}
+
+        </table>
+    </div>
+{% endblock %}

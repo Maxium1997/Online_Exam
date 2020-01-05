@@ -21,10 +21,25 @@ from alcpt.exceptions import IllegalArgumentError
 def index(request):
     exams = Exam.objects.filter(is_public=True)
 
-    for exam in exams:
-        total = 0
-        for answersheet in exam.answersheet_set.all():
-            total += answersheet.score
-        exam.average_score = float(total/exam.answersheet_set.count())
-
     return render(request, 'viewer/exam_score_list.html', locals())
+
+
+@permission_check(UserType.Viewer)
+def exam_score_detail(request, exam_id):
+    try:
+        exam = Exam.objects.get(id=exam_id)
+        testees = exam.group.member.all().order_by('stu_id')
+
+        answer_sheets = []
+        for testee in testees:
+            try:
+                answer_sheets.append(AnswerSheet.objects.get(exam=exam, user_id=testee.id))
+            except ObjectDoesNotExist:
+                answer_sheets.append(None)
+
+        testeeData = zip(testees, answer_sheets)
+
+        return render(request, 'viewer/exam_score_detail.html', locals())
+    except ObjectDoesNotExist:
+        messages.error(request, 'Exam does not exist, exam id: {}'.format(exam_id))
+        return redirect('exam_score_list')
