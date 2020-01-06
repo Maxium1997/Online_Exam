@@ -1,12 +1,11 @@
-Django==1.11.17
+asgiref==3.2.3
+Django==3.0.2
 django-extensions==2.2.5
 django-ranged-response==0.2.0
 django-simple-captcha==0.5.12
-mysql-connector-python==8.0.18
-mysqlclient==1.4.4
-Pillow==6.2.1
-protobuf==3.11.2
-PyMySQL==0.9.3
+mysqlclient==1.4.6
+Pillow==7.0.0
 pytz==2019.3
 six==1.13.0
+sqlparse==0.3.0
 xlrd==1.2.0
