@@ -21,7 +21,13 @@ def exam_list(request):
     examList = []
     exams = Exam.objects.exclude(is_public=False)
     for exam in exams:
-        examList.append(exam)
+        try:
+            if request.user.student in exam.group.member.all():
+                examList.append(exam)
+            else:
+                pass
+        except:
+            pass
     practices = Exam.objects.filter(created_by=request.user)
     for practice in practices:
         if practice in examList:
