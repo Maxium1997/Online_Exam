@@ -19,6 +19,7 @@
                 <th>Exam Start Time</th>
                 <th>Exam Finish Time</th>
                 <td>Duration</td>
+                <td>Status</td>
             </tr>
             {% for exam in exams %}
             <tr style="cursor: pointer" onclick="window.location.href='{% url 'exam_score_detail' exam.id %}'">
@@ -29,6 +30,15 @@
                 <td>{{ exam.start_time|date:'Y年m月d日, H時i分' }}</td>
                 <td>{{ exam.finish_time|date:'Y年m月d日, H時i分' }}</td>
                 <td>{{ exam.duration }}分鐘</td>
+                <td>
+                    {% if now_time < start_time %}
+                        尚未開始
+                    {% elif now_time < exam.finish_time and now_time > start_time %}
+                        進行中
+                    {% else %}
+                        測驗完畢
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </table>
