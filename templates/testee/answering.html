@@ -41,5 +41,14 @@
         </form>
     </div>
 
+    <div class="pagination">
+        {% for answer in answers %}
+            {% if answer.selected != -1 %}
+                <a href="{% url 'testee_answering' exam.id answer.id %}" style="color: red;">{{ forloop.counter }}</a>
+            {% else %}
+                <a href="{% url 'testee_answering' exam.id answer.id %}">{{ forloop.counter }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
 
 {% endblock %}

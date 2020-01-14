@@ -163,15 +163,19 @@ def answering(request, exam_id, answer_id):
         exam = Exam.objects.get(id=exam_id)
         answer = Answer.objects.get(id=answer_id)
         answer_sheet = AnswerSheet.objects.get(exam=exam, user=request.user.student)
+        if answer not in answer_sheet.answer_set.all():
+            messages.warning(request, 'Not your answer: {}'.format(answer_id))
+            return redirect('testee_answering', exam_id=exam.id, answer_id=list(answer_sheet.answer_set.all())[0].id)
+
     except ObjectDoesNotExist:
-        messages.warning(request, 'Answer id error, answer id: {}'.format(answer_id))
+        messages.error(request, 'Answer id error, answer id: {}'.format(answer_id))
         return redirect('testee_exam_list')
 
     try:
         the_next_question = Answer.objects.filter(answer_sheet=answer_sheet).filter(selected=-1)[0]
 
         if answer.selected != -1:
-            messages.warning(request, 'Please answer from answer id: {}'.format(the_next_question.id))
+            messages.warning(request, 'This question had answered, please answer from answer id: {}'.format(the_next_question.id))
             return redirect('testee_answering', exam_id=exam_id, answer_id=the_next_question.id)
 
     except:
@@ -194,6 +198,10 @@ def answering(request, exam_id, answer_id):
         else:
             the_next_question = list(Answer.objects.filter(answer_sheet=answer_sheet).filter(selected=-1)).pop(0)
 
+        answers = answer_sheet.answer_set.all()
+
         return redirect('testee_answering', exam_id=exam_id, answer_id=the_next_question.id)
     else:
+        answers = answer_sheet.answer_set.all()
+
         return render(request, 'testee/answering.html', locals())
