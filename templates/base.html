@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>線上英文考試系統</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static '/css/SystemCSS.css' %}">
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
@@ -72,6 +72,8 @@
                             </button>
                             <a class="navbar-brand" href="{% url "Homepage" %}" style=" opacity: 1; font-size: 30px;">ALCPT線上練習平台</a>
                         </div>
+
+                    <!-- 功能表 -->
                         <div class="collapse navbar-collapse" id="myNavbar">
                             <ul class="nav navbar-nav" style="position: absolute; left: 50%">
                                 {% if request.user|has_perm:'SystemManager' %}
@@ -143,32 +145,38 @@
                         </div>
                     </div>
                     <Style>
-                        .navbar{
-                            padding-top: 40px;
-                            font-size: 20px;
-                        }
-                        .bg-green{
-                            background-color: #4CCABD;
-                            box-shadow: 0px 3px 8px 0px #486260;
-                        }
-                        /*選項顏色*/
-                        .bg-green .navbar-nav .dropdown-toggle,
-                        .bg-green .navbar-brand {
-                            color: rgb(255, 255, 255);
-                            right: 70%;
-                        }
 
-                        .bg-green .navbar-nav .dropdown-toggle:hover{
-                            color: #2C3232;
-                        }
+                            .navbar{
+                                padding-top: 40px;
+                                font-size: 20px;
+                            }
+                            .bg-green{
+                                background-color: #4CCABD;
+                                box-shadow: 0px 3px 8px 0px #486260;
+                            }
 
-                        .bg-green .navbar-nav .dropdown-toggle:active{
-                            color: #2C3232;
-                        }
+                            /*選項顏色*/
+                            .bg-green .navbar-nav .dropdown-toggle,
+                            .bg-green .navbar-brand {
+                                color: rgb(255, 255, 255);
+                                right: 70%;
+                            }
 
-                        .bg-green .dropdown-menu{
-                            font-size: 20px;
-                        }
+                            .bg-green .navbar-nav .dropdown-toggle:hover{
+                                color: #2C3232;
+                            }
+
+                            .bg-green .navbar-nav .dropdown-toggle:active{
+                                color: #2C3232;
+                            }
+
+                            .bg-green .dropdown-menu{
+                                font-size: 20px;
+                            }
+
+
+
+
 
                     </Style>
                 </nav>
@@ -195,49 +203,54 @@
                 </div>
 
                 <Style>
-                    .container-fluid button{
-                        background-color: #4CCABD;
-                        border-color: #FFFEF6;
 
-                    }
-                    .btn-group{
-                        position: absolute;
-                        top: 50px;
-                        right: 30px;
-                    }
+                        .container-fluid button{
+                            background-color: #4CCABD;
+                            border-color: #FFFEF6;
 
-                    .btn-group .dropdown-menu{
-                        height: 150px;
-                        width: auto;
-                        padding-left: 10px;
-                        padding-right: 10px;
-                        text-align: center;
-                    }
+                        }
+                        .btn-group{
+                            position: absolute;
+                            top: 50px;
+                            right: 30px;
+                        }
 
-                    .registration_block{
-                        width: 200px;
-                        font-size: 20px;
-                    }
+                        .btn-group .dropdown-menu{
+                            height: 150px;
+                            width: auto;
+                            padding-left: 10px;
+                            padding-right: 10px;
+                            text-align: center;
+                        }
 
-                    .registration_block h1{
-                        font-size: 20px;
-                        position: absolute;
-                        top: 10px;
-                    }
+                        .registration_block{
+                            width: 200px;
+                            font-size: 20px;
+                        }
 
-                    .registration_block h2{
-                        position: absolute;
-                        top: 50%;
-                        left: 4%;
-                        padding-right: 70px;
-                        padding-left: 70px;
-                        padding-bottom: 20px;
-                        border-top: #486260 2px solid;
-                    }
+                        .registration_block h1{
+                            font-size: 20px;
+                            position: absolute;
+                            top: 10px;
+                        }
 
-                    .registration_block h2 a{
-                        color: #555555;
-                    }
+                        .registration_block h2{
+                            position: absolute;
+                            top: 50%;
+                            left: 4%;
+                            padding-right: 70px;
+                            padding-left: 70px;
+                            padding-bottom: 20px;
+                            border-top: #486260 2px solid;
+                        }
+
+                        .registration_block h2 a{
+                            color: #555555;
+                        }
+
+
+
+
 
                 </Style>
 
@@ -249,28 +262,29 @@
             <a href="{% url 'profile' %}"><i class="fa fa-user-circle"></i></a>
             <a href="{% url 'report' %}"><i class="fa fa-exclamation-circle"></i></a>
             <style>
-                .icon-bar {
-                  width: 90px;
-                  background-color: #5e5e5e;
-                  position: fixed;
-                  left: 2%;
-                  box-shadow: 0px 3px 8px 0px #2C3232;
 
-                  opacity: 0.8;
-                }
+                    .icon-bar {
+                      width: 90px;
+                      background-color: #5e5e5e;
+                      position: fixed;
+                      left: 2%;
+                      box-shadow: 0px 3px 8px 0px #2C3232;
 
-                .icon-bar a {
-                  display: block;
-                  text-align: center;
-                  padding: 16px;
-                  transition: all 0.3s ease;
-                  color: white;
-                  font-size: 36px;
-                }
+                      opacity: 0.8;
+                    }
 
-                .icon-bar a:hover {
-                  background-color: #000;
-                }
+                    .icon-bar a {
+                      display: block;
+                      text-align: center;
+                      padding: 16px;
+                      transition: all 0.3s ease;
+                      color: white;
+                      font-size: 36px;
+                    }
+
+                    .icon-bar a:hover {
+                      background-color: #000;
+                    }
 
             </style>
         </div>
@@ -287,21 +301,25 @@
         </nav>
 
         <style>
-            .breadcrumb{
-                background-color: #FFFEF6;
-                opacity: 0.8;
-                color: #2C3232;
 
-                position: absolute;
-                top: 18%;
-                left: 10%;
-                box-shadow: 0px 3px 8px 0px #5e5e5e;
-            }
+                .breadcrumb{
+                    background-color: #FFFEF6;
+                    opacity: 0.8;
+                    color: #2C3232;
 
-            .breadcrumb-item a{
-                color: #2C3232;
-                text-decoration: none;
-            }
+                    position: absolute;
+                    top: 18%;
+                    left: 10%;
+                    box-shadow: 0px 3px 8px 0px #5e5e5e;
+                }
+
+                .breadcrumb-item a{
+                    color: #2C3232;
+                    text-decoration: none;
+                }
+
+
+
         </style>
     </div>
 
@@ -375,6 +393,7 @@
             position: absolute;
             left: 15%;
             top: 30%;
+
 
         }
 

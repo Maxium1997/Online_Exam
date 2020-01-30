@@ -9,26 +9,61 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-        <table border="">
-            <tr>
-                <th>測驗名稱</th>
-                <th>測驗類型</th>
-                <th></th>
-            </tr>
-            {% for exam in examList %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <caption style="font-size: 30px;">&nbsp;&nbsp;測驗記錄列表</caption>
+            <thead class="title">
                 <tr>
-                    <td>{{ exam }}</td>
-                    <td>{{ exam.exam_type|readable_exam_type }}</td>
-                    <td>
-                        {% if not exam|is_finished:request.user %}
-                            <a href="{% url 'testee_start_exam' exam.id %}">開始測驗</a>
-                        {% else %}
-                            <label>已完成測驗</label>
-                        {% endif %}
-                    </td>
+                    <th class="col-md-1">測驗名稱</th>
+                    <th class="col-md-1">測驗類型</th>
+                    <th class="col-lg-1"></th>
                 </tr>
-            {% endfor %}
+            </thead>
+            <tbody>
+                {% for exam in examList %}
+                    <tr>
+                        <td style="text-align: center; vertical-align:middle;">{{ exam }}</td>
+                        <td style="vertical-align:middle;">{{ exam.exam_type|readable_exam_type }}</td>
+                        <td style="vertical-align:middle;">
+                            {% if not exam|is_finished:request.user %}
+                                <a href="{% url 'testee_start_exam' exam.id %}">開始測驗</a>
+                            {% else %}
+                                <label>已完成測驗</label>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
+
+        <style>
+            .table-responsive .table{
+                text-align: center;
+                position: absolute;
+                top: 30px;
+            }
+
+            .table-hover > tbody > tr:hover > td,
+            .table-hover > tbody > tr:hover > th {
+                background-color: #4CCABD;
+            }
+
+            .title{
+                font-size: 20px;
+            }
+
+            .title tr th{
+                text-align: center;
+            }
+
+            .table tbody{
+                font-size: 18px;
+            }
+
+            .table tbody td a{
+                color: #2C3232;
+            }
+
+        </style>
     </div>
 {% endblock %}
