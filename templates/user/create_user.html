@@ -99,5 +99,18 @@
         </style>
     </div>
 
-    <div><a href="{% url 'user_multiCreate' %}">一次新增多個使用者？</a></div>
+    <div class="mulit">
+        <a href="{% url 'user_multiCreate' %}">一次新增多個使用者？</a>
+
+        <style>
+            .mulit a{
+                position: absolute;
+                top: 87%;
+                left: 75%;
+                color: #4CCABD;
+                font-size: 25px;
+                text-decoration: none;
+            }
+        </style>
+    </div>
 {% endblock %}
