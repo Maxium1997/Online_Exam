@@ -122,21 +122,17 @@
             <caption style="font-size: 30px;">&nbsp;&nbsp;成績紀錄（共{{ answer_sheets.count }}條結果）</caption>
             <thead class="title">
                 <tr>
-                    <th class="col-md-1">測驗名稱</th>
+                    <th class="col-md-2">測驗名稱</th>
                     <th class="col-md-1">測驗成績</th>
                     <th class="col-md-1">測驗時間</th>
-                    <th class="col-md-1">試卷內容</th>
                 </tr>
             </thead>
             <tbody>
                 {% for answersheet in answer_sheets %}
-                    <tr>
+                    <tr style="cursor: pointer" onclick="window.location.href='{% url 'view_answersheet_content' answersheet.id %}'">
                         <td style="text-align: center; vertical-align:middle;">{{ answersheet.exam }}</td>
                         <td style="vertical-align:middle;">{{ answersheet.score }}</td>
                         <td style="vertical-align:middle;">{{ answersheet.finish_time|date:'Y年m月d日, H時m分' }}</td>
-                        <td style="vertical-align:middle;"><a href="{% url 'view_answersheet_content' answersheet.id %}">{{ answersheet.exam.testpaper }}</a></td>
-
-
                     </tr>
                 {% endfor %}
             </tbody>

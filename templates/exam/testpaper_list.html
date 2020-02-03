@@ -10,12 +10,12 @@
     <!-- 搜尋 -->
     <div class="container-flu" >
         <div class="btn-group float-right">
-          <button type="button" class="btn btn-primary dropdown-toggle pull-right" data-toggle="dropdown">
+            <button type="button" class="btn btn-primary dropdown-toggle pull-right" data-toggle="dropdown">
               <i class="fa fa-search" ></i>
-          </button>
-          <!-- 重點在這 -->
-          <div class="dropdown-menu dropdown-menu-right">
-              <div class="search_bar">
+            </button>
+            <!-- 重點在這 -->
+            <div class="dropdown-menu dropdown-menu-right">
+                <div class="search_bar">
                 <h1>搜尋條件</h1>
                 <form action="" method="get">
                     <div class="exam_name">
@@ -26,8 +26,8 @@
                         <button type="submit">搜尋</button>
                     </div>
                 </form>
+                </div>
             </div>
-          </div>
 
             <style>
                 .container-flu button{
@@ -153,23 +153,21 @@
                 <caption style="font-size: 30px;">&nbsp;&nbsp;考卷列表</caption>
                 <thead class="title">
                     <tr>
-                        <th class="col-md-2">名稱</th>
+                        <th class="col-md-3">名稱</th>
                         <th class="col-md-1">有效考卷</th>
-                        <th class="col-md-2">建立時間</th>
-                        <th class="col-md-2">更新時間</th>
-                        <th class="col-md-2">建立者</th>
-                        <th class="col-md-2">檢視考卷內容</th>
+                        <th class="col-md-3">建立時間</th>
+                        <th class="col-md-3">更新時間</th>
+                        <th class="col-md-1">建立者</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for testpaper in testpaperList %}
-                        <tr>
+                        <tr style="cursor: pointer" onclick="window.location.href=('{% url 'view_testpaper_content' testpaper.id %}')">
                             <td style="text-align: center; vertical-align:middle;">{{ testpaper.name }}</td>
                             <td style="vertical-align:middle;">{{ testpaper.valid }}</td>
                             <td style="vertical-align:middle;">{{ testpaper.created_time|date:'Y年m月d日, H時i分' }}</td>
                             <td style="vertical-align:middle;">{{ testpaper.update_time|date:'Y年m月d日, H時i分' }}</td>
                             <td style="vertical-align:middle;">{{ testpaper.created_by.name }}</td>
-                            <td style="vertical-align:middle;"><a href="{% url 'view_testpaper_content' testpaper.id %}">檢視考卷內容</a></td>
                             <td style="vertical-align:middle;">
                                 {% if testpaper.is_testpaper %}
                                     <a href="{% url 'testpaper_edit' testpaper.id %}"><i class="fa fa-pencil fa-fw mb-2"></i></a>
