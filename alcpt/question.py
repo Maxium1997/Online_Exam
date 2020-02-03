@@ -49,7 +49,6 @@ def manager_index(request):
     state = request.GET.get('state',)
 
     query_content, questions = tbmanager.query_questions(**keywords)
-    q_num = len(questions)
     page = request.GET.get('page', 1)
     paginator = Paginator(questions, 10)  # the second parameter is used to display how many items. Now is display 10
 

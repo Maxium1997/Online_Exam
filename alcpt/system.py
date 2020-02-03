@@ -236,6 +236,29 @@ def create_unit(request):
         return render(request, 'user/create_unit.html')
 
 
+# 顯示單位人員
+@permission_check(UserType.SystemManager)
+def unit_member_list(request, unit_kind, unit_name):
+    if unit_kind == 'squadron':
+        try:
+            unit = Squadron.objects.get(name=unit_name)
+            unit_members = unit.student_set.all()
+            return render(request, 'user/unit_member_list.html', locals())
+        except ObjectDoesNotExist:
+            messages.error(request, "Squadron doesn't exist, squadron name: {}".format(unit_name))
+    elif unit_kind == 'department':
+        try:
+            unit = Department.objects.get(name=unit_name)
+            unit_members = unit.student_set.all()
+            return render(request, 'user/unit_member_list.html', locals())
+        except ObjectDoesNotExist:
+            messages.error(request, "Department doesn't exist, department name: {}".format(unit_name))
+    else:
+        messages.warning(request, "Unit kind doesn't exist, unit kind: {}".format(unit_kind))
+
+    return redirect('unit_list')
+
+
 # 回報類別列表
 @permission_check(UserType.SystemManager)
 def report_category_list(request):

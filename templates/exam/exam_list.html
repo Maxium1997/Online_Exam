@@ -157,10 +157,10 @@
                 <thead class="title">
                     <tr>
                         <th class="col-md-1">名稱</th>
-                        <th class="col-md-1">開始時間</th>
+                        <th class="col-md-2">開始時間</th>
+                        <th class="col-md-2">結束時間</th>
                         <th class="col-md-1">測驗時間</th>
-                        <th class="col-md-1">結束時間</th>
-                        <th class="col-md-2">建立者</th>
+                        <th class="col-md-1">建立者</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -168,8 +168,8 @@
                         <tr>
                             <td style="text-align: left; vertical-align:middle;">{{ exam.name }}</td>
                             <td style="vertical-align:middle;">{{ exam.start_time|date:'Y年m月d日, H時i分' }}</td>
-                            <td style="vertical-align:middle;">{{ exam.duration }}分鐘</td>
                             <td style="vertical-align:middle;">{{ exam.finish_time|date:'Y年m月d日, H時i分' }}</td>
+                            <td style="vertical-align:middle;">{{ exam.duration }}分鐘</td>
                             <td style="vertical-align:middle;">{{ exam.created_by.name }}</td>
 
     {#                        <td>#}

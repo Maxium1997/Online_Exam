@@ -51,6 +51,7 @@ urlpatterns = [
         url(r'^unit_list/$', system.unit, name='unit_list'),
         url(r'^unit_list/', include([
             url(r'^create$', system.create_unit, name='unit_create'),
+            url(r'^(?P<unit_kind>(squadron|department))/(?P<unit_name>[\w]+)$', system.unit_member_list, name='unit_member_list'),
         ])),
 
         url(r'^proclamation/', include([

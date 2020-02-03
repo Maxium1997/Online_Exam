@@ -74,7 +74,7 @@
                     </thead>
                     <tbody>
                         {% for department in departments %}
-                            <tr style="cursor: pointer" onclick="window.location.href=''">
+                            <tr style="cursor: pointer" onclick="window.location.href='{% url 'unit_member_list' 'department' department.name %}'">
                                 <td>{{ department.id }}</td>
                                 <td>{{ department.name }}</td>
                                 <td>{{ department.student_set.all.count }}</td>
@@ -101,7 +101,7 @@
 
                     </tbody>
                 {% for squadron in squadrons %}
-                    <tr style="cursor: pointer" onclick="window.location.href=''">
+                    <tr style="cursor: pointer" onclick="window.location.href='{% url 'unit_member_list' 'squadron' squadron.name %}'">
                         <td>{{ squadron.id }}</td>
                         <td>{{ squadron.name }}</td>
                         <td>{{ squadron.student_set.all.count }}</td>
