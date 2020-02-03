@@ -219,9 +219,13 @@ def create_unit(request):
 
     if request.method == 'POST':
         if request.POST.get('unit') == 'department':
+            if Department.objects.get(name=name):
+                return render(request, 'user/unit_exsted.html')
             Department.objects.create(name=name)
 
         elif request.POST.get('unit') == 'squadron':
+            if Squadron.objects.get(name=name):
+                return render(request, 'user/unit_exsted.html')
             Squadron.objects.create(name=name)
 
         else:
