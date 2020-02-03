@@ -26,6 +26,13 @@
                 <input type="submit" onclick="return confirm('確認更改?')">
             </div>
 
+            <div class="btn2">
+                <input type="reset" value="取消">
+            </div>
+
+            <div class="btn3">
+                <button type="submit" onclick="history.back()">返回</button>
+            </div>
 
             <style>
                 .proclamation_edit .title h1{
@@ -95,8 +102,35 @@
                     border: none;
                     position: absolute;
                     top: 85%;
+                    left: 35%;
+                }
+
+                .proclamation_edit form .btn2 input{
+                    font-size: 25px;
+                    padding: 10px;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                    color: #FFFEF6;
+                    background-color: #5e5e5e;
+                    border: none;
+                    position: absolute;
+                    top: 85%;
                     left: 45%;
                 }
+
+                .proclamation_edit form .btn3 button{
+                    font-size: 25px;
+                    padding: 10px;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                    color: #FFFEF6;
+                    background-color: #4CCABD;
+                    border: none;
+                    position: absolute;
+                    top: 85%;
+                    left: 55%;
+                }
+
             </style>
         </form>
     </div>

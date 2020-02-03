@@ -53,14 +53,13 @@
             </div>
 
 
-
-
-
             <div class="btn">
                 <input type="submit" value="確認">
             </div>
 
-
+            <div class="btn2">
+                <button type="button" onclick="window.location.href='{% url "testpaper_list" %}'">返回</button>
+            </div>
 
             <style>
                 .testpaper form .card{
@@ -86,7 +85,21 @@
                     border: none;
                     overflow: visible;
                     position: absolute;
-                    left: 48%;
+                    left: 40%;
+                    top: 85%;
+                }
+
+                .testpaper form .btn2 button{
+                    font-size: 25px;
+                    padding: 10px;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                    color: #FFFEF6;
+                    background-color: #4CCABD;
+                    border: none;
+                    overflow: visible;
+                    position: absolute;
+                    left: 50%;
                     top: 85%;
                 }
 

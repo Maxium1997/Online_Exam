@@ -33,6 +33,14 @@
                 <input type="submit" onclick="return confirm('確認建立此類別')" value="新增類別">
             </div>
 
+            <div class="btn2">
+                <input type="reset" value="取消">
+            </div>
+
+            <div class="btn3">
+                <button type="submit" onclick="history.back()">返回</button>
+            </div>
+
         </form>
 
         <style>
@@ -93,7 +101,33 @@
                 border: none;
                 position: absolute;
                 top: 85%;
+                left: 30%;
+            }
+
+            .add_category form .btn2 input{
+                font-size: 25px;
+                padding: 10px;
+                padding-left: 15px;
+                padding-right: 15px;
+                color: #FFFEF6;
+                background-color: #5e5e5e;
+                border: none;
+                position: absolute;
+                top: 85%;
                 left: 45%;
+            }
+
+            .add_category form .btn3 button{
+                font-size: 25px;
+                padding: 10px;
+                padding-left: 15px;
+                padding-right: 15px;
+                color: #FFFEF6;
+                background-color: #4CCABD;
+                border: none;
+                position: absolute;
+                top: 85%;
+                left: 55%;
             }
         </style>
     </div>
