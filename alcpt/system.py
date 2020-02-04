@@ -17,7 +17,7 @@ from alcpt.models import User, Student, Department, Squadron, Proclamation, Repo
 from alcpt.definitions import UserType
 from alcpt.decorators import permission_check, login_required
 from alcpt.exceptions import IllegalArgumentError
-
+import json
 
 # 使用者列表
 @permission_check(UserType.SystemManager)
@@ -216,7 +216,18 @@ def proclamation_edit(request, proclamation_id):
 @require_http_methods(["GET", "POST"])
 def create_unit(request):
     name = request.POST.get('unit_name')
-
+    departments = Department.objects.all()
+    squadrons = Squadron.objects.all()
+    d_names = []
+    for d in departments:
+        d_names.append(d.name)
+    s_names = []
+    for s in squadrons:
+        s_names.append(s.name)
+    data = {
+        'd_names': json.dumps(d_names),
+        's_names': json.dumps(s_names),
+    }
     if request.method == 'POST':
         if request.POST.get('unit') == 'department':
             if Department.objects.get(name=name):
@@ -237,7 +248,7 @@ def create_unit(request):
         return redirect('unit_list')
 
     else:
-        return render(request, 'user/create_unit.html')
+        return render(request, 'user/create_unit.html', data)
 
 
 # 回報類別列表

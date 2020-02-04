@@ -32,6 +32,7 @@
                 <div>
                     <textarea class="form-control" id="unit_name" name="unit_name" rows="3" placeholder="輸入要新增的單位名稱" required></textarea>
                 </div>
+                <input type="button" onclick="Check()" value="檢查名稱是否重複"></input>
             </div>
 
             <div class="btn1">
@@ -107,6 +108,19 @@
                 left: 40%;
             }
 
+            .create_unit form .unit_name input{
+                font-size: 25px;
+                padding: 10px;
+                padding-left: 15px;
+                padding-right: 15px;
+                color: #FFFEF6;
+                background-color: #4CCABD;
+                border: none;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+            }
+
             .create_unit form .btn1 button{
                 font-size: 25px;
                 padding: 10px;
@@ -146,6 +160,30 @@
                 left: 55%;
             }
         </style>
-    </div>
 
+    </div>
+    <script language="javascript">
+        function Check() {
+            var d_names = {{ d_names|safe }};
+            var flag = 'unexsted';
+            const nameElement = document.getElementById("unit_name");
+            const unit_name = nameElement.value;
+            for(i in d_names){
+                if(d_names[i]==unit_name){
+                    alert("此名稱已被使用");
+                    flag = 'exsted';
+                }
+            }
+            var s_names = {{ s_names|safe }};
+            for(i in s_names){
+                if(s_names[i]==unit_name){
+                    alert("此名稱已被使用");
+                    flag = 'exsted';
+                }
+            }
+            if(flag=='unexsted'){
+                alert("此單位名稱可使用");
+            }
+        }
+    </script>
 {% endblock %}
