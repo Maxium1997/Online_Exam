@@ -52,6 +52,7 @@ urlpatterns = [
         url(r'^unit_list/', include([
             url(r'^create$', system.create_unit, name='unit_create'),
             url(r'^(?P<unit_kind>(squadron|department))/(?P<unit_name>[\w]+)$', system.unit_member_list, name='unit_member_list'),
+            url(r'^check_unit_name$', system.check_unit_name, name='check_unit_name'),
         ])),
 
         url(r'^proclamation/', include([
@@ -65,7 +66,9 @@ urlpatterns = [
             url(r'^list$', system.report_category_list, name='report_category_list'),
             url(r'^create$', system.report_category_create, name='report_category_create'),
             url(r'^detail/(?P<category_id>[0-9]+)$', system.report_category_detail, name='report_category_detail'),
-        ]))
+        ])),
+
+        url(r'^view_profile/(?P<user_id>[0-9]+)$', system.view_profile, name='view_profile'),
     ])),
 
     # 考試管理員

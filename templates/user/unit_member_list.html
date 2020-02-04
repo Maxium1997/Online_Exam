@@ -20,7 +20,7 @@
         </thead>
         <tbody>
             {% for member in unit_members %}
-                <tr>
+                <tr style="cursor: pointer" onclick="window.location.href='{% url 'view_profile' member.user.id %}'">
                     <td>{{ forloop.counter }}</td>
                     <td>{{ member.user.name }}</td>
                 </tr>

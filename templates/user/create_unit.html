@@ -11,14 +11,13 @@
 {% block content %}
     <div class="create_unit">
         <form action="{% url 'unit_create' %}" method="post" autocomplete="off">
-            <div class="title"><h1>Create Unit.</h1> <h2>&nbsp;</h2></div>
             {% csrf_token %}
 
             <div class="unit">
                 <h3>單位：</h3>
 
                 <div>
-                    <select id='unit' name='unit'>
+                    <select id='unit' name='unit' required>
                         <option value='' selected disabled hidden>選擇要新增單位</option>
                         <option value='department'> 科系 </option>
                         <option value='squadron'> 中隊 </option>

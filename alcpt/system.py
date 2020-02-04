@@ -1,9 +1,11 @@
 import re
 import xlrd
 import os
+import json
 
 from string import punctuation
 
+from django.core import serializers
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
@@ -233,7 +235,29 @@ def create_unit(request):
         return redirect('unit_list')
 
     else:
-        return render(request, 'user/create_unit.html')
+        departments = Department.objects.all()
+        squadrons = Squadron.objects.all()
+        dep_list, squa_list = '', ''
+        for d in departments:
+            dep_list += d.name
+        for s in squadrons:
+            squa_list += s.name
+        return render(request, 'user/create_unit.html', locals())
+
+
+# 檢查單位名稱是否存在
+@permission_check(UserType.SystemManager)
+@require_http_methods(["POST"])
+def check_unit_name(request):
+    if request.method == 'POST':
+        tmp_unit_name = request.POST.get('unit_name')
+        if Department.objects.filter(name=tmp_unit_name):
+            messages.warning(request, '<script>window.alert("This name had been used.");</script>')
+        elif Squadron.objects.filter(name=tmp_unit_name):
+            messages.warning(request, '<script>window.alert("This name had been used.");</script>')
+        else:
+            messages.success(request, '<script>window.alert("This name can be use.");</script>')
+        return render(request, 'user/create_unit.html', )
 
 
 # 顯示單位人員
@@ -297,6 +321,18 @@ def report_category_create(request):
         return render(request, 'user/create_report_category.html', locals())
 
 
+# 回報類別內容
+@permission_check(UserType.SystemManager)
+def report_category_detail(request, category_id):
+    try:
+        category = ReportCategory.objects.get(id=category_id)
+        return render(request, 'user/report_category_detail.html', locals())
+    except ObjectDoesNotExist:
+        messages.error(request, 'Report Category does not exist, report category id: {}'.format(category_id))
+        return redirect('report_category_list')
+
+
+# 回報
 @login_required
 def report(request):
     if request.method == 'POST':
@@ -323,11 +359,12 @@ def report(request):
         return render(request, 'report.html', locals())
 
 
-@permission_check(UserType.SystemManager)
-def report_category_detail(request, category_id):
+# 系統管理員檢視使用者個人基本資料
+def view_profile(request, user_id):
     try:
-        category = ReportCategory.objects.get(id=category_id)
-        return render(request, 'user/report_category_detail.html', locals())
+        viewed_user = User.objects.get(id=user_id)
+        privileges = UserType.__members__
+        return render(request, 'user/view_profile.html', locals())
     except ObjectDoesNotExist:
-        messages.error(request, 'Report Category does not exist, report category id: {}'.format(category_id))
-        return redirect('report_category_list')
+        messages.error(request, "User doesn't exist, user id: {}".format(user_id))
+        return redirect('unit_list')
