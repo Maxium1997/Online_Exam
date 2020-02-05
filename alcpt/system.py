@@ -311,7 +311,7 @@ def report_category_create(request):
         except IntegrityError:
             messages.error(request, "Existed category name: {}".format(category_name))
             privileges = UserType.__members__
-            return render(request, 'user/create_user.html', locals())
+            return redirect('report_category_list')
 
         messages.success(request, 'Create report category "{}" successful.'.format(new_category))
 
@@ -330,6 +330,34 @@ def report_category_detail(request, category_id):
     except ObjectDoesNotExist:
         messages.error(request, 'Report Category does not exist, report category id: {}'.format(category_id))
         return redirect('report_category_list')
+
+
+# 負責單位的回報列表
+@login_required
+def responsible_report_list(request, responsibility):
+    SM, TM, TBM = [], [], []
+    reports = []
+    for category in ReportCategory.objects.all():
+        if category.responsibility & UserType.SystemManager.value[0] > 0:
+            SM.append(category)
+        if category.responsibility & UserType.TestManager.value[0] > 0:
+            TM.append(category)
+        if category.responsibility & UserType.TBManager.value[0] > 0:
+            TBM.append(category)
+
+    if request.user.has_perm(UserType.SystemManager) and responsibility == 'SystemManager':
+        for category in SM:
+            reports.extend(category.report_set.all().order_by('-created_time'))
+    elif request.user.has_perm(UserType.TestManager) and responsibility == 'TestManager':
+        for category in TM:
+            reports.extend(category.report_set.all().order_by('-created_time'))
+    elif request.user.has_perm(UserType.TBManager) and responsibility == 'TBManager':
+        for category in TBM:
+            reports.extend(category.report_set.all().order_by('-created_time'))
+    else:
+        messages.success(request, 'Has no permission.')
+
+    return render(request, 'responsible_report_list.html', locals())
 
 
 # 回報

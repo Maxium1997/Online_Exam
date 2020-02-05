@@ -26,6 +26,10 @@ urlpatterns = [
     url(r'^$', views.index, name='Homepage'),
 
     url(r'^report$', system.report, name='report'),
+    url(r'^report/', include([
+        url(r'^list$', registration.report_list, name='report_list'),
+        url(r'^list/(?P<responsibility>(SystemManager|TestManager|TBManager))', system.responsible_report_list, name='responsible_report_list'),
+    ])),
 
     url(r'^email_verification$', registration.verification, name='email_verification'),
 

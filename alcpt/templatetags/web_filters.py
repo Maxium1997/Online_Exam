@@ -169,3 +169,14 @@ def is_finished(exam: Exam, user: User):
             return True
     except ObjectDoesNotExist:
         return False
+
+
+@register.filter(name='readable_report_state')
+def readable_report_state(state: int):
+    STATE = (
+        (0, '暫存'),
+        (1, '待處理'),
+        (2, '處理中'),
+        (3, '已解決'),
+    )
+    return STATE[state][1]

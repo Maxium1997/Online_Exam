@@ -30,8 +30,8 @@
                 <textarea name="supplement_note" cols="100" rows="8" required placeholder="補充說明..."></textarea>
             </div>
 
-
             <input type="submit" value="提出">
+            <input type="submit" value="取消" onclick="window.location.href='{% url 'report_list' %}'">
 
             <style>
                 .question_report .title h1{
@@ -88,6 +88,9 @@
                 }
 
                 .question_report form input{
+                    position: relative;
+                    top: 400px;
+                    left: 85%;
                     font-size: 25px;
                     padding: 10px;
                     padding-left: 15px;
@@ -95,9 +98,6 @@
                     color: #FFFEF6;
                     background-color: #4CCABD;
                     border: none;
-                    position: absolute;
-                    top: 85%;
-                    left: 45%;
                 }
 
             </style>

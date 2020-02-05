@@ -68,6 +68,29 @@
                     color: #2C3232;
                 }
             </style>
+
+            <div class="btn4">
+                <input type="button" value="返回" onclick="window.location.href='{% url 'report_category_list' %}'">
+
+                <style>
+                    .btn4 input{
+                        background-color: #4CCABD;
+                        color: #FFFEF6;
+                        border: none;
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+                        padding-left: 5px;
+                        padding-right: 5px;
+                        font-size: 25px;
+
+                        position: relative;
+                        left: 45%;
+                    }
+                    .btn4{
+                        padding-bottom: 5%;
+                    }
+                </style>
+            </div>
         </div>
     </div>
 {% endblock %}

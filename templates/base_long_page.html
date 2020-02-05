@@ -79,6 +79,8 @@
                                         <ul class="dropdown-menu">
                                             <li><a href="{% url 'user_list' %}">使用者列表</a></li>
                                             <li><a href="{% url 'unit_list' %}">單位列表</a></li>
+                                            <li><a href="{% url 'report_category_list' %}">回報類別列表</a></li>
+                                            <li><a href="{% url 'responsible_report_list' 'SystemManager' %}">問題回報列表</a></li>
                                         </ul>
                                     </li>
                                 {% endif %}
@@ -90,6 +92,7 @@
                                             <li><a href="{% url 'exam_list' %}">考試列表</a></li>
                                             <li><a href="{% url 'testpaper_list' %}">考卷列表</a></li>
                                             <li><a href="{% url 'testee_group_list' %}">受測者群組</a></li>
+                                            <li><a href="{% url 'responsible_report_list' 'TestManager' %}">問題回報列表</a></li>
                                         </ul>
                                     </li>
                                 {% endif %}
@@ -100,6 +103,7 @@
                                         <ul class="dropdown-menu">
                                             <li><a href="{% url 'tbmanager_question_list' %}">題目列表</a></li>
                                             <li><a href="{% url 'question_review' %}">審核試題</a></li>
+                                            <li><a href="{% url 'responsible_report_list' 'TBManager' %}">問題回報列表</a></li>
                                         </ul>
                                     </li>
                                 {% endif %}
@@ -245,7 +249,6 @@
         <div class="icon-bar">
             <a href="{% url 'Homepage' %}"><i class="fa fa-home"></i></a>
             <a href="{% url 'profile' %}"><i class="fa fa-user-circle"></i></a>
-            <a href="{% url 'report' %}"><i class="fa fa-exclamation-circle"></i></a>
             <style>
                 .icon-bar {
                   width: 90px;

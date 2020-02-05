@@ -12,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from Online_Exam.settings import LOGIN_REDIRECT_URL
 from alcpt.definitions import UserType
 from alcpt.forms import CaptchaForm
-from alcpt.models import User, Student, Department, Squadron
+from alcpt.models import User, Student, Department, Squadron, Report
 from alcpt.email_verification import email_verified
 
 # Create your views here.
@@ -219,3 +219,8 @@ def forget_password(request):
         return render(request, 'registration/check_id.html', locals())
 
 
+# 取得個人所回報的所有問題
+@login_required
+def report_list(request):
+    reports = Report.objects.filter(created_by=request.user)
+    return render(request, 'registration/report_list.html', locals())
