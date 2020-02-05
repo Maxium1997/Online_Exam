@@ -180,3 +180,8 @@ def readable_report_state(state: int):
         (3, '已解決'),
     )
     return STATE[state][1]
+
+
+@register.filter(name='belongs_to')
+def belongs_to(category: ReportCategory, privilege: UserType):
+    return category.responsibility & privilege.value[0] > 0

@@ -288,7 +288,7 @@ def unit_member_list(request, unit_kind, unit_name):
 def report_category_list(request):
     report_categories = ReportCategory.objects.all()
     privileges = UserType.__members__
-    return render(request, 'user/report_category_list.html', locals())
+    return render(request, 'report/report_category_list.html', locals())
 
 
 # 新增回報類別
@@ -318,7 +318,7 @@ def report_category_create(request):
         return redirect('report_category_list')
     else:
         privileges = UserType.__members__
-        return render(request, 'user/create_report_category.html', locals())
+        return render(request, 'report/report_category_create.html', locals())
 
 
 # 回報類別內容
@@ -326,10 +326,43 @@ def report_category_create(request):
 def report_category_detail(request, category_id):
     try:
         category = ReportCategory.objects.get(id=category_id)
-        return render(request, 'user/report_category_detail.html', locals())
+        return render(request, 'report/report_category_detail.html', locals())
     except ObjectDoesNotExist:
         messages.error(request, 'Report Category does not exist, report category id: {}'.format(category_id))
         return redirect('report_category_list')
+
+
+# 更改回報類別
+@permission_check(UserType.SystemManager)
+def report_category_edit(request, category_id):
+    try:
+        category = ReportCategory.objects.get(id=category_id)
+    except ObjectDoesNotExist:
+        messages.error(request, 'Report Category does not exist, report category id: {}'.format(category_id))
+
+    if request.method == 'POST':
+        category_name = request.POST.get('category_name')
+
+        responsibility_value = 0
+        i = 0
+        for privilege in UserType.__members__.values():
+            if privilege and request.POST.get('privilege_{}'.format(i)):
+                responsibility_value |= privilege.value[0]
+            i += 1
+
+        try:
+            category.name = category_name
+            category.responsibility = responsibility_value
+            category.save()
+            messages.success(request, 'Update successfully.')
+            return redirect('report_category_list')
+        except IntegrityError:
+            messages.error(request, "Existed category name: {}".format(category_name))
+            privileges = UserType.__members__
+            return redirect('report_category_edit', category_id=category.id)
+    else:
+        privileges = UserType.__members__
+        return render(request, 'report/report_category_edit.html', locals())
 
 
 # 負責單位的回報列表
@@ -357,7 +390,7 @@ def responsible_report_list(request, responsibility):
     else:
         messages.success(request, 'Has no permission.')
 
-    return render(request, 'responsible_report_list.html', locals())
+    return render(request, 'report/responsible_report_list.html', locals())
 
 
 # 回報
@@ -370,7 +403,7 @@ def report(request):
         except ObjectDoesNotExist:
             messages.error(request, 'Category does not exist, category name: {}'.format(category))
             categories = ReportCategory.objects.all()
-            return render(request, 'report.html', locals())
+            return render(request, 'report/report.html', locals())
 
         supplement_note = request.POST.get('supplement_note',)
 
@@ -384,7 +417,7 @@ def report(request):
         return redirect('Homepage')
     else:
         categories = ReportCategory.objects.all()
-        return render(request, 'report.html', locals())
+        return render(request, 'report/report.html', locals())
 
 
 # 系統管理員檢視使用者個人基本資料

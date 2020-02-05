@@ -1,0 +1,72 @@
+{% extends 'base_long_page.html' %}
+
+{% load web_filters %}
+
+{% block path %}
+    <a href="">系統管理員</a>
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="">使用者列表</a>
+{% endblock %}
+
+{% block content %}
+    <!-- 表格的部分 -->
+    <div class="table-responsive">
+        {% if reports %}
+            <table class="table table-hover">
+                <caption style="font-size: 30px;">&nbsp;&nbsp;問題回報列表</caption>
+                <thead class="title">
+                    <tr>
+                        <th class="col-md-1">編號</th>
+                        <th class="col-md-1">問題類別</th>
+                        <th class="col-md-3">內容</th>
+                        <th class="col-md-2">回報時間</th>
+                        <th class="col-md-1">狀態</th>
+                    </tr>
+                </thead>
+                {% for report in reports %}
+                    <tr>
+                        <td>{{ report.id }}</td>
+                        <td>{{ report.category }}</td>
+                        <td>{{ report.supplement_note }}</td>
+                        <td>{{ report.created_time|date:"Y年m月d日, H時i分" }}</td>
+                        <td>{{ report.state|readable_report_state }}</td>
+                    </tr>
+                {% endfor %}
+                <tbody>
+
+                </tbody>
+            </table>
+        {% else %}
+            <h2>目前暫無資料</h2>
+        {% endif %}
+        <style>
+            .table-responsive .table{
+                text-align: center;
+                position: absolute;
+                top: 30px;
+            }
+
+            .table-hover > tbody > tr:hover > td,
+            .table-hover > tbody > tr:hover > th {
+                background-color: #4CCABD;
+            }
+
+            .title{
+                font-size: 20px;
+            }
+
+            .title tr th{
+                text-align: center;
+            }
+
+            .table tbody{
+                font-size: 18px;
+            }
+
+            .table tbody td a{
+                color: #2C3232;
+            }
+
+        </style>
+    </div>
+{% endblock %}

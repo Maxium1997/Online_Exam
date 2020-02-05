@@ -70,6 +70,7 @@ urlpatterns = [
             url(r'^list$', system.report_category_list, name='report_category_list'),
             url(r'^create$', system.report_category_create, name='report_category_create'),
             url(r'^detail/(?P<category_id>[0-9]+)$', system.report_category_detail, name='report_category_detail'),
+            url(r'^(?P<category_id>[0-9]+)/edit$', system.report_category_edit, name='report_category_edit'),
         ])),
 
         url(r'^view_profile/(?P<user_id>[0-9]+)$', system.view_profile, name='view_profile'),
