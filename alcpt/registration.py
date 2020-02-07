@@ -37,13 +37,12 @@ def login(request):
                     return redirect('login')
 
                 auth.login(request, user)
+                user.save()
                 if request.user.email is "":
                     departments = Department.objects.all()
                     squadrons = Squadron.objects.all()
                     messages.warning(request, 'Fist login, please edit your data')
                     return render(request, 'registration/edit_profile.html', locals())
-                # user.last_login = timezone.now()
-                # user.save()
                 messages.success(request, 'Login Success.')
 
             except ObjectDoesNotExist:
@@ -179,6 +178,7 @@ def reset_password(request):
         return render(request, 'registration/password_reset.html', locals())
 
 
+@login_required
 def verification(request):
     if request.method == 'POST':
         if int(request.POST.get('random_code',)) == int(request.POST.get('verification_code',)):
