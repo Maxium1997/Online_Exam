@@ -7,100 +7,56 @@
 {% block content %}
     <div class="question_report">
         <form action="" method="post">
-            <div class="title"><h1>Question Report.</h1> <h2>&nbsp;</h2></div>
             {% csrf_token %}
-            <div class="happend">
-                <label for="category">發生問題：</label>
-                <select name="category" required>
-                    <option value="" disabled selected>請選擇發生問題</option>
-                    {% for category in categories %}
-                        <option value="{{ category.id }}">{{ category }}</option>
-                    {% endfor %}
-                </select>
+            <table>
+                <tr>
+                    <td class="col-md-1">發生問題</td>
+                    <td class="col-md-5">
+                        <select name="category" required>
+                            <option value="" disabled selected>請選擇發生問題</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-1">補充說明</td>
+                    <td class="col-md-5"><textarea class="form-control" name="supplement_note" cols="100" rows="8" required placeholder="補充說明..."></textarea></td>
+                </tr>
+            </table>
 
-                {% if question %}
-                    <input type="hidden" name="question" value="{{ question.id }}">
-                {% endif %}
-            </div>
-
-
-            <br>
-            <div class="description">
-                <label for="supplement_note">補充說明：</label><br>
-                <textarea name="supplement_note" cols="100" rows="8" required placeholder="補充說明..."></textarea>
-            </div>
-
-            <input type="submit" value="提出">
-            <input type="submit" value="取消" onclick="window.location.href='{% url 'report_list' %}'">
-
-            <style>
-                .question_report .title h1{
-                    font-size: 40px;
-                    color: #FFFEF6;
-                    background-color: #4CCABD;
-                    padding-top: 10px;
-                    padding-bottom: 10px;
-                    padding-right: 15px;
-                    padding-left: 45px;
-                    text-align: center;
-                    position: absolute;
-                    top: 1%;
-                }
-
-                .question_report .title h2{
-                    background-color: #4CCABD;
-                    padding-top: 10px;
-                    padding-bottom: 22px;
-                    padding-right: 15px;
-                    padding-left: 30px;
-                    position: absolute;
-                    top: 1%;
-                    left: 25%;
-                }
-                .question_report form .happend label{
-                    font-size: 30px;
-                    padding-left: 20%;
-                    position: absolute;
-                    top: 20%;
-                }
-
-                .question_report form .happend select{
-                    font-size: 25px;
-                    position: absolute;
-                    top: 20.5%;
-                    left: 32%;
-                }
-
-                .question_report form .description label{
-                    font-size: 30px;
-                    padding-left: 20%;
-                    position: absolute;
-                    top: 30%;
-                }
-
-                .question_report form .description textarea{
-                    font-size: 25px;
-                    width: 60%;
-
-                    position: absolute;
-                    top: 40%;
-                    left: 20%;
-                }
-
-                .question_report form input{
-                    position: relative;
-                    top: 400px;
-                    left: 85%;
-                    font-size: 25px;
-                    padding: 10px;
-                    padding-left: 15px;
-                    padding-right: 15px;
-                    color: #FFFEF6;
-                    background-color: #4CCABD;
-                    border: none;
-                }
-
-            </style>
+            <input type="submit" value="送出">
+            <input type="button" value="取消" onclick="window.location.href='{% url 'report_list' %}'">
         </form>
+
+        <style>
+            .question_report{
+                position: absolute;
+                top: 10%;
+                left: 15%;
+
+                font-size: 20px;
+
+                width: 70%;
+            }
+            .question_report td{
+                padding: 4px;
+            }
+
+            input{
+                position: relative;
+                left: 100%;
+                
+                font-size: 20px;
+                padding: 10px;
+                padding-left: 15px;
+                padding-right: 15px;
+                color: #FFFEF6;
+                background-color: #4CCABD;
+                border: none;
+                border-radius: 6px;
+            }
+        </style>
     </div>
 {% endblock %}

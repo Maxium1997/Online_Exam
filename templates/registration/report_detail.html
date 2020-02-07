@@ -51,6 +51,10 @@
                 <td class="col-md-1">說明</td>
                 <td class="col-md-3">{{ viewed_report.supplement_note|safe }}</td>
             </tr>
+            <tr>
+                <td class="col-md-1">狀態</td>
+                <td class="col-md-3">{{ viewed_report.state|readable_report_state }}</td>
+            </tr>
 
             {% if viewed_report.state == 3 %}
                 <tr>
@@ -94,12 +98,20 @@
                     <td>回應</td>
                 </tr>
                 <tr>
-                    <td><textarea class="form-control" rows="15" name="reply"></textarea></td>
+                    {% if not viewed_report.state == 3 %}
+                        <td><textarea class="form-control" rows="15" name="reply"></textarea></td>
+                    {% else %}
+                        <td><textarea class="form-control" rows="15" name="reply" disabled></textarea></td>
+                    {% endif %}
                 </tr>
             </table>
 
-            <button type="submit">送出</button>
-            <button type="button" onclick="history.back()">返回</button>
+            {% if not viewed_report.state == 3 %}
+                <button type="submit">送出</button>
+                <button type="button" onclick="history.back()">返回</button>
+            {% else %}
+                <button type="button" onclick="history.back()">返回</button>
+            {% endif %}
         </form>
 
         <style>
@@ -108,7 +120,7 @@
                 left: 50%;
 
                 width: 30%;
-                font-size: 16px;
+                font-size: 20px;
             }
             .reply-block table{
                 position: relative;

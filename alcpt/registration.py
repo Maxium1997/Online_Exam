@@ -233,6 +233,13 @@ def report_list(request):
 def report_detail(request, report_id):
     try:
         viewed_report = Report.objects.get(id=report_id)
+        if viewed_report.created_by is request.user:
+            pass
+        elif request.user.has_perm(UserType.SystemManager):
+            pass
+        else:
+            messages.warning(request, 'You have no permission')
+            return redirect('Homepage')
     except ObjectDoesNotExist:
         messages.error(request, "Report doesn't exist, report id: {}".format(report_id))
         return redirect('report_list')
