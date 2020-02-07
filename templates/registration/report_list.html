@@ -56,18 +56,20 @@
             <caption style="font-size: 30px;">&nbsp;&nbsp;問題回報</caption>
             <thead class="title">
                 <tr>
-                    <th class="col-md-1">編號</th>
-                    <th class="col-md-2">問題類別</th>
+                    <th class="col-md-1">問題類別</th>
+                    <th class="col-md-5">內容</th>
                     <th class="col-md-1">狀態</th>
+                    <th class="col-md-1"></th>
                 </tr>
             </thead>
             <tbody>
             {% if reports %}
                 {% for report in reports %}
                     <tr {% if report.user_notification %}class="notification"{% endif %} style="cursor: pointer" onclick="window.location.href='{% url 'report_detail' report.id %}'">
-                        <td>{{ report.id }}</td>
                         <td>{{ report.category }}</td>
+                        <td style="font-size: 13px; text-align: left; vertical-align: middle">{{ report.supplement_note|safe|summary }}</td>
                         <td>{{ report.state|readable_report_state }}</td>
+                        <td style="font-size: 12px; vertical-align: bottom">{{ report.created_time|date:"H:i, m/d/Y" }}</td>
                     </tr>
                 {% endfor %}
             {% else %}

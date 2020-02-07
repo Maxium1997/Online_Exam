@@ -78,7 +78,7 @@
                     <td>回應</td>
                 </tr>
                 <tr>
-                    <td><textarea class="form-control" rows="15" name="reply"></textarea></td>
+                    <td><textarea class="form-control" rows="15" name="reply" {% if replying_report.state == 3 %}disabled{% endif %}></textarea></td>
                 </tr>
             </table>
 
@@ -93,7 +93,7 @@
                 left: 50%;
 
                 width: 30%;
-                font-size: 16px;
+                font-size: 20px;
             }
             .reply-block table{
                 position: relative;

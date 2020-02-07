@@ -51,13 +51,14 @@
                             <th class="col-md-2">類別代號</th>
                             <th class="col-md-3">類別名稱</th>
                             <th class="col-md-3">負責單位</th>
-                            <th class="col-md-1">數量</th>
+                            <th class="col-md-2">數量</th>
+                            <th></th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {% for category in report_categories %}
-                        <tr style="cursor: pointer" onclick="window.location.href='{% url 'report_category_detail' category.id %}'">
+                        <tr onclick="window.location.href='{% url 'report_category_detail' category.id %}'">
                             <td>{{ category.id }}</td>
                             <td>{{ category.name }}</td>
                             <td style="text-align: center;">
@@ -94,12 +95,19 @@
 
             <style>
                 .table-responsive .table{
+                    position: relative;
                     text-align: center;
                 }
 
-                .table-hover > tbody > tr:hover > td,
-                .table-hover > tbody > tr:hover > th {
+                .table-hover a{
+                    visibility: hidden;
+                }
+                .table-hover > tbody > tr:hover{
+                    cursor: pointer;
                     background-color: #4CCABD;
+                }
+                .table-hover > tbody > tr:hover a, td{
+                    visibility: visible;
                 }
 
                 .title{

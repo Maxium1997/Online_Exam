@@ -233,7 +233,7 @@ def report_list(request):
 def report_detail(request, report_id):
     try:
         viewed_report = Report.objects.get(id=report_id)
-        if viewed_report.created_by is request.user:
+        if viewed_report.created_by == request.user:
             pass
         elif request.user.has_perm(UserType.SystemManager):
             pass
@@ -245,7 +245,7 @@ def report_detail(request, report_id):
         return redirect('report_list')
 
     if request.method == 'POST':
-        if viewed_report.state == 3 or viewed_report.created_by:
+        if viewed_report.state == 3 or viewed_report.resolved_by:
             messages.warning(request, 'This report had been resolved.')
             return redirect('report_list')
         reply = request.POST.get('reply')
@@ -255,6 +255,6 @@ def report_detail(request, report_id):
         viewed_report.save()
         return redirect('report_list')
     else:
-        viewed_report.notification = False
+        viewed_report.user_notification = False
         viewed_report.save()
         return render(request, 'registration/report_detail.html', locals())

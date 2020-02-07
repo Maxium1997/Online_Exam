@@ -489,12 +489,16 @@ def report_done(request, report_id):
         if replying_report.category.responsibility & request.user.privilege == 0:
             messages.warning(request, 'This report not belongs to your permission.')
             return redirect('responsible_report_list', responsibility=permission)
+
         elif replying_report.state == 3:
             messages.warning(request, 'This report had been resolved.')
             return redirect('responsible_report_list', responsibility=permission)
+
         elif replying_report.state == 2:
             replying_report.resolved_by = request.user
             replying_report.state = 3
+            replying_report.user_notification = True
+            replying_report.staff_notification = False
             replying_report.save()
             messages.success(request, 'This report has resolved.')
     except ObjectDoesNotExist:

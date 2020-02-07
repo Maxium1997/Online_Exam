@@ -5,7 +5,7 @@
 {% block path %}
     <a href="">系統管理員</a>
     <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="">使用者列表</a>
+    <a href="">問題回報列表</a>
 {% endblock %}
 
 {% block content %}
@@ -16,20 +16,18 @@
                 <caption style="font-size: 30px;">&nbsp;&nbsp;問題回報列表</caption>
                 <thead class="title">
                     <tr>
-                        <th class="col-md-1">編號</th>
                         <th class="col-md-1">問題類別</th>
-                        <th class="col-md-3">內容</th>
-                        <th class="col-md-2">回報時間</th>
+                        <th class="col-md-6">內容</th>
                         <th class="col-md-1">狀態</th>
+                        <th class="col-md-1"></th>
                     </tr>
                 </thead>
                 {% for report in reports %}
                     <tr {% if report.staff_notification %}class="notification"{% endif %} onclick="window.location.href='{% url 'report_reply' report.id %}'">
-                        <td>{{ report.id }}</td>
                         <td>{{ report.category }}</td>
-                        <td>{{ report.supplement_note|safe|summary }}</td>
-                        <td>{{ report.created_time|date:"Y年m月d日, H時i分" }}</td>
+                        <td style="text-align: left">{{ report.supplement_note|safe|summary }}</td>
                         <td>{{ report.state|readable_report_state }}</td>
+                        <td style="font-size: 12px; vertical-align: bottom">{{ report.created_time|date:"H:i, m/d/Y" }}</td>
                     </tr>
                 {% endfor %}
                 <tbody>
@@ -42,8 +40,6 @@
         <style>
             .table-responsive .table{
                 text-align: center;
-                position: absolute;
-                top: 30px;
             }
 
             .table-hover > tbody > tr:hover > td,
@@ -61,7 +57,7 @@
             }
 
             .table tbody{
-                font-size: 18px;
+                font-size: 16px;
             }
 
             .table tbody td a{
