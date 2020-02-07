@@ -3,7 +3,9 @@
 {% load web_filters %}
 
 {% block path %}
-    <a href="">檢視個人資料</a>
+    <a href="{% url 'profile' %}">檢視個人資料</a>
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="{% url 'report_list' %}">問題回報</a>
 {% endblock %}
 
 {% block content %}
@@ -35,21 +37,17 @@
             .tool-btn ul{
                 width: 100%;
                 position: absolute;
-                top: 1%;
                 padding-top: 10px;
             }
 
             .tool-btn ul li a{
                 color: #2C3232;
-                font-size: 25px;
+                font-size: 16px;
                 text-decoration: none;
                 padding-left: 50px;
                 padding-top: 20px;
                 padding-bottom: 20px;
             }
-
-
-
         </style>
     </div>
 
@@ -58,15 +56,15 @@
             <caption style="font-size: 30px;">&nbsp;&nbsp;問題回報</caption>
             <thead class="title">
                 <tr>
-                    <th>編號</th>
-                    <th>問題類別</th>
-                    <th>狀態</th>
+                    <th class="col-md-1">編號</th>
+                    <th class="col-md-2">問題類別</th>
+                    <th class="col-md-1">狀態</th>
                 </tr>
             </thead>
             <tbody>
             {% if reports %}
                 {% for report in reports %}
-                    <tr>
+                    <tr {% if report.user_notification %}class="notification"{% endif %} style="cursor: pointer" onclick="window.location.href='{% url 'report_detail' report.id %}'">
                         <td>{{ report.id }}</td>
                         <td>{{ report.category }}</td>
                         <td>{{ report.state|readable_report_state }}</td>
@@ -108,17 +106,21 @@
             .table tbody td a{
                 color: #2C3232;
             }
+
+            .notification{
+                background-color: rgb(230, 230, 230);
+            }
         </style>
     </div>
 
-    <div class="add_users">
+    <div class="add_report">
         <button type="button" class="btn btn-default btn-lg">
             <a href="{% url 'report' %}">新增</a>
         </button>
 
         <style>
-            .add_users button{
-                position: relative;
+            .add_report button{
+                position: absolute;
                 left: 90%;
                 top: -60px;
 
@@ -132,12 +134,12 @@
                 box-shadow: 0px 3px 8px 0px #486260;
             }
 
-            .add_users button:hover{
+            .add_report button:hover{
                 background-color: #2C3232;
                 transition: all 0.3s ease;
             }
 
-            .add_users a{
+            .add_report a{
                 color: #FFFEF6;
                 text-decoration: none;
             }

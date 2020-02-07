@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="add_category">
+    <div class="category">
         <form method="post">
             {% csrf_token %}
             <div class="category_name">
@@ -30,13 +30,16 @@
 
             <div class="btn">
                 <input type="submit" onclick="return confirm('確認更改此類別？')" value="確認更改">
-                <input type="submit" onclick="history.back()" value="返回">
             </div>
 
         </form>
 
+        <div class="btn">
+            <button onclick="history.back()">返回</button>
+        </div>
+
         <style>
-            .add_category .title h1{
+            .category .title h1{
                 font-size: 40px;
                 color: #FFFEF6;
                 background-color: #4CCABD;
@@ -49,7 +52,7 @@
                 top: 1%;
             }
 
-            .add_category .title h2{
+            .category .title h2{
                 background-color: #4CCABD;
                 padding-top: 10px;
                 padding-bottom: 22px;
@@ -60,14 +63,14 @@
                 left: 30%;
             }
 
-            .add_category form .category_name label{
+            .category form .category_name label{
                 font-size: 30px;
                 padding-left: 30%;
                 position: absolute;
                 top: 30%;
             }
 
-            .add_category form .category_name input{
+            .category form .category_name input{
                 position: absolute;
                 top: 31%;
                 left: 45%;
@@ -76,17 +79,31 @@
                 font-size: 25px;
             }
 
-            .add_category form .privilege{
+            .category form .privilege{
                 font-size: 30px;
                 position: absolute;
                 top: 43%;
                 left: 10%;
             }
 
-            .add_category form .btn input{
-                position: relative;
-                left: 200%;
-                top: 400px;
+            .btn input{
+                position: absolute;
+                left: 40%;
+                top: 75%;
+
+                font-size: 25px;
+                padding: 10px;
+                padding-left: 15px;
+                padding-right: 15px;
+                color: #FFFEF6;
+                background-color: #4CCABD;
+                border: none;
+            }
+
+            .btn button{
+                position: absolute;
+                left: 52%;
+                top: 75%;
 
                 font-size: 25px;
                 padding: 10px;

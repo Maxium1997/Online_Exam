@@ -2,6 +2,7 @@ import re
 import xlrd
 import os
 import json
+import datetime
 
 from string import punctuation
 
@@ -405,10 +406,13 @@ def report(request):
             categories = ReportCategory.objects.all()
             return render(request, 'report/report.html', locals())
 
-        supplement_note = request.POST.get('supplement_note',)
+        supplement_note = request.POST.get('supplement_note',)+'<br>'
 
-        user_report = Report.objects.create(category=category, supplement_note=supplement_note,
-                                            created_by=request.user, state=1)
+        user_report = Report.objects.create(category=category,
+                                            supplement_note=supplement_note,
+                                            staff_notification=True,
+                                            created_by=request.user,
+                                            state=1)
 
         user_report.save()
 
@@ -418,6 +422,85 @@ def report(request):
     else:
         categories = ReportCategory.objects.all()
         return render(request, 'report/report.html', locals())
+
+
+# 負責單位對回報的回應
+@login_required
+def report_reply(request, report_id):
+    if request.user.has_perm(UserType.SystemManager):
+        permission = 'SystemManager'
+        pass
+    elif request.user.has_perm(UserType.TestManager):
+        permission = 'TestManager'
+        pass
+    elif request.user.has_perm(UserType.TBManager):
+        permission = 'TBManager'
+        pass
+    else:
+        messages.warning(request, 'Permission Denied.')
+        return redirect('Homepage')
+
+    try:
+        replying_report = Report.objects.get(id=report_id)
+
+        if replying_report.category.responsibility & request.user.privilege == 0:
+            messages.warning(request, 'This report not belongs to your permission.')
+            return redirect('responsible_report_list', responsibility=permission)
+        elif replying_report.state == 1:
+            replying_report.state = 2
+            replying_report.save()
+    except ObjectDoesNotExist:
+        messages.error(request, "Report doesn't exist, report id: {}".format(report_id))
+        return redirect('responsible_report_list', responsibility=permission)
+
+    if request.method == 'POST':
+        if replying_report.state == 3:
+            messages.warning(request, 'This report had been resolved.')
+            return redirect('responsible_report_list', responsibility=permission)
+        reply = request.POST.get('reply')
+        replying_report.reply += (str(datetime.datetime.now()) + ': ' + reply + '<br>')
+        replying_report.user_notification = True
+        replying_report.save()
+        return redirect('responsible_report_list', responsibility=permission)
+    else:
+        replying_report.staff_notification = False
+        replying_report.save()
+        return render(request, 'report/reply.html', locals())
+
+
+@login_required
+def report_done(request, report_id):
+    if request.user.has_perm(UserType.SystemManager):
+        permission = 'SystemManager'
+        pass
+    elif request.user.has_perm(UserType.TestManager):
+        permission = 'TestManager'
+        pass
+    elif request.user.has_perm(UserType.TBManager):
+        permission = 'TBManager'
+        pass
+    else:
+        messages.warning(request, 'Permission Denied.')
+        return redirect('Homepage')
+
+    try:
+        replying_report = Report.objects.get(id=report_id)
+
+        if replying_report.category.responsibility & request.user.privilege == 0:
+            messages.warning(request, 'This report not belongs to your permission.')
+            return redirect('responsible_report_list', responsibility=permission)
+        elif replying_report.state == 3:
+            messages.warning(request, 'This report had been resolved.')
+            return redirect('responsible_report_list', responsibility=permission)
+        elif replying_report.state == 2:
+            replying_report.resolved_by = request.user
+            replying_report.state = 3
+            replying_report.save()
+            messages.success(request, 'This report has resolved.')
+    except ObjectDoesNotExist:
+        messages.error(request, "Report doesn't exist, report id: {}".format(report_id))
+
+    return redirect('responsible_report_list', responsibility=permission)
 
 
 # 系統管理員檢視使用者個人基本資料

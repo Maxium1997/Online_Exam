@@ -24,10 +24,10 @@
                     </tr>
                 </thead>
                 {% for report in reports %}
-                    <tr>
+                    <tr {% if report.staff_notification %}class="notification"{% endif %} onclick="window.location.href='{% url 'report_reply' report.id %}'">
                         <td>{{ report.id }}</td>
                         <td>{{ report.category }}</td>
-                        <td>{{ report.supplement_note }}</td>
+                        <td>{{ report.supplement_note|safe|summary }}</td>
                         <td>{{ report.created_time|date:"Y年m月d日, H時i分" }}</td>
                         <td>{{ report.state|readable_report_state }}</td>
                     </tr>
@@ -48,6 +48,7 @@
 
             .table-hover > tbody > tr:hover > td,
             .table-hover > tbody > tr:hover > th {
+                cursor: pointer;
                 background-color: #4CCABD;
             }
 
@@ -67,6 +68,9 @@
                 color: #2C3232;
             }
 
+            .notification{
+                background-color: rgb(230, 230, 230);
+            }
         </style>
     </div>
 {% endblock %}

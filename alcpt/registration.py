@@ -1,4 +1,6 @@
 import re
+import datetime
+import templates
 
 from django.shortcuts import render, redirect
 
@@ -158,6 +160,7 @@ def change_password(request):
         return render(request, 'registration/password_change.html', locals())
 
 
+@login_required
 def reset_password(request):
     if request.method == 'POST':
         new_password = request.POST.get('new_password', )
@@ -224,3 +227,27 @@ def forget_password(request):
 def report_list(request):
     reports = Report.objects.filter(created_by=request.user)
     return render(request, 'registration/report_list.html', locals())
+
+
+@login_required
+def report_detail(request, report_id):
+    try:
+        viewed_report = Report.objects.get(id=report_id)
+    except ObjectDoesNotExist:
+        messages.error(request, "Report doesn't exist, report id: {}".format(report_id))
+        return redirect('report_list')
+
+    if request.method == 'POST':
+        if viewed_report.state == 3 or viewed_report.created_by:
+            messages.warning(request, 'This report had been resolved.')
+            return redirect('report_list')
+        reply = request.POST.get('reply')
+        viewed_report.supplement_note += (str(datetime.datetime.now()) + ': ' + reply + '<br>')
+        viewed_report.user_notification = False
+        viewed_report.staff_notification = True
+        viewed_report.save()
+        return redirect('report_list')
+    else:
+        viewed_report.notification = False
+        viewed_report.save()
+        return render(request, 'registration/report_detail.html', locals())

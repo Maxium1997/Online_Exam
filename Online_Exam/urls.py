@@ -28,7 +28,10 @@ urlpatterns = [
     url(r'^report$', system.report, name='report'),
     url(r'^report/', include([
         url(r'^list$', registration.report_list, name='report_list'),
+        url(r'^(?P<report_id>[0-9]+)/detail$', registration.report_detail, name='report_detail'),
         url(r'^list/(?P<responsibility>(SystemManager|TestManager|TBManager))', system.responsible_report_list, name='responsible_report_list'),
+        url(r'^reply/(?P<report_id>[0-9]+)$', system.report_reply, name='report_reply'),
+        url(r'^reply/(?P<report_id>[0-9]+)/done$', system.report_done, name='report_done'),
     ])),
 
     url(r'^email_verification$', registration.verification, name='email_verification'),

@@ -185,3 +185,11 @@ def readable_report_state(state: int):
 @register.filter(name='belongs_to')
 def belongs_to(category: ReportCategory, privilege: UserType):
     return category.responsibility & privilege.value[0] > 0
+
+
+@register.filter(name='summary')
+def summary(completed_string: str):
+    if len(completed_string) > 15:
+        return completed_string[:15] + '...'
+    else:
+        return completed_string

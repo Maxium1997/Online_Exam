@@ -1,4 +1,4 @@
-import time, datetime
+import time, datetime, json
 
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
@@ -328,6 +328,8 @@ class ReportCategory(models.Model):
 # state: which state of this report.
 # 問題回報
 class Report(models.Model):
+    user_notification = models.BooleanField(default=False)       # use to notify user the report had been change.
+    staff_notification = models.BooleanField(default=False)
     category = models.ForeignKey('ReportCategory', on_delete=models.PROTECT)
     question = models.ForeignKey('Question', on_delete=models.PROTECT, blank=True, null=True)
     reply = models.TextField()
@@ -347,3 +349,8 @@ class Report(models.Model):
     def __str__(self):
         return self.category
 
+    def store_reply(self, reply):
+        self.reply = json.dumps(reply).encode('utf-8').decode('unicode_escape')
+
+    def get_reply(self):
+        return json.loads(self.reply)
