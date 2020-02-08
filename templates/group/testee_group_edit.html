@@ -65,13 +65,13 @@
 
                         .btn .btn2 input{
                             position: absolute;
-                            left: 82%;
+                            left: 81%;
                             top: 5%;
                         }
 
                         .btn .btn3 input{
                             position: absolute;
-                            left: 91%;
+                            left: 89%;
                             top: 5%;
                         }
                     </style>
@@ -79,7 +79,7 @@
 
                 {% for student in students %}
                     <tr>
-                        <td style="font-size: 30px; padding-left: 10%"><input style="font-size: 35px" type="checkbox" name="student" value="{{ student.id }}" {% if student in group_members %}checked{% endif %}>&nbsp;{{ student.user.name }}</td>
+                        <td style="font-size: 18px; padding-left: 5%"><input type="checkbox" name="student" value="{{ student.id }}" {% if student in group_members %}checked{% endif %}>&nbsp;{{ student.user.name }}</td>
                     </tr>
                 {% endfor %}
             </table>

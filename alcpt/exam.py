@@ -113,7 +113,7 @@ def testpaper_create(request):
 
         testpaper = testmanager.create_testpaper(name=testpaper_name, created_by=request.user, is_testpaper=1)
 
-        messages.success(request, 'Add a testpaper successfully, please edit the new testpaper: {}'.format(testpaper.id))
+        messages.success(request, 'Add a testpaper successfully, please edit the new testpaper: {}'.format(testpaper.name))
         return redirect('testpaper_list')
 
     else:

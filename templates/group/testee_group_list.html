@@ -39,7 +39,6 @@
 
                 }
 
-
                 .container-flu{
                     position: absolute;
                     top: -22%;
@@ -158,6 +157,7 @@
                     <th class="col-md-3">建立時間</th>
                     <th class="col-md-3">更新時間</th>
                     <th class="col-md-1">建立者</th>
+                    <th class="col-md-1"></th>
                 </tr>
             </thead>
             <tbody>
@@ -182,14 +182,17 @@
         <style>
             .table-responsive .table{
                 text-align: center;
-                position: absolute;
-                top: 30px;
-                left: 0px;
             }
 
-            .table-hover > tbody > tr:hover > td,
-            .table-hover > tbody > tr:hover > th {
+            .table-hover a{
+                    visibility: hidden;
+            }
+            .table-hover > tbody > tr:hover{
+                cursor: pointer;
                 background-color: #4CCABD;
+            }
+            .table-hover > tbody > tr:hover a, td{
+                visibility: visible;
             }
 
             .title{

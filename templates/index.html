@@ -44,22 +44,37 @@
         <table class="table table-hover">
             <thead class="title">
                 <tr>
-                    <th class="col-md-4">公告標題</th>
-                    <th class="col-md-3">公告人</th>
-                    <th class="col-md-4">公告時間</th>
-                    <th></th>
+                    {% if request.user|has_perm:'SystemManager' %}
+                        <th class="col-md-2">公告標題</th>
+                        <th class="col-md-6">公告內容</th>
+                        <th class="col-md-1">公告人</th>
+                        <th class="col-md-2">公告時間</th>
+                        <th class="col-md-1"></th>
+                    {% else %}
+                        <th class="col-md-2">公告標題</th>
+                        <th class="col-md-6">公告內容</th>
+                        <th class="col-md-1">公告人</th>
+                        <th class="col-md-2">公告時間</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
             {% for pro in pros %}
                 <tr style="cursor: pointer" onclick="window.location.href='{% url 'proclamation_detail' pro.id %}'">
                     <td>{{ pro.title }}</td>
+                    {% if request.user|has_perm:'SystemManager' %}
+                        <td>{{ pro.text|safe|summary:33 }}</td>
+                    {% else %}
+                        <td>{{ pro.text|safe|summary:36 }}</td>
+                    {% endif %}
                     <td>{{ pro.created_by.name}}</td>
-                    <td>{{ pro.created_time|date:'Y年m月d日, H時i分' }}</td>
+                    <td style="font-size: 12px">{{ pro.created_time|date:'H:i, Y/m/d' }}</td>
+                    {% if request.user|has_perm:'SystemManager' %}
                     <td>
                         <a href="{% url 'proclamation_edit' pro.id %}"><i class="fa fa-pencil-square fa-fw mb-2"></i></a>&nbsp;
                         <a href="{% url 'proclamation_delete' pro.id %}" onclick="return confirm('確認刪除此公告:{{ pro.title }}?')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
@@ -72,14 +87,14 @@
 
             .table-hover a{
                     visibility: hidden;
-                }
-                .table-hover > tbody > tr:hover{
-                    cursor: pointer;
-                    background-color: #4CCABD;
-                }
-                .table-hover > tbody > tr:hover a, td{
-                    visibility: visible;
-                }
+            }
+            .table-hover > tbody > tr:hover{
+                cursor: pointer;
+                background-color: #4CCABD;
+            }
+            .table-hover > tbody > tr:hover a, td{
+                visibility: visible;
+            }
 
             .title{
                 font-size: 25px;

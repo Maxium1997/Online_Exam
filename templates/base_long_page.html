@@ -23,41 +23,65 @@
     {% endblock %}
 </head>
 <body>
+    <div class="back-btn">
+        <button title="顯示上一頁" onclick="history.back()"><i class="fa fa-angle-left fa-lg box"></i></button>
+
+        <style>
+            .back-btn{
+                position: absolute;
+                top: 13%;
+                left: 3.5%;
+                z-index: 9999;
+            }
+            button{
+                padding: 10px 18px;
+                border-radius: 16px;
+                border-width: 0px;
+            }
+        </style>
+    </div>
+
+    <div class="hint-info">
+        <section>
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == "error" %}
+                        <div class="alert alert-danger mt-3" role="alert">
+                            <i class="fa fa-window-close" aria-hidden="true"></i> {{ message }}
+                        </div>
+                    {% elif message.tags == "success" %}
+                        <div class="alert alert-success mt-3" role="alert">
+                            {{ message }}
+                        </div>
+                    {% elif message.tags == "warning" %}
+                        <div class="alert alert-warning mt-3" role="alert">
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </section>
+
+        <style>
+            .hint-info{
+                position: absolute;
+                width: 38%;
+                top: 18%;
+                left: 30%;
+                z-index: 9999;
+                text-align: center;
+            }
+        </style>
+    </div>
+
     <div class="wrapper">
         <img src="{% static "/background.jpg" %}">
         <div class="cover"></div>
 
         <div class="infor">
-            <section>
-                {% if messages %}
-                    {% for message in messages %}
-                        {% if message.tags == "error" %}
-                            <div class="alert alert-danger mt-3" role="alert">
-                                <i class="fa fa-window-close" aria-hidden="true"></i> {{ message }}
-                            </div>
-            {#                <script language="javascript">alert("{{ message }}")</script>#}
+            {% block content %}
 
-                        {% elif message.tags == "success" %}
-                            <div class="alert alert-success mt-3" role="alert">
-                                {{ message }}
-                            </div>
-            {#                <script language="javascript">alert("{{ message }}")</script>#}
-
-                        {% elif message.tags == "warning" %}
-                            <div class="alert alert-warning mt-3" role="alert">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ message }}
-                            </div>
-            {#                <script language="javascript">alert("{{ message }}")</script>#}
-
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
-                {% block content %}
-
-                {% endblock %}
-
-            </section>
+            {% endblock %}
         </div>
     <!-- 標題列 -->
         <div class="permission_toolbar" style="opacity: 0.8;">
@@ -251,26 +275,27 @@
             <a href="{% url 'profile' %}"><i class="fa fa-user-circle"></i></a>
             <style>
                 .icon-bar {
-                  width: 90px;
-                  background-color: #5e5e5e;
-                  position: fixed;
-                  left: 2%;
-                  box-shadow: 0px 3px 8px 0px #2C3232;
+                    width: 90px;
+                    background-color: #5e5e5e;
+                    position: fixed;
+                    top: 20%;
+                    left: 2%;
+                    box-shadow: 0px 3px 8px 0px #2C3232;
 
-                  opacity: 0.8;
+                    opacity: 0.8;
                 }
 
                 .icon-bar a {
-                  display: block;
-                  text-align: center;
-                  padding: 16px;
-                  transition: all 0.3s ease;
-                  color: white;
-                  font-size: 36px;
+                    display: block;
+                    text-align: center;
+                    padding: 16px;
+                    transition: all 0.3s ease;
+                    color: white;
+                    font-size: 36px;
                 }
 
                 .icon-bar a:hover {
-                  background-color: #000;
+                    background-color: #000;
                 }
 
             </style>

@@ -188,8 +188,8 @@ def belongs_to(category: ReportCategory, privilege: UserType):
 
 
 @register.filter(name='summary')
-def summary(completed_string: str):
-    if len(completed_string) > 50:
-        return completed_string[:50] + '...'
+def summary(completed_string: str, wanted: int):
+    if len(completed_string) > wanted:
+        return completed_string[:wanted] + '...'
     else:
         return completed_string
