@@ -79,14 +79,24 @@ WSGI_APPLICATION = 'Online_Exam.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 # 更換成 mysql
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'ALCPT2',
+#         'USER': 'root',
+#         'PASSWORD': 'alcptalcpt',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#     }
+# }
+
+# PostgresSQL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ALCPT2',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'alcpt',
         'USER': 'root',
         'PASSWORD': 'alcptalcpt',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
     }
 }
 
