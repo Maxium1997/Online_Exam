@@ -11,14 +11,13 @@
 {% block content %}
     <div>
         <div class="add_category">
-            <button type="button" class="btn btn-default btn-lg">
-                <a href="{% url 'report_category_create' %}">新增回報類別</a>
-            </button>
+            <button type="button" class="btn btn-default btn-lg" onclick="window.location.href='{% url 'report_category_create' %}'">新增回報類別</button>
 
             <style>
                 .add_category button{
                     width: 150px;
                     height: 50px;
+                    color: #FFFEF6;
                     background-color: #4CCABD;
                     border-radius: 10px;
                     text-align: center;
@@ -31,13 +30,9 @@
                 }
 
                 .add_category button:hover{
+                    color: #FFFEF6;
                     background-color: #2C3232;
                     transition: all 0.3s ease;
-                }
-
-                .add_category a{
-                    color: #FFFEF6;
-                    text-decoration: none;
                 }
             </style>
         </div>

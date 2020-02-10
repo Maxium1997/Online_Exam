@@ -220,6 +220,9 @@ def proclamation_edit(request, proclamation_id):
 def create_unit(request):
     name = request.POST.get('unit_name')
 
+    department_names = [d.name for d in Department.objects.all()]
+    squadron_names = [s.name for s in Squadron.objects.all()]
+
     if request.method == 'POST':
         if request.POST.get('unit') == 'department':
             Department.objects.create(name=name)

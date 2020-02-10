@@ -29,16 +29,15 @@
                 <h3>單位名稱： </h3>
 
                 <div>
-                    <textarea class="form-control" id="unit_name" name="unit_name" rows="3" placeholder="輸入要新增的單位名稱" required></textarea>
+                    <input type="text" id="unit_name" name="unit_name" onkeyup="uniqueName({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="輸入要新增的單位名稱" required>
                 </div>
             </div>
 
+            <div id="invalid" class="result"></div>
+            <div id="valid" class="result"></div>
+
             <div class="btn1">
                 <button type="submit">新增</button>
-            </div>
-
-            <div class="btn2">
-                <input type="reset" value="取消">
             </div>
 
             <div class="btn3">
@@ -106,6 +105,27 @@
                 left: 40%;
             }
 
+            .create_unit form .unit_name input{
+                width:30%;
+                height: 8%;
+                font-size: 25px;
+                position: absolute;
+                top: 41%;
+                left: 40%;
+            }
+
+            .result{
+                position: absolute;
+                top: 55%;
+                left: 30%;
+            }
+            #valid{
+                color: green;
+            }
+            #invalid{
+                color: red;
+            }
+
             .create_unit form .btn1 button{
                 font-size: 25px;
                 padding: 10px;
@@ -116,20 +136,7 @@
                 border: none;
                 position: absolute;
                 top: 85%;
-                left: 35%;
-            }
-
-            .create_unit form .btn2 input{
-                font-size: 25px;
-                padding: 10px;
-                padding-left: 15px;
-                padding-right: 15px;
-                color: #FFFEF6;
-                background-color: #4CCABD;
-                border: none;
-                position: absolute;
-                top: 85%;
-                left: 45%;
+                left: 40%;
             }
 
             .create_unit form .btn3 button{
@@ -142,9 +149,38 @@
                 border: none;
                 position: absolute;
                 top: 85%;
-                left: 55%;
+                left: 50%;
             }
         </style>
+    </div>
+
+    <div>
+        <script type="text/JavaScript">
+            function uniqueName(departments, squadrons, mode, input_unit){
+                var arr = squadrons;
+
+                if(mode === 'department'){
+                    arr = departments
+                }
+
+                for(var i = 0; i < arr.length; i++) {
+                    if (input_unit.value == ''){
+                        document.getElementById("valid").innerHTML = '';
+                        document.getElementById("invalid").innerHTML = '';
+                    }
+                    else if (input_unit.value === arr[i]) {
+                        document.getElementById("invalid").innerHTML =
+                            input_unit.value + ' has exist, please change ' + mode + ' name.';
+                        document.getElementById("valid").innerHTML = '';
+                        break;
+                    }
+                    else {
+                        document.getElementById("valid").innerHTML = 'This name can be used.';
+                        document.getElementById("invalid").innerHTML = '';
+                    }
+                }
+            }
+        </script>
     </div>
 
 {% endblock %}

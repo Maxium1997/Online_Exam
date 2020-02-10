@@ -21,6 +21,13 @@
                 <input type="submit" value="建立">
             </div>
 
+            <div class="btn2">
+                <input type="reset" value="取消">
+            </div>
+
+            <div class="btn3">
+                <button type="button" onclick="history.back()">返回</button>
+            </div>
         </form>
 
         <style>
@@ -74,9 +81,34 @@
                 border: none;
                 position: absolute;
                 top: 85%;
+                left: 35%;
+            }
+
+            .test_group_create form .btn2 input{
+                font-size: 25px;
+                padding: 10px;
+                padding-left: 15px;
+                padding-right: 15px;
+                color: #FFFEF6;
+                background-color: #5e5e5e;
+                border: none;
+                position: absolute;
+                top: 85%;
                 left: 45%;
             }
 
+            .test_group_create form .btn3 button{
+                font-size: 25px;
+                padding: 10px;
+                padding-left: 15px;
+                padding-right: 15px;
+                color: #FFFEF6;
+                background-color: #4CCABD;
+                border: none;
+                position: absolute;
+                top: 85%;
+                left: 55%;
+            }
         </style>
     </div>
 {% endblock %}
