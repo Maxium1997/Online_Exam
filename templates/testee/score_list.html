@@ -131,7 +131,11 @@
                 {% for answersheet in answer_sheets %}
                     <tr style="cursor: pointer" onclick="window.location.href='{% url 'view_answersheet_content' answersheet.id %}'">
                         <td style="text-align: center; vertical-align:middle;">{{ answersheet.exam }}</td>
-                        <td style="vertical-align:middle;">{{ answersheet.score }}</td>
+                        {% if answersheet.score  < 60 %}
+                            <td style="vertical-align:middle; color: #c12e2a">{{ answersheet.score }}</td>
+                        {% else %}
+                            <td style="vertical-align:middle;">{{ answersheet.score }}</td>
+                        {% endif %}
                         <td style="vertical-align:middle;">{{ answersheet.finish_time|date:'Y年m月d日, H時m分' }}</td>
                     </tr>
                 {% endfor %}
