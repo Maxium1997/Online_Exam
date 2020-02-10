@@ -16,11 +16,8 @@ from .managerfuncs import tbmanager, tboperator
 
 
 @permission_check(UserType.TBManager)
-@require_http_methods(["GET"])
 def manager_index(request):
-    question_types = []
-    for q in list(QuestionType):
-        question_types.append(q)
+    question_types = [_ for _ in QuestionType]
 
     state_choices = [(1, '審核通過'),
                      (2, '審核未通過'),
@@ -49,6 +46,8 @@ def manager_index(request):
     state = request.GET.get('state',)
 
     query_content, questions = tbmanager.query_questions(**keywords)
+    resultNum = len(questions)
+
     page = request.GET.get('page', 1)
     paginator = Paginator(questions, 10)  # the second parameter is used to display how many items. Now is display 10
 

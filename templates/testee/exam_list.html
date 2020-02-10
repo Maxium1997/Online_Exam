@@ -108,7 +108,7 @@
             <tbody>
                 {% for exam in practiceList %}
                     <tr>
-                        <td style="text-align: center; vertical-align:middle;">{{ exam }}</td>
+                        <td style="text-align: left; vertical-align:middle;">{{ exam }}</td>
                         <td style="vertical-align:middle;">{{ exam.exam_type|readable_exam_type }}</td>
                         <td style="vertical-align:middle;">
                             {% if not exam|is_finished:request.user %}
