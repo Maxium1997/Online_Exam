@@ -55,7 +55,7 @@
                 </thead>
                 <tbody>
                 {% for user in userList %}
-                    <tr>
+                    <tr onclick="window.location.href='{% url "view_profile" user.id %}'">
                         <td style="text-align: left; vertical-align:middle;">{{ user.reg_id }}</td>
                         <td style="vertical-align:middle;">{{ user.name }}</td>
                         <td style="vertical-align:middle;">{% if user.student %}{{ user.student.grade }}{% else %}None{% endif %}</td>
