@@ -28,12 +28,14 @@ def exam_list(request):
                 pass
         except:
             pass
+
+    practiceList = []
     practices = Exam.objects.filter(created_by=request.user)
     for practice in practices:
         if practice in examList:
             pass
         else:
-            examList.append(practice)
+            practiceList.append(practice)
 
     return render(request, 'testee/exam_list.html', locals())
 

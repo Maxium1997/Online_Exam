@@ -72,10 +72,10 @@
             </style>
 
             <div class="btn">
-                <input type="submit" value="下一題">
+                <button type="submit">下一題</button>
 
                 <style>
-                    .btn input{
+                    .btn button{
                         font-size: 25px;
                         padding: 10px;
                         padding-left: 15px;
@@ -85,12 +85,31 @@
                         border: none;
                         position: absolute;
                         top: 85%;
-                        left: 45%;
+                        left: 80%;
                     }
                 </style>
             </div>
 
         </form>
+
+        <div class="leave-btn">
+            <button type="button" onclick="window.location.href='{% url 'Homepage' %}'">離開</button>
+
+            <style>
+                button{
+                    font-size: 25px;
+                    padding: 10px;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                    color: #FFFEF6;
+                    background-color: #4CCABD;
+                    border: none;
+                    position: absolute;
+                    top: 85%;
+                    left: 90%;
+                }
+            </style>
+        </div>
     </div>
 
     <div class="page">
