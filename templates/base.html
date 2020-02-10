@@ -23,12 +23,14 @@
 <body>
     <div class="back-btn">
         <button title="顯示上一頁" onclick="history.back()"><i class="fa fa-angle-left fa-lg box"></i></button>
+        <button title="顯示下一頁" onclick="history.forward()"><i class="fa fa-angle-right fa-lg box"></i></button>
+        <button title="重新整理" onclick="window.location.reload();"><i class="fa fa-refresh"></i></button>
 
         <style>
             .back-btn{
                 position: absolute;
                 top: 13%;
-                left: 3.5%;
+                left: 1%;
                 z-index: 9999;
             }
             button{
