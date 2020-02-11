@@ -94,6 +94,7 @@ def user_create(request):
 
         return redirect('user_list')
     else:
+        reg_ids = [_.reg_id for _ in User.objects.all()]
         privileges = UserType.__members__
         return render(request, 'user/create_user.html', locals())
 

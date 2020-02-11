@@ -17,8 +17,10 @@
             {% csrf_token %}
             <div class="reg_id">
                 <label for="reg_id">Reg ID：</label>
-                <input type="text" name="reg_id" required>
+                <input type="text" name="reg_id" onkeyup="uniqueID({{ reg_ids }}, this)" required>
             </div>
+
+            <div class="unique_id" id="unique_id"></div>
 
             <br>
 
@@ -43,6 +45,21 @@
 
 
         </form>
+
+        <script type="text/javascript">
+            function uniqueID(reg_ids , id) {
+                var arr = reg_ids;
+
+                for(var i = 0; i < arr.length; i++) {
+                    if (id.value === arr[i]) {
+                        document.getElementById('unique_id').innerHTML = "'" + id.value + "' 已存在，請輸入其他 ID";
+                        break;
+                    } else {
+                        document.getElementById('unique_id').innerHTML = '';
+                    }
+                }
+            }
+        </script>
 
         <style>
             .create_user .title h1{
@@ -129,6 +146,14 @@
                 position: absolute;
                 top: 85%;
                 left: 55%;
+            }
+
+            .unique_id {
+                color: #c12e2a;
+                font-size: 30px;
+                padding-left: 55%;
+                position: absolute;
+                top: 30%;
             }
         </style>
     </div>

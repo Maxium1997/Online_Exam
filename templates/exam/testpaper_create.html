@@ -16,8 +16,10 @@
 
             <div class="testpaper_name">
                 <label>考卷名稱：</label>
-                <input type="text" name="testpaper_name" required>
+                <input type="text" name="testpaper_name" onkeyup="uniqueName({{ testpaper_names }}, this)" required>
             </div>
+
+            <div class="unique_name" id="unique_name"></div>
 
             <div class="btn">
                 <input type="submit" value="送出">
@@ -110,7 +112,30 @@
                     left: 55%;
                 }
 
+                .unique_name {
+                    color: #c12e2a;
+                    font-size: 30px;
+                    padding-left: 29%;
+                    position: absolute;
+                    top: 50%;
+                }
+
             </style>
+
+            <script type="text/javascript">
+                function uniqueName(testpaper_names , name) {
+                    var arr = testpaper_names;
+
+                    for(var i = 0; i < arr.length; i++) {
+                        if (name.value === arr[i]) {
+                            document.getElementById('unique_name').innerHTML = "'" + name.value + "' 已存在，請輸入其他名稱";
+                            break;
+                        } else {
+                            document.getElementById('unique_name').innerHTML = '';
+                        }
+                    }
+                }
+            </script>
         </form>
     </div>
 {% endblock %}
