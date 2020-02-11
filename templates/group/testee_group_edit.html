@@ -12,21 +12,21 @@
     <script type="text/javascript">
     function selAll(){
         //變數checkItem為checkbox的集合
-        var checkItem = document.getElementsByName("student");
+        var checkItem = document.getElementsByName("testee");
         for(var i=0;i<checkItem.length;i++){
             checkItem[i].checked=true;
         }
     }
     function unselAll(){
         //變數checkItem為checkbox的集合
-        var checkItem = document.getElementsByName("student");
+        var checkItem = document.getElementsByName("testee");
         for(var i=0;i<checkItem.length;i++){
             checkItem[i].checked=false;
         }
     }
     function usel() {
         //變數checkItem為checkbox的集合
-        var checkItem = document.getElementsByName("student");
+        var checkItem = document.getElementsByName("testee");
         for (var i = 0; i < checkItem.length; i++) {
             checkItem[i].checked = !checkItem[i].checked;
         }
@@ -41,35 +41,35 @@
             <table class="table table-hover">
                 <caption style="font-size: 30px; padding-left: 5%">&nbsp;{{ group.name }}＿群組內受測者名單</caption>
                 <div class="btn">
-                    <div class="btn1"><input type="button" value="全選" onclick="selAll();"></div>
-                    <div class="btn2"><input type="button" value="全取消" onclick="unselAll();"></div>
-                    <div class="btn3"><input type="button" value="反向選取" onclick="usel();"></div>
+                    <div class="btn1"><button type="button" onclick="selAll();">全選</button></div>
+                    <div class="btn2"><button type="button" onclick="unselAll();">全取消</button></div>
+                    <div class="btn3"><button type="button" onclick="usel();">反向選取</button></div>
 
                     <style>
-                        .btn input{
+                        .btn button{
                             background-color: #4CCABD;
                             color: #FFFEF6;
                             border: none;
                             padding-top: 5px;
                             padding-bottom: 5px;
-                            padding-left: 5px;
-                            padding-right: 5px;
-                            font-size: 25px;
+                            padding-left: 10px;
+                            padding-right: 10px;
+                            font-size: 20px;
                         }
 
-                        .btn .btn1 input{
+                        .btn .btn1 button{
                             position: absolute;
                             left: 75%;
                             top: 5%;
                         }
 
-                        .btn .btn2 input{
+                        .btn .btn2 button{
                             position: absolute;
                             left: 81%;
                             top: 5%;
                         }
 
-                        .btn .btn3 input{
+                        .btn .btn3 button{
                             position: absolute;
                             left: 89%;
                             top: 5%;
@@ -77,48 +77,27 @@
                     </style>
                 </div>
 
-                {% for student in students %}
+                {% for testee in testees %}
                     <tr>
-                        <td style="font-size: 18px; padding-left: 5%"><input type="checkbox" name="student" value="{{ student.id }}" {% if student in group_members %}checked{% endif %}>&nbsp;{{ student.user.name }}</td>
+                        <td style="font-size: 18px; padding-left: 5%"><input type="checkbox" name="testee" value="{{ testee.id }}" {% if testee in group_members %}checked{% endif %}>&nbsp;{{ testee.name }}</td>
                     </tr>
                 {% endfor %}
             </table>
             <div class="btn4">
-                <input type="submit" value="變更群組" onclick="return confirm('確認變更群組？')">
+                <button type="submit" onclick="return confirm('確認變更群組？')">變更群組</button>
 
                 <style>
-                    .btn4 input{
-                        background-color: #4CCABD;
-                        color: #FFFEF6;
-                        border: none;
-                        padding-top: 5px;
-                        padding-bottom: 5px;
-                        padding-left: 5px;
-                        padding-right: 5px;
+                    .btn4 button{
                         font-size: 25px;
+                        padding: 10px;
+                        padding-left: 15px;
+                        padding-right: 15px;
+                        color: #FFFEF6;
+                        background-color: #4CCABD;
+                        border: none;
 
                         position: absolute;
                         left: 35%;
-                    }
-                </style>
-            </div>
-
-            <div class="btn5">
-                <input type="reset" value="取消">
-
-                <style>
-                    .btn5 input{
-                        background-color: #5e5e5e;
-                        color: #FFFEF6;
-                        border: none;
-                        padding-top: 5px;
-                        padding-bottom: 5px;
-                        padding-left: 5px;
-                        padding-right: 5px;
-                        font-size: 25px;
-
-                        position: absolute;
-                        left: 45%;
                     }
                 </style>
             </div>
@@ -128,14 +107,13 @@
 
                 <style>
                     .btn6 button{
-                        background-color: #4CCABD;
-                        color: #FFFEF6;
-                        border: none;
-                        padding-top: 5px;
-                        padding-bottom: 5px;
-                        padding-left: 5px;
-                        padding-right: 5px;
                         font-size: 25px;
+                        padding: 10px;
+                        padding-left: 15px;
+                        padding-right: 15px;
+                        color: #FFFEF6;
+                        background-color: #4CCABD;
+                        border: none;
 
                         position: absolute;
                         left: 51%;

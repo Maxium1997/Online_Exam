@@ -22,15 +22,14 @@
 </head>
 <body>
     <div class="back-btn">
-        <button title="顯示上一頁" onclick="history.back()"><i class="fa fa-angle-left fa-lg box"></i></button>
-        <button title="顯示下一頁" onclick="history.forward()"><i class="fa fa-angle-right fa-lg box"></i></button>
+        <button title="顯示上一頁" onclick="self.location=document.referrer;"><i class="fa fa-angle-left fa-lg box"></i></button>
         <button title="重新整理" onclick="window.location.reload();"><i class="fa fa-refresh"></i></button>
 
         <style>
             .back-btn{
                 position: absolute;
                 top: 13%;
-                left: 1%;
+                left: 2%;
                 z-index: 9999;
             }
             button{
@@ -222,50 +221,50 @@
             </div>
 
             <style>
-                    .container-fluid button{
-                        background-color: #4CCABD;
-                        border-color: #FFFEF6;
+                .container-fluid button{
+                    background-color: #4CCABD;
+                    border-color: #FFFEF6;
 
-                    }
-                    .btn-group{
-                        position: absolute;
-                        top: 50px;
-                        right: 30px;
-                    }
+                }
+                .btn-group{
+                    position: absolute;
+                    top: 50px;
+                    right: 30px;
+                }
 
-                    .btn-group .dropdown-menu{
-                        height: 150px;
-                        width: auto;
-                        padding-left: 10px;
-                        padding-right: 10px;
-                        text-align: center;
-                    }
+                .btn-group .dropdown-menu{
+                    height: 150px;
+                    width: auto;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    text-align: center;
+                }
 
-                    .registration_block{
-                        width: 200px;
-                        font-size: 20px;
-                    }
+                .registration_block{
+                    width: 200px;
+                    font-size: 20px;
+                }
 
-                    .registration_block h1{
-                        font-size: 20px;
-                        position: absolute;
-                        top: 10px;
-                    }
+                .registration_block h1{
+                    font-size: 20px;
+                    position: absolute;
+                    top: 10px;
+                }
 
-                    .registration_block h2{
-                        position: absolute;
-                        top: 50%;
-                        left: 4%;
-                        padding-right: 70px;
-                        padding-left: 70px;
-                        padding-bottom: 20px;
-                        border-top: #486260 2px solid;
-                    }
+                .registration_block h2{
+                    position: absolute;
+                    top: 50%;
+                    left: 4%;
+                    padding-right: 70px;
+                    padding-left: 70px;
+                    padding-bottom: 20px;
+                    border-top: #486260 2px solid;
+                }
 
-                    .registration_block h2 a{
-                        color: #555555;
-                    }
-                </style>
+                .registration_block h2 a{
+                    color: #555555;
+                }
+            </style>
         </div>
     <!-- 左邊button -->
         <div class="icon-bar">
@@ -298,38 +297,36 @@
             </style>
         </div>
     <!-- 路徑喔 -->
-        <!-- 路徑喔 -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Homepage' %}">主頁</a></li>
-                <li class="breadcrumb-item">
-                    {% block path %}
-                    {% endblock %}
-                </li>
-            </ol>
-        </nav>
+        <div>
+            <!-- 路徑喔 -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'Homepage' %}">主頁</a></li>
+                    <li class="breadcrumb-item">
+                        {% block path %}
+                        {% endblock %}
+                    </li>
+                </ol>
+            </nav>
 
-        <style>
-            .breadcrumb{
-                background-color: #FFFEF6;
-                opacity: 0.8;
-                color: #2C3232;
+            <style>
+                .breadcrumb{
+                    background-color: #FFFEF6;
+                    opacity: 0.8;
+                    color: #2C3232;
 
-                position: absolute;
-                top: 18%;
-                left: 10%;
-                box-shadow: 0px 3px 8px 0px #5e5e5e;
-            }
+                    position: absolute;
+                    top: 18%;
+                    left: 10%;
+                    box-shadow: 0px 3px 8px 0px #5e5e5e;
+                }
 
-            .breadcrumb-item a{
-                color: #2C3232;
-                text-decoration: none;
-            }
-        </style>
-    </div>
-
-
-    </div>
+                .breadcrumb-item a{
+                    color: #2C3232;
+                    text-decoration: none;
+                }
+            </style>
+        </div>
 
 <!-- 基本頁面 -->
     <style>

@@ -52,7 +52,7 @@
             <label for="proclamation_text">公告內容：{{ proclamation.text }}</label>
         </div>
 
-        <div class="btn"><input type="submit" onclick="history.back()" value="確認"></div>
+        <div class="btn"><input type="submit" onclick="self.location=document.referrer;" value="確認"></div>
 
         <style>
             .delete a{

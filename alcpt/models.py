@@ -44,13 +44,20 @@ class UserManager(BaseUserManager):
 # update_time: user update its profile time
 class User(AbstractBaseUser):
     reg_id = models.CharField(max_length=50, unique=True)
-    email = models.EmailField(default="", blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
     email_is_verified = models.BooleanField(default=False)
     name = models.CharField(max_length=20, blank=True, null=True)
     gender = models.PositiveSmallIntegerField(blank=True, null=True)
-    privilege = models.PositiveSmallIntegerField(default=0)
+    TESTEE_PREVILEGE = 1
+    privilege = models.PositiveSmallIntegerField(default=TESTEE_PREVILEGE)     # 1 => Testee
     created_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
+    IDENTITY_CHOICES = (
+        (0, '訪客'),
+        (1, '學生'),
+        (2, '老師'),
+    )
+    identity = models.PositiveSmallIntegerField(null=True, default=0)
 
     objects = UserManager()
 
@@ -232,7 +239,7 @@ class Choice(models.Model):
 # score: score of the answer sheet
 class AnswerSheet(models.Model):
     exam = models.ForeignKey('Exam', on_delete=models.CASCADE, blank=True)
-    user = models.ForeignKey('Student', on_delete=models.CASCADE)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)      # Student -> User
     finish_time = models.DateTimeField(auto_now_add=True)
     is_finished = models.BooleanField(default=False)
     score = models.PositiveSmallIntegerField(null=True)
@@ -277,7 +284,7 @@ class OptionList(models.Model):
 # create_time: create time of the group
 class Group(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    member = models.ManyToManyField('Student', blank=True)
+    member = models.ManyToManyField('User', blank=True)     # Student -> User
     created_by = models.ForeignKey("User", on_delete=models.PROTECT, related_name='group_created')
     update_time = models.DateTimeField(auto_now=True)
     created_time = models.DateTimeField(auto_now_add=True)

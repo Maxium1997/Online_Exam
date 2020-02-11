@@ -28,8 +28,8 @@
             {% if group_members %}
             <tbody id="group_members">
                 {% for member in group_members %}
-                    <tr onclick="window.location.href='{% url "view_profile" member.user.id %}'">
-                        <td>{{ member.user.student.stu_id }}  /  {{ member.user.name }}</td>
+                    <tr onclick="window.location.href='{% url "view_profile" member.id %}'">
+                        <td>{{ member.user.reg_id }}  /  {{ member.name }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

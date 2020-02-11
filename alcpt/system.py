@@ -17,7 +17,7 @@ from django.contrib import messages
 
 from alcpt.managerfuncs import systemmanager
 from alcpt.models import User, Student, Department, Squadron, Proclamation, ReportCategory, Report
-from alcpt.definitions import UserType
+from alcpt.definitions import UserType, Identity
 from alcpt.decorators import permission_check, login_required
 from alcpt.exceptions import IllegalArgumentError
 
@@ -83,18 +83,57 @@ def user_create(request):
             i += 1
 
         try:
-            new_user = User.objects.create_user(reg_id=reg_id, privilege=privilege_value, password=reg_id)
-            new_user.save()
+            identity = int(request.POST.get('identity'))
+            if identity == 1:
+                if request.POST.get('stu_id'):
+                    new_user = User.objects.create_user(reg_id=reg_id, privilege=privilege_value, password=reg_id)
+                    new_user.identity = identity
+                    new_user.save()
+
+                    new_user_stu = Student.objects.create(stu_id=request.POST.get('stu_id'), user=new_user)
+                    if request.POST.get('department'):
+                        new_user_stu.department = Department.objects.get(id=int(request.POST.get('department')))
+                    if request.POST.get('squadron'):
+                        new_user_stu.squadron = Squadron.objects.get(id=int(request.POST.get('squadron')))
+                    if request.POST.get('grade'):
+                        new_user_stu.grade = request.POST.get('grade')
+
+                    new_user_stu.save()
+                    messages.success(request, 'Create User and Student successfully.')
+                    return redirect('user_list')
+
+                else:
+                    messages.warning(request, 'Please input the student basic information.')
+                    privileges = UserType.__members__
+                    identities = Identity.__members__.values()
+                    departments = Department.objects.all()
+                    squadrons = Squadron.objects.all()
+                    return render(request, 'user/create_user.html', locals())
+
+            else:
+                new_user = User.objects.create_user(reg_id=reg_id, privilege=privilege_value, password=reg_id)
+                new_user.identity = identity
+                new_user.save()
+                messages.success(request, 'Create User successfully.')
+
+                if request.POST.get('stu_id'):
+                    messages.warning(request, 'You are not student.')
+
+                return redirect('user_list')
+
         except IntegrityError:
-            messages.error(request, "Existed user reg_id: {}".format(reg_id))
+            messages.error(request, "Existed user, register ID: {}".format(reg_id))
             privileges = UserType.__members__
+            identities = Identity.__members__.values()
+            departments = Department.objects.all()
+            squadrons = Squadron.objects.all()
             return render(request, 'user/create_user.html', locals())
 
-        messages.success(request, 'Create user "{}" successful.'.format(new_user))
-
-        return redirect('user_list')
     else:
         privileges = UserType.__members__
+        identities = Identity.__members__.values()
+        departments = Department.objects.all()
+        squadrons = Squadron.objects.all()
         return render(request, 'user/create_user.html', locals())
 
 
@@ -149,6 +188,97 @@ def user_multiCreate(request):
         privileges = UserType.__members__
 
         return render(request, 'user/multi_create_user.html', locals())
+
+
+# 更改使用者
+@permission_check(UserType.SystemManager)
+def user_edit(request, reg_id):
+    privileges = UserType.__members__.values()
+    identities = Identity.__members__.values()
+
+    if request.method == 'POST':
+        privilege_value = 0
+        for privilege in privileges:
+            if privilege and request.POST.get('{}'.format(privilege)):
+                privilege_value |= privilege.value[0]
+
+        try:
+            edited_user = User.objects.get(reg_id=reg_id)
+
+            edited_user.name = request.POST.get('name')
+            edited_user.email = request.POST.get('email')
+            edited_user.gender = int(request.POST.get('gender'))
+            edited_user.privilege = privilege_value
+
+            if int(request.POST.get('identity')) == 1:
+                edited_user.identity = request.POST.get('identity')
+                edited_user.save()
+                try:
+                    edited_student = edited_user.student
+                    edited_student.grade = request.POST.get('grade')
+                    edited_student.department = Department.objects.get(id=request.POST.get('department'))
+                    edited_student.squadron = Squadron.objects.get(id=request.POST.get('squadron'))
+                    edited_student.save()
+                    try:
+                        edited_user.reg_id = request.POST.get('reg_id')
+                        edited_student.stu_id = request.POST.get('stu_id')
+                        edited_user.save()
+                        edited_student.save()
+
+                        messages.success(request, "User update successfully.")
+                        return redirect('user_list')
+
+                    except IntegrityError:
+                        messages.warning(request, "This ID had been used.")
+                        departments = Department.objects.all()
+                        squadrons = Squadron.objects.all()
+                        return render(request, 'user/edit_user.html', locals())
+
+                except ObjectDoesNotExist:
+                    Student.objects.create(stu_id=edited_user.reg_id, user=edited_user).save()
+                    messages.warning(request, "Please update Student information.")
+                    return redirect('user_list')
+
+            else:
+                try:
+                    edited_user.reg_id = request.POST.get('reg_id')
+                    edited_user.identity = request.POST.get('identity')
+                    edited_user.save()
+
+                    if edited_user.student:
+                        Student.objects.get(user=edited_user).delete()
+
+                    messages.success(request, "User update successfully.")
+                    return redirect('user_list')
+
+                except IntegrityError:
+                    messages.warning(request, "This register ID had been used.")
+                    try:
+                        edited_user.student
+                        departments = Department.objects.all()
+                        squadrons = Squadron.objects.all()
+                    except ObjectDoesNotExist:
+                        pass
+
+                    return render(request, 'user/edit_user.html', locals())
+
+        except ObjectDoesNotExist:
+            messages.error(request, "User doesn't exist, user register id: {}".format(reg_id))
+            return redirect('user_list')
+    else:
+        try:
+            edited_user = User.objects.get(reg_id=reg_id)
+            try:
+                edited_user.student
+                departments = Department.objects.all()
+                squadrons = Squadron.objects.all()
+            except ObjectDoesNotExist:
+                pass
+
+            return render(request, 'user/edit_user.html', locals())
+        except ObjectDoesNotExist:
+            messages.error(request, "User doesn't exist, user register id: {}".format(reg_id))
+            return redirect('user_list')
 
 
 # 單位列表

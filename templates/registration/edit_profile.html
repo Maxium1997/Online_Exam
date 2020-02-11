@@ -78,6 +78,7 @@
                 <li>姓名</li>
                 <li>Email</li>
                 <li>性別</li>
+                <li>身份</li>
                 <li>權限</li>
                 <div class="student_infor">
                     {% if user.student %}
@@ -131,6 +132,17 @@
                         </select>
                     </li>
                     <li>
+                        {% if user.identity == 0 %}
+                            <select name="identity" required>
+                                <option value="" disabled selected>請選擇身份</option>
+                                {% for identity in identities %}
+                                    <option value="{{ identity.value.0 }}" {% if user.identity == identity.value.0 %}selected{% endif %}>{{ identity.value.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        {% else %}
+                            {{ user.identity|readableIdentity }}
+                        {% endif %}
+                    </li>
                         {% if user|has_perms:privileges.SystemManager %}
                             <span class="badge alert-danger">{{ privileges.SystemManager.value.1 }}</span>
                         {% endif %}
@@ -195,7 +207,7 @@
                 color: #FFFEF6;
 
                 position: absolute;
-                top: 180%;
+                top: 160%;
                 left: 600%;
             }
 
@@ -232,30 +244,27 @@
             .student_infor{
                 position: absolute;
                 left: 0%;
-                top: 130%;
+                top: 110%;
             }
 
             .student_infor_{
                 position: absolute;
                 left: 0%;
-                top: 110%;
+                top: 95%;
             }
 
             .line{
                 width: 1500%;
-                border-top-style: solid;
-                border-top-color: #c0c0c0;
-                border-top-width: 1px;
-
-                position: absolute;
-                top: -20%;
+                border-bottom-style: solid;
+                border-bottom-color: #c0c0c0;
+                border-bottom-width: 1px;
             }
 
             .time_icon{
                 font-size: 30px;
                 color: #5e5e5e;
                 position: absolute;
-                top: 86%;
+                top: 76%;
                 left: -260%;
                 background-color: #F3F3F3;
             }
@@ -263,7 +272,7 @@
             .time{
                 color: #5e5e5e;
                 position: absolute;
-                top: 85%;
+                top: 75%;
                 left: -250%;
 
                 border: #c0c0c0 solid 0.7px;

@@ -31,6 +31,7 @@
             <li>姓名</li>
             <li>Email</li>
             <li>性別</li>
+            <li>身份</li>
             <li>權限</li>
             <div class="student_infor">
                 {% if viewed_user.student %}
@@ -76,6 +77,7 @@
                 尚未設定
                 {% endif %}
             </li>
+            <li>{{ viewed_user.identity|readableIdentity }}</li>
             <li>
                 {% if viewed_user|has_perms:privileges.SystemManager %}
                     <span class="badge alert-danger">{{ privileges.SystemManager.value.1 }}</span>
@@ -94,8 +96,6 @@
                 {% endif %}
                 {% if viewed_user|has_perms:privileges.Testee %}
                     <span class="badge alert-inverse">{{ privileges.Testee.value.1 }}</span>
-                {% else %}
-                    <span>{{ viewed_user.privilege }}</span>
                 {% endif %}
             </li>
 
@@ -189,7 +189,7 @@
     </div>
 
     <div class="back-btn">
-        <input type="submit" value="返回" onclick="history.back()">
+        <input type="submit" value="返回" onclick="self.location=document.referrer;">
 
         <style>
             .back-btn input{
