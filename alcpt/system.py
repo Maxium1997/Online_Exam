@@ -88,7 +88,6 @@ def user_create(request):
                 if request.POST.get('stu_id'):
                     new_user = User.objects.create_user(reg_id=reg_id, privilege=privilege_value, password=reg_id)
                     new_user.identity = identity
-                    new_user.save()
 
                     new_user_stu = Student.objects.create(stu_id=request.POST.get('stu_id'), user=new_user)
                     if request.POST.get('department'):
@@ -98,6 +97,7 @@ def user_create(request):
                     if request.POST.get('grade'):
                         new_user_stu.grade = request.POST.get('grade')
 
+                    new_user.save()
                     new_user_stu.save()
                     messages.success(request, 'Create User and Student successfully.')
                     return redirect('user_list')
@@ -399,15 +399,15 @@ def check_unit_name(request):
 def unit_member_list(request, unit_kind, unit_name):
     if unit_kind == 'squadron':
         try:
-            unit = Squadron.objects.get(name=unit_name)
-            unit_members = unit.student_set.all()
+            viewed_unit = Squadron.objects.get(name=unit_name)
+            unit_members = viewed_unit.student_set.all().order_by('stu_id')
             return render(request, 'user/unit_member_list.html', locals())
         except ObjectDoesNotExist:
             messages.error(request, "Squadron doesn't exist, squadron name: {}".format(unit_name))
     elif unit_kind == 'department':
         try:
-            unit = Department.objects.get(name=unit_name)
-            unit_members = unit.student_set.all()
+            viewed_unit = Department.objects.get(name=unit_name)
+            unit_members = viewed_unit.student_set.all().order_by('stu_id')
             return render(request, 'user/unit_member_list.html', locals())
         except ObjectDoesNotExist:
             messages.error(request, "Department doesn't exist, department name: {}".format(unit_name))
@@ -636,11 +636,11 @@ def report_done(request, report_id):
 
 
 # 系統管理員檢視使用者個人基本資料
-def view_profile(request, user_id):
+def view_profile(request, reg_id):
     try:
-        viewed_user = User.objects.get(id=user_id)
+        viewed_user = User.objects.get(reg_id=reg_id)
         privileges = UserType.__members__
         return render(request, 'user/view_profile.html', locals())
     except ObjectDoesNotExist:
-        messages.error(request, "User doesn't exist, user id: {}".format(user_id))
+        messages.error(request, "User doesn't exist, user id: {}".format(reg_id))
         return redirect('unit_list')

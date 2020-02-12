@@ -41,7 +41,7 @@
     <div class="table-responsive">
         {% if users %}
             <table class="table table-hover">
-                <caption style="font-size: 30px;">&nbsp;&nbsp;使用者列表</caption>
+                <caption style="font-size: 30px;">&nbsp;&nbsp;使用者列表（共 {{ users.count }} 條結果）</caption>
                 <thead class="title">
                     <tr>
                         <th class="col-md-1" style="text-align: left">帳號</th>
@@ -54,7 +54,7 @@
                 </thead>
                 <tbody>
                 {% for user in userList %}
-                    <tr onclick="window.location.href='{% url "view_profile" user.id %}'">
+                    <tr onclick="window.location.href='{% url "view_profile" user.reg_id %}'">
                         <td style="text-align: left; vertical-align:middle;">{{ user.reg_id }}</td>
                         <td style="vertical-align:middle;">{{ user.name }}</td>
                         <td style="vertical-align:middle;">{{ user.identity|readableIdentity }}</td>
@@ -78,7 +78,7 @@
                                 <span class="badge alert-inverse" style="padding-bottom: 8px">{{ privileges.Testee.value.1 }}</span>
                             {% endif %}
                         </td>
-                        <td style="vertical-align:middle; font-size: 15px">{{ user.last_login|date:'Y年m月d日, H時i分' }}</td>
+                        <td style="vertical-align:middle; font-size: 14px">{{ user.last_login|date:'Y年m月d日, H時i分' }}</td>
                         <td>
                             <a href="{% url 'user_edit' user.reg_id %}"><i class="fa fa-pencil-square fa-fw mb-2"></i></a>
                         </td>

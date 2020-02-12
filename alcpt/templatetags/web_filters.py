@@ -209,12 +209,3 @@ def summary(completed_string: str, wanted: int):
     else:
         return completed_string
 
-
-@register.filter(name='gender')
-def gender(user_gender: int):
-    GENDER_STATE = (
-        (0, '男'),
-        (1, '女'),
-        (2, '不想公開'),
-    )
-    return GENDER_STATE[user_gender][1]

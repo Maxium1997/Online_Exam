@@ -43,7 +43,12 @@
             <li>{{ viewed_user.reg_id }}</li>
             <li>{% if viewed_user.name %}{{ viewed_user.name }}{% else %}尚未設定{% endif %}</li>
             <li>{% if viewed_user.email %}{{ viewed_user.email }}{% else %}尚未設定{% endif %}</li>
-            <li>{% if viewed_user.gender %}{{ viewed_user.gender|gender }}{% else %}尚未設定{% endif %}</li>
+            <li>
+                {% if viewed_user.gender == 0 %}男
+                {% elif viewed_user.gender == 1 %}女
+                {% elif viewed_user.gender == 2 %}不想公開
+                {% else %}尚未設定
+                {% endif %}</li>
             <li>{% if viewed_user.identity %}{{ viewed_user.identity|readableIdentity }}{% else %}尚未設定{% endif %}</li>
             <li>
                 {% if viewed_user|has_perms:privileges.SystemManager %}
@@ -188,7 +193,7 @@
     </div>
 
     <div class="back-btn">
-        <button id="" type="button"onclick="window.location.href='{% url 'user_list' %}'">返回</button>
+        <button type="button"onclick="self.location=document.referrer;">返回</button>
 
         <style>
             .back-btn{

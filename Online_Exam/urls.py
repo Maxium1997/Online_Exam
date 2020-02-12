@@ -76,7 +76,7 @@ urlpatterns = [
             url(r'^(?P<category_id>[0-9]+)/edit$', system.report_category_edit, name='report_category_edit'),
         ])),
 
-        url(r'^view_profile/(?P<user_id>[0-9]+)$', system.view_profile, name='view_profile'),
+        url(r'^view_profile/(?P<reg_id>[a-zA-Z0-9]+)$', system.view_profile, name='view_profile'),
     ])),
 
     # 考試管理員

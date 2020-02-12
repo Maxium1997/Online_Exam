@@ -126,7 +126,8 @@ class TestPaper(models.Model):
     name = models.CharField(max_length=100, unique=True)
     created_time = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey("User", on_delete=models.PROTECT, related_name='testee_created')
-    is_testpaper = models.BooleanField(default=0)
+    is_testpaper = models.BooleanField(default=False)
+    is_used = models.BooleanField(default=False)
     update_time = models.DateTimeField(auto_now=True)
     valid = models.BooleanField(default=False)
 
@@ -147,7 +148,6 @@ class Exam(models.Model):
     name = models.CharField(max_length=100, unique=True)
     exam_type = models.PositiveSmallIntegerField(default=2)
     testpaper = models.ForeignKey('TestPaper', on_delete=models.CASCADE, null=True)
-    group = models.ForeignKey('Group', on_delete=models.CASCADE, null=True)
     use_freq = models.IntegerField(default=0)
     modified_times = models.IntegerField(default=0)
     average_score = models.FloatField(default=0)     # 資料庫我有加一欄，不影響可以不用刪掉
@@ -294,6 +294,11 @@ class Group(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class TesteeList(models.Model):
+    created_by = models.ForeignKey('Exam', on_delete=models.PROTECT)
+    testees = models.ManyToManyField('User', blank=True)
 
 
 # 公告

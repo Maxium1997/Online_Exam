@@ -16,7 +16,7 @@
             <table>
                 <tr>
                     <td class="col-md-2">題目</td>
-                    <td class="col-md-5">
+                    <td class="col-md-5" style="padding-left: 10%">
                         {% if question.q_file %}
                             <audio controls preload="none">
                                 <source src="{{ question.q_file }}" type="audio/mpeg">
@@ -29,14 +29,14 @@
                 </tr>
 
                 <tr>
-                    <td class="col-md-2">選擇答案：</td>
+                    <td class="col-md-2">選擇答案</td>
                     <td class="col-md-5"></td>
                 </tr>
 
                 {% for choice in question.choice_set.all %}
                 <tr>
                     <td class="col-md-2"></td>
-                    <td class="col-md-5"><input type="radio" name="answer_choice">{{ choice }}</td>
+                    <td class="col-md-5" style="padding-left: 10%"><input type="radio" name="answer_choice">{{ choice }}</td>
                 </tr>
                 {% endfor %}
             </table>
@@ -60,29 +60,34 @@
                 text-align: center;
             }
 
-            .edit_question form .q_content audio{
-                position: absolute;
-                top: 20%;
-                left: 37%;
-
-                padding-left: 10px;
-                padding: 10px;
-            }
-
-            .edit_question form .q_content textarea{
-                padding-left: 10px;
-                position: absolute;
-                top: 20%;
-                left: 37%;
-                padding: 10px;
-            }
-
-            .edit_question form .btn{
+            .edit_question table{
                 position: relative;
-                top: 220px;
+                left: 30%;
+
+                width: 40%;
+
+                font-size: 20px;
+            }
+            .edit_question table td{
+                padding: 4px;
+                text-align: left;
+            }
+            .edit_question form input{
+                padding: 6px;
+            }
+            .edit_question form textarea{
+                font-size: 20px;
+                width: 100%;
+                height: 45%;
+                padding: 10px;
+            }
+
+            .edit_question .btn{
+                position: relative;
+                top: 30px;
                 left: 40%;
             }
-            .edit_question form .btn button{
+            .edit_question .btn button{
                 font-size: 25px;
                 padding: 10px;
                 padding-left: 15px;

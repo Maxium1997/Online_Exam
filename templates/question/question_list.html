@@ -183,10 +183,6 @@
         </div>
     </div>
 
-    <div>
-    {{ hint }}
-    </div>
-
     <!-- 表格的部分 -->
     <div class="table-responsive">
         {% if questions %}
@@ -195,68 +191,64 @@
                 <caption style="font-size: 30px; padding-top: 30px">{{ hi }}</caption>
                 <thead class="title">
                     <tr>
-                        <th class="col-md-1">ＩＤ</th>
-                        <th class="col-md-3">題目</th>
-                        <th class="col-md-2">類型</th>
-                        <th class="col-md-2">題目選項</th>
-                        <th class="col-md-1">狀態</th>
-                        <th class="col-md-2">
-                        {% if request.user|has_perm:'TBOperator' %}
-                            提交審核 / 編輯
-                        {% elif request.user|has_perm:'TBManager' %}
-                            編輯
+                        {% if request.user|has_perm:'TBManager' %}
+                            <th class="col-md-1">ＩＤ</th>
+                            <th class="col-md-5">題目</th>
+                            <th class="col-md-2">類型</th>
+                            <th class="col-md-2">題目選項</th>
+                            <th class="col-md-1">狀態</th>
+                            <th class="col-md-1"></th>
+
+                        {% elif request.user|has_perm:'TBOperator' %}
+                            <th class="col-md-1">ＩＤ</th>
+                            <th class="col-md-4">題目</th>
+                            <th class="col-md-2">類型</th>
+                            <th class="col-md-2">題目選項</th>
+                            <th class="col-md-1">狀態</th>
+                            <th class="col-md-1"></th>
                         {% endif %}
-                        </th>
-                        <th class="col-md-3">備註</th>
-                        <th class="col-md-1"></th>
                     </tr>
                 </thead>
 
                 <tbody>
-                {% for question in questionList %}
-                    <tr>
-                        <td style="vertical-align: middle">{{ question.id }}</td>
-                        <td style="text-align: left; vertical-align: middle">
-                            {% if question.q_file %}
-                                <audio controls preload="none">
-                                    <source src="{{ question.q_file }}" type="audio/mpeg">
-                                    Your browser does not support the audio tag.
-                                </audio>
-                            {% else %}
-                                {{ question.q_content }}
-                            {% endif %}
-                        </td>
-                        <td style="text-align: center; vertical-align: middle">{{ question.q_type|readable_question_type }}</td>
-                        <td style="text-align: left; vertical-align: middle">
-                            {% for option in question.choice_set.all %}
-                                {% if option.is_answer %}
-                                    <span style="color: red"><li>{{ option }}</li></span>
+                    {% for question in questionList %}
+                        <tr>
+                            <td style="vertical-align: middle">{{ question.id }}</td>
+                            <td style="text-align: left; vertical-align: middle">
+                                {% if question.q_file %}
+                                    <audio controls preload="none">
+                                        <source src="{{ question.q_file }}" type="audio/mpeg">
+                                        Your browser does not support the audio tag.
+                                    </audio>
                                 {% else %}
-                                    <li>{{ option }}</li>
+                                    {{ question.q_content }}
                                 {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td style="text-align: center; vertical-align: middle">{{ question.state|readable_state }}</td>
-                        <td style="vertical-align: middle">
-                            {% if question.state == 0 %}
-                                <a href="{% url 'question_submit' question.id %}" onclick="return confirm('是否提交給題庫管理員審核')">提交</a> /
-                            {% endif %}
-                            {% if request.user|has_perm:'TBOperator' and question.state != 1 %}
-                                <a href="{% url 'operator_edit' question.id %}">編輯</a> /
-                                <a href="{% url 'question_delete' question.id %}" onclick="return confirm('確認是否刪除此試題？')">刪除</a>
-                            {% elif request.user|has_perm:'TBManager' and question.state != 1 %}
-                                <a href="{% url 'question_edit' question.id %}">編輯</a>
-                            {% endif %}
-                        </td>
-                        <td style="vertical-align: middle">
-                            {% if question.faulted_reason %}
-                                {{ question.faulted_reason }}
-                            {% else %}
-                                無
-                            {% endif %}
-                        </td>
-                        <td>
-                            <div>
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">{{ question.q_type|readable_question_type }}</td>
+                            <td style="text-align: left; vertical-align: middle">
+                                {% for option in question.choice_set.all %}
+                                    {% if option.is_answer %}
+                                        <span style="color: red"><li>{{ option }}</li></span>
+                                    {% else %}
+                                        <li>{{ option }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td style="text-align: center; vertical-align: middle">{{ question.state|readable_state }}</td>
+                            <td class="functions-btn" style="vertical-align: middle">
+                                {% if question.state == 0 %}
+                                    <button id="submit" type="button" onclick="window.location.href='{% url 'question_submit' question.id %}'">提交</button>
+                                {% endif %}
+
+                                {% if request.user|has_perm:'TBOperator' and question.state != 1 %}
+                                    <button id="edit" type="button" onclick="window.location.href='{% url 'operator_edit' question.id %}'">編輯</button>
+                                    <button id="delete" type="button" onclick="window.location.href='{% url 'question_delete' question.id %}'">刪除</button>
+
+                                {% elif request.user|has_perm:'TBManager' and question.state != 1 %}
+                                    <button id="edit" type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'">編輯</button>
+                                {% endif %}
+                            </td>
+                            <td style="vertical-align: middle">
                                 <button type="button" class="btn btn-primary dropdown-toggle pull-right" data-toggle="dropdown" style="background-color: #4CCABD;
                                 border-color: #FFFEF6;">
                                     <i class="fa fa-ellipsis-h"></i>
@@ -272,32 +264,38 @@
                                           </ul>
                                       </div>
                                 </div>
-                            </div>
-                        </td>
-                        <style>
-                            .detail_block li{
-                                list-style: none;
-                                padding-left: 10px;
-                            }
+                            </td>
+                            <style>
+                                .detail_block li{
+                                    list-style: none;
+                                    padding-left: 10px;
+                                }
 
-                        </style>
-                    <!--
-                        <td>
-                            {% if question.faulted_reason %}
-                                {{ question.faulted_reason }}
-                            {% else %}
-                                無
-                            {% endif %}
-                        </td>
-                    -->
-                    </tr>
-                {% endfor %}
+                                .functions-btn button{
+                                    width: 70px;
+
+                                    font-size: 16px;
+                                    text-align: center;
+
+                                    padding: 4px;
+                                    margin: 2px;
+                                }
+                                .functions-btn #submit{
+                                    background-color: aquamarine;
+                                }
+                                .functions-btn #delete{
+                                    background-color: orangered;
+                                }
+                                .functions-btn button:hover{
+                                    cursor: pointer;
+                                }
+                            </style>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
-         {% else %}
-            <table class="table table-hover">
-                <h2>目前暫無資料</h2>
-            </table>
+        {% else %}
+            <h2>目前暫無資料</h2>
          {% endif %}
 
         <style>
