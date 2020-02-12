@@ -177,7 +177,7 @@ def question_kind(question_type: int):
 @register.filter(name='is_finished')
 def is_finished(exam: Exam, user: User):
     try:
-        answer_sheet = exam.answersheet_set.get(user_id=user.student)
+        answer_sheet = exam.answersheet_set.get(user_id=user.id)
         if answer_sheet.score is None:
             return False
         else:
@@ -208,3 +208,13 @@ def summary(completed_string: str, wanted: int):
         return completed_string[:wanted] + '...'
     else:
         return completed_string
+
+
+@register.filter(name='gender')
+def gender(user_gender: int):
+    GENDER_STATE = (
+        (0, '男'),
+        (1, '女'),
+        (2, '不想公開'),
+    )
+    return GENDER_STATE[user_gender][1]

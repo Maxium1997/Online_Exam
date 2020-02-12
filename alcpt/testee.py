@@ -145,9 +145,8 @@ def start_exam(request, exam_id):
             return redirect('testee_exam_list')
     except ObjectDoesNotExist:
         answer_sheet = AnswerSheet.objects.create(exam=exam, user=request.user)
-        all_questions = exam.testpaper.question_set.all()
 
-        all_questions = list(all_questions)
+        all_questions = list(exam.testpaper.question_set.all())
         random.shuffle(all_questions)
 
         for question in all_questions:

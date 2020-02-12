@@ -67,7 +67,6 @@
                     {% if request.user|has_perm:'SystemManager' %}
                     <td>
                         <a href="{% url 'proclamation_edit' pro.id %}"><i class="fa fa-pencil-square fa-fw mb-2"></i></a>&nbsp;
-                        <a href="{% url 'proclamation_delete' pro.id %}" onclick="return confirm('確認刪除此公告:{{ pro.title }}?')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     </td>
                     {% endif %}
                 </tr>
@@ -168,7 +167,6 @@
 
                     transform: translate(50%,50%);
                 }
-
             </style>
         </div>
 

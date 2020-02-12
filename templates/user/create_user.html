@@ -45,7 +45,7 @@
                     <select name="department">
                         <option value="" disabled selected>請選擇科系</option>
                         {% for department in departments %}
-                            <option value="{{ department.id }}" {% if department == user.student.department %}selected{% endif %}>{{ department }}</option>
+                            <option value="{{ department.id }}">{{ department }}</option>
                         {% endfor %}
                     </select>
 
@@ -53,7 +53,7 @@
                     <select name="squadron">
                         <option value="" disabled selected>請選擇中隊單位</option>
                         {% for squadron in squadrons %}
-                            <option value="{{ squadron.id }}" {% if squadron == user.student.squadron %}selected{% endif %}>{{ squadron }}</option>
+                            <option value="{{ squadron.id }}">{{ squadron }}</option>
                         {% endfor %}
                     </select>
 

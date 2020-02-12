@@ -428,15 +428,14 @@ def report_category_list(request):
 # 新增回報類別
 @permission_check(UserType.SystemManager)
 def report_category_create(request):
+    privileges = UserType.__members__.values()
     if request.method == 'POST':
         category_name = request.POST.get('category_name',)
 
         responsibility_value = 0
-        i = 0
-        for privilege in UserType.__members__.values():
-            if privilege and request.POST.get('privilege_{}'.format(i)):
+        for privilege in privileges:
+            if privilege and request.POST.get('{}'.format(privilege)):
                 responsibility_value |= privilege.value[0]
-            i += 1
 
         try:
             new_category = ReportCategory.objects.create(name=category_name,
@@ -444,14 +443,12 @@ def report_category_create(request):
             new_category.save()
         except IntegrityError:
             messages.error(request, "Existed category name: {}".format(category_name))
-            privileges = UserType.__members__
             return redirect('report_category_list')
 
         messages.success(request, 'Create report category "{}" successful.'.format(new_category))
 
         return redirect('report_category_list')
     else:
-        privileges = UserType.__members__
         return render(request, 'report/report_category_create.html', locals())
 
 
@@ -469,20 +466,20 @@ def report_category_detail(request, category_id):
 # 更改回報類別
 @permission_check(UserType.SystemManager)
 def report_category_edit(request, category_id):
+    privileges = UserType.__members__.values()
     try:
         category = ReportCategory.objects.get(id=category_id)
     except ObjectDoesNotExist:
         messages.error(request, 'Report Category does not exist, report category id: {}'.format(category_id))
+        return redirect('report_category_list')
 
     if request.method == 'POST':
         category_name = request.POST.get('category_name')
 
         responsibility_value = 0
-        i = 0
-        for privilege in UserType.__members__.values():
-            if privilege and request.POST.get('privilege_{}'.format(i)):
+        for privilege in privileges:
+            if privilege and request.POST.get('{}'.format(privilege)):
                 responsibility_value |= privilege.value[0]
-            i += 1
 
         try:
             category.name = category_name
@@ -492,10 +489,8 @@ def report_category_edit(request, category_id):
             return redirect('report_category_list')
         except IntegrityError:
             messages.error(request, "Existed category name: {}".format(category_name))
-            privileges = UserType.__members__
             return redirect('report_category_edit', category_id=category.id)
     else:
-        privileges = UserType.__members__
         return render(request, 'report/report_category_edit.html', locals())
 
 
