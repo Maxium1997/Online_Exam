@@ -294,8 +294,8 @@ def question_multiCreate(request):
             table = wb.sheets()[0]
             all_questions = []
 
-            q_type = request.POST.get('question_type', )
-            q_difficulty = request.POST.get('question_difficulty', )
+            # q_type = request.POST.get('question_type', )
+            # q_difficulty = request.POST.get('question_difficulty', )
 
             for i in range(table.nrows):
                 question = []
@@ -312,6 +312,8 @@ def question_multiCreate(request):
                 choice2 = question[2]
                 choice3 = question[3]
                 choice4 = question[4]
+                q_type = question[5] + 2
+                q_difficulty = question[6]
 
                 reading_question = tboperator.create_reading_question(q_content=q_content,
                                                                       q_type=q_type,
