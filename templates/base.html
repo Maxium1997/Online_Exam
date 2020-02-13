@@ -41,27 +41,39 @@
     </div>
 
     <div class="hint-info">
+{#    <div>#}
         <section>
             {% if messages %}
                 {% for message in messages %}
                     {% if message.tags == "error" %}
-                        <div class="alert alert-danger mt-3" role="alert">
-                            <i class="fa fa-window-close" aria-hidden="true"></i> {{ message }}
+                        <div class="seconds" id="3seconds">
+                            {{ message }}
                         </div>
+{#                        <div class="alert alert-danger mt-3" id="3seconds" role="alert">#}
+{#                            <i class="fa fa-window-close" aria-hidden="true"></i> {{ message }}#}
+{#                        </div>#}
                     {% elif message.tags == "success" %}
-                        <div class="alert alert-success mt-3" role="alert">
+                        <div class="seconds" id="3seconds">
                             {{ message }}
                         </div>
                     {% elif message.tags == "warning" %}
-                        <div class="alert alert-warning mt-3" role="alert">
-                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ message }}
+                        <div class="seconds" id="3seconds">
+                            {{ message }}
                         </div>
+{#                        <div class="alert alert-warning mt-3" id="3seconds" role="alert">#}
+{#                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ message }}#}
+{#                        </div>#}
                     {% endif %}
                 {% endfor %}
             {% endif %}
         </section>
 
         <style>
+            .seconds {
+                color: black;
+                background: #4CCABD;
+            }
+
             .hint-info{
                 position: absolute;
                 width: 38%;
@@ -71,6 +83,13 @@
                 text-align: center;
             }
         </style>
+
+        <script type="text/javascript">
+            var timer = window.setInterval(disappear, 3000); // display 3 seconds , then disappear
+            function disappear() {
+                document.getElementById('3seconds').innerHTML = "";
+            }
+        </script>
     </div>
 
     <div class="wrapper">

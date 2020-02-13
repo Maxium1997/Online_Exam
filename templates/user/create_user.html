@@ -13,112 +13,129 @@
 {% block content %}
     <div class="create_user">
         <form method="post">
+            <div class="title"><h1>User Create.</h1></div>
             {% csrf_token %}
-                <div class="reg_user">
-                    <label for="reg_id">Reg ID：</label>
-                    <input type="text" name="reg_id" placeholder="Register ID number..." required>
-                    <label for="identity">Identity：</label>
-                    <select id="identity" name="identity" required>
-                        <option value="" disabled selected>請選擇身份</option>
-                        {% for identity in identities %}
-                            <option value="{{ identity.value.0 }}">{{ identity.value.1 }}</option>
-                        {% endfor %}
-                    </select>
+                <table>
+                    <tr>
+                        <td>Reg ID</td>
+                        <td>
+                            <input type="text" name="reg_id" placeholder="Register ID number..." onkeyup="uniqueID({{ reg_ids }}, this)" required>
+                            <label class="unique_id" id="invalid_id"></label>
+                        </td>
+                    </tr>
 
-                    <div class="privilege">
-                    {% for privilege in privileges.values %}
-                        <input type="checkbox" id="{{ privilege.value.0 }}" name="privilege_{{ forloop.counter0 }}" {% if privilege == privileges.Testee %} checked {% endif %}>
-                        <label for="{{ privilege.value.0 }}">{{ privilege.value.1 }}&nbsp;&nbsp;&nbsp;</label>
-                    {% endfor %}
-                    </div>
+                    <tr>
+                        <td>Identity</td>
+                        <td>
+                            <select id="identity" name="identity" required>
+                                <option value="" disabled selected>請選擇身份</option>
+                                {% for identity in identities %}
+                                    <option value="{{ identity.value.0 }}">{{ identity.value.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>權限</td>
+                        <td>
+                            {% for privilege in privileges.values %}
+                                <input type="checkbox" id="{{ privilege.value.0 }}" name="privilege_{{ forloop.counter0 }}" {% if privilege == privileges.Testee %} checked {% endif %}>
+                                <label for="{{ privilege.value.0 }}">{{ privilege.value.1 }}&nbsp;&nbsp;&nbsp;</label>
+                            {% endfor %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" style="color: red; text-align: center">
+                            -----------------------身份非學生請勿填寫以下資訊-----------------------
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Stu ID</td>
+                        <td><input type="text" name="stu_id" placeholder="Student ID number..."></td>
+                    </tr>
+
+                    <tr>
+                        <td>科系</td>
+                        <td>
+                            <select name="department">
+                                <option value="" disabled selected>請選擇科系</option>
+                                {% for department in departments %}
+                                    <option value="{{ department.id }}">{{ department }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>中隊</td>
+                        <td>
+                            <select name="squadron">
+                                <option value="" disabled selected>請選擇中隊單位</option>
+                                {% for squadron in squadrons %}
+                                    <option value="{{ squadron.id }}">{{ squadron }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>年班</td>
+                        <td><input type="number" name="grade"></td>
+                    </tr>
+
+                </table>
+
+                <div class="btn">
+                    <button type="submit" onclick="return confirm('確認新增？')">新增使用者</button>
+                    <button type="reset">重設</button>
+                    <button type="button" onclick="self.location=document.referrer;">取消</button>
                 </div>
-
-                <div class="divider">
-                    <label style="font-size: 18px">若非學生，請勿填寫以下資訊</label>
-                </div>
-
-                <div class="reg_student">
-                    <label for="stu_id">Stu ID：</label>
-                    <input type="text" name="stu_id" placeholder="Student ID number..."><br>
-
-                    <label for="department">科系：</label>
-                    <select name="department">
-                        <option value="" disabled selected>請選擇科系</option>
-                        {% for department in departments %}
-                            <option value="{{ department.id }}">{{ department }}</option>
-                        {% endfor %}
-                    </select>
-
-                    <label for="squadron">中隊：</label>
-                    <select name="squadron">
-                        <option value="" disabled selected>請選擇中隊單位</option>
-                        {% for squadron in squadrons %}
-                            <option value="{{ squadron.id }}">{{ squadron }}</option>
-                        {% endfor %}
-                    </select>
-
-                    <br>
-
-                    <label for="grade">年班：</label>
-                    <input type="number" name="grade">
-                </div>
-
-
-            <div class="btn btn1">
-                <button type="submit" onclick="return confirm('確認建立此使用者')">新增使用者</button>
-            </div>
-
-            <div class="btn btn2">
-                <button type="reset">取消</button>
-            </div>
-
-            <div class="btn btn3">
-                <button type="button" onclick="self.location=document.referrer;">返回</button>
-            </div>
         </form>
 
+
+
         <style>
-            .create_user form{
-                width: 90%;
-                padding-top: 1%;
-                padding-left: 10%;
-                font-size: 24px;
-            }
+            .create_user .title h1{
+                    width: 30%;
+                    font-size: 28px;
+                    color: #FFFEF6;
+                    background-color: #4CCABD;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                    padding-right: 15px;
+                    padding-left: 45px;
+                    text-align: center;
+                }
 
+            .create_user table{
+                position: relative;
+                left: 15%;
+
+                width: 70%;
+
+                font-size: 20px;
+            }
+            .create_user table td{
+                padding: 4px;
+            }
             .create_user form input{
-                padding: 5px;
+                padding: 6px;
+
+                border-style: solid;
+                border-width: 0.1em;
+                border-radius: 4px;
+                border-color: rgb(220, 220, 220);
             }
 
-            .create_user form .privilege{
-                padding-top: 3%;
-                font-size: 22px;
-            }
-
-            .divider{
+            .create_user .btn{
                 position: relative;
-                top: 50px;
-
-                border: 0;
-                height: 1px;
-                background-image: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+                top: 10px;
+                left: 35%;
             }
-            .divider label{
-                position: relative;
-                left: 39%;
-                top: -1em;
-
-                font-size: 18px;
-                color: red;
-                background-color: #FFFEF6;
-                opacity: 0.9;
-            }
-
-            .create_user form .reg_student{
-                position: relative;
-                top: 100px;
-            }
-
-            .create_user form .btn button{
+            .create_user .btn button{
                 font-size: 25px;
                 padding: 10px;
                 padding-left: 15px;
@@ -128,23 +145,9 @@
                 border: none;
             }
 
-            .create_user form .btn1 button{
-                position: absolute;
-                top: 85%;
-                left: 30%;
-            }
-
-            .create_user form .btn2 button{
-                background-color: #5e5e5e;
-                position: absolute;
-                top: 85%;
-                left: 45%;
-            }
-
-            .create_user form .btn3 button{
-                position: absolute;
-                top: 85%;
-                left: 53%;
+            .unique_id {
+                color: #c12e2a;
+                font-size: 18px;
             }
         </style>
     </div>
@@ -163,4 +166,19 @@
             }
         </style>
     </div>
+
+    <script type="text/javascript">
+            function uniqueID(reg_ids , id) {
+                var arr = reg_ids;
+
+                for(var i = 0; i < arr.length; i++) {
+                    if (id.value === arr[i]) {
+                        document.getElementById('invalid_id').innerHTML = "此名稱已存在";
+                        break;
+                    } else {
+                        document.getElementById('invalid_id').innerHTML = "";
+                    }
+                }
+            }
+        </script>
 {% endblock %}

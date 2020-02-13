@@ -128,6 +128,7 @@ def testpaper_create(request):
         return redirect('testpaper_list')
 
     else:
+        testpaper_names = [_.name for _ in TestPaper.objects.all()]
         return render(request, 'exam/testpaper_create.html', locals())
 
 

@@ -130,6 +130,7 @@ def user_create(request):
             return render(request, 'user/create_user.html', locals())
 
     else:
+        reg_ids = [_.reg_id for _ in User.objects.all()]
         privileges = UserType.__members__
         identities = Identity.__members__.values()
         departments = Department.objects.all()

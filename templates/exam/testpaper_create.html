@@ -16,15 +16,17 @@
             <table>
                 <tr>
                     <td>考卷名稱</td>
-                    <td><input type="text" name="testpaper_name" required></td>
+                    <td><input type="text" name="testpaper_name" onkeyup="uniqueName({{ testpaper_names }}, this)" required></td>
                 </tr>
+
+                <div class="unique_name" id="unique_name"></div>
             </table>
 
             <div class="btn">
-                    <button type="submit">送出</button>
-                    <button type="reset">重設</button>
-                    <button type="button" onclick="self.location=document.referrer;">取消</button>&nbsp;
-                </div>
+                <button type="submit">送出</button>
+                <button type="reset">重設</button>
+                <button type="button" onclick="self.location=document.referrer;">取消</button>&nbsp;
+            </div>
 
             <style>
                 .testpaper_create .title h1{
@@ -69,7 +71,30 @@
                     background-color: #4CCABD;
                     border: none;
                 }
+
+                .unique_name {
+                    position: absolute;
+                    left: 76%;
+                    top: 17%;
+                    color: #c12e2a;
+                    font-size: 14px;
+                }
             </style>
+
+            <script type="text/javascript">
+                function uniqueName(testpaper_names , name) {
+                    var arr = testpaper_names;
+
+                    for(var i = 0; i < arr.length; i++) {
+                        if (name.value === arr[i]) {
+                            document.getElementById('unique_name').innerHTML = "此名稱已存在";
+                            break;
+                        } else {
+                            document.getElementById('unique_name').innerHTML = '';
+                        }
+                    }
+                }
+            </script>
         </form>
     </div>
 {% endblock %}

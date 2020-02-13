@@ -25,7 +25,7 @@
             </thead>
             <tbody>
                 {% for exam in exams %}
-                    <tr>
+                    <tr onclick="window.location.href='{% url "exam_score_detail" exam.id %}'">
                         <td style="text-align: center; vertical-align:middle;">{{ exam }}</td>
                         {% if exam.average_score  < 60.0 %}
                             <td style="vertical-align:middle; color: #c12e2a">{{ exam.average_score }}</td>
