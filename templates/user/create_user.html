@@ -27,7 +27,7 @@
                     <tr>
                         <td>Identity</td>
                         <td>
-                            <select id="identity" name="identity" required>
+                            <select id="identity" name="identity" onchange="print_value();" required>
                                 <option value="" disabled selected>請選擇身份</option>
                                 {% for identity in identities %}
                                     <option value="{{ identity.value.0 }}">{{ identity.value.1 }}</option>
@@ -54,13 +54,14 @@
 
                     <tr>
                         <td>Stu ID</td>
-                        <td><input type="text" name="stu_id" placeholder="Student ID number..."></td>
+                        <td><input type="text" id="stu_id" name="stu_id" placeholder="Student ID number..." onkeyup="uniqueStuID({{ stu_ids }}, this)"></td>
+                        <label class="unique_stu_id" id="invalid_stu_id"></label>
                     </tr>
 
                     <tr>
                         <td>科系</td>
                         <td>
-                            <select name="department">
+                            <select name="department" id="department">
                                 <option value="" disabled selected>請選擇科系</option>
                                 {% for department in departments %}
                                     <option value="{{ department.id }}">{{ department }}</option>
@@ -72,7 +73,7 @@
                     <tr>
                         <td>中隊</td>
                         <td>
-                            <select name="squadron">
+                            <select name="squadron" id="squadron">
                                 <option value="" disabled selected>請選擇中隊單位</option>
                                 {% for squadron in squadrons %}
                                     <option value="{{ squadron.id }}">{{ squadron }}</option>
@@ -83,13 +84,13 @@
 
                     <tr>
                         <td>年班</td>
-                        <td><input type="number" name="grade"></td>
+                        <td><input type="number" name="grade" id="grade"></td>
                     </tr>
 
                 </table>
 
                 <div class="btn">
-                    <button type="submit" onclick="return confirm('確認新增？')">新增使用者</button>
+                    <button type="submit" id="btn_locker" onclick="return confirm('確認新增？')">新增使用者</button>
                     <button type="reset">重設</button>
                     <button type="button" onclick="self.location=document.referrer;">取消</button>
                 </div>
@@ -149,6 +150,13 @@
                 color: #c12e2a;
                 font-size: 18px;
             }
+
+            .unique_stu_id {
+                color: #c12e2a;
+                font-size: 18px;
+                position: relative;
+                top: 270px;
+                left: 48%;
         </style>
     </div>
 
@@ -168,17 +176,51 @@
     </div>
 
     <script type="text/javascript">
-            function uniqueID(reg_ids , id) {
-                var arr = reg_ids;
+        function uniqueID(reg_ids , id) {
+            var arr = reg_ids;
 
-                for(var i = 0; i < arr.length; i++) {
-                    if (id.value === arr[i]) {
-                        document.getElementById('invalid_id').innerHTML = "此名稱已存在";
-                        break;
-                    } else {
-                        document.getElementById('invalid_id').innerHTML = "";
-                    }
+            for(var i = 0; i < arr.length; i++) {
+                if (id.value === arr[i]) {
+                    document.getElementById('invalid_id').innerHTML = "此ID已存在";
+                    document.getElementById('btn_locker').disabled = true;
+                    break;
+                } else {
+                    document.getElementById('invalid_id').innerHTML = "";
+                    document.getElementById('btn_locker').disabled = false;
                 }
             }
-        </script>
+        }
+
+        function uniqueStuID(stu_ids , id) {
+            var arr = stu_ids;
+
+            for(var i = 0; i < arr.length; i++) {
+                if (id.value === arr[i]) {
+                    document.getElementById('invalid_stu_id').innerHTML = "此ID已存在";
+                    document.getElementById('btn_locker').disabled = true;
+                    break;
+                } else {
+                    document.getElementById('invalid_stu_id').innerHTML = "";
+                    document.getElementById('btn_locker').disabled = false;
+                }
+            }
+        }
+
+        function print_value() {
+            var ident = document.getElementById("identity");
+
+            if (document.getElementById("identity").value !== '1') {
+                document.getElementById('stu_id').disabled = true;
+                document.getElementById('department').disabled = true;
+                document.getElementById('squadron').disabled = true;
+                document.getElementById('grade').disabled = true;
+            }
+            else {
+                document.getElementById('stu_id').disabled = false;
+                document.getElementById('department').disabled = false;
+                document.getElementById('squadron').disabled = false;
+                document.getElementById('grade').disabled = false;
+            }
+        }
+    </script>
 {% endblock %}

@@ -131,6 +131,7 @@ def user_create(request):
 
     else:
         reg_ids = [_.reg_id for _ in User.objects.all()]
+        stu_ids = [_.stu_id for _ in Student.objects.all()]
         privileges = UserType.__members__
         identities = Identity.__members__.values()
         departments = Department.objects.all()
