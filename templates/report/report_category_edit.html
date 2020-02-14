@@ -18,7 +18,7 @@
             <table>
                 <tr>
                     <td class="col-md-2">回報類別名稱</td>
-                    <td class="col-md-5"><input type="text" name="category_name" value="{{ category }}" required></td>
+                    <td class="col-md-5"><input type="text" name="category_name" value="{{ category }}" onkeyup="ChangeJudgementButton('{{ category }}', this)" required></td>
                 </tr>
 
                 <tr>
@@ -34,7 +34,7 @@
             </table>
 
             <div class="btn">
-                <button type="submit" onclick="return confirm('確認更改此類別？')">更改</button>
+                <button type="submit" id="submit" onclick="return confirm('確認更改此類別？')">更改</button>
                 <button type="reset">重設</button>
                 <button type="reset" onclick="self.location=document.referrer;">取消</button>
             </div>
@@ -88,6 +88,7 @@
                 background-color: #4CCABD;
                 border: none;
             }
+
         </style>
     </div>
 {% endblock %}

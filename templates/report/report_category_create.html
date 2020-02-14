@@ -18,7 +18,7 @@
             <table>
                 <tr>
                     <td class="col-md-2">回報類別名稱</td>
-                    <td class="col-md-5"><input type="text" name="category_name" required></td>
+                    <td class="col-md-5"><input type="text" name="category_name" onkeyup="data_unique({{ categories_names }}, this)" required></td>
                 </tr>
 
                 <tr>
@@ -34,10 +34,12 @@
             </table>
 
             <div class="btn">
-                <button type="submit" onclick="return confirm('確認新增此類別？')">新增</button>
+                <button type="submit" id="submit" onclick="return confirm('確認新增此類別？')">新增</button>
                 <button type="reset">重設</button>
                 <button type="reset" onclick="self.location=document.referrer;">取消</button>
             </div>
+
+            <div id="invalid" class="invalid"></div>
         </form>
 
         <style>
@@ -56,14 +58,12 @@
             .add_category table{
                     position: relative;
                     left: 30%;
-
                     width: 50%;
-
                     font-size: 20px;
                 }
             .add_category table td{
                     padding: 4px;
-    }
+            }
             .add_category form input{
                 padding: 6px;
             }
@@ -87,6 +87,13 @@
                 color: #FFFEF6;
                 background-color: #4CCABD;
                 border: none;
+            }
+            .invalid {
+                font-size: 28px;
+                color: #c12e2a;
+                position: absolute;
+                left: 69%;
+                top: 23%;
             }
         </style>
     </div>

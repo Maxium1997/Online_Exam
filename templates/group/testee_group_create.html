@@ -12,22 +12,24 @@
             {% csrf_token %}
             <div class="group_name">
                 <label for="group_name">群組名稱：</label>
-                <input type="text" name="group_name" required>
+                <input type="text" name="group_name" onkeyup="data_unique({{ groups_names }}, this)" required>
             </div>
 
             <br>
             <div class="btn btn1">
-                <button type="submit">建立</button>
+                <button type="submit" id="submit">建立</button>
             </div>
 
             <div class="btn btn2">
-                <button type="reset">取消</button>
+                <button type="reset">重設</button>
             </div>
 
             <div class="btn btn3">
-                <button type="button" onclick="history.back()">返回</button>
+                <button type="button" onclick="self.location=document.referrer;">取消</button>
             </div>
         </form>
+
+        <label id="invalid" class="invalid"></label>
 
         <style>
             .test_group_create .title h1{
@@ -90,13 +92,17 @@
                 top: 85%;
                 left: 45%;
             }
-            .test_group_create form .btn2 button{
-                background-color: #5e5e5e;
-            }
             .test_group_create form .btn3{
                 position: absolute;
                 top: 85%;
                 left: 55%;
+            }
+            .invalid {
+                position: absolute;
+                font-size: 20px;
+                color: #c12e2a;
+                top: 55%;
+                left: 40%;
             }
         </style>
     </div>

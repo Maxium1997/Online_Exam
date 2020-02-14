@@ -48,6 +48,7 @@ def group_create(request):
         return redirect('testee_group_list')
 
     else:
+        groups_names = [_.name for _ in Group.objects.all()]
         return render(request, 'group/testee_group_create.html', locals())
 
 

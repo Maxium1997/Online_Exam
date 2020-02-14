@@ -424,6 +424,53 @@
         </style>
     </div>
 
+    <div>
+        <script type="text/JavaScript">
+            function data_unique(names , input) {
+                var submit_btn = document.getElementById('submit');
+                var arr = names;
+
+                for(var i = 0; i < arr.length; i++) {
+                    if (input.value === arr[i]) {
+                        document.getElementById('invalid').innerHTML = "'" + input.value + "' 已存在";
+                        submit_btn.style.backgroundColor = 'grey';
+                        submit_btn.disabled = true;
+                        break;
+                    }
+
+                    else if (input.value === ""){
+                        submit_btn.style.backgroundColor = 'grey';
+                        submit_btn.disabled = true;
+                    }
+
+                    else {
+                        document.getElementById('invalid').innerHTML = "";
+                        submit_btn.style.backgroundColor = '#4CCABD';
+                        submit_btn.disabled = false;
+                    }
+                }
+            }
+
+
+
+            document.getElementById('submit').disabled = true;
+            document.getElementById('submit').style.backgroundColor = 'grey';
+
+            function ChangeJudgementButton(origin ,input) {
+                var submit_btn = document.getElementById('submit');
+
+                if (origin === input.value) {
+                    submit_btn.disabled = true;
+                    submit_btn.style.backgroundColor = 'grey';
+                } else {
+                    submit_btn.disabled = false;
+                    submit_btn.style.backgroundColor = '#4CCABD';
+                }
+            }
+
+        </script>
+    </div>
+
 </body>
 
 {% include "footer.html" %}

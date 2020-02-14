@@ -451,6 +451,7 @@ def report_category_create(request):
 
         return redirect('report_category_list')
     else:
+        categories_names = [_.name for _ in ReportCategory.objects.all()]
         return render(request, 'report/report_category_create.html', locals())
 
 
