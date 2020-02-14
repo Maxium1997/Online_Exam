@@ -9,164 +9,85 @@
 {% endblock %}
 
 {% block content%}
-    <!-- 搜尋的部分 -->
-    <div class="container-flu">
-        <!-- BS4 的靠右由 pull-right 改為 float-right -->
-        <div class="btn-group float-right">
-            <button type="button" class="btn btn-primary dropdown-toggle pull-right" data-toggle="dropdown">
-                <i class="fa fa-search" ></i>
-            </button>
-            <!-- 重點在這 -->
-            <div class="dropdown-menu dropdown-menu-right">
-                <div class="search_bar">
-                    <h1>搜尋條件</h1>
-                    <form action="" method="get">
-                        <div class="type">
-                            <h1>類型：</h1>
-                            <select name="question_type">
-                                <option value="" selected>請選擇試題類型</option>
-                                {% for q_type in question_types %}
-                                    <option value="{{ q_type.value.0 }}" {% if q_type.value.0 == keywords.question_type %} selected {% endif %}>{{ q_type.value.1 }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
+    <!--搜尋-->
+    <div class="search_bar">
+        <form id="searchForm" action="" method="get">
+            <ul style="display: inline">
+                <li><input type="text" name="question_content" {% if keywords.question_content %}value="{{ keywords.question_content }}"{% else %}value=""{% endif %} placeholder="Search..."></li>
+                <li>
+                    <select name="question_type">
+                        <option value="" selected>所有試題類型</option>
+                        {% for q_type in question_types %}
+                            <option value="{{ q_type.value.0 }}" {% if q_type.value.0 == keywords.question_type %} selected {% endif %}>{{ q_type.value.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
 
-                        <div class="word">
-                            <h1>單字查詢：</h1>
-                            <input type="text" name="question_content" {% if keywords.question_content %}value="{{ keywords.question_content }}" {% else %}value="" {% endif %} placeholder="試題內容">
-                        </div>
+                <li>
+                    {% if request.user|has_perm:'TBManager' %}
+                    <select name="difficulty">
+                        <option value="" selected>所有試題難度</option>
+                        {% for difficulty in difficulty_choices %}
+                            <option value="{{ difficulty.0 }}" {% if difficulty.0 == keywords.difficulty %} selected {% endif %}>{{ difficulty.1 }}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+                </li>
 
-                        {% if request.user|has_perm:'TBManager' %}
-                            <div class="difficult">
-                                <h1>難度：</h1>
-                                <select name="difficulty">
-                                    <option value="" selected>所有難度試題</option>
-                                    {% for difficulty in difficulty_choices %}
-                                        <option value="{{ difficulty.0 }}" {% if difficulty.0 == keywords.difficulty %} selected {% endif %}>{{ difficulty.1 }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        {% endif %}
+                <li>
+                    <select name="state">
+                        <option value="" selected>所有試題狀態</option>
+                        {% for state in state_choices %}
+                            <option value="{{ state.0 }}" {% if state.0 == keywords.state %} selected {% endif %}>{{ state.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
 
-                        <div class="state">
-                            <h1>狀態：</h1>
-                            <select name="state">
-                                <option value="" selected>所有狀態試題</option>
-                                {% for state in state_choices %}
-                                    <option value="{{ state.0 }}" {% if state.0 == keywords.state %} selected {% endif %}>{{ state.1 }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="buttons">
-                            <button title="搜尋" type="submit"><i class="fa fa-search"></i></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                <li>
+                    <button type="submit">搜尋</button>
+                </li>
+            </ul>
 
             <style>
-                .container-flu button{
-                    height: 55px;
-                    width: 55px;
-                    background-color: #4CCABD;
-                    border: none;
-                    box-shadow: 0px 3px 8px 0px #486260;
-                }
-
-                .btn-group{
+                .search_bar{
                     position: absolute;
-                    top: 50px;
-                    right: 30px;
+                    left: 42%;
+                    top: 1%;
+
+                    display: inline;
+                }
+                .search_bar ul li{
+                    display: inline;
+                    list-style: none;
+                }
+                .search_bar input[type=text] {
+                    box-sizing: border-box;
+                    border: 2px solid rgb(200, 200, 200);
+                    border-radius: 4px;
+                    font-size: 16px;
+                    background-size: 23%;
+                    background-color: white;
+                    background-position: 10px 10px;
+                    background-repeat: no-repeat;
+                    padding: 12px 20px 12px 20px;
+                    outline: none;
                 }
 
-                .btn-group .dropdown-menu{
-                    position: absolute;
-                    top: -40%;
-                    right: 97%;
-
-                    height: 150px;
-                    width: 400px;
-                    padding-left: 10px;
-                    padding-right: 10px;
-                    text-align: center;
+                .search_bar select{
+                    outline: none;
                 }
 
-                .dropdown-menu form{
-                    height: 150%;
-                    width: 700px;
-                }
+                .search_bar button{
+                    width: 60px;
 
-                .search_bar h1{
-                    width: 100px;
-                    height: 30px;
-                    font-size: 20px;
-                    position: absolute;
-                    top: 3px;
-                    left: 10px;
-                }
-
-                .type h1{
+                    background-color: rgba(255,255,255,0.92);
                     font-size: 18px;
-                    position: absolute;
-                    top: 30%;
-                    left: 20px;
-                }
-                .type select{
-                    position: absolute;
-                    top: 45%;
-                    left: 15%;
-                }
 
-                .difficult h1{
-                    font-size: 18px;
-                    position: absolute;
-                    top: 30%;
-                    left: 33%;
-                }
-                .difficult select{
-                    position: absolute;
-                    top: 45%;
-                    left: 45%;
-                }
-
-                .state h1{
-                    font-size: 18px;
-                    position: absolute;
-                    top: 30%;
-                    left: 61%;
-                }
-                .state select{
-                    position: absolute;
-                    top: 45%;
-                    left: 73%;
-                }
-
-                .word h1{
-                    font-size: 18px;
-                    position: absolute;
-                    top: 55%;
-                    left: 5%;
-                }
-                .word input{
-                    position: absolute;
-                    top: 67%;
-                    left: 20%;
-
-                    border: 0.5px solid;
-                    border-radius: 10px;
-                    padding: 5px;
-                    width: 50%;
-                }
-
-                .buttons {
-                    position: absolute;
-                    top: 60%;
-                    left: 92%;
-                    color: white;
+                    padding-left: 0px;
+                    padding-right: 0px;
                 }
             </style>
-        </div>
+        </form>
     </div>
 
     <!-- 表格的部分 -->
@@ -312,19 +233,18 @@
     </div>
 
     <!-- 頁碼的部分 -->
-    <div>
-        <div class="pagination">
-            <div class="pager_group1">
-                <ul class="pager">
-                    <li class="previous" style="color: #2C3232"><a href="?page=1&{% if query_content %}{{ query_content }}{% endif %}">&laquo; first</a></li>
-                    <li style="padding-left: 500px; padding-right: 490px">&nbsp;</li>
-                    <li class="next"><a href="?page={{ questionList.paginator.num_pages }}&{% if query_content %}{{ query_content }}{% endif %}">last &raquo;</a></li>
-                </ul>
-            </div>
+    <div class="pagination">
+        <div class="pager_group1">
+            <ul class="pager">
+                <li class="previous" style="color: #2C3232"><a href="?page=1&{% if query_content %}{{ query_content }}{% endif %}">&laquo; first</a></li>
+                <li style="padding-left: 500px; padding-right: 490px">&nbsp;</li>
+                <li class="next"><a href="?page={{ questionList.paginator.num_pages }}&{% if query_content %}{{ query_content }}{% endif %}">last &raquo;</a></li>
+            </ul>
+        </div>
 
-            <div class="pager_group2">
-                <nav aria-label="Page navigation">
-                  <ul class="pagination justify-content-center">
+        <div class="pager_group2">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
                     <li {% if not questionList.has_previous %}class="page-item disabled"{% endif %}>
                         {% if questionList.has_previous %}
                             <a class="page-link" href="?page={{ questionList.previous_page_number }}&{% if query_content %}{{ query_content }}{% endif %}" tabindex="-1">Previous</a>
@@ -350,34 +270,28 @@
                             <a href="javascript:void(0)">Next</a>
                         {% endif %}
                     </li>
-                  </ul>
-                </nav>
-
-            </div>
-
-
-            <style>
-                .pager_group1{
-                    text-decoration: none;
-                    position: fixed;
-                    bottom: 13%;
-                    left: 10%;
-                    right: 10%;
-                }
-
-                .pager_group2{
-                    position: fixed;
-                    bottom: 12%;
-                    right: 50%;
-
-                    transform: translate(50%,50%);
-                }
-            </style>
+                </ul>
+            </nav>
         </div>
 
         <style>
             .pagination{
                 font-size: 20px;
+            }
+            .pager_group1{
+                text-decoration: none;
+                position: fixed;
+                bottom: 13%;
+                left: 10%;
+                right: 10%;
+            }
+
+            .pager_group2{
+                position: fixed;
+                bottom: 12%;
+                right: 50%;
+
+                transform: translate(50%,50%);
             }
         </style>
     </div>

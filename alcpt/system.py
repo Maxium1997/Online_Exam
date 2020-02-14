@@ -84,7 +84,7 @@ def user_create(request):
 
         try:
             identity = int(request.POST.get('identity'))
-            if identity == 1:
+            if identity == 2:
                 if request.POST.get('stu_id'):
                     new_user = User.objects.create_user(reg_id=reg_id, privilege=privilege_value, password=reg_id)
                     new_user.identity = identity
@@ -211,7 +211,7 @@ def user_edit(request, reg_id):
             edited_user.gender = int(request.POST.get('gender'))
             edited_user.privilege = privilege_value
 
-            if int(request.POST.get('identity')) == 1:
+            if int(request.POST.get('identity')) == 2:
                 edited_user.identity = request.POST.get('identity')
                 edited_user.save()
                 try:

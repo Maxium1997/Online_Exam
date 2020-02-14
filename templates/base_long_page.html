@@ -21,6 +21,7 @@
     {% endblock %}
 </head>
 <body>
+    <!--頁面控制鈕-->
     <div class="page-buttons">
         <button title="顯示上一頁" onclick="self.location=document.referrer;"><i class="fa fa-angle-left fa-lg box"></i></button>
         <button title="重新整理" onclick="window.location.reload();"><i class="fa fa-refresh"></i></button>
@@ -40,6 +41,7 @@
         </style>
     </div>
 
+    <!--訊息提示框-->
     <div class="prompt-info">
         <section>
             {% if messages %}
@@ -97,6 +99,7 @@
         </script>
     </div>
 
+    <!--背景底圖-->
     <div class="wrapper">
         <img src="{% static "/background.jpg" %}">
         <div class="cover"></div>
@@ -118,7 +121,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{% url "Homepage" %}" style=" opacity: 1; font-size: 30px;">ALCPT線上練習平台</a>
+                    <a class="navbar-brand" href="{% url "Homepage" %}" style="opacity: 1; font-size: 30px;"><i class="fa fa-book"></i>｜ALCPT</a>
                 </div>
 
                 <!-- 功能表 -->
@@ -208,15 +211,19 @@
                 .bg-green .navbar-nav .dropdown-toggle,
                 .bg-green .navbar-brand {
                     color: rgb(255, 255, 255);
-                    right: 70%;
                     border-radius: 6px;
                 }
 
                 .bg-green .navbar-nav .dropdown-toggle:hover{
+                    background-color: rgb(250, 250, 250, 0.5);
                     border-radius: 6px;
                 }
-
                 .bg-green .navbar-nav .dropdown-toggle:active{
+                    background-color: rgb(250, 250, 250, 0.5);
+                    border-radius: 6px;
+                }
+                .bg-green .navbar-nav .dropdown-toggle:focus{
+                    background-color: rgb(250, 250, 250, 0.5);
                     border-radius: 6px;
                 }
 

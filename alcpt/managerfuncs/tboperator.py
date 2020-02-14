@@ -13,13 +13,8 @@ def query_questions(*, question_type: int, question_content: str, difficulty: in
     all_questions = Question.objects.exclude(state=1).exclude(state=3).exclude(state=5)
 
     if state:
-        if state == 0:
-            # queries &= Q(state=0)
-            all_questions.filter(state=0)
-            query_content += "state=" + str(0)
-        else:
-            queries &= Q(state=state)
-            query_content += "state=" + str(state)
+        queries &= Q(state=state)
+        query_content += "state=" + str(state)
 
     if difficulty:
         queries &= Q(difficulty=difficulty)

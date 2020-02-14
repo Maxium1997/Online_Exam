@@ -153,9 +153,10 @@ def operator_index(request):
     for q in list(QuestionType):
         question_types.append(q)
 
-    state_choices = [(0, '暫存'),
-                     (2, '審核未通過'),
-                     (4, '被回報錯誤')]
+    state_choices = [
+        (6, '暫存'),
+        (2, '審核未通過'),
+        (4, '被回報錯誤')]
 
     difficulty_choices = [(1, '1'),
                           (2, '2'),
@@ -375,7 +376,7 @@ def operator_edit(request, question_id):
 def question_delete(request, question_id):
     try:
         question = Question.objects.get(id=question_id)
-        if question.state == 0 or question.state == 2:
+        if question.state == 6 or question.state == 2:
             choices = question.choice_set.all()
             for choice in choices:
                 choice.delete()

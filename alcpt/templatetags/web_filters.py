@@ -96,9 +96,10 @@ def is_student(user: User):
 @register.filter(name='readableIdentity')
 def readableIdentity(identity: int):
     IDENTITY = (
-        (0, '訪客'),
-        (1, '學生'),
-        (2, '老師'),
+        (0, ''),
+        (1, '訪客'),
+        (2, '學生'),
+        (3, '老師'),
     )
     return IDENTITY[identity][1]
 
@@ -127,12 +128,13 @@ def check_correct(option: str, question: Question):
 @register.filter(name='readable_state')
 def readable_state(state: int):
     STATE = (
-        (0, '暫存'),
+        (0, ''),
         (1, '審核通過'),
         (2, '審核未通過'),
         (3, '等待審核'),
         (4, '被回報錯誤'),
         (5, '被回報錯誤，已處理'),
+        (6, '暫存'),
     )
     return STATE[state][1]
 
@@ -218,12 +220,13 @@ def readable_question_query_content(question_query_content: str):
     for item in question_query:
         if 'state' in item:
             STATE = (
-                (0, '暫存'),
+                (0, ''),
                 (1, '審核通過'),
                 (2, '審核未通過'),
                 (3, '等待審核'),
                 (4, '被回報錯誤'),
                 (5, '被回報錯誤，已處理'),
+                (6, '暫存'),
             )
             readable_query_content += '狀態="' + STATE[int(item[1])][1] + '" '
 

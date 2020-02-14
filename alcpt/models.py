@@ -53,9 +53,9 @@ class User(AbstractBaseUser):
     created_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
     IDENTITY_CHOICES = (
-        (0, '訪客'),
-        (1, '學生'),
-        (2, '老師'),
+        (1, '訪客'),
+        (2, '學生'),
+        (3, '老師'),
     )
     identity = models.PositiveSmallIntegerField(null=True, default=0)
 
@@ -198,14 +198,14 @@ class Question(models.Model):
     used_to = models.ManyToManyField(TestPaper)
     faulted_reason = models.CharField(max_length=255, blank=True, null=True, default="")
     STATES_CHOICES = (
-        (0, '暫存'),
         (1, '審核通過'),
         (2, '審核未通過'),
         (3, '等待審核'),
         (4, '被回報錯誤'),
         (5, '被回報錯誤，已處理'),
+        (6, '暫存'),
     )
-    state = models.SmallIntegerField(choices=STATES_CHOICES, default=0)
+    state = models.SmallIntegerField(choices=STATES_CHOICES, default=6)
 
     class Meta:
         ordering = ('-q_content',)
@@ -347,10 +347,10 @@ class Report(models.Model):
     reply = models.TextField()
     supplement_note = models.TextField()
     STATES_CHOICES = (
-        (0, '暫存'),
         (1, '待處理'),
         (2, '處理中'),
         (3, '已解決'),
+        (4, '暫存')
     )
     state = models.SmallIntegerField(choices=STATES_CHOICES, default=0)
     created_by = models.ForeignKey('User', on_delete=models.PROTECT)

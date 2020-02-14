@@ -43,6 +43,6 @@ class ExamType(Enum):
 
 
 class Identity(Enum):
-    Visitor = (0, '訪客')
-    Student = (1, '學生')
-    Teacher = (2, '老師')
+    Visitor = (1, '訪客')
+    Student = (2, '學生')
+    Teacher = (3, '老師')
