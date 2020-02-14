@@ -8,8 +8,8 @@ from alcpt.models import User
 def email_verified(user: User):
     # strSmtp = "smtp.gmail.com:587"
     # 主機
-    strAccount = "109alcpt@gmail.com"
-    strPassword = "1090630alcpt"
+    strAccount = "mis.alcpt.109@gmail.com"      # 備援信箱：tryitnotareal1997@gmail.com
+    strPassword = "eji6z;6284vm,6"
     verification_code = random.randint(1000, 9999)
 
     content = "Your verification code is " + str(verification_code)

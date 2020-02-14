@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 
     {% block stylesheets %}
@@ -30,7 +28,7 @@
         <style>
             .page-buttons{
                 position: absolute;
-                top: 13%;
+                top: 10%;
                 left: 2%;
                 z-index: 9999;
             }
@@ -48,14 +46,17 @@
                 {% for message in messages %}
                     {% if message.tags == "error" %}
                         <div class="prompt-bar error" id="3seconds">
+                            <i class="fa fa-times-circle"></i>
                             {{ message }}
                         </div>
                     {% elif message.tags == "success" %}
                         <div class="prompt-bar success" id="3seconds">
+                            <i class="fa fa-check"></i>
                             {{ message }}
                         </div>
                     {% elif message.tags == "warning" %}
                         <div class="prompt-bar warning" id="3seconds">
+                            <i class="fa fa-warning"></i>
                             {{ message }}
                         </div>
                     {% endif %}
@@ -72,10 +73,10 @@
                 background-color: salmon;
             }
             .success{
-                background-color: aquamarine;
+                background-color: rgb(220, 255, 220);
             }
             .warning{
-                background-color: khaki;
+                background-color: lightgoldenrodyellow;
             }
 
             .prompt-info{
@@ -104,7 +105,7 @@
             <div class="tool-btn">
                 <ul class="nav nav-pills nav-stacked">
                     <li><a id="profile" href="{% url 'profile' %}">基本資料</a></li>
-                    <li><a id="edit_profile" href="{% url 'profile_edit' user.reg_id %}">編輯個人檔案</a></li>
+                    <li><a id="edit_profile" href="{% url 'profile_edit' %}">編輯個人檔案</a></li>
                     <li><a id="password_change" href="{% url 'password_change' %}">更改密碼</a></li>
                     <li><a id="report" href="{% url 'report_list' %}">問題回報</a></li>
                 </ul>
@@ -161,8 +162,9 @@
                     <a class="navbar-brand" href="{% url "Homepage" %}" style=" opacity: 1; font-size: 30px;">ALCPT線上練習平台</a>
                 </div>
 
+                <!-- 功能表 -->
                 <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav" style="position: absolute; left: 50%">
+                    <ul class="nav navbar-nav" style="position: absolute; right: 10%">
                         {% if request.user|has_perm:'SystemManager' %}
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" >系統管理員 <b class="caret"></b></a>
@@ -235,32 +237,33 @@
 
             <style>
                 .navbar{
-                    padding-top: 40px;
+                    padding-top: 5px;
                     font-size: 20px;
                 }
                 .bg-green{
                     background-color: #4CCABD;
                     box-shadow: 0px 3px 8px 0px #486260;
                 }
+
                 /*選項顏色*/
                 .bg-green .navbar-nav .dropdown-toggle,
                 .bg-green .navbar-brand {
                     color: rgb(255, 255, 255);
                     right: 70%;
+                    border-radius: 6px;
                 }
 
                 .bg-green .navbar-nav .dropdown-toggle:hover{
-                    color: #2C3232;
+                    border-radius: 6px;
                 }
 
                 .bg-green .navbar-nav .dropdown-toggle:active{
-                    color: #2C3232;
+                    border-radius: 6px;
                 }
 
                 .bg-green .dropdown-menu{
                     font-size: 20px;
                 }
-
             </style>
         </nav>
 
@@ -284,9 +287,8 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <style>
+            <style>
             .container-fluid button{
                 background-color: #4CCABD;
                 border-color: #FFFEF6;
@@ -294,7 +296,7 @@
             }
             .btn-group{
                 position: absolute;
-                top: 50px;
+                top: 20px;
                 right: 30px;
             }
 
@@ -330,15 +332,14 @@
             .registration_block h2 a{
                 color: #555555;
             }
-
         </style>
+        </div>
     </div>
 
     <!-- 左邊button -->
     <div class="icon-bar">
         <a href="{% url 'Homepage' %}"><i class="fa fa-home"></i></a>
         <a href="{% url 'profile' %}"><i class="fa fa-user-circle"></i></a>
-
         <style>
             .icon-bar {
                 width: 90px;
@@ -363,7 +364,6 @@
             .icon-bar a:hover {
                 background-color: #000;
             }
-
         </style>
     </div>
 
@@ -373,9 +373,8 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Homepage' %}">主頁</a></li>
                 <li class="breadcrumb-item">
-                {% block path %}
-
-                {% endblock %}
+                    {% block path %}
+                    {% endblock %}
                 </li>
             </ol>
         </nav>
@@ -387,7 +386,7 @@
                 color: #2C3232;
 
                 position: absolute;
-                top: 18%;
+                top: 10%;
                 left: 10%;
                 box-shadow: 0px 3px 8px 0px #5e5e5e;
             }
@@ -457,8 +456,6 @@
             left: 15%;
             top: 25%;
         }
-
-
     </style>
 
 </body>

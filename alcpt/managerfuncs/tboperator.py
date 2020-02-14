@@ -10,26 +10,50 @@ from alcpt.utility import save_file
 def query_questions(*, question_type: int, question_content: str, difficulty: int, state: int):
     queries = Q()
     query_content = ""
+    all_questions = Question.objects.exclude(state=1).exclude(state=3).exclude(state=5)
 
-    if question_type:
-        queries &= Q(q_type=question_type)
-        query_content += "question_type=" + str(question_type)
-
-    if question_content:
-        queries &= Q(q_content__icontains=question_content)
-        query_content += "&question_content=" + str(question_content)
+    if state:
+        if state == 0:
+            # queries &= Q(state=0)
+            all_questions.filter(state=0)
+            query_content += "state=" + str(0)
+        else:
+            queries &= Q(state=state)
+            query_content += "state=" + str(state)
 
     if difficulty:
         queries &= Q(difficulty=difficulty)
         query_content += "&difficulty=" + str(difficulty)
 
-    if state:
-        queries &= Q(state=state)
-        query_content += "&state=" + str(state)
+    if question_content:
+        query_content += "&question_content=" + str(question_content)
 
-    # tbmanager doesn't need question.state == 1(審核通過) | 3(等待審核) | 5(被回報錯誤，已處理)
-    # use Q to filter Question.objects and order by created time
-    questions = Question.objects.exclude(state=1).exclude(state=3).exclude(state=5).filter(queries).order_by('-created_time')
+        if question_type:
+            if question_type == 1:
+                questions = all_questions.filter(q_type=1).filter(choice__c_content__icontains=question_content).filter(queries)
+            elif question_type == 2:
+                questions = all_questions.filter(q_type=2).filter(choice__c_content__icontains=question_content).filter(queries)
+            elif question_type == 3:
+                questions = all_questions.filter(q_type=3).filter(queries).filter(q_content__icontains=question_content)
+            elif question_type == 4:
+                questions = all_questions.filter(q_type=4).filter(queries).filter(q_content__icontains=question_content)
+            elif question_type == 5:
+                questions = all_questions.filter(q_type=5).filter(queries).filter(q_content__icontains=question_content)
+
+            questions = questions.distinct()
+            query_content += "&question_type=" + str(question_type)
+
+        else:
+            query1 = all_questions.exclude(q_type=1).exclude(q_type=2).filter(queries)
+            query2 = all_questions.exclude(q_type=3).exclude(q_type=4).exclude(q_type=5).filter(choice__c_content__icontains=question_content)
+
+            questions = (query1 | query2).distinct().order_by('id')
+    else:
+        if question_type:
+            queries &= Q(q_type=question_type)
+            query_content += "&question_type=" + str(question_type)
+
+        questions = all_questions.filter(queries).order_by('id')
 
     return query_content, questions
 

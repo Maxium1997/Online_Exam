@@ -7,12 +7,13 @@
 {% endblock %}
 
 {% block content %}
-    <div class="table-responsive">
+    <div class="answering-page">
         <form action="{% url 'testee_answering' exam.id answer.id %}" method="post">
+        <div class="title"><h1>Answering.</h1></div>
         {% csrf_token %}
-            <table class="table table-hover">
+            <table>
                 <tr>
-                    <td class="col-md-1">題目</td>
+                    <td class="col-md-2" style="text-align: center">題目</td>
                     {% if answer.question.q_type|question_kind == 'listening' %}
                         <td style="text-align: left; vertical-align:middle;">
                             <audio controls preload="none">
@@ -29,7 +30,7 @@
 
                 {% for option in answer.question.choice_set.all %}
                 <tr>
-                    <td class="col-md-1">{{ forloop.counter }}</td>
+                    <td class="col-md-2" style="text-align: center">{{ forloop.counter }}</td>
                     <td style="vertical-align:middle; text-align: left">
                         <input type="radio" name="answer_{{ answer.id }}" value="{{ forloop.counter }}" {% if forloop.counter == answer.selected %}checked{% endif %} required>{{ option }}
                     </td>
@@ -37,73 +38,107 @@
                 {% endfor %}
             </table>
 
-            <style>
-                .table-responsive .table{
-                    text-align: center;
-                }
 
-            </style>
 
             <div class="btn">
-                <button type="submit">下一題</button>
-
-                <style>
-                    .btn button{
-                        font-size: 25px;
-                        padding: 10px;
-                        padding-left: 15px;
-                        padding-right: 15px;
-                        color: #FFFEF6;
-                        background-color: #4CCABD;
-                        border: none;
-                        position: absolute;
-                        top: 85%;
-                        left: 80%;
-                    }
-                </style>
+                <button id="next" type="submit">下一題</button>
+                <button id="leave" type="button" onclick="window.location.href='{% url 'Homepage' %}'">離開</button>
             </div>
 
         </form>
 
-        <div class="leave-btn">
-            <button type="button" onclick="window.location.href='{% url 'Homepage' %}'">離開</button>
+        <style>
+            .answering-page .title h1{
+                width: 30%;
+                font-size: 28px;
+                color: #FFFEF6;
+                background-color: #4CCABD;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-right: 15px;
+                padding-left: 45px;
+                text-align: center;
+            }
+            .answering-page table{
+                position: relative;
+                left: 20%;
 
-            <style>
-                .leave-btn button{
-                    font-size: 25px;
-                    padding: 10px;
-                    padding-left: 15px;
-                    padding-right: 15px;
-                    color: #FFFEF6;
-                    background-color: #4CCABD;
-                    border: none;
-                    position: absolute;
-                    top: 85%;
-                    left: 90%;
-                }
-            </style>
-        </div>
+                width: 70%;
+
+                font-size: 20px;
+            }
+            .answering-page table td{
+                padding: 4px;
+            }
+
+            .answering-page .btn #next{
+                position: absolute;
+                top: 88%;
+                left: 80%;
+            }
+            .answering-page .btn #leave{
+                position: absolute;
+                top: 88%;
+                left: 92%;
+            }
+            .answering-page .btn button{
+                font-size: 25px;
+                padding: 10px;
+                padding-left: 15px;
+                padding-right: 15px;
+                color: #FFFEF6;
+                background-color: #4CCABD;
+                border: none;
+            }
+        </style>
     </div>
 
     <div class="page">
-        <ul class="pagination pagination-lg">
-            <li>
-                {% for answer in answers %}
+        <table>
+            <tr>
+            {% for answer in answers %}
+                <td>
                     {% if answer.selected != -1 %}
-                        <a href="{% url 'testee_answering' exam.id answer.id %}" style="color: red;">{{ forloop.counter }}</a>
+                        <div class="bit" style="color: red">{{ forloop.counter }}</div>
                     {% else %}
-                        <a href="{% url 'testee_answering' exam.id answer.id %}">{{ forloop.counter }}</a>
+                        <div class="bit"><a href="{% url 'testee_answering' exam.id answer.id %}">{{ forloop.counter }}</a></div>
                     {% endif %}
-                {% endfor %}
-            </li>
-        </ul>
+                </td>
+                {% if forloop.counter|divisibleby:10 %}
+                    </tr><tr>
+                {% endif %}
+            {% endfor %}
+        </table>
 
         <style>
             .page{
                 position: absolute;
-                top: 70%;
-                left: 35%;
+                bottom: 5%;
+
+                font-size: 14px;
             }
+            .page table td{
+                text-align: center;
+            }
+
+            .page .bit{
+                border-style: solid;
+                border-width: 1px;
+                border-radius: 2px;
+                border-color: lightcyan;
+                background-color: paleturquoise;
+
+                margin: 2px;
+                padding: 2px;
+            }
+            .page .bit a{
+                color: #2a6496;
+                text-decoration: none;
+            }
+            .page .bit a:active{
+                color: black;
+            }
+
         </style>
     </div>
 

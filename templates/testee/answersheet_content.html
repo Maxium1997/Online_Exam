@@ -63,6 +63,10 @@
             </tbody>
         </table>
 
+        <div class="back">
+            <button type="button" onclick="self.location=document.referrer;">確認</button>
+        </div>
+
         <style>
             .table-responsive .table{
                 text-align: center;
@@ -87,6 +91,21 @@
 
             .table tbody td a{
                 color: #2C3232;
+            }
+
+            .back{
+                position: relative;
+                top: 15px;
+                left: 45%;
+            }
+            .back button{
+                font-size: 25px;
+                padding: 10px;
+                padding-left: 15px;
+                padding-right: 15px;
+                color: #FFFEF6;
+                background-color: #4CCABD;
+                border: none;
             }
 
         </style>

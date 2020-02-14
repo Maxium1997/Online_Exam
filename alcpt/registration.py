@@ -83,11 +83,8 @@ def profile(request):
 
 # 編輯個人資料
 @login_required
-def edit_profile(request, reg_id):
-    try:
-        user = User.objects.get(reg_id=reg_id)
-    except ObjectDoesNotExist:
-        messages.error(request, 'User does not exist, user id: {}'.format(reg_id))
+def edit_profile(request):
+    user = request.user
 
     if request.method == 'POST':
         user.name = request.POST.get('name',)

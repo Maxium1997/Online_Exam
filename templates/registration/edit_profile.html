@@ -97,7 +97,7 @@
 
     <!-- 個人資料區 -->
     <div class="personal_info">
-        <form action="{% url 'profile_edit' user.reg_id %}" method="post">
+        <form action="{% url 'profile_edit' %}" method="post">
             {% csrf_token %}
             <table>
                 <tr>
@@ -209,15 +209,8 @@
 
             <div class="btn">
                 <button type="submit">提交</button>
-
-                <style>
-                    .btn{
-                        position: absolute;
-                        top: 90%;
-                        left: 45%;
-                    }
-                </style>
             </div>
+
         </form>
 
         <style>
@@ -238,6 +231,12 @@
             .personal_info .title{
                 font-size: 20px;
                 width: 25%;
+            }
+
+            .btn{
+                position: absolute;
+                top: 90%;
+                left: 45%;
             }
         </style>
     </div>

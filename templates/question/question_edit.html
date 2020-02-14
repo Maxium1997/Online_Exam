@@ -36,7 +36,7 @@
                 {% for choice in question.choice_set.all %}
                 <tr>
                     <td class="col-md-2"></td>
-                    <td class="col-md-5" style="padding-left: 10%"><input type="radio" name="answer_choice">{{ choice }}</td>
+                    <td class="col-md-5" style="padding-left: 10%"><input type="radio" name="answer_choice" value="{{ choice.id }}">{{ choice }}</td>
                 </tr>
                 {% endfor %}
             </table>

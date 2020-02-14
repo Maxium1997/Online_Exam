@@ -209,3 +209,38 @@ def summary(completed_string: str, wanted: int):
     else:
         return completed_string
 
+
+@register.filter(name='readable_question_query_content')
+def readable_question_query_content(question_query_content: str):
+    question_query = [_.split('=') for _ in question_query_content.split('&')]
+    readable_query_content = ''
+
+    for item in question_query:
+        if 'state' in item:
+            STATE = (
+                (0, '暫存'),
+                (1, '審核通過'),
+                (2, '審核未通過'),
+                (3, '等待審核'),
+                (4, '被回報錯誤'),
+                (5, '被回報錯誤，已處理'),
+            )
+            readable_query_content += '狀態="' + STATE[int(item[1])][1] + '" '
+
+        elif 'difficulty' in item:
+            readable_query_content += '難度="' + item[1] + '" '
+
+        elif 'question_content' in item:
+            readable_query_content += '試題內容="' + item[1] + '" '
+
+        elif 'question_type' in item:
+            TYPE = (
+                (1, '聽力／問答'),
+                (2, '聽力／簡短對話'),
+                (3, '閱讀／文法'),
+                (4, '閱讀／名詞片語'),
+                (5, '閱讀／段落理解')
+            )
+            readable_query_content += '類型="' + TYPE[int(item[1])][1] + '" '
+
+    return readable_query_content

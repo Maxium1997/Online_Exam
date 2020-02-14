@@ -13,7 +13,7 @@ from alcpt.exceptions import IllegalArgumentError
 def create_practice(*, user: User, practice_type: ExamType, question_types: list, question_num: int, integration: bool = False):
     now = datetime.now()
 
-    practice_name = "{}-{}".format(practice_type.value[1], now.strftime('%Y/%m/%d %H:%M:%d'))
+    practice_name = "{}-{}".format(practice_type.value[1], now.strftime('%Y/%m/%d %H:%M:%S'))
 
     question_type_counts = QuestionTypeCounts.Exam.value[0] if integration else []
 

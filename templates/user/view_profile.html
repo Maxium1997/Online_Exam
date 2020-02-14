@@ -140,17 +140,17 @@
         </div>
 
         <div class="time">
-            <li>最近登入：<br>{{ edited_user.last_login|date:"Y年m月d日, H時i分" }}</li>
+            <li>最近登入：<br>{{ viewed_user.last_login|date:"Y年m月d日, H時i分" }}</li>
             <li style="border-top-style: solid; border-top-color: #adadad; border-top-width: 0.7px;">&nbsp;</li>
-            <li>更新時間：<br>{{ edited_user.update_time|date:"Y年m月d日, H時i分" }}</li>
+            <li>更新時間：<br>{{ viewed_user.update_time|date:"Y年m月d日, H時i分" }}</li>
             <li style="border-top-style: solid; border-top-color: #adadad; border-top-width: 0.7px;">&nbsp;</li>
-            <li>加入時間：<br>{{ edited_user.created_time|date:"Y年m月d日, H時i分" }}</li>
+            <li>加入時間：<br>{{ viewed_user.created_time|date:"Y年m月d日, H時i分" }}</li>
             <li style="border-top-style: solid; border-top-color: #adadad; border-top-width: 0.7px;">&nbsp;</li>
-            <li>狀態：{% if edited_user.is_active %}
+            <li>狀態：{% if viewed_user.is_active %}
                     <span>active</span>
-                {% elif edited_user.is_staff %}
+                {% elif viewed_user.is_staff %}
                     <span>staff</span>
-                {% elif edited_user.is_superuser %}
+                {% elif viewed_user.is_superuser %}
                     <span>superuser</span>
                 {% endif %}
             </li>

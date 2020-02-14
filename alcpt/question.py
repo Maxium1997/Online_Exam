@@ -24,6 +24,7 @@ def manager_index(request):
                      (3, '等待審核'),
                      (4, '被回報錯誤'),
                      (5, '被回報錯誤，已處理')]
+
     difficulty_choices = [(1, '1'),
                           (2, '2'),
                           (3, '3'),
@@ -35,21 +36,18 @@ def manager_index(request):
     if keywords['question_content'] and any(char in punctuation for char in keywords['question_content']):
         keywords['question_content'] = None
         messages.warning(request, "Name cannot contains any special character.")
+
     for keyword in ['question_type', 'difficulty', 'state']:
         try:
             keywords[keyword] = int(request.GET.get(keyword))
         except (KeyError, TypeError, ValueError):
             keywords[keyword] = None
 
-    q_type = request.GET.get('question_type',)
-    difficulty = request.GET.get('difficulty',)
-    state = request.GET.get('state',)
-
     query_content, questions = tbmanager.query_questions(**keywords)
     resultNum = len(questions)
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(questions, 10)  # the second parameter is used to display how many items. Now is display 10
+    paginator = Paginator(questions, 20)  # the second parameter is used to display how many items. Now is display 10
 
     try:
         questionList = paginator.page(page)
@@ -180,8 +178,10 @@ def operator_index(request):
     state = request.GET.get('state', )
 
     query_content, questions = tboperator.query_questions(**keywords)
+    resultNum = len(questions)
+
     page = request.GET.get('page', 1)
-    paginator = Paginator(questions, 10)  # the second parameter is used to display how many items. Now is display 10
+    paginator = Paginator(questions, 20)  # the second parameter is used to display how many items. Now is display 10
 
     try:
         questionList = paginator.page(page)

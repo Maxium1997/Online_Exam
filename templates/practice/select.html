@@ -9,20 +9,20 @@
 {% block content %}
     <div class="testee_practice_create">
         <form action="{% url 'testee_practice_create' kind %}" method="post">
-            <div class="title"><h1>Test Practice Create.</h1></div>
+            <div class="title"><h1>Practice Create.</h1></div>
             {% csrf_token %}
             <table>
                 <tr>
                     {% if kind == 'listening' %}
-                        <td class="col-md-2">聽力類型（可複選）</td>
-                        <td class="col-md-3">
+                        <td class="col-md-1">聽力類型（可複選）</td>
+                        <td class="col-md-1">
                             <input type="checkbox" name="question_type" value="1">問答
                             <input type="checkbox" name="question_type" value="2">簡短對話
                         </td>
 
                     {% elif kind == 'reading' %}
-                        <td class="col-md-2">閱讀類型（可複選）</td>
-                        <td class="col-md-3">
+                        <td class="col-md-1">閱讀類型（可複選）</td>
+                        <td class="col-md-1">
                             <input type="checkbox" name="question_type" value="3">文法
                             <input type="checkbox" name="question_type" value="4">名詞片語
                             <input type="checkbox" name="question_type" value="5">段落理解
