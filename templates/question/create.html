@@ -16,13 +16,13 @@
                 {% if kind == 'listening' %}
                     <tr>
                         <td class="col-md-2">試題聽力音檔</td>
-                        <td><input type="file" name="question_file" accept="audio/mpeg" required></td>
+                        <td><input type="file" name="question_file" id="question_file" accept="audio/mpeg" onchange="OpenButton('listening')" required></td>
                     </tr>
 
                     <tr>
                         <td class="col-md-2">試題類型</td>
                         <td>
-                            <select name="question_type" required>
+                            <select name="question_type" id="question_type_listening" onkeyup="OpenButton('listening')" required>
                                 <option value="" disabled selected>請選擇試題類型</option>
                                 <option value="1">問答</option>
                                 <option value="2">簡短對話</option>
@@ -33,13 +33,13 @@
                 {% elif kind == 'reading' %}
                     <tr>
                         <td class="col-md-2">試題題目</td>
-                        <td><textarea class="form-control" cols="100" rows="3" name="question_content" placeholder="請輸入試題題目" required></textarea></td>
+                        <td><textarea class="form-control" cols="100" rows="3" name="question_content" id="question_content" onkeyup="OpenButton('reading')" placeholder="請輸入試題題目" required></textarea></td>
                     </tr>
 
                     <tr>
                         <td class="col-md-2">試題類型</td>
                         <td>
-                            <select name="question_type" required>
+                            <select name="question_type" id="question_type_reading" onchange="OpenButton('reading')" required>
                                 <option value="" disabled selected>請選擇試題類型</option>
                                 <option value="3">文法</option>
                                 <option value="4">名詞片語</option>
@@ -69,17 +69,17 @@
                 <tr>
                     <td>試題選項</td>
                     <td>
-                        <input class="form-control" type="text" name="choice1" placeholder="Enter Choice content..." required>
-                        <input class="form-control" type="text" name="choice2" placeholder="Enter Choice content..." required>
-                        <input class="form-control" type="text" name="choice3" placeholder="Enter Choice content..." required>
-                        <input class="form-control" type="text" name="choice4" placeholder="Enter Choice content..." required>
+                        <input class="form-control" type="text" name="choice1" id="choice1" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
+                        <input class="form-control" type="text" name="choice2" id="choice2" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
+                        <input class="form-control" type="text" name="choice3" id="choice3" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
+                        <input class="form-control" type="text" name="choice4" id="choice4" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
                     </td>
                 </tr>
 
             </table>
 
             <div class="btn">
-                <button type="submit" onclick="return confirm('確認新增此試題？')">新增試題</button>
+                <button type="submit" id="submit" onclick="return confirm('確認新增此試題？')">新增試題</button>
                 <button type="reset">重設</button>
                 <button type="button" onclick="window.location.href='{% url 'tboperator_question_list' %}'">取消</button>
             </div>
@@ -136,6 +136,43 @@
             </style>
         </form>
     </div>
+    
+    <script type="text/javascript">
+        var questionFile = document.getElementById('question_file');
+        var questionTypeListening = document.getElementById('question_type_listening');
+
+        var questionTypeReading = document.getElementById('question_type_reading');
+        var questionContent = document.getElementById('question_content');
+
+        var choice1 = document.getElementById('choice1');
+        var choice2 = document.getElementById('choice2');
+        var choice3 = document.getElementById('choice3');
+        var choice4 = document.getElementById('choice4');
+
+        var submit = document.getElementById('submit');
 
 
+        function OpenButton(kind) {
+            if (kind === 'reading') {
+                if (choice1.value === '' || choice2.value === '' || choice3.value === '' || choice4.value === ''
+                    || questionTypeReading.value === '' || questionContent.value === '') {
+                    submit.disabled = true;
+                    submit.style.backgroundColor = 'grey';
+                } else {
+                    submit.disabled = false;
+                    submit.style.backgroundColor = '#4CCABD';
+                }
+            }
+            else{
+               if (choice1.value === '' || choice2.value === '' || choice3.value === '' || choice4.value === ''
+                   || questionTypeListening.value === '' || questionFile.value === '') {
+                   submit.disabled = true;
+                   submit.style.backgroundColor = 'grey';
+               } else {
+                   submit.disabled = false;
+                   submit.style.backgroundColor = '#4CCABD';
+               }
+            }
+        }
+    </script>
 {% endblock %}

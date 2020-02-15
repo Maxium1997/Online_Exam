@@ -33,7 +33,7 @@
 
             <div class="answer">
                 <label for="set_answer">答案：</label>
-                <select name="is_answer" required>
+                <select name="is_answer" id="is_answer" onchange="ChangeJudgementButton('', document.getElementById('is_answer'))" required>
                     <option value="" disabled selected hidden>請選擇答案</option>
                     <option value="{{ option1.id }}">{{ option1 }}</option>
                     <option value="{{ option2.id }}">{{ option2 }}</option>
@@ -43,7 +43,7 @@
             </div>
 
             <div class="btn">
-                <input type="submit" value="送出">
+                <input type="submit" id="submit" value="送出">
             </div>
 
 
