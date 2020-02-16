@@ -466,7 +466,7 @@
             {#window.onload = () => {#}
             {#    $loading.hide();};#}
 
-
+            // Checkout whether data is different from database.
             function data_unique(names , input) {
                 var submit_btn = document.getElementById('submit');
                 var arr = names;
@@ -492,6 +492,7 @@
                 }
             }
 
+            // Checkout whether data is different from before.
             document.getElementById('submit').disabled = true;
             document.getElementById('submit').style.backgroundColor = 'grey';
 

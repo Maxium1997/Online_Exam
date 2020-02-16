@@ -61,12 +61,21 @@
                         {% endfor %}
                     </select>
                 </li>
+
+
+
+
+
                 <li>
                     {% for privilege in privileges %}
                         <input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" {% if edited_user|has_permission:privilege %} checked {% endif %}>
                         <label for="{{ privilege.value.0 }}">{{ privilege.value.1 }}&nbsp;&nbsp;&nbsp;</label>
                     {% endfor %}
                 </li>
+
+
+
+
             </ul>
 
             {% if edited_user.student %}
@@ -79,7 +88,7 @@
 
                 <ul class="student_info1_">
                     <li><input type="text" name="stu_id" value="{{ edited_user.student.stu_id }}" onkeyup="ChangeJudgementButton('{{ edited_user.student.stu_id }}', this)" required></li>
-                    <li><input type="text" name="grade" value="{{ edited_user.student.grade }}" onchange="ChangeJudgementButton('{{ edited_user.student.grade }}', this)" required></li>
+                    <li><input type="text" name="grade" value="{{ edited_user.student.grade }}" onkeyup="ChangeJudgementButton('{{ edited_user.student.grade }}', this)" required></li>
                     <li>
                         <select name="department" id="department" onchange="ChangeJudgementButton('{{ user.student.department }}', document.getElementById('department').value)" required>
                             <option value="" disabled selected>請選擇科系</option>

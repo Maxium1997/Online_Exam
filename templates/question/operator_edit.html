@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+ {% extends 'base.html' %}
 
 {% block path %}
     <a href="{% url 'tboperator_question_list' %}">題目操作員</a>
@@ -21,7 +21,7 @@
                                 Your browser does not support the audio tag.
                             </audio>
                         {% else %}
-                            <textarea name="q_content" cols="100" rows="8">{{ question.q_content }}</textarea>
+                            <textarea name="q_content" cols="100" rows="8" onkeyup="ChangeJudgementButton('{{ question_q_content }}', this)">{{ question.q_content }}</textarea>
                         {% endif %}
                     </td>
                 </tr>
@@ -29,7 +29,7 @@
                 <tr>
                     <td class="col-md-2" style="font-size: 20px">選擇題目類型：</td>
                     <td class="col-md-5">
-                        <select name="question_type" required>
+                        <select name="question_type" id="question_type" onchange="ChangeJudgementButton('{{ question_type }}', this)" required>
                             <option value="" disabled selected>請選擇題目類型</option>
                             {% if question.q_content %}
                                 <option value="3" {% if question.q_type == 3 %}selected{% endif %}>文法</option>
@@ -57,7 +57,7 @@
             </table>
 
             <div class="btn">
-                <button type="submit" onclick="return confirm('確認更改此試題並進入暫存階段？')">確認更改</button>
+                <button type="submit" id="submit" onclick="return confirm('確認更改此試題並進入暫存階段？')">確認更改</button>
                 <button type="button" onclick="self.location=document.referrer;">取消</button>
             </div>
         </form>

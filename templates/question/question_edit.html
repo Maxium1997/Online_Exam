@@ -23,7 +23,7 @@
                                 Your browser does not support the audio tag.
                             </audio>
                         {% else %}
-                            <textarea name="q_content" cols="100" rows="8">{{ question.q_content }}</textarea>
+                            <textarea name="q_content" cols="100" rows="8" onkeyup="ChangeJudgementButton('{{ question_q_content }}', this)">{{ question.q_content }}</textarea>
                         {% endif %}
                     </td>
                 </tr>
@@ -42,7 +42,7 @@
             </table>
 
             <div class="btn">
-                <button type="submit" onclick="return confirm('確認更改此試題並通過審核？')">確認更改</button>
+                <button type="submit" id="submit" onclick="return confirm('確認更改此試題並通過審核？')">確認更改</button>
                 <button type="button" onclick="self.location=document.referrer;">取消</button>
             </div>
         </form>
