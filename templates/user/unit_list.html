@@ -83,7 +83,7 @@
                                 <td>{{ department.name }}</td>
                                 <td>{{ department.student_set.all.count }}</td>
                                 <td>
-                                    <a href=""><i class="fa fa-pencil-square fa-fw mb-2"></i></a>
+                                    <a href=""><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -101,23 +101,22 @@
                         <tr>
                             <th class="col-md-4">中隊代號</th>
                             <th class="col-md-3">中隊名稱</th>
-                            <th class="col-md-4">中隊人數</th>
+                            <th class="col-md-4"><i class="fas fa-users"></i></th>
                             <th class="col-md-1"></th>
                         </tr>
                     </thead>
                     <tbody>
-
+                        {% for squadron in squadrons %}
+                            <tr style="cursor: pointer" onclick="window.location.href='{% url 'unit_member_list' 'squadron' squadron.name %}'">
+                                <td>{{ squadron.id }}</td>
+                                <td>{{ squadron.name }}</td>
+                                <td>{{ squadron.student_set.all.count }}</td>
+                                <td>
+                                    <a href=""><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
-                {% for squadron in squadrons %}
-                    <tr style="cursor: pointer" onclick="window.location.href='{% url 'unit_member_list' 'squadron' squadron.name %}'">
-                        <td>{{ squadron.id }}</td>
-                        <td>{{ squadron.name }}</td>
-                        <td>{{ squadron.student_set.all.count }}</td>
-                        <td>
-                            <a href=""><i class="fa fa-pencil-square fa-fw mb-2"></i></a>
-                        </td>
-                    </tr>
-                {% endfor %}
             </table>
             {% else %}
                 目前暫無資料

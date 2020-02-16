@@ -24,6 +24,9 @@
                 position: relative;
                 left: 25%;
                 top: 25px;
+
+                width: 100px;
+                height: 100px;
             }
 
             .photo i{
@@ -109,9 +112,9 @@
                     <td class="title">姓名</td>
                     <td>
                         {% if user.name %}
-                            <input class="form-control" type="text" name="name" value="{{ user.name }}" required>
+                            <input type="text" name="name" value="{{ user.name }}" required>
                         {% else %}
-                            <input class="form-control" type="text" name="name" required>
+                            <input type="text" name="name" required>
                         {% endif %}
                     </td>
                 </tr>
@@ -120,9 +123,9 @@
                     <td class="title">Email</td>
                     <td>
                         {% if user.email %}
-                            <input class="form-control" type="email" name="email" value="{{ user.email }}" required>
+                            {{ user.email }}
                         {% else %}
-                            <input class="form-control" type="email" name="email" required>
+                            尚未設定
                         {% endif %}
                     </td>
 
@@ -177,7 +180,7 @@
 
                 <tr>
                     <td class="title">年班</td>
-                    <td><input class="form-control" type="number" name="grade" value="{{ user.student.grade }}" required></td>
+                    <td><input type="number" name="grade" value="{{ user.student.grade }}" required></td>
                 </tr>
 
                 <tr>
@@ -219,13 +222,19 @@
                 left: 40%;
                 top: -80px;
 
-                width: 500px;
+                width: 450px;
             }
             .personal_info table{
                 font-size: 14px;
             }
             .personal_info table td{
-                padding: 8px;
+                padding: 10px;
+            }
+            .personal_info table input{
+                border-style: solid;
+                border-width: 1px;
+                border-color: rgb(200, 200, 200);
+                border-radius: 4px;
             }
 
             .personal_info .title{
@@ -236,7 +245,7 @@
             .btn{
                 position: absolute;
                 top: 85%;
-                left: 45%;
+                left: 85%;
             }
         </style>
     </div>

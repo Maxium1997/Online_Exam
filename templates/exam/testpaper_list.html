@@ -71,8 +71,8 @@
                             <td style="vertical-align:middle;">{{ testpaper.created_by.name }}</td>
                             <td style="vertical-align:middle;">
                                 {% if testpaper.is_testpaper %}
-                                    <a href="{% url 'testpaper_edit' testpaper.id %}"><i class="fa fa-pencil fa-fw mb-2"></i></a>
-                                    <a href="{% url 'testpaper_delete' testpaper.id %}" onclick="return confirm('確認刪除此考卷？')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                    <a href="{% url 'testpaper_edit' testpaper.id %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
+                                    <a href="{% url 'testpaper_delete' testpaper.id %}" onclick="return confirm('確認刪除此考卷？')"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                 {% endif %}
                             </td>
                         </tr>
@@ -121,67 +121,65 @@
 
 
     <!-- 頁碼的部分 -->
-    <div>
-        <div class="pagination">
-            <div class="pager_group1">
-                <ul class="pager">
-                    <li class="previous" style="color: #2C3232"><a href="?page=1{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">&laquo; first</a></li>
-                    <li style="padding-left: 500px; padding-right: 490px">&nbsp;</li>
-                    <li class="next"><a href="?page={{ testpaperList.paginator.num_pages }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">last &raquo;</a></li>
-                </ul>
-            </div>
-
-            <div class="pager_group2">
-                <nav aria-label="Page navigation">
-                  <ul class="pagination justify-content-center">
-                    <li {% if not testpaperList.has_previous %}class="page-item disabled"{% endif %}>
-                        {% if testpaperList.has_previous %}
-                            <a class="page-link" href="?page={{ testpaperList.previous_page_number }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}" tabindex="-1">Previous</a>
-                        {% else %}
-                            <a href="javascript:void(0)">Previous</a>
-                        {% endif %}
-                    </li>
-                    <li class="page-item">
-                        {% for page in paginator.page_range %}
-                            {% if page == testpaperList.number %}
-                                <a class="page-link" href="?page={{ page }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">{{ page }}</a>
-                            {% else %}
-                                <a href="?page={{ page }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">{{ page }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    </li>
-                    <li  {% if not testpaperList.has_next %}class="page-item disabled"{% endif %}>
-                        {% if testpaperList.has_next %}
-                            <a class="page-link" href="?page={{ testpaperList.next_page_number }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">Next</a>
-                        {% else %}
-                            <a href="javascript:void(0)">Next</a>
-                        {% endif %}
-                    </li>
-                  </ul>
-                </nav>
-
-            </div>
-
-            <style>
-              .pagination{
-                    font-size: 20px;
-                }
-                .pager_group1{
-                    text-decoration: none;
-                    position: fixed;
-                    bottom: 13%;
-                    left: 10%;
-                    right: 10%;
-                }
-
-                .pager_group2{
-                    position: fixed;
-                    bottom: 12%;
-                    right: 50%;
-
-                    transform: translate(50%,50%);
-                }
-            </style>
+    <div class="pagination">
+        <div class="pager_group1">
+            <ul class="pager">
+                <li class="previous" style="color: #2C3232"><a href="?page=1{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">&laquo; first</a></li>
+                <li style="padding-left: 500px; padding-right: 490px">&nbsp;</li>
+                <li class="next"><a href="?page={{ testpaperList.paginator.num_pages }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">last &raquo;</a></li>
+            </ul>
         </div>
+
+        <div class="pager_group2">
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center">
+                <li {% if not testpaperList.has_previous %}class="page-item disabled"{% endif %}>
+                    {% if testpaperList.has_previous %}
+                        <a class="page-link" href="?page={{ testpaperList.previous_page_number }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}" tabindex="-1">Previous</a>
+                    {% else %}
+                        <a href="javascript:void(0)">Previous</a>
+                    {% endif %}
+                </li>
+                <li class="page-item">
+                    {% for page in paginator.page_range %}
+                        {% if page == testpaperList.number %}
+                            <a class="page-link" href="?page={{ page }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">{{ page }}</a>
+                        {% else %}
+                            <a href="?page={{ page }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">{{ page }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </li>
+                <li  {% if not testpaperList.has_next %}class="page-item disabled"{% endif %}>
+                    {% if testpaperList.has_next %}
+                        <a class="page-link" href="?page={{ testpaperList.next_page_number }}{% if testpaper_name %}&testpaper_name={{ testpaper_name }}{% endif %}">Next</a>
+                    {% else %}
+                        <a href="javascript:void(0)">Next</a>
+                    {% endif %}
+                </li>
+              </ul>
+            </nav>
+
+        </div>
+
+        <style>
+            .pagination{
+                font-size: 20px;
+            }
+            .pager_group1{
+                text-decoration: none;
+                position: fixed;
+                bottom: 13%;
+                left: 10%;
+                right: 10%;
+            }
+
+            .pager_group2{
+                position: fixed;
+                bottom: 12%;
+                right: 50%;
+
+                transform: translate(50%,50%);
+            }
+        </style>
     </div>
 {% endblock %}

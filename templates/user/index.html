@@ -198,6 +198,7 @@
     <div class="table-responsive">
         <table class="table table-hover">
             <caption style="font-size: 30px;">&nbsp;&nbsp;使用者列表（共 {{ users.count }} 條結果）</caption>
+            <h3>{% if query_content and users %}搜尋條件：{{ query_content|readable_user_query_content }}{% endif %}</h3>
             <thead class="title">
                 <tr>
                     <th class="col-md-1" style="text-align: left">帳號</th>
@@ -208,8 +209,8 @@
                     <th class="col-md-1"></th>
                 </tr>
             </thead>
-            <tbody>
 
+            <tbody>
             {% if users %}
                 {% for user in userList %}
                     <tr onclick="window.location.href='{% url "view_profile" user.reg_id %}'">
@@ -238,21 +239,26 @@
                         </td>
                         <td style="vertical-align:middle; font-size: 12px">{{ user.last_login|date:'Y年m月d日, H時i分' }}</td>
                         <td>
-                            <a href="{% url 'user_edit' user.reg_id %}"><i class="fa fa-pencil-square fa-fw mb-2"></i></a>
+                            <a href="{% url 'user_edit' user.reg_id %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
             {% else %}
-                <tr><td colspan="6"><h2>目前暫無資料</h2></td></tr>
+                <tr><td colspan="6">
+                    {% if query_content and not users %}
+                        <h3>找不到符合的條件「{{ query_content|readable_user_query_content }}」的使用者。</h3>
+                    {% endif %}
+                </td></tr>
             {% endif %}
         </tbody>
-    </table>
+        </table>
+
         <style>
             .table-responsive .table{
                 text-align: center;
             }
 
-            table-hover a{
+            .table-hover a{
                     visibility: hidden;
             }
             .table-hover > tbody > tr:hover{

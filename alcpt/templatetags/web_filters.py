@@ -228,13 +228,13 @@ def readable_question_query_content(question_query_content: str):
                 (5, '被回報錯誤，已處理'),
                 (6, '暫存'),
             )
-            readable_query_content += '狀態="' + STATE[int(item[1])][1] + '" '
+            readable_query_content += '狀態="' + STATE[int(item[1])][1] + '"+'
 
         elif 'difficulty' in item:
-            readable_query_content += '難度="' + item[1] + '" '
+            readable_query_content += '難度="' + item[1] + '"+'
 
         elif 'question_content' in item:
-            readable_query_content += '試題內容="' + item[1] + '" '
+            readable_query_content += '試題內容="' + item[1] + '"+'
 
         elif 'question_type' in item:
             TYPE = (
@@ -245,6 +245,27 @@ def readable_question_query_content(question_query_content: str):
                 (4, '閱讀／名詞片語'),
                 (5, '閱讀／段落理解')
             )
-            readable_query_content += '類型="' + TYPE[int(item[1])][1] + '" '
+            readable_query_content += '類型="' + TYPE[int(item[1])][1] + '"'
 
     return readable_query_content
+
+
+@register.filter(name='readable_user_query_content')
+def readable_user_query_content(user_query_content: str):
+    user_query = [_.split('=') for _ in user_query_content.split('&')]
+    readable_user_query_content = ''
+
+    for item in user_query:
+        if 'department' in item:
+            readable_user_query_content += '科系="' + item[1] + '"+'
+
+        elif 'grade' in item:
+            readable_user_query_content += '年班="' + item[1] + '"+'
+
+        elif 'squadron' in item:
+            readable_user_query_content += '中隊="' + item[1] + '"+'
+
+        elif 'name' in item:
+            readable_user_query_content += '學號/姓名="' + item[1] + '"'
+
+    return readable_user_query_content

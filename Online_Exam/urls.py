@@ -46,6 +46,7 @@ urlpatterns = [
         url(r'^password/change$', registration.change_password, name='password_change'),
         url(r'^password/forget$', registration.forget_password, name='password_forget'),
         url(r'^password/reset$', registration.reset_password, name='password_reset'),
+        url(r'^email$', registration.email_confirmation, name='email_confirmation'),
     ])),
 
     # 系統管理員部分

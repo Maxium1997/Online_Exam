@@ -5,7 +5,7 @@ from smtplib import SMTP, SMTPAuthenticationError, SMTPException
 from alcpt.models import User
 
 
-def email_verified(user: User):
+def email_verified(request, user: User):
     # strSmtp = "smtp.gmail.com:587"
     # 主機
     strAccount = "mis.alcpt.109@gmail.com"      # 備援信箱：tryitnotareal1997@gmail.com

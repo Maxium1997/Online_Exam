@@ -22,6 +22,9 @@
                 position: relative;
                 left: 25%;
                 top: 25px;
+
+                width: 100px;
+                height: 100px;
             }
 
             .photo i{
@@ -108,7 +111,7 @@
 
             <tr>
                 <td class="title">Email</td>
-                <td>{{ user.email }} / {% if user.email_is_verified %}<i style="color: green" class="fa fa-check-circle"></i>{% else %}<a href="{% url 'email_verification' %}">驗證{% endif %}</a></td>
+                <td>{{ user.email }} / {% if user.email_is_verified %}<i style="color: green" class="fa fa-check-circle"></i>{% else %}<i class="fas fa-exclamation-circle"></i>{% endif %}</a></td>
 
             </tr>
 
@@ -186,13 +189,13 @@
                 left: 40%;
                 top: -80px;
 
-                width: 500px;
+                width: 450px;
             }
             .personal_info table{
                 font-size: 14px;
             }
             .personal_info table td{
-                padding: 8px;
+                padding: 10px;
             }
 
             .personal_info .title{

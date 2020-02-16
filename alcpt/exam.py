@@ -58,7 +58,7 @@ def exam_create(request):
             testpaper.is_used = True
             testpaper.save()
 
-            testee_list = TesteeList.objects.create()
+            testee_list = TesteeList.objects.create(created_by=exam)
             testee_list.created_by = exam
             for testee in selected_group.user_set.all():
                 testee_list.testees.add(testee)

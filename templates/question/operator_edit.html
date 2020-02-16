@@ -13,21 +13,21 @@
             {% csrf_token %}
             <table>
                 <tr>
-                    <td class="col-md-2" style="font-size: 20px">題目</td>
-                    <td class="col-md-5">
+                    <td style="font-size: 20px">題目</td>
+                    <td>
                         {% if question.q_file %}
                             <audio controls preload="none">
                                 <source src="{{ question.q_file }}" type="audio/mpeg">
                                 Your browser does not support the audio tag.
                             </audio>
                         {% else %}
-                            <textarea name="q_content" cols="100" rows="8">{{ question.q_content }}</textarea>
+                            <textarea class="form-control" name="q_content" cols="55" rows="4">{{ question.q_content }}</textarea>
                         {% endif %}
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="col-md-2" style="font-size: 20px">選擇題目類型：</td>
+                    <td class="col-md-2" style="font-size: 20px">選擇題目類型</td>
                     <td class="col-md-5">
                         <select name="question_type" required>
                             <option value="" disabled selected>請選擇題目類型</option>
@@ -43,14 +43,18 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td class="col-md-2" style="font-size: 20px">選擇答案：</td>
-                    <td class="col-md-5"></td>
-                </tr>
+{#                <tr>#}
+{#                    <td class="col-md-2" style="font-size: 20px">設定答案</td>#}
+{#                    <td class="col-md-5"></td>#}
+{#                </tr>#}
 
                 {% for choice in question.choice_set.all %}
                 <tr>
-                    <td class="col-md-2"></td>
+                    {% if forloop.counter == 1 %}
+                        <td class="col-md-2" style="font-size: 20px">設定答案</td>
+                    {% else %}
+                        <td class="col-md-2"></td>
+                    {% endif %}
                     <td class="col-md-5"><input type="radio" name="answer_choice" {% if choice.is_answer %}checked{% endif %}>{{ choice }}</td>
                 </tr>
                 {% endfor %}
@@ -89,7 +93,6 @@
 
             .edit_question form .btn{
                 position: relative;
-                top: 110px;
                 left: 40%;
             }
             .edit_question form .btn button{

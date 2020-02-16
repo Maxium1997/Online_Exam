@@ -1,0 +1,84 @@
+{% extends 'profile_base.html' %}
+
+{% load web_filters %}
+
+{% block path %}
+    <a href="{% url 'profile' %}">檢視個人資料</a>
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="">電子郵件</a>
+{% endblock %}
+
+{% block content %}
+    <style>
+        #email{
+            background-color: #DCDCDC;
+        }
+    </style>
+
+    <div class="email_confirmation">
+        <form action="" method="post">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Email</td>
+                    <td>
+                        <input class="form-control" value="{{ user.email }}">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    {% if user.email_is_verified %}
+                        <td style="color: rgb(0, 0, 255);">已驗證</td>
+                    {% else %}
+                        <td style="color: rgb(255, 0, 0);">尚未驗證</td>
+                    {% endif %}
+                </tr>
+            </table>
+
+            <div class="btn">
+                <button type="submit">確認電子郵件</button>
+            </div>
+        </form>
+
+
+        <style>
+            .email_confirmation table{
+                position: relative;
+                top: 50px;
+                left: 35%;
+
+                width: 40%;
+
+                font-size: 20px;
+            }
+            .email_confirmation table td{
+                padding: 10px;
+            }
+            .email_confirmation form input{
+                padding: 6px;
+            }
+            .email_confirmation form textarea{
+                font-size: 20px;
+                width: 100%;
+                height: 45%;
+                padding: 10px;
+            }
+
+            .email_confirmation .btn{
+                position: relative;
+                top: 70px;
+                left: 45%;
+            }
+            .email_confirmation .btn button{
+                font-size: 25px;
+                padding: 10px;
+                padding-left: 15px;
+                padding-right: 15px;
+                color: #FFFEF6;
+                background-color: #4CCABD;
+                border: none;
+            }
+        </style>
+    </div>
+{% endblock %}

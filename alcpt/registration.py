@@ -258,3 +258,9 @@ def report_detail(request, report_id):
         viewed_report.user_notification = False
         viewed_report.save()
         return render(request, 'registration/report_detail.html', locals())
+
+
+@login_required
+def email_confirmation(request):
+    user = request.user
+    return render(request, 'registration/email.html', locals())

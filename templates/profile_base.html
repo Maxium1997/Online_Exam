@@ -111,6 +111,7 @@
                 <ul class="nav nav-pills nav-stacked">
                     <li><a id="profile" href="{% url 'profile' %}">基本資料</a></li>
                     <li><a id="edit_profile" href="{% url 'profile_edit' %}">編輯個人檔案</a></li>
+                    <li><a id="email" href="{% url 'email_confirmation' %}">電子信箱</a></li>
                     <li><a id="password_change" href="{% url 'password_change' %}">更改密碼</a></li>
                     <li><a id="report" href="{% url 'report_list' %}">問題回報</a></li>
                 </ul>
@@ -306,8 +307,8 @@
             }
             .btn-group{
                 position: absolute;
-                top: 20px;
-                right: 30px;
+                top: 2%;
+                left: 95%;
             }
 
             .btn-group .dropdown-menu{

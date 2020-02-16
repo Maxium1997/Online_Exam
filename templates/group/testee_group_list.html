@@ -70,7 +70,7 @@
                         <td style="text-align: center; vertical-align: middle">{{ group.update_time|date:'Y年m月d日, H時i分' }}</td>
                         <td style="text-align: center; vertical-align: middle">{{ group.created_by.name }}</td>
                         <td>
-                            <a href="{% url 'testee_group_edit' group.id %}"><i class="fa fa-pencil fa-fw mb-2"></i></a>
+                            <a href="{% url 'testee_group_edit' group.id %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
