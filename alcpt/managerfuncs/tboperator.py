@@ -10,7 +10,7 @@ from alcpt.utility import save_file
 def query_questions(*, question_type: int, question_content: str, difficulty: int, state: int):
     queries = Q()
     query_content = ""
-    all_questions = Question.objects.exclude(state=1).exclude(state=3).exclude(state=5)
+    all_questions = Question.objects.exclude(state=1).exclude(state=3).exclude(state=5)     # tboperator doesn't need state = 1,("審核通過") 3("等待審核"), 5("被回報錯誤，已處理")
 
     if state:
         queries &= Q(state=state)
@@ -30,19 +30,26 @@ def query_questions(*, question_type: int, question_content: str, difficulty: in
                 questions = all_questions.filter(q_type=2).filter(choice__c_content__icontains=question_content).filter(queries)
             elif question_type == 3:
                 questions = all_questions.filter(q_type=3).filter(queries).filter(q_content__icontains=question_content)
+                query2 = all_questions.filter(q_type=3).filter(queries).filter(choice__c_content__icontains=question_content)
+                questions = (query1 | query2)
             elif question_type == 4:
                 questions = all_questions.filter(q_type=4).filter(queries).filter(q_content__icontains=question_content)
+                query2 = all_questions.filter(q_type=4).filter(queries).filter(choice__c_content__icontains=question_content)
+                questions = (query1 | query2)
             elif question_type == 5:
                 questions = all_questions.filter(q_type=5).filter(queries).filter(q_content__icontains=question_content)
+                query2 = all_questions.filter(q_type=5).filter(queries).filter(choice__c_content__icontains=question_content)
+                questions = (query1 | query2)
 
             questions = questions.distinct()
             query_content += "&question_type=" + str(question_type)
 
         else:
-            query1 = all_questions.exclude(q_type=1).exclude(q_type=2).filter(queries)
-            query2 = all_questions.exclude(q_type=3).exclude(q_type=4).exclude(q_type=5).filter(choice__c_content__icontains=question_content)
+            query1 = all_questions.exclude(q_type=1).exclude(q_type=2).filter(queries).filter(q_content__icontains=question_content)
+            query2 = all_questions.exclude(q_type=1).exclude(q_type=2).filter(queries).filter(choice__c_content__icontains=question_content)
+            query3 = all_questions.exclude(q_type=3).exclude(q_type=4).exclude(q_type=5).filter(choice__c_content__icontains=question_content)
 
-            questions = (query1 | query2).distinct().order_by('id')
+            questions = (query1 | query2 | query3).distinct().order_by('id')
     else:
         if question_type:
             queries &= Q(q_type=question_type)
@@ -74,5 +81,3 @@ def create_listening_question(q_file, q_type: str, created_by: User, difficulty:
     listening_question.save()
 
     return listening_question
-
-

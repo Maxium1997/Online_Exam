@@ -261,22 +261,6 @@ class Answer(models.Model):
         return self.question.q_content
 
 
-# 試卷上的選項順序
-# answer: the option list is related to what answer
-# choice: the option list is related to what choice
-# added_time: time of the option list is added
-class OptionList(models.Model):
-    answer = models.ForeignKey('Answer', on_delete=models.PROTECT)
-    choice = models.ForeignKey('Choice', on_delete=models.PROTECT)
-    added_time = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ('added_time', )
-
-    def __str__(self):
-        return self.choice.c_content
-
-
 # 受測名單
 # member: members of the group
 # create_by: user of creating the group

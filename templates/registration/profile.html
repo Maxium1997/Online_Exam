@@ -38,11 +38,11 @@
         </div>
 
         <div class="time">
-            <li>最近登入：<br>{{ user.last_login|date:"Y年m月d日, H時i分" }}</li>
+            <li>最近登入：<br>{{ user.last_login|date:"H:i ,Y/m/d" }}</li>
             <li style="border-top-style: solid; border-top-color: #adadad; border-top-width: 0.7px;">&nbsp;</li>
-            <li>更新時間：<br>{{ user.update_time|date:"Y年m月d日, H時i分" }}</li>
+            <li>更新時間：<br>{{ user.update_time|date:"H:i ,Y/m/d" }}</li>
             <li style="border-top-style: solid; border-top-color: #adadad; border-top-width: 0.7px;">&nbsp;</li>
-            <li>加入時間：<br>{{ user.created_time|date:"Y年m月d日, H時i分" }}</li>
+            <li>加入時間：<br>{{ user.created_time|date:"H:i ,Y/m/d" }}</li>
             <li style="border-top-style: solid; border-top-color: #adadad; border-top-width: 0.7px;">&nbsp;</li>
             <li>狀態：
                 {% if user.is_active %}
@@ -61,7 +61,7 @@
                 top: 40%;
                 left: 23%;
 
-                width: 220px;
+                width: 140px;
             }
 
             .time_icon{
@@ -87,7 +87,7 @@
             .time li{
                 list-style: none;
                 width: 100%;
-                font-size: 14px;
+                font-size: 12px;
                 top: 85%;
             }
         </style>
@@ -183,20 +183,20 @@
         <style>
             .personal_info{
                 position: relative;
-                left: 45%;
+                left: 40%;
                 top: -80px;
+
+                width: 500px;
             }
             .personal_info table{
-                width: 50%;
-
-                font-size: 18px;
+                font-size: 14px;
             }
             .personal_info table td{
-                padding: 10px;
+                padding: 8px;
             }
 
             .personal_info .title{
-                font-size: 20px;
+                font-size: 16px;
                 width: 25%;
             }
         </style>

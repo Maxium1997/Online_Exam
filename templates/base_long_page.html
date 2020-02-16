@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static '/css/SystemCSS.css' %}">
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
     {% block stylesheets %}
     {% endblock %}
@@ -37,6 +38,7 @@
                 padding: 10px 18px;
                 border-radius: 16px;
                 border-width: 0px;
+                outline: none;
             }
         </style>
     </div>
@@ -414,14 +416,14 @@
 
         .info{
             width: 70%;
-            height: 60%;
+            height: 65%;
             background-color: rgba(255,255,255,0.92);
 
             border-radius: 6px;
 
             position: absolute;
             left: 15%;
-            top: 25%;
+            top: 20%;
 
             overflow-x: scroll;
             overflow-y: scroll;

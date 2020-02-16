@@ -9,18 +9,18 @@
 {% endblock %}
 
 {% block content %}
-    <div class="add_users">
-        <button type="button" class="btn btn-default btn-lg" onclick="window.location.href='{% url 'user_create' %}'">新增使用者</button>
+    <div class="add_user">
+        <button type="button" class="btn btn-default btn-lg" onclick="window.location.href='{% url 'user_create' %}'"><i class="fa fa-plus" style="font-size: 29px;"></i></button>
 
         <style>
-            .add_users button{
-                width: 130px;
+            .add_user button{
+                width: 50px;
                 height: 50px;
-                color: #FFFEF6;
                 background-color: #4CCABD;
-                border-radius: 10px;
+                border-radius: 24px;
                 text-align: center;
                 font-size: 20px;
+                color: #FFFEF6;
                 border: none;
                 box-shadow: 0px 3px 8px 0px #486260;
 
@@ -28,11 +28,15 @@
                 top: -15%;
                 right: 0%;
             }
-
-            .add_users button:hover{
-                color: #FFFEF6;
+            .add_user button:hover{
                 background-color: #2C3232;
+                color: #FFFEF6;
                 transition: all 0.3s ease;
+            }
+            .add_user i{
+                position: absolute;
+                left: 25%;
+                top: 25%;
             }
         </style>
     </div>

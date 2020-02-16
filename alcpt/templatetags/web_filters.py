@@ -238,6 +238,7 @@ def readable_question_query_content(question_query_content: str):
 
         elif 'question_type' in item:
             TYPE = (
+                (0, ''),
                 (1, '聽力／問答'),
                 (2, '聽力／簡短對話'),
                 (3, '閱讀／文法'),

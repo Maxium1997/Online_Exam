@@ -24,21 +24,27 @@
                 </tr>
             </thead>
             <tbody>
-                {% for exam in exams %}
-                    <tr onclick="window.location.href='{% url "exam_score_detail" exam.id %}'">
-                        <td style="text-align: center; vertical-align:middle;">{{ exam }}</td>
-                        {% if exam.average_score  < 60.0 %}
-                            <td style="vertical-align:middle; color: #c12e2a">{{ exam.average_score }}</td>
-                        {% else %}
-                            <td style="vertical-align:middle;">{{ exam.average_score }}</td>
-                        {% endif %}
-                        <td style="vertical-align:middle;">{{ exam.group }}</td>
-                        <td style="vertical-align:middle;">{{ exam.group.member.count }}</td>
-                        <td style="vertical-align:middle;">{{ exam.start_time|date:'Y年m月d日, H時i分' }}</td>
-                        <td style="vertical-align:middle;">{{ exam.finish_time|date:'Y年m月d日, H時i分' }}</td>
-                        <td style="vertical-align:middle;">{{ exam.duration }}分鐘</td>
+                {% if exams %}
+                    {% for exam in exams %}
+                        <tr onclick="window.location.href='{% url "exam_score_detail" exam.id %}'">
+                            <td style="text-align: center; vertical-align:middle;">{{ exam }}</td>
+                            {% if exam.average_score  < 60.0 %}
+                                <td style="vertical-align:middle; color: #c12e2a">{{ exam.average_score }}</td>
+                            {% else %}
+                                <td style="vertical-align:middle;">{{ exam.average_score }}</td>
+                            {% endif %}
+                            <td style="vertical-align:middle;">{{ exam.group }}</td>
+                            <td style="vertical-align:middle;">{{ exam.group.member.count }}</td>
+                            <td style="vertical-align:middle;">{{ exam.start_time|date:'Y年m月d日, H時i分' }}</td>
+                            <td style="vertical-align:middle;">{{ exam.finish_time|date:'Y年m月d日, H時i分' }}</td>
+                            <td style="vertical-align:middle;">{{ exam.duration }}分鐘</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7"><h2>目前暫無資料</h2></td>
                     </tr>
-                {% endfor %}
+                {% endif %}
             </tbody>
         </table>
 

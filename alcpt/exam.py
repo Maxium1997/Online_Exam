@@ -117,15 +117,14 @@ def testpaper_create(request):
         testpaper_name = request.POST.get('testpaper_name',)
 
         try:
-            if TestPaper.objects.filter(name__icontains=testpaper_name):
-                raise MultipleObjectsReturned('Question has existed.')
+            testpaper = testmanager.create_testpaper(name=testpaper_name, created_by=request.user, is_testpaper=1)
+            messages.success(request, 'Add a testpaper successfully, please edit the new testpaper: {}'.format(testpaper.name))
+            return redirect('testpaper_list')
+            
         except ObjectDoesNotExist:
-            pass
-
-        testpaper = testmanager.create_testpaper(name=testpaper_name, created_by=request.user, is_testpaper=1)
-
-        messages.success(request, 'Add a testpaper successfully, please edit the new testpaper: {}'.format(testpaper.name))
-        return redirect('testpaper_list')
+            messages.error(request, "Testpaper name had existed.")
+            estpaper_names = [_.name for _ in TestPaper.objects.all()]
+            return render(request, 'exam/testpaper_create.html', locals())
 
     else:
         testpaper_names = [_.name for _ in TestPaper.objects.all()]
@@ -260,5 +259,3 @@ def auto_pick(request, testpaper_id, question_type):
     messages.success(request, selected_num)
 
     return redirect('/exam/testpaper/{}/edit'.format(testpaper_id))
-
-
