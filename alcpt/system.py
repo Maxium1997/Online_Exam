@@ -131,6 +131,7 @@ def user_create(request):
 
     else:
         reg_ids = [_.reg_id for _ in User.objects.all()]
+        stu_ids = [_.stu_id for _ in Student.objects.all()]
         privileges = UserType.__members__
         identities = Identity.__members__.values()
         departments = Department.objects.all()
@@ -450,6 +451,7 @@ def report_category_create(request):
 
         return redirect('report_category_list')
     else:
+        categories_names = [_.name for _ in ReportCategory.objects.all()]
         return render(request, 'report/report_category_create.html', locals())
 
 

@@ -23,7 +23,7 @@
                                 Your browser does not support the audio tag.
                             </audio>
                         {% else %}
-                            <textarea class="form-control" name="q_content" cols="55" rows="4">{{ question.q_content }}</textarea>
+                            <textarea class="form-control" name="q_content" cols="55" rows="4" onkeyup="ChangeJudgementButton('{{ question_q_content }}', this)">{{ question.q_content }}</textarea>
                         {% endif %}
                     </td>
                 </tr>
@@ -41,7 +41,7 @@
             </table>
 
             <div class="btn">
-                <button type="submit" onclick="return confirm('確認更改此試題並通過審核？')">確認更改</button>
+                <button type="submit" id="submit" onclick="return confirm('確認更改此試題並通過審核？')">確認更改</button>
                 <button type="button" onclick="self.location=document.referrer;">取消</button>
             </div>
         </form>
@@ -85,15 +85,6 @@
                 position: relative;
                 top: 30px;
                 left: 40%;
-            }
-            .edit_question .btn button{
-                font-size: 25px;
-                padding: 10px;
-                padding-left: 15px;
-                padding-right: 15px;
-                color: #FFFEF6;
-                background-color: #4CCABD;
-                border: none;
             }
         </style>
     </div>

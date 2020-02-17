@@ -115,13 +115,13 @@
 
 
     <script type="application/javascript">
-    function displayFunc(display_kind) {
-        var i;
-        var x = document.getElementsByClassName("table table-hover");
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
+        function displayFunc(display_kind) {
+            var i;
+            var x = document.getElementsByClassName("table table-hover");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            document.getElementById(display_kind).style.display = "block";
         }
-        document.getElementById(display_kind).style.display = "block";
-    }
     </script>
 {% endblock %}

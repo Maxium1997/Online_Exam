@@ -18,7 +18,7 @@
             <table>
                 <tr>
                     <td class="col-md-2">回報類別名稱</td>
-                    <td class="col-md-5"><input type="text" name="category_name" value="{{ category }}" required></td>
+                    <td class="col-md-5"><input type="text" name="category_name" value="{{ category }}" onkeyup="ChangeJudgementButton('{{ category }}', this)" required></td>
                 </tr>
 
                 <tr>
@@ -34,7 +34,7 @@
             </table>
 
             <div class="btn">
-                <button type="submit" onclick="return confirm('確認更改此類別？')">更改</button>
+                <button type="submit" id="submit" onclick="return confirm('確認更改此類別？')">更改</button>
                 <button type="reset">重設</button>
                 <button type="reset" onclick="self.location=document.referrer;">取消</button>
             </div>
@@ -42,28 +42,28 @@
 
         <style>
             .category .title h1{
-                    width: 35%;
-                    font-size: 28px;
-                    color: #FFFEF6;
-                    background-color: #4CCABD;
-                    padding-top: 10px;
-                    padding-bottom: 10px;
-                    padding-right: 15px;
-                    padding-left: 45px;
-                    text-align: center;
-                }
+                width: 35%;
+                font-size: 28px;
+                color: #FFFEF6;
+                background-color: #4CCABD;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-right: 15px;
+                padding-left: 45px;
+                text-align: center;
+            }
 
             .category table{
-                    position: relative;
-                    left: 30%;
+                position: relative;
+                left: 30%;
 
-                    width: 50%;
+                width: 50%;
 
-                    font-size: 20px;
-                }
+                font-size: 20px;
+            }
             .category table td{
                     padding: 4px;
-    }
+            }
             .category form input{
                 padding: 6px;
             }
@@ -78,15 +78,6 @@
                 position: relative;
                 top: 30px;
                 left: 40%;
-            }
-            .category .btn button{
-                font-size: 25px;
-                padding: 10px;
-                padding-left: 15px;
-                padding-right: 15px;
-                color: #FFFEF6;
-                background-color: #4CCABD;
-                border: none;
             }
         </style>
     </div>

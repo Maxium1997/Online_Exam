@@ -15,12 +15,16 @@
         <table>
             <tr>
                 <td class="col-md-2">受測者群組名稱</td>
-                <td class="col-md-5"><input class="form-control" type="text" name="group_name" required></td>
+                <td class="col-md-5"><input type="text" name="group_name" onkeyup="data_unique({{ groups_names }}, this)" required></td>
+            </tr>
+
+            <tr>
+                <td colspan="2" style="text-align: center; font-size: 18px; color: #c12e2a;"><label id="invalid" class="invalid"></label></td>
             </tr>
         </table>
 
         <div class="btn">
-            <button type="submit" onclick="return confirm('確認新增？')">新增</button>
+            <button type="submit" id="submit" onclick="return confirm('確認新增？')" disabled>新增</button>
             <button type="button" onclick="self.location=document.referrer;">取消</button>
         </div>
 
@@ -39,9 +43,9 @@
 
             .testee_group_create table{
                 position: relative;
-                left: 15%;
+                left: 25%;
 
-                width: 70%;
+                width: 50%;
 
                 font-size: 20px;
             }
@@ -49,7 +53,13 @@
                 padding: 4px;
             }
             .testee_group_create form input{
+                width: 100%;
                 padding: 6px;
+
+                border-style: solid;
+                border-width: 1px;
+                border-color: rgb(220, 220, 220);
+                border-radius: 6px;
             }
             .testee_group_create form textarea{
                 font-size: 20px;
@@ -61,16 +71,10 @@
             .testee_group_create .btn{
                 position: relative;
                 top: 30px;
-                left: 40%;
+                left: 45%;
             }
-            .testee_group_create .btn button{
-                font-size: 25px;
-                padding: 10px;
-                padding-left: 15px;
-                padding-right: 15px;
-                color: #FFFEF6;
-                background-color: #4CCABD;
-                border: none;
+            .testee_group_create .btn #submit{
+                background-color: grey;
             }
         </style>
     </form>

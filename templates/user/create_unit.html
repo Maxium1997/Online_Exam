@@ -1,5 +1,55 @@
 {% extends 'base.html' %}
 
+{% block scripts %}
+    <script type="text/javascript">
+        function UniqueName(departments, squadrons, mode, input_unit){
+            var arr = squadrons;
+            var valid_element = document.getElementById("valid");
+            var invalid_element = document.getElementById("invalid");
+            var submit_element = document.getElementById("submit");
+
+            if(mode === 'department'){
+                arr = departments
+            }
+
+            for(var i = 0; i < arr.length; i++) {
+                if (input_unit.value === ''){
+                    valid_element.innerHTML = '&nbsp;';
+                    invalid_element.innerHTML = '&nbsp;';
+                    submit_element.disabled = true;
+                    submit_element.style.backgroundColor = 'grey';
+                }
+                else if (input_unit.value === arr[i]) {
+                    valid_element.innerHTML = '';
+                    invalid_element.innerHTML = '此名稱已存在';
+                    submit_element.disabled = true;
+                    submit_element.style.backgroundColor = 'grey';
+                    break;
+                }
+                else {
+                    valid_element.innerHTML = '此名稱可使用。';
+                    invalid_element.innerHTML = '';
+                    submit_element.disabled = false;
+                    submit_element.style.backgroundColor = '#4CCABD';
+                }
+            }
+        }
+
+        document.getElementById('unit_name').disabled = true;
+
+        function Selected() {
+            var unitName = document.getElementById("unit_name");
+            var unit = document.getElementById("unit");
+
+            if (unit.value === 'department' || unit.value === 'squadron') {
+                unitName.disabled = false;
+            } else {
+                unitName.disabled =  true;
+            }
+        }
+    </script>
+{% endblock %}
+
 {% block path %}
     <a href="">系統管理員</a>
     <a class="fa fa-angle-double-right fa-lg box"></a>
@@ -18,7 +68,7 @@
                 <tr>
                     <td class="col-md-2" style="text-align: center">單位</td>
                     <td class="col-md-5">
-                        <select id='unit' name='unit' required>
+                        <select id='unit' name='unit' onchange="Selected();" required>
                             <option value='' selected disabled hidden>選擇要新增單位</option>
                             <option value='department'> 科系 </option>
                             <option value='squadron'> 中隊 </option>
@@ -28,18 +78,21 @@
 
                 <tr>
                     <td class="col-md-2" style="text-align: center">單位名稱</td>
-                    <td class="col-md-5"><input type="text" id="unit_name" name="unit_name" onkeyup="uniqueName({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="輸入要新增的單位名稱" required></td>
+                    <td class="col-md-5"><input type="text" id="unit_name" name="unit_name" onkeyup="UniqueName({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="輸入要新增的單位名稱" required></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <span id="invalid" class="result">&nbsp;</span>
+                        <span id="valid" class="result">&nbsp;</span>
+                    </td>
                 </tr>
             </table>
 
             <div class="btn">
-                <button type="submit">新增</button>
+                <button type="submit" id="submit" disabled>新增</button>
                 <button type="button" onclick="self.location=document.referrer;">取消</button>&nbsp;
             </div>
-
-            <div id="invalid" class="result"></div>
-            <div id="valid" class="result"></div>
-
         </form>
 
         <style>
@@ -91,11 +144,12 @@
                 background-color: #4CCABD;
                 border: none;
             }
+            .create_unit .btn #submit{
+                background-color: grey;
+            }
 
-            .result{
-                position: absolute;
-                top: 55%;
-                left: 30%;
+            .create_unit table span{
+                font-size: 16px;
             }
             #valid{
                 color: green;
@@ -105,34 +159,4 @@
             }
         </style>
     </div>
-
-    <div>
-        <script type="text/JavaScript">
-            function uniqueName(departments, squadrons, mode, input_unit){
-                var arr = squadrons;
-
-                if(mode === 'department'){
-                    arr = departments
-                }
-
-                for(var i = 0; i < arr.length; i++) {
-                    if (input_unit.value == ''){
-                        document.getElementById("valid").innerHTML = '';
-                        document.getElementById("invalid").innerHTML = '';
-                    }
-                    else if (input_unit.value === arr[i]) {
-                        document.getElementById("invalid").innerHTML =
-                            input_unit.value + ' has exist, please change ' + mode + ' name.';
-                        document.getElementById("valid").innerHTML = '';
-                        break;
-                    }
-                    else {
-                        document.getElementById("valid").innerHTML = 'This name can be used.';
-                        document.getElementById("invalid").innerHTML = '';
-                    }
-                }
-            }
-        </script>
-    </div>
-
 {% endblock %}

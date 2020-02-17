@@ -1,5 +1,31 @@
 {% extends 'base.html' %}
 
+{% block scripts %}
+    <script type="text/javascript">
+        function ChangeButton() {
+            var questionNum = document.getElementById('question_num');
+            var submit = document.getElementById('submit');
+            var types = document.getElementsByName('question_type');
+
+            var click = '';
+
+            for (var i = 0; i < types.length; i++) {
+                if (types[i].checked === true) {
+                    click += types[i].value;
+                }
+            }
+            if(click === '' || questionNum.value === ''){
+                submit.style.backgroundColor = 'grey';
+                submit.disabled = true;
+            } else {
+                submit.style.backgroundColor = '#4CCABD';
+                submit.disabled = false;
+            }
+        }
+    </script>
+
+{% endblock %}
+
 {% block path %}
     <a href="{% url 'testee_score_list' %}">受測者</a>
     <a class="fa fa-angle-double-right fa-lg box"></a>
@@ -16,16 +42,16 @@
                     {% if kind == 'listening' %}
                         <td class="col-md-1">聽力類型（可複選）</td>
                         <td class="col-md-1">
-                            <input type="checkbox" name="question_type" value="1">問答
-                            <input type="checkbox" name="question_type" value="2">簡短對話
+                            <input type="checkbox" name="question_type" onclick="ChangeButton()" value="1">問答
+                            <input type="checkbox" name="question_type" onclick="ChangeButton()" value="2">簡短對話
                         </td>
 
                     {% elif kind == 'reading' %}
                         <td class="col-md-1">閱讀類型（可複選）</td>
                         <td class="col-md-1">
-                            <input type="checkbox" name="question_type" value="3">文法
-                            <input type="checkbox" name="question_type" value="4">名詞片語
-                            <input type="checkbox" name="question_type" value="5">段落理解
+                            <input type="checkbox" name="question_type" onclick="ChangeButton()" value="3">文法
+                            <input type="checkbox" name="question_type" onclick="ChangeButton()" value="4">名詞片語
+                            <input type="checkbox" name="question_type" onclick="ChangeButton()" value="5">段落理解
                         </td>
 
                     {% else %}
@@ -36,7 +62,7 @@
                 <tr>
                     <td>題數</td>
                     <td>
-                        <select name="question_num" required>
+                        <select name="question_num" id="question_num" onchange="ChangeButton()" required>
                             <option value="" disabled selected hidden>請選擇題數</option>
                             <option value="10">10</option>
                             <option value="20">20</option>
@@ -47,7 +73,7 @@
             </table>
 
             <div class="btn">
-                <button type="submit" onclick="alert('可開始進行練習')">建立練習</button>
+                <button type="submit" id="submit" onclick="alert('可開始進行練習')" disabled>建立練習</button>
                 <button type="reset">重設</button>
                 <button type="button" onclick="self.location=document.referrer;">取消</button>
             </div>
@@ -89,16 +115,10 @@
                 .testee_practice_create .btn{
                     position: relative;
                     top: 30px;
-                    left: 35%;
+                    left: 40%;
                 }
-                .testee_practice_create .btn button{
-                    font-size: 25px;
-                    padding: 10px;
-                    padding-left: 15px;
-                    padding-right: 15px;
-                    color: #FFFEF6;
-                    background-color: #4CCABD;
-                    border: none;
+                .testee_practice_create .btn #submit{
+                    background-color: grey;
                 }
             </style>
         </form>

@@ -42,11 +42,11 @@
             </ul>
 
             <ul class="user_info1_">
-                <li><input type="text" name="reg_id" value="{{ edited_user.reg_id }}" required></li>
-                <li><input type="text" name="name" {% if edited_user.name %}value="{{ edited_user.name }}"{% endif %} placeholder="Name..." required></li>
-                <li><input type="text" name="email" {% if edited_user.email %}value="{{ edited_user.email }}"{% endif %} placeholder="Email..." required></li>
+                <li><input type="text" name="reg_id" value="{{ edited_user.reg_id }}" onkeyup="ChangeJudgementButton('{{ edited_user.reg_id }}', this)" required></li>
+                <li><input type="text" name="name" {% if edited_user.name %}value="{{ edited_user.name }}"{% endif %} onkeyup="ChangeJudgementButton('{{ edited_user.name }}', this)" placeholder="Name..." required></li>
+                <li><input type="text" name="email" {% if edited_user.email %}value="{{ edited_user.email }}"{% endif %} onkeyup="ChangeJudgementButton('{{ edited_user.email }}', this)" placeholder="Email..." required></li>
                 <li>
-                    <select name="gender" required>
+                    <select name="gender" id="gender" onchange="ChangeJudgementButton('{{ edited_user.gender }}', document.getElementById('gender').value)" required>
                         <option value="" disabled selected>請選擇性別</option>
                         <option value="0" {% if edited_user.gender == 0 %}selected{% endif %}>男</option>
                         <option value="1" {% if edited_user.gender == 1 %}selected{% endif %}>女</option>
@@ -54,19 +54,28 @@
                     </select>
                 </li>
                 <li>
-                    <select name="identity" required>
+                    <select name="identity" id="identity" onchange="ChangeJudgementButton('{{ edited_user.identity }}', document.getElementById('identity').value)" required>
                         <option value="" disabled selected>請選擇身份</option>
                         {% for identity in identities %}
                             <option value="{{ identity.value.0 }}" {% if edited_user.identity == identity.value.0 %}selected{% endif %}>{{ identity.value.1 }}</option>
                         {% endfor %}
                     </select>
                 </li>
+
+
+
+
+
                 <li>
                     {% for privilege in privileges %}
                         <input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" {% if edited_user|has_permission:privilege %} checked {% endif %}>
                         <label for="{{ privilege.value.0 }}">{{ privilege.value.1 }}&nbsp;&nbsp;&nbsp;</label>
                     {% endfor %}
                 </li>
+
+
+
+
             </ul>
 
             {% if edited_user.student %}
@@ -78,10 +87,10 @@
                 </ul>
 
                 <ul class="student_info1_">
-                    <li><input type="text" name="stu_id" value="{{ edited_user.student.stu_id }}" required></li>
-                    <li><input type="number" name="grade" value="{{ edited_user.student.grade }}" required></li>
+                    <li><input type="text" name="stu_id" value="{{ edited_user.student.stu_id }}" onkeyup="ChangeJudgementButton('{{ edited_user.student.stu_id }}', this)" required></li>
+                    <li><input type="text" name="grade" value="{{ edited_user.student.grade }}" onkeyup="ChangeJudgementButton('{{ edited_user.student.grade }}', this)" required></li>
                     <li>
-                        <select name="department" required>
+                        <select name="department" id="department" onchange="ChangeJudgementButton('{{ user.student.department }}', document.getElementById('department').value)" required>
                             <option value="" disabled selected>請選擇科系</option>
                             {% for department in departments %}
                                 <option value="{{ department.id }}" {% if department == user.student.department %}selected{% endif %}>{{ department }}</option>
@@ -89,7 +98,7 @@
                         </select>
                     </li>
                     <li>
-                        <select name="squadron" required>
+                        <select name="squadron" id="squadron" onchange="ChangeJudgementButton('{{ user.student.squadron }}', document.getElementById('squadron').value)" required>
                             <option value="" disabled selected>請選擇連隊單位</option>
                             {% for squadron in squadrons %}
                                 <option value="{{ squadron.id }}" {% if squadron == user.student.squadron %}selected{% endif %}>{{ squadron }}</option>
@@ -100,8 +109,8 @@
             {% endif %}
 
             <div class="buttons">
-                <button type="submit">送出</button>
-                <button type="button"onclick="window.location.href='{% url 'user_list' %}'">返回</button>
+                <button type="submit" id="submit">送出</button>
+                <button type="button" onclick="window.location.href='{% url 'user_list' %}'">返回</button>
             </div>
         </form>
 
@@ -159,6 +168,10 @@
                 position: absolute;
                 top: 85%;
                 left: 82%;
+            }
+            .buttons button {
+                background-color: #4CCABD;
+                color: #FFFEF6;
             }
         </style>
 

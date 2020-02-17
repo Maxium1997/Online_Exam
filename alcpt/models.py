@@ -261,7 +261,7 @@ class Answer(models.Model):
         return self.question.q_content
 
 
-# 受測名單
+# 受測者群組
 # member: members of the group
 # create_by: user of creating the group
 # update_time: time of updating group profile
