@@ -5,7 +5,7 @@
     <a class="fa fa-angle-double-right fa-lg box"></a>
     <a href="{% url 'unit_list' %}">單位列表</a>
     <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="">{{ unit.name }}</a>
+    <a href="">{{ viewed_unit.name }}</a>
 {% endblock %}
 
 {% block content %}
@@ -59,25 +59,13 @@
             }
         </style>
     </table>
-    <div class="btn4">
-        <input type="button" value="返回" onclick="self.location=document.referrer;">
+    <div class="btn">
+        <button type="button" onclick="window.location.href='{% url 'unit_list' %}'">返回</button>
 
         <style>
-            .btn4 input{
-                background-color: #4CCABD;
-                color: #FFFEF6;
-                border: none;
-                padding-top: 5px;
-                padding-bottom: 5px;
-                padding-left: 5px;
-                padding-right: 5px;
-                font-size: 25px;
-
+            .btn{
                 position: relative;
                 left: 45%;
-            }
-            .btn4{
-                padding-bottom: 5%;
             }
         </style>
     </div>

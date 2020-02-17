@@ -57,7 +57,7 @@ def user_list(request):
     privileges = UserType.__members__
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(users, 7)  # the second parameter is used to display how many items. Now is display 10
+    paginator = Paginator(users, 8)  # the second parameter is used to display how many items. Now is display 10
 
     try:
         userList = paginator.page(page)

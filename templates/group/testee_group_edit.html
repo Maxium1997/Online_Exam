@@ -1,13 +1,5 @@
 {% extends 'base_long_page.html' %}
 
-{% block path %}
-    <a href="">考試管理員</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="{% url 'testee_group_list' %}" onclick="return confirm('是否放棄編輯？')">受測者群組列表</a>
-    <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="">編輯受測者群組（{{ group.name }}）</a>
-{% endblock %}
-
 {% block scripts %}
     <script type="text/javascript">
     function selAll(){
@@ -24,14 +16,27 @@
             checkItem[i].checked=false;
         }
     }
-    function usel() {
+    function usel(){
         //變數checkItem為checkbox的集合
         var checkItem = document.getElementsByName("testee");
         for (var i = 0; i < checkItem.length; i++) {
             checkItem[i].checked = !checkItem[i].checked;
         }
     }
+
+    function selectRow(row){
+        var firstInput = row.getElementsByTagName('input')[0];
+        firstInput.checked = !firstInput.checked;
+    }
     </script>
+{% endblock %}
+
+{% block path %}
+    <a href="">考試管理員</a>
+    <a class="fa fa-angle-double-right fa-lg box"></a>
+    <a href="{% url 'testee_group_list' %}" onclick="return confirm('是否放棄編輯？')">受測者群組列表</a>
+    <a class="fa fa-angle-right fa-lg box"></a>
+    <a href="">編輯受測者群組（{{ group.name }}）</a>
 {% endblock %}
 
 {% block content %}
@@ -108,27 +113,14 @@
                 border: none;
             }
 
-            .btn{
+            .data-row{
+                font-size: 16px;
+            }
+
+            .btn {
                 position: relative;
                 left: 38%;
             }
-            .btn button{
-                font-size: 25px;
-                padding: 10px;
-                padding-left: 15px;
-                padding-right: 15px;
-                color: #FFFEF6;
-                background-color: #4CCABD;
-                border: none;
-            }
         </style>
     </div>
-
-    <script type="text/javascript">
-        function selectRow(row)
-        {
-            var firstInput = row.getElementsByTagName('input')[0];
-            firstInput.checked = !firstInput.checked;
-        }
-    </script>
 {% endblock %}

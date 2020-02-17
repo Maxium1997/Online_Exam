@@ -45,7 +45,7 @@ def exam_list(request):
 def score_list(request):
     qualified = 0
     unqualified = 0
-    answer_sheets = AnswerSheet.objects.all().filter(user=request.user)
+    answer_sheets = AnswerSheet.objects.all().filter(user=request.user).order_by('-exam__created_time')
     page = request.GET.get('page', 1)
     paginator = Paginator(answer_sheets, 10)
 
@@ -57,28 +57,31 @@ def score_list(request):
         else:
             unqualified += 1
 
-    one, two, three, four, five, six, seven, eight, nine, ten = 0,0,0,0,0,0,0,0,0,0
+    one, two, three, four, five, six, seven, eight, nine, ten = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     for answer_sheet in answer_sheets:
-        if 0 <= answer_sheet.score <= 10:
-            one += 1
-        elif 10 < answer_sheet.score <= 20:
-            two += 1
-        elif 20 < answer_sheet.score <= 30:
-            three += 1
-        elif 30 < answer_sheet.score <= 40:
-            four += 1
-        elif 40 < answer_sheet.score <= 50:
-            five += 1
-        elif 50 < answer_sheet.score <= 60:
-            six += 1
-        elif 60 < answer_sheet.score <= 70:
-            seven += 1
-        elif 70 < answer_sheet.score <= 80:
-            eight += 1
-        elif 80 < answer_sheet.score <= 90:
-            nine += 1
-        elif 90 < answer_sheet.score <= 100:
-            ten += 1
+        if answer_sheet.score is None:
+            pass
+        else:
+            if 0 <= answer_sheet.score <= 10:
+                one += 1
+            elif 10 < answer_sheet.score <= 20:
+                two += 1
+            elif 20 < answer_sheet.score <= 30:
+                three += 1
+            elif 30 < answer_sheet.score <= 40:
+                four += 1
+            elif 40 < answer_sheet.score <= 50:
+                five += 1
+            elif 50 < answer_sheet.score <= 60:
+                six += 1
+            elif 60 < answer_sheet.score <= 70:
+                seven += 1
+            elif 70 < answer_sheet.score <= 80:
+                eight += 1
+            elif 80 < answer_sheet.score <= 90:
+                nine += 1
+            elif 90 < answer_sheet.score <= 100:
+                ten += 1
 
     try:
         answersheetList = paginator.page(page)

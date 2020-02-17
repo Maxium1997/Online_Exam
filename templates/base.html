@@ -101,64 +101,6 @@
         </style>
     </div>
 
-    <!--訊息提示框-->
-    <div class="prompt-info">
-        <section>
-            {% if messages %}
-                {% for message in messages %}
-                    {% if message.tags == "error" %}
-                        <div class="prompt-bar error" id="3seconds">
-                            <i class="fa fa-times-circle"></i>
-                            {{ message }}
-                        </div>
-                    {% elif message.tags == "success" %}
-                        <div class="prompt-bar success" id="3seconds">
-                            <i class="fa fa-check"></i>
-                            {{ message }}
-                        </div>
-                    {% elif message.tags == "warning" %}
-                        <div class="prompt-bar warning" id="3seconds">
-                            <i class="fa fa-warning"></i>
-                            {{ message }}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        </section>
-
-        <style>
-            .prompt-bar{
-                font-size: 20px;
-                border-radius: 4px;
-            }
-            .error{
-                background-color: mistyrose;
-            }
-            .success{
-                background-color: rgb(220, 255, 220);
-            }
-            .warning{
-                background-color: lightgoldenrodyellow;
-            }
-
-            .prompt-info{
-                position: absolute;
-                width: 38%;
-                top: 11%;
-                left: 30%;
-                z-index: 9999;
-                text-align: center;
-            }
-        </style>
-
-        <script type="text/javascript">
-            var timer = window.setInterval(disappear, 3000); // display 3 seconds , then disappear
-            function disappear() {
-                document.getElementById('3seconds').innerHTML = "";
-            }
-        </script>
-    </div>
-
     <!--背景底圖-->
     <div class="wrapper">
         <img src="{% static "/background.jpg" %}">
@@ -512,6 +454,7 @@
             font-size: 20px;
             color: #FFFEF6;
             background-color: #4CCABD;
+            box-shadow: 0px 3px 8px 0px #486260;
             border: none;
         }
         .btn button:hover{
@@ -519,7 +462,75 @@
             color: #FFFEF6;
             transition: all 0.3s ease;
         }
+
+        input{
+            border-style: solid;
+            border-width: 0.1em;
+            border-radius: 4px;
+            border-color: rgb(220, 220, 220);
+        }
     </style>
+
+    <!--訊息提示框-->
+    <div class="prompt-bar">
+        <section>
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == "error" %}
+                        <div class="prompt-info error" id="3seconds">
+                            <i class="fa fa-times-circle"></i>
+                            {{ message }}
+                        </div>
+                    {% elif message.tags == "success" %}
+                        <div class="prompt-info success" id="3seconds">
+                            <i class="fa fa-check"></i>
+                            {{ message }}
+                        </div>
+                    {% elif message.tags == "warning" %}
+                        <div class="prompt-info warning" id="3seconds">
+                            <i class="fa fa-warning"></i>
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </section>
+
+        <style>
+            .prompt-bar{
+                position: absolute;
+                width: 100%;
+                top: 91.5%;
+                z-index: 9999;
+                text-align: left;
+            }
+            .prompt-bar i{
+                padding-left: 10px;
+            }
+
+            .prompt-info{
+                font-size: 18px;
+                background-repeat: no-repeat;
+                -webkit-transition: width 0.4s ease-in-out;
+            }
+            .error{
+                background-color: mistyrose;
+            }
+            .success{
+                background-color: rgb(220, 255, 220);
+            }
+            .warning{
+                background-color: lightgoldenrodyellow;
+            }
+        </style>
+
+        <script type="text/javascript">
+            var timer = window.setInterval(disappear, 3000); // display 3 seconds , then disappear
+            function disappear() {
+                document.getElementById('3seconds').innerHTML = "";
+            }
+        </script>
+    </div>
 
 </body>
 

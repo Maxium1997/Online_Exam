@@ -2,6 +2,37 @@
 
 {% load web_filters %}
 
+{% block scripts %}
+    <script>
+        function toggle(index){
+            var mainDataIndex = 'mainData'+index;
+            var mainData = document.getElementById(mainDataIndex);
+            var dataIndex = 'detailData'+index;
+            var data = document.getElementById(dataIndex);
+            var iconRightIndex = 'iconRight'+index;
+            var iconRight = document.getElementById(iconRightIndex);
+            var iconDownIndex = 'iconDown'+index;
+            var iconDown = document.getElementById(iconDownIndex);
+
+            if (data.style.display === "none"){
+                mainData.style.fontWeight = 900;
+                mainData.style.fontSize = "19px";
+                mainData.style.backgroundColor = "rgb(220, 220, 220, 0.5)";
+                data.style.display = "table-row";
+                iconRight.style.display = "none";
+                iconDown.style.display = "block";
+            } else {
+                mainData.style.fontWeight = "normal";
+                mainData.style.fontSize = "18px";
+                mainData.style.backgroundColor = "rgb(220, 220, 220, 0)";
+                data.style.display = "none";
+                iconRight.style.display = "block";
+                iconDown.style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}
+
 {% block path %}
     <a href="">{% if request.user|has_perm:'TBManager' %}題庫管理員{% else %}題目操作員{% endif %}</a>
     <a class="fa fa-angle-double-right fa-lg box"></a>
@@ -97,31 +128,25 @@
             <caption style="font-size: 30px">&nbsp;&nbsp;題目列表（共 {{ resultNum }} 條結果）</caption>
             <thead class="title">
                 <tr>
-                    {% if request.user|has_perm:'TBManager' %}
-                        <th class="col-md-1">編號</th>
-                        <th class="col-md-5">題目</th>
-                        <th class="col-md-2">類型</th>
-                        <th class="col-md-2">題目選項</th>
-                        <th class="col-md-1">狀態</th>
-                        <th class="col-md-1"></th>
-
-                    {% elif request.user|has_perm:'TBOperator' %}
-                        <th class="col-md-1">ＩＤ</th>
-                        <th class="col-md-4">題目</th>
-                        <th class="col-md-2">類型</th>
-                        <th class="col-md-2">題目選項</th>
-                        <th class="col-md-1">狀態</th>
-                        <th class="col-md-1"></th>
-                    {% endif %}
+                    <th class="col-md-1"></th>
+                    <th class="col-md-1">編號</th>
+                    <th class="col-md-6">題目</th>
+                    <th class="col-md-2" style="text-align: left">類型</th>
+                    <th class="col-md-1">狀態</th>
+                    <th class="col-md-1"></th>
                 </tr>
             </thead>
 
             <tbody>
             {% if questions %}
                 {% for question in questionList %}
-                    <tr>
-                        <td style="vertical-align: middle">{{ question.id }}</td>
-                        <td style="text-align: left; vertical-align: middle">
+                    <tr id="mainData{{ forloop.counter }}" onclick="toggle('{{ forloop.counter }}')">
+                        <td>
+                            <i id="iconRight{{ forloop.counter }}" class="fa fa-angle-right"></i>
+                            <i id="iconDown{{ forloop.counter }}" class="fa fa-angle-down" style="display: none"></i>
+                        </td>
+                        <td>{{ question.id }}</td>
+                        <td style="text-align: left;">
                             {% if question.q_file %}
                                 <audio controls preload="none">
                                     <source src="{{ question.q_file }}" type="audio/mpeg">
@@ -131,18 +156,10 @@
                                 {{ question.q_content }}
                             {% endif %}
                         </td>
-                        <td style="text-align: center; vertical-align: middle">{{ question.q_type|readable_question_type }}</td>
-                        <td style="text-align: left; vertical-align: middle">
-                            {% for option in question.choice_set.all %}
-                                {% if option.is_answer %}
-                                    <span style="color: red"><li>{{ option }}</li></span>
-                                {% else %}
-                                    <li>{{ option }}</li>
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td style="text-align: center; vertical-align: middle; font-size: 15px">{{ question.state|readable_state }}</td>
-                        <td class="functions-btn" style="vertical-align: middle">
+                        <td style="text-align: left;">{{ question.q_type|readable_question_type }}</td>
+
+                        <td style="text-align: center; font-size: 15px">{{ question.state|readable_state }}</td>
+                        <td class="functions-btn">
                             {% if question.state == 6 %}
                                 <button id="submit" type="button" onclick="window.location.href='{% url 'question_submit' question.id %}'">提交</button>
                             {% endif %}
@@ -155,29 +172,7 @@
                                 <button id="edit" type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'">編輯</button>
                             {% endif %}
                         </td>
-                        <td style="vertical-align: middle">
-                            <button type="button" class="btn btn-primary dropdown-toggle pull-right" data-toggle="dropdown" style="background-color: #4CCABD;
-                            border-color: #FFFEF6;">
-                                <i class="fa fa-ellipsis-h"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" style="width: 300px">
-                                  <div class="detail_block">
-                                      <ul style="text-align: left; font-size: 16px">
-                                          <li>更新時間：{{ question.update_time|date:'Y年m月d日, H時i分' }}</li>
-                                          <li>錯誤回報次數：{{ question.issued_freq }}</li>
-                                          <li>使用次數：{{ question.used_freq }}</li>
-                                          <li>難度：{{ question.difficulty }}</li>
-                                          <li>建立者：{{ question.created_by.name }}</li>
-                                      </ul>
-                                  </div>
-                            </div>
-                        </td>
                         <style>
-                            .detail_block li{
-                                list-style: none;
-                                padding-left: 10px;
-                            }
-
                             .functions-btn button{
                                 width: 70px;
 
@@ -197,6 +192,33 @@
                                 cursor: pointer;
                             }
                         </style>
+                    </tr>
+                    <tr id="detailData{{ forloop.counter }}" style="display: none;">
+                        <td colspan="3" style="text-align: left; padding-left: 20%">
+                            <ol type="A">
+                                {% for option in question.choice_set.all %}
+                                    {% if option.is_answer %}
+                                        <li style="color: red">{{ option }}</li>
+                                    {% else %}
+                                        <li>{{ option }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ol>
+                        </td>
+                        <td style="font-size: 14px; text-align: left">
+                            {% if question.faulted_reason %}
+                                {{ question.faulted_reason }}
+                            {% endif %}
+                        </td>
+                        <td colspan="2" style="font-size: 14px">
+                            <ul style="vertical-align: middle; text-align: left; font-size: 14px; list-style: none">
+                                  <li>更新時間：{{ question.update_time|date:'H/i, Y/m/d' }}</li>
+                                  <li>錯誤回報次數：{{ question.issued_freq }}</li>
+                                  <li>使用次數：{{ question.used_freq }}</li>
+                                  <li>難度：{{ question.difficulty }}</li>
+                                  <li>建立者：{{ question.created_by.name }}</li>
+                              </ul>
+                        </td>
                     </tr>
                 {% endfor %}
             {% else %}
@@ -219,12 +241,20 @@
                 font-size: 20px;
             }
 
+            .table tr:hover{
+                cursor: pointer;
+            }
+
             .title tr th{
                 text-align: center;
             }
 
             .table tbody{
                 font-size: 18px;
+            }
+
+            .table tbody > tr > td{
+                vertical-align: middle;
             }
 
             .table tbody td a{

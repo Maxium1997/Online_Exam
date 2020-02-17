@@ -24,7 +24,7 @@
         </div>
 
         <table class="table table-hover">
-            <caption style="font-size: 30px; padding-left: 5%">&nbsp;{{ group.name }}＿群組內受測者名單</caption>
+            <caption style="font-size: 30px; padding-left: 5%">&nbsp;{{ group.name }}受測者名單</caption>
             {% if group_members %}
             <tbody id="group_members">
                 {% for member in group_members %}
@@ -62,25 +62,14 @@
                 }
             </style>
         </table>
-        <div class="btn4">
+
+        <div class="btn">
             <button type="button" onclick="window.location.href='{% url 'testee_group_list' %}'">返回列表</button>
 
             <style>
-                .btn4 button{
-                    background-color: #4CCABD;
-                    color: #FFFEF6;
-                    border: none;
-                    padding-top: 5px;
-                    padding-bottom: 5px;
-                    padding-left: 5px;
-                    padding-right: 5px;
-                    font-size: 25px;
-
+                .btn{
                     position: relative;
                     left: 45%;
-                }
-                .btn4{
-                    padding-bottom: 5%;
                 }
             </style>
         </div>

@@ -29,11 +29,11 @@
                                     <h5 class="card-title">{{ i|readable_question_type }}</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">共 {{ question_types|lookup:i }} 題，已選擇 {{ selected_num|lookup:i }} 題</h6>
                                     <div class="choose">
-                                        <a href="{% url 'manual_pick' testpaper_id=testpaper.id question_type=i %}" class="card-link" >手動選擇</a>
+                                        <a href="{% url 'manual_pick' testpaper.id i %}" class="card-link" >手動選擇</a>
                                         {% if question_types|lookup:i == selected_num|lookup:i %}
                                             <label>自動選擇</label>
                                         {% else %}
-                                            <a href="{% url 'auto_pick' testpaper_id=testpaper.id question_type=i %}" class="card-link" >自動選擇</a>
+                                            <a href="{% url 'auto_pick' testpaper.id i %}" class="card-link" >自動選擇</a>
                                         {% endif %}
                                     </div>
                                 </div>
