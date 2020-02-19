@@ -2,6 +2,117 @@
 
 {% load web_filters %}
 
+{% block scripts %}
+    <script type="text/javascript">
+        var changeName = false;
+        var changePrivilege = false;
+        var passPrivilege = true;
+        var passName = true;
+
+        var originSystem = false;
+        var originTestM = false;
+        var originTBM = false;
+        var originTBO = false;
+        var originViewer = false;
+        var originTestee = false;
+
+        // Get original privilege
+        window.onload = function() {
+            var system = document.getElementById('32');
+            var testM = document.getElementById('16');
+            var tbM = document.getElementById('8');
+            var tbO = document.getElementById('4');
+            var viewer = document.getElementById('2');
+            var testee = document.getElementById('1');
+
+            if(system.checked === true) originSystem = true;
+            if(testM.checked === true) originTestM = true;
+            if(tbM.checked === true) originTBM = true;
+            if(tbO.checked === true) originTBO = true;
+            if(viewer.checked === true) originViewer = true;
+            if(testee.checked === true) originTestee = true;
+        };
+
+        // Checkout whether privilege change and privilege can't be empty.
+        function PrivilegeChange() {
+            var privilegeInvalid = document.getElementById('privilege_invalid');
+            var system = document.getElementById('32');
+            var testM = document.getElementById('16');
+            var tbM = document.getElementById('8');
+            var tbO = document.getElementById('4');
+            var viewer = document.getElementById('2');
+            var testee = document.getElementById('1');
+
+            if (system.checked === originSystem && testM.checked === originTestM && tbM.checked === originTBM &&
+                tbO.checked === originTBO && viewer.checked === originViewer && testee.checked === originTestee){
+                changePrivilege = false;
+            }
+            else {
+                changePrivilege = true;
+            }
+
+            {# Checkout wether privilege isn't null. #}
+            if (system.checked === false && testM.checked === false && tbM.checked === false &&
+                tbO.checked === false && viewer.checked === false && testee.checked === false) {
+                privilegeInvalid.innerHTML = '最少選一個權限';
+                passPrivilege = false;
+            } else {
+                privilegeInvalid.innerHTML = '';
+                passPrivilege = true;
+            }
+            AllValid();
+        }
+
+         // Checkout whether name change and name can't be empty.
+        function NameChange(origin, names ,input) {
+            var invalid = document.getElementById('invalid');
+            var arr = names;
+
+            for(var i = 0; i < arr.length; i++) {
+                if (input.value === arr[i]) {
+                    invalid.innerHTML = "此名稱已存在。";
+                    passName = false;
+                    break;
+                } else if (input.value === ""){
+                    invalid.innerHTML = "名稱不能為空";
+                    passName = false;
+                } else {
+                    invalid.innerHTML = "";
+                    passName = true;
+                }
+            }
+
+            if (origin === input.value) {
+                changeName = false;
+            } else {
+                changeName = true;
+            }
+
+            AllValid();
+        }
+
+        // Checkout whether all of data is valid.
+        function AllValid() {
+            var submit = document.getElementById('submit');
+
+            if(changeName === true || changePrivilege === true){
+                if(passName === true && passPrivilege === true){
+                    submit.disabled = false;
+                    submit.style.backgroundColor = '#4CCABD';
+                }
+                else{
+                    submit.disabled = true;
+                    submit.style.backgroundColor = 'grey';
+                }
+            }
+            else{
+                submit.disabled = true;
+                submit.style.backgroundColor = 'grey';
+            }
+        }
+    </script>
+{% endblock %}
+
 {% block path %}
     <a href="">系統管理員</a>
     <a class="fa fa-angle-double-right fa-lg box"></a>
@@ -18,7 +129,8 @@
             <table>
                 <tr>
                     <td class="col-md-2">回報類別名稱</td>
-                    <td class="col-md-5"><input type="text" name="category_name" value="{{ category }}" onkeyup="ChangeJudgementButton('{{ category }}', this)" required></td>
+                    <td class="col-md-5"><input type="text" name="category_name" value="{{ category }}" onkeyup="NameChange('{{ category }}', {{ categories_names }},this)" required></td>
+                    <label id="invalid" class="invalid"></label>
                 </tr>
 
                 <tr>
@@ -26,15 +138,16 @@
                     <td class="col-md-5">
                         <ul style="list-style: none; line-height: 40px">
                             {% for privilege in privileges %}
-                                <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" {% if category|belongs_to:privilege %} checked {% endif %}> {{ privilege.value.1 }}</li>
+                                <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="PrivilegeChange()" {% if category|belongs_to:privilege %} checked {% endif %}> {{ privilege.value.1 }}</li>
                             {% endfor %}
+                            <label class="privilege_invalid" id="privilege_invalid"></label>
                         </ul>
                     </td>
                 </tr>
             </table>
 
             <div class="btn">
-                <button type="submit" id="submit" onclick="return confirm('確認更改此類別？')">更改</button>
+                <button type="submit" class="submit" id="submit" onclick="return confirm('確認更改此類別？')" disabled>更改</button>
                 <button type="reset">重設</button>
                 <button type="reset" onclick="self.location=document.referrer;">取消</button>
             </div>
@@ -56,13 +169,11 @@
             .category table{
                 position: relative;
                 left: 30%;
-
                 width: 50%;
-
                 font-size: 20px;
             }
             .category table td{
-                    padding: 4px;
+                padding: 4px;
             }
             .category form input{
                 padding: 6px;
@@ -73,11 +184,23 @@
                 height: 45%;
                 padding: 10px;
             }
-
             .category .btn{
                 position: relative;
                 top: 30px;
                 left: 40%;
+            }
+            .privilege_invalid {
+                color: #c12e2a;
+                font-size: 18px;
+            }
+            .btn .submit {
+                background-color: grey;
+            }
+            .invalid{
+                color: red;
+                position: relative;
+                top: 40px;
+                left: 59%;
             }
         </style>
     </div>

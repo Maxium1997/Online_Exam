@@ -4,54 +4,51 @@
 
 {% block scripts %}
     <script type="text/javascript">
+        var passRegId = false;
+        var passIdentity = false;
+        var passPrivilege = true;
+        var passStuID = false;
+
         function uniqueID(reg_ids , input) {
             var arr = reg_ids;
-            var submit = document.getElementById('submit');
             var invalid_id = document.getElementById('invalid_id');
 
             for(var i = 0; i < arr.length; i++) {
                 if (input.value === arr[i]) {
                     invalid_id.innerHTML = "此ID已存在";
-                    submit.disabled = true;
-                    submit.style.backgroundColor = "grey";
+                    passRegId = false;
                     break;
                 }
                 else if (input.value === ""){
-                    submit.disabled = true;
-                    submit.style.backgroundColor = "grey";
+                    invalid_id.innerHTML = "此為必填，請勿留白";
+                    passRegId = false;
                 }
                 else {
-                    if (document.getElementById("identity").value === '2' && document.getElementById('stu_id').value === ""){
-                        submit.disabled = true;
-                        submit.style.backgroundColor = "grey";
-                    }
                     invalid_id.innerHTML = "";
-                    submit.disabled = false;
-                    submit.style.backgroundColor = "#4CCABD";
+                    passRegId = true;
                 }
             }
+            DataAllValid()
         }
 
         function uniqueStuID(stu_ids , input) {
             var arr = stu_ids;
-            var submit = document.getElementById('submit');
             var invalid_stu_id = document.getElementById('invalid_stu_id');
 
             for(var i = 0; i < arr.length; i++) {
                 if (input.value === arr[i]) {
                     invalid_stu_id.innerHTML = "此ID已存在";
-                    submit.disabled = true;
-                    submit.style.backgroundColor = "grey";
+                    passStuID = false;
                     break;
                 } else if (input.value === ""){
-                    submit.disabled = true;
-                    submit.style.backgroundColor = "grey";
+                    invalid_stu_id.innerHTML = "此為必填，請勿留白";
+                    passStuID = false;
                 } else {
                     invalid_stu_id.innerHTML = "";
-                    submit.disabled = false;
-                    submit.style.backgroundColor = "#4CCABD";
+                    passStuID = true;
                 }
             }
+            DataAllValid()
         }
 
         function IsStudent() {
@@ -59,25 +56,57 @@
             var department = document.getElementById('department');
             var squadron = document.getElementById('squadron');
             var grade = document.getElementById('grade');
-            var submit = document.getElementById('submit');
+            var identity = document.getElementById('identity');
 
-            if (document.getElementById("identity").value === '2') {
+            if (identity.value === '2') {
                 stuID.disabled = false;
                 department.disabled = false;
                 squadron.disabled = false;
                 grade.disabled = false;
 
-                submit.disabled = true;
-                submit.style.backgroundColor = "grey";
+                passIdentity = true;
             }
             else {
+                if (identity.value === ''){
+                    passIdentity = false;
+                } else{
+                    passIdentity = true;}
+                stuID.value = '';
+                department.value = '';
+                squadron.value = '';
+                grade.value = '';
                 stuID.disabled = true;
                 department.disabled = true;
                 squadron.disabled = true;
                 grade.disabled = true;
+            }
+            DataAllValid()
+        }
 
-                submit.disabled = false;
-                submit.style.backgroundColor = "#4CCABD";
+        function DataAllValid() {
+            var identity = document.getElementById('identity');
+
+            if(identity.value === '2'){
+                if (passRegId===true && passIdentity===true && passPrivilege===true && passStuID===true){
+                    submit.disabled = false;
+                    submit.style.backgroundColor = "#4CCABD";
+                } else {
+                    submit.disabled = true;
+                    submit.style.backgroundColor = "grey";
+                }
+            }
+            else if(identity.value === '1' || identity.value === '3'){
+                if (passRegId===true && passIdentity===true && passPrivilege===true){
+                    submit.disabled = false;
+                    submit.style.backgroundColor = "#4CCABD";
+                } else{
+                    submit.disabled = true;
+                    submit.style.backgroundColor = "grey";
+                }
+            }
+            else{
+                submit.disabled = true;
+                submit.style.backgroundColor = "grey";
             }
         }
     </script>
@@ -106,7 +135,7 @@
                     </tr>
 
                     <tr>
-                        <td>Identity</td>
+                        <td>身份</td>
                         <td>
                             <select id="identity" name="identity" onchange="IsStudent();" required>
                                 <option value="" disabled selected>請選擇身份</option>
@@ -121,9 +150,10 @@
                         <td>權限</td>
                         <td>
                             {% for privilege in privileges.values %}
-                                <input type="checkbox" id="{{ privilege.value.0 }}" name="privilege_{{ forloop.counter0 }}" {% if privilege == privileges.Testee %} checked {% endif %}>
+                                <input type="checkbox" id="{{ privilege.value.0 }}" name="privilege_{{ forloop.counter0 }}" onclick="PrivilegeNotEmpty()" {% if privilege == privileges.Testee %} checked {% endif %}>
                                 <label for="{{ privilege.value.0 }}">{{ privilege.value.1 }}&nbsp;&nbsp;&nbsp;</label>
                             {% endfor %}
+                            <label class="privilege_invalid" id="privilege_invalid"></label>
                         </td>
                     </tr>
 
@@ -167,7 +197,7 @@
 
                     <tr>
                         <td>年班</td>
-                        <td><input type="number" name="grade" id="grade" disabled></td>
+                        <td><input type="text" name="grade" id="grade" disabled></td>
                     </tr>
 
                 </table>
@@ -232,6 +262,10 @@
                 position: relative;
                 top: 270px;
                 left: 48%;
+            }
+            .privilege_invalid {
+                color: #c12e2a;
+                font-size: 18px;
             }
         </style>
     </div>

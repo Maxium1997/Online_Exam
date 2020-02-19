@@ -9,13 +9,13 @@
             var submit_element = document.getElementById("submit");
 
             if(mode === 'department'){
-                arr = departments
+                arr = departments;
             }
 
             for(var i = 0; i < arr.length; i++) {
                 if (input_unit.value === ''){
-                    valid_element.innerHTML = '&nbsp;';
-                    invalid_element.innerHTML = '&nbsp;';
+                    valid_element.innerHTML = '';
+                    invalid_element.innerHTML = '請輸入名稱，勿留白';
                     submit_element.disabled = true;
                     submit_element.style.backgroundColor = 'grey';
                 }
@@ -34,8 +34,6 @@
                 }
             }
         }
-
-        document.getElementById('unit_name').disabled = true;
 
         function Selected() {
             var unitName = document.getElementById("unit_name");
@@ -78,12 +76,12 @@
 
                 <tr>
                     <td class="col-md-2" style="text-align: center">單位名稱</td>
-                    <td class="col-md-5"><input type="text" id="unit_name" name="unit_name" onkeyup="UniqueName({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="輸入要新增的單位名稱" required></td>
+                    <td class="col-md-5"><input type="text" id="unit_name" name="unit_name" onkeyup="UniqueName({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="輸入要新增的單位名稱" required disabled></td>
                 </tr>
 
                 <tr>
                     <td colspan="2" style="text-align: center">
-                        <span id="invalid" class="result">&nbsp;</span>
+                        <span id="invalid" class="result">&nbsp;請先選擇單位，再填寫名稱</span>
                         <span id="valid" class="result">&nbsp;</span>
                     </td>
                 </tr>
@@ -91,6 +89,7 @@
 
             <div class="btn">
                 <button type="submit" id="submit" disabled>新增</button>
+                <button type="reset">重設</button>
                 <button type="button" onclick="self.location=document.referrer;">取消</button>&nbsp;
             </div>
         </form>

@@ -2,9 +2,74 @@
 
 {% load staticfiles %}
 
-{% block scripts %}
+{#{% block scripts %}#}
+{#    <script type="text/javascript">#}
+{#        var passName = false;#}
+{#        var passTime = false;#}
+{#        var passDuration = false;#}
+{#        var passTestpaper = false;#}
+{#        var passGroup = false;#}
+{##}
+{#        var submit = document.getElementById('submit');#}
+{#        document.getElementById('submit').disabled = true;#}
+{#        document.getElementById('submit').style.backgroundColor = 'grey';#}
+{##}
+{##}
+{#        function data_unique(names , input) {#}
+{#            var submit = document.getElementById('submit');#}
+{#            var arr = names;#}
+{##}
+{#            for(var i = 0; i < arr.length; i++) {#}
+{#                if (input.value === arr[i]) {#}
+{#                    document.getElementById('invalid').innerHTML = "此名稱已存在。";#}
+{#                    submit.style.backgroundColor = 'grey';#}
+{#                    submit.disabled = true;#}
+{#                    break;#}
+{#                } else if (input.value === ""){#}
+{#                    submit.style.backgroundColor = 'grey';#}
+{#                    submit.disabled = true;#}
+{#                } else {#}
+{#                    document.getElementById('invalid').innerHTML = "";#}
+{#                    submit.style.backgroundColor = '#4CCABD';#}
+{#                    submit.disabled = false;#}
+{#                }#}
+{#            }#}
+{#        }#}
+{##}
+        {#Checkout whether Select tag is not null.#}
+{#        function Selected(selectedData, kind) {#}
+{#            if (selectedData.value === ''){#}
+{#                if(kind === 'Group'){#}
+{#                    passGroup = false;#}
+{#                } else {#}
+{#                    passTestpaper = false;#}
+{#                }#}
+{#            }#}
+{#            else {#}
+{#                if(kind === 'Group'){#}
+{#                    passGroup = true;#}
+{#                } else{#}
+{#                    passTestpaper = true;#}
+{#                }#}
+{#            }#}
+{#        }#}
+{##}
+        {#Checkout whether all tag is valid and can send the form.#}
+{#        function IsPass() {#}
+{#            if(passName===true && passTime===true && passDuration===true && passTestpaper===true &&passGroup===true){#}
+{#                submit.style.backgroundColor = '#4CCABD';#}
+{#                submit.disabled = false;#}
+{#            }#}
+{#            else{#}
+{#                submit.style.backgroundColor = 'grey';#}
+{#                submit.disabled = true;#}
+{#            }#}
+{#        }#}
+{##}
+{#        document.getElementById('result').innerHTML = 'this is test';#}
+{#    </script>#}
+{#{% endblock %}#}
 
-{% endblock %}
 
 {% block path %}
     <a href="">考試管理員</a>
@@ -15,6 +80,9 @@
 {% endblock %}
 
 {% block content %}
+
+    <label id="result">test</label>
+
     <div class="exam_create">
         <div class="title"><h1>Create Exam.</h1></div>
         <form method="post" class="form-horizontal" role="form">
@@ -45,7 +113,7 @@
                 <tr>
                     <td>測驗試卷</td>
                     <td>
-                        <select name="selected_testpaper" required>
+                        <select name="selected_testpaper" id="selected_testpaper" onchange="Selected(document.getElementById('selected_testpaper'), 'testpaper')" required>
                             <option value="" disabled selected>請選擇測驗用試卷</option>
                             {% for testpaper in testpapers %}
                                 <option value="{{ testpaper.id }}">{{ testpaper.name }}</option>
@@ -57,7 +125,7 @@
                 <tr>
                     <td>測驗群組</td>
                     <td>
-                        <select name="selected_group" required>
+                        <select name="selected_group" id="selected_group" onchange="Selected(document.getElementById('selected_group'), 'group')" required>
                             <option value="" disabled selected>請選擇受測者群組</option>
                             {% for group in groups %}
                                 <option value="{{ group.id }}">{{ group.name }}</option>
@@ -68,7 +136,7 @@
             </table>
 
             <div class="btn">
-                <button type="submit">送出</button>
+                <button type="submit" id="submit">送出</button>
                 <button type="reset">重設</button>
                 <button type="button" onclick="self.location=document.referrer;">取消</button>&nbsp;
             </div>

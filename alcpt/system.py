@@ -494,6 +494,7 @@ def report_category_edit(request, category_id):
             messages.error(request, "Existed category name: {}".format(category_name))
             return redirect('report_category_edit', category_id=category.id)
     else:
+        categories_names = [_.name for _ in ReportCategory.objects.all().exclude(id=category.id)]
         return render(request, 'report/report_category_edit.html', locals())
 
 
