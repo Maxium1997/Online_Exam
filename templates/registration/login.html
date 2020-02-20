@@ -1,91 +1,12 @@
-{% load staticfiles %}
-{% load web_filters %}
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>線上英文考試系統</title>
-        <link rel="stylesheet" type="text/css" href="{% static '/css/loginstyle.css' %}">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-        <!-- Fonts -->
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
-    
-        <link rel="icon" href="Favicon.png">
-    
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
+{% extends 'new_base.html' %}
 
-        <!--new-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-
-    {% block stylesheets %}
-    {% endblock %}
-
-    {% block scripts %}
-    {% endblock %}
-</head>
-<body>
-    <div class="hint-info">
-            <section>
-                {% if messages %}
-                    {% for message in messages %}
-                        {% if message.tags == "error" %}
-                            <div class="alert alert-danger mt-3" role="alert">
-                                <i class="fa fa-window-close" aria-hidden="true"></i> {{ message }}
-                            </div>
-                        {% elif message.tags == "success" %}
-                            <div class="alert alert-success mt-3" role="alert">
-                                {{ message }}
-                            </div>
-                        {% elif message.tags == "warning" %}
-                            <div class="alert alert-warning mt-3" role="alert">
-                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ message }}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            </section>
-    
-            <style>
-                .hint-info{
-                    position: absolute;
-                    width: 38%;
-                    top: 18%;
-                    left: 30%;
-                    z-index: 9999;
-                    text-align: center;
-                }
-            </style>
-        </div>
-
-    <nav class="navbar navbar-expand-lg navbar-light navbar-laravel" color>
-        <div class="container">
-            <a class="navbar-brand" href="#"><i class="fa fa-book"></i>｜ALCPT</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Login</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+{% block content %}
     <main class="login-form">
         <div class="cotainer">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">Login</div>
-
                         <div class="card-body">
                             <form action="{% url 'login' %}" method="post">
                                 {% csrf_token %}
@@ -126,8 +47,4 @@
             </div>
         </div>
     </main>
-</body>
-
-{% include "footer.html" %}
-
-</html>
+{% endblock %}

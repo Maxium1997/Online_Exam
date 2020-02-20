@@ -1,82 +1,49 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% load web_filters %}
 
 {% block path %}
-    <a href="">編輯公告</a>
+    <li class="breadcrumb-item active" aria-current="page">編輯公告</li>
 {% endblock %}
 
 {% block content %}
-    <div class="proclamation_edit">
-        <form method="post">
-            <div class="title"><h1>Proclamation Edit.</h1></div>
-            {% csrf_token %}
-            <table>
-                <tr>
-                    <td class="col-md-2">公告標題</td>
-                    <td class="col-md-5"><input type="text" name="proclamation_title" value="{{ proclamation.title }}" required></td>
-                </tr>
+    <main class="create-proclamation-form">
+        <div class="cotainer">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">Proclamation Edit.</div>
+                        <div class="card-body">
+                            <form method="post">
+                                {% csrf_token %}
 
-                <tr>
-                    <td class="col-md-2">公告內容</td>
-                    <td class="col-md-5"><textarea name="proclamation_text" cols="100" rows="8" required>{{ proclamation.text }}</textarea></td>
-                </tr>
-            </table>
+                                <div class="form-group row">
+                                    <label for="p_title" class="col-md-4 col-form-label text-md-right">公告標題</label>
+                                    <div class="col-md-6">
+                                        <input type="text" id="p_title" class="form-control" name="p_title" value="{{ proclamation.title }}" placeholder="Proclamation Title..." required autofocus>
+                                    </div>
+                                </div>
 
-            <div class="btn">
-                <button type="submit" onclick="return confirm('確認更改？')">更改公告</button>
-                <button type="button" onclick="self.location=document.referrer;">取消</button>
+                                <div class="form-group row">
+                                    <label for="p_text" class="col-md-4 col-form-label text-md-right">公告內容</label>
+                                    <div class="col-md-6">
+                                        <textarea class="form-control" name="p_text" cols="100" rows="8" placeholder="Proclamation Content..." required>{{ proclamation.text }}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-primary" onclick="return confirm('確認更改？')">
+                                        確認更改
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">
+                                        取消
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <style>
-                .proclamation_edit .title h1{
-                    width: 30%;
-                    font-size: 28px;
-                    color: #FFFEF6;
-                    background-color: #4CCABD;
-                    padding-top: 10px;
-                    padding-bottom: 10px;
-                    padding-right: 15px;
-                    padding-left: 45px;
-                    text-align: center;
-                }
-
-                .proclamation_edit table{
-                    position: relative;
-                    left: 15%;
-
-                    width: 70%;
-
-                    font-size: 20px;
-                }
-                .proclamation_edit table td{
-                    padding: 4px;
-                }
-                .proclamation_edit form input{
-                    padding: 6px;
-                }
-                .proclamation_edit form textarea{
-                    font-size: 20px;
-                    width: 100%;
-                    height: 45%;
-                    padding: 10px;
-                }
-
-                .proclamation_edit .btn{
-                    position: relative;
-                    top: 30px;
-                    left: 40%;
-                }
-                .proclamation_edit .btn button{
-                    font-size: 25px;
-                    padding: 10px;
-                    padding-left: 15px;
-                    padding-right: 15px;
-                    color: #FFFEF6;
-                    background-color: #4CCABD;
-                    border: none;
-                }
-            </style>
-        </form>
-    </div>
+        </div>
+    </main>
 {% endblock %}
