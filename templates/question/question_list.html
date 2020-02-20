@@ -1,4 +1,4 @@
-{% extends 'base_long_page.html' %}
+{% extends 'base.html' %}
 
 {% load web_filters %}
 
@@ -10,24 +10,30 @@
             var dataIndex = 'detailData'+index;
             var data = document.getElementById(dataIndex);
             var iconRightIndex = 'iconRight'+index;
+            var summaryIndex = 'summary_Q_content'+index;
+            var summary_Q_content = document.getElementById(summaryIndex);
+            var fullIndex = 'full_Q_content'+index;
+            var full_Q_content = document.getElementById(fullIndex);
             var iconRight = document.getElementById(iconRightIndex);
             var iconDownIndex = 'iconDown'+index;
             var iconDown = document.getElementById(iconDownIndex);
 
             if (data.style.display === "none"){
-                mainData.style.fontWeight = 900;
-                mainData.style.fontSize = "19px";
+                mainData.style.fontWeight = 600;
                 mainData.style.backgroundColor = "rgb(220, 220, 220, 0.5)";
                 data.style.display = "table-row";
                 iconRight.style.display = "none";
                 iconDown.style.display = "block";
+                summary_Q_content.style.display = 'none';
+                full_Q_content.style.display = 'block';
             } else {
                 mainData.style.fontWeight = "normal";
-                mainData.style.fontSize = "18px";
                 mainData.style.backgroundColor = "rgb(220, 220, 220, 0)";
                 data.style.display = "none";
                 iconRight.style.display = "block";
                 iconDown.style.display = "none";
+                summary_Q_content.style.display = 'block';
+                full_Q_content.style.display = 'none';
             }
         }
     </script>
@@ -132,8 +138,7 @@
                     <th class="col-md-1">編號</th>
                     <th class="col-md-6">題目</th>
                     <th class="col-md-2" style="text-align: left">類型</th>
-                    <th class="col-md-1">狀態</th>
-                    <th class="col-md-1"></th>
+                    <th class="col-md-2">狀態</th>
                 </tr>
             </thead>
 
@@ -153,7 +158,12 @@
                                     Your browser does not support the audio tag.
                                 </audio>
                             {% else %}
-                                {{ question.q_content }}
+                                <div id="summary_Q_content{{ forloop.counter }}">
+                                    {{ question.q_content|summary:250 }}
+                                </div>
+                                <div id="full_Q_content{{ forloop.counter }}" style="display: none">
+                                    {{ question.q_content }}
+                                </div>
                             {% endif %}
                         </td>
                         <td style="text-align: left;">{{ question.q_type|readable_question_type }}</td>
@@ -326,4 +336,10 @@
             }
         </style>
     </div>
+
+    <style>
+        .info{
+            overflow-x: scroll;
+        }
+    </style>
 {% endblock %}

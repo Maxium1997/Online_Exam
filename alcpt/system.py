@@ -381,19 +381,34 @@ def create_unit(request):
         return render(request, 'user/create_unit.html', locals())
 
 
-# 檢查單位名稱是否存在
 @permission_check(UserType.SystemManager)
-@require_http_methods(["POST"])
-def check_unit_name(request):
-    if request.method == 'POST':
-        tmp_unit_name = request.POST.get('unit_name')
-        if Department.objects.filter(name=tmp_unit_name):
-            messages.warning(request, '<script>window.alert("This name had been used.");</script>')
-        elif Squadron.objects.filter(name=tmp_unit_name):
-            messages.warning(request, '<script>window.alert("This name had been used.");</script>')
+def unit_edit(request, unit_kind, unit_name):
+    if request.method == "POST":
+        if unit_kind == 'squadron':
+            edited_unit = Squadron.objects.get(name=unit_name)
+            edited_unit.name = request.POST.get('name')
+            edited_unit.save()
+
+        elif unit_kind == 'department':
+            edited_unit = Department.objects.get(name=unit_name)
+            edited_unit.name = request.POST.get('name')
+            edited_unit.save()
+
+        messages.success(request, "Update successfully.")
+        return redirect('unit_list')
+
+    else:
+        if unit_kind == 'squadron':
+            edited_unit = Squadron.objects.get(name=unit_name)
+
+        elif unit_kind == 'department':
+            edited_unit = Department.objects.get(name=unit_name)
+
         else:
-            messages.success(request, '<script>window.alert("This name can be use.");</script>')
-        return render(request, 'user/create_unit.html', )
+            messages.warning(request, "Unknown unit name.")
+            return redirect('unit_list')
+
+        return render(request, 'user/unit_edit.html', locals())
 
 
 # 顯示單位人員

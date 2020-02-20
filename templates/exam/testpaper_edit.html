@@ -12,90 +12,76 @@
 
 {% block content %}
     <div class="testpaper">
-        <form method="post">
-            <div class="title"><h1>Testpaper Edit.</h1></div>
+        <div class="title"><h1>Testpaper Edit.</h1></div>
+
+        <form action="{% url 'testpaper_edit' testpaper.id %}" method="post">
             {% csrf_token %}
             <table>
                 <tr>
-                    <td class="col-md-1">考卷名稱</td>
-                    <td class="col-md-7" style="text-align: center"><input type="text" id="testpaper_name" name="testpaper_name" value="{{ testpaper.name }}" required></td>
-                </tr>
-                <tr>
-                    <td class="col-md-1">題目類型</td>
-                    <td class="col-md-7">
-                        {% for i in types_num %}
-                            <div class="card" style="width: 18rem; float: left; clear: right;">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ i|readable_question_type }}</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">共 {{ question_types|lookup:i }} 題，已選擇 {{ selected_num|lookup:i }} 題</h6>
-                                    <div class="choose">
-                                        <a href="{% url 'manual_pick' testpaper.id i %}" class="card-link" >手動選擇</a>
-                                        {% if question_types|lookup:i == selected_num|lookup:i %}
-                                            <label>自動選擇</label>
-                                        {% else %}
-                                            <a href="{% url 'auto_pick' testpaper.id i %}" class="card-link" >自動選擇</a>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
+                    <td style="font-size: 24px; text-align: right">考卷名稱</td>
+                    <td colspan="4">
+                        <input type="text" name="testpaper_name" value="{{ testpaper.name }}">
                     </td>
                 </tr>
+
+                {% for question_type, question_type_count, selected_question_type_num in testpaper_data %}
+                    <td>
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h4 class="card-title">{{ question_type.value.1 }}</h4>
+                                <p class="card-context">共 {{ question_type_count }} 題，已選擇 {{ selected_question_type_num }} 題</p>
+
+                                <a class="card-link" href="{% url 'manual_pick' testpaper.id question_type.value.0 %}" class="card-link" >手動選擇</a>
+                                {% if selected_question_type_num == question_type_count %}
+                                    <label>自動選擇</label>
+                                {% else %}
+                                    <a class="card-link" href="{% url 'auto_pick' testpaper.id question_type.value.0 %}" class="card-link" >自動選擇</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                {% endfor %}
             </table>
 
             <div class="btn">
-                <button type="button" onclick="window.location.href='{% url 'testpaper_list' %}'">確認</button>
+                <button type="submit">確認</button>
             </div>
-
-            <style>
-                .testpaper .title h1{
-                    width: 30%;
-                    font-size: 28px;
-                    color: #FFFEF6;
-                    background-color: #4CCABD;
-                    padding-top: 10px;
-                    padding-bottom: 10px;
-                    padding-right: 15px;
-                    padding-left: 45px;
-                    text-align: center;
-                }
-                .testpaper table{
-                    position: relative;
-                    left: 10%;
-
-                    width: 80%;
-
-                    font-size: 20px;
-                }
-                .testpaper form input{
-                    width: 80%;
-                    padding: 6px;
-                }
-
-                .testpaper .btn{
-                    position: relative;
-                    top: 30px;
-                    left: 45%;
-                }
-                .testpaper .btn button{
-                    font-size: 25px;
-                    padding: 10px;
-                    padding-left: 15px;
-                    padding-right: 15px;
-                    color: #FFFEF6;
-                    background-color: #4CCABD;
-                    border: none;
-                }
-
-                .testpaper form .card{
-                    margin-left: 50px;
-                }
-                .testpaper form .card-body{
-                    padding-bottom: 10px;
-
-                    text-align: center;
-                }
-            </style>
         </form>
     </div>
+    <style>
+        .testpaper .title h1{
+            width: 30%;
+            font-size: 28px;
+            color: #FFFEF6;
+            background-color: #4CCABD;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-right: 15px;
+            padding-left: 45px;
+            text-align: center;
+        }
+
+        .testpaper table{
+            position: relative;
+            left: 10%;
+
+            font-size: 16px;
+
+            width: 80%;
+
+            text-align: center;
+        }
+        .testpaper table input{
+            width: 80%;
+            font-size: 20px;
+
+            margin: 10px;
+            padding: 6px;
+        }
+
+        .btn{
+            position: relative;
+            left: 45%;
+        }
+    </style>
 {% endblock %}

@@ -1,4 +1,25 @@
-{% extends 'base_long_page.html' %}
+{% extends 'base.html' %}
+
+{% block scripts %}
+    <script>
+        function searchFunction() {
+            let input, filter, a, i, tr, td;
+            input = document.getElementById("search_course");
+            filter = input.value.toUpperCase();
+            tr = document.getElementById("group_members");
+            td = tr.getElementsByTagName("td");
+            for (i = 0; i < td.length; i++) {
+                a = td[i];
+                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    td[i].style.display = "";
+                }
+                else {
+                    td[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+{% endblock %}
 
 {% block path %}
     <a href="">考試管理員</a>
@@ -73,23 +94,9 @@
                 }
             </style>
         </div>
-
-        <script>
-            function searchFunction() {
-                let input, filter, a, i, tr, td;
-                input = document.getElementById("search_course");
-                filter = input.value.toUpperCase();
-                tr = document.getElementById("group_members");
-                td = tr.getElementsByTagName("td");
-                for (i = 0; i < td.length; i++) {
-                    a = td[i];
-                    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        td[i].style.display = "";
-                    }
-                    else {
-                        td[i].style.display = "none";
-                    }
-                }
-            }
-        </script>
+    <style>
+        .info{
+            overflow-x: scroll;
+        }
+    </style>
 {% endblock %}

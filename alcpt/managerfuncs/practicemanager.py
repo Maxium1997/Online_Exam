@@ -39,7 +39,7 @@ def create_practice(*, user: User, practice_type: ExamType, question_types: list
 
     # add the questions into practice_testpaper
     for question in selected_questions:
-        practice_testpaper.question_set.add(question)
+        practice_testpaper.question_list.add(question)
 
     practice_exam = Exam.objects.create(name=practice_name, exam_type=practice_type.value[0], testpaper=practice_testpaper,
                                         duration=0, created_by=user)

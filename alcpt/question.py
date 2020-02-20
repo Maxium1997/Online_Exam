@@ -382,7 +382,7 @@ def question_delete(request, question_id):
                 choice.delete()
 
             question.delete()
-            messages.success(request, 'Delete question successfully, question id: {}'.format(question.id))
+
         else:
             messages.warning(request, 'Question can not be deleted, question id: {}'.format(question_id))
     except ObjectDoesNotExist:

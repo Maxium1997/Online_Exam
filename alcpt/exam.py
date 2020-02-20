@@ -106,7 +106,7 @@ def testpaper_content(request, testpaper_id):
         messages.error(request, 'Testpaper does not exist, testpaper id: {}'.format(testpaper_id))
         return redirect('testpaper_list')
 
-    questions = testpaper.question_set.all().order_by('q_type')
+    questions = testpaper.question_list.all().order_by('q_type')
 
     return render(request, 'exam/testpaper_content.html', locals())
 
@@ -140,42 +140,31 @@ def testpaper_edit(request, testpaper_id):
         messages.error(request, 'Testpaper does not exist, testpaper id: {}'.format(testpaper_id))
         return redirect('testpaper_list')
 
-    if testpaper.valid == 1:
-        messages.warning(request, "This testpaper is valid, it can't not edit again.")
-        return redirect('testpaper_list')
-
     if request.method == "POST":
-        testpaper_name = request.POST.get('testpaper_name',)
+        try:
+            testpaper.name = request.POST.get('testpaper_name')
+            if testmanager.quantity_confirmation(testpaper):
+                testpaper.valid = True
+            testpaper.save()
+            messages.success(request, "Edit successfully.")
 
-        testpaper = testmanager.edit_testpaper(testpaper, testpaper_name)
-
-        testpaper.valid = testpaper.question_set.count() == sum(QuestionTypeCounts.Exam.value[0])
-
-        if testpaper.valid:
-            for question in testpaper.question_set.all():
-                question.used_freq += 1
-                question.save()
-
-        testpaper.save()
-
-        messages.success(request, 'Successfully update testpaper: testpaper id: {}'.format(testpaper.id))
+        except IntegrityError:
+            messages.warning(request, "Test paper name has existed.")
 
         return redirect('testpaper_list')
 
     else:
-        question_types = [0] + QuestionTypeCounts.Exam.value[0]
-        selected_num = [0 for _ in question_types]
-        reach_limit = [False for _ in question_types]
+        question_types = list(QuestionType.__members__.values())        # 5 types of question in definition
+        question_type_counts = list(QuestionTypeCounts.Exam.value[0])   # Each type has been defined its question amount
 
-        for question_type in QuestionType.__members__.values():
-            type_value = question_type.value[0]
-            selected_num[type_value] = testpaper.question_set.filter(q_type=type_value).count()
-            reach_limit[type_value] = selected_num[type_value] <= question_types[type_value]
+        all_selected_questions = testpaper.question_list.all()       # Had been selected questions in this test paper.
+        selected_question_type_nums = [len(all_selected_questions.filter(q_type=1)),    # The number that had been selected for each type.
+                                       len(all_selected_questions.filter(q_type=2)),
+                                       len(all_selected_questions.filter(q_type=3)),
+                                       len(all_selected_questions.filter(q_type=4)),
+                                       len(all_selected_questions.filter(q_type=5))]
 
-        if not all(reach_limit):
-            messages.warning(request, "This testpaper won't start until all questions have been selected.")
-
-        types_num = range(1, len(QuestionType.__members__)+1)
+        testpaper_data = zip(question_types, question_type_counts, selected_question_type_nums)
 
         return render(request, 'exam/testpaper_edit.html', locals())
 
@@ -206,20 +195,21 @@ def manual_pick(request, testpaper_id, question_type):
         messages.error(request, 'Testpaper does not exist, testpaper id: {}'.format(testpaper_id))
 
     if request.method == "POST":
-        selected_questions = request.POST.getlist('question',)
+        selected_question_ids = request.POST.getlist('question')
 
-        selected_question_list = []
+        selected_questions = []
+        for questionID in selected_question_ids:
+            selected_questions.append(Question.objects.get(id=questionID))
+
         for question in selected_questions:
-            selected_question_list.append(Question.objects.get(id=question))
+            testpaper.question_list.add(question)
 
-        for question in selected_question_list:
-            testpaper.question_set.add(question)
-        for question in testpaper.question_set.all():
-            if question not in selected_question_list:
-                testpaper.question_set.remove(question)
-        testpaper.save()
-        messages.success(request, "testpaper: {} is successfully selected manually.".format(testpaper.name))
-        return redirect('testpaper_edit', testpaper_id=testpaper_id)
+        for question in testpaper.question_list.all().filter(q_type=question_type):
+            if question not in selected_questions:
+                testpaper.question_list.remove(question)
+
+        messages.success(request, "Manual Pick successfully.")
+        return redirect('testpaper_edit', testpaper_id=testpaper.id)
 
     else:
         for q_type in QuestionType.__members__.values():
@@ -227,10 +217,10 @@ def manual_pick(request, testpaper_id, question_type):
                 question_type = q_type
                 break
 
-        questionList = testmanager.manual_pick(question_type=question_type.value[0])
-        selected_questions = testpaper.question_set.all()
+        all_questions = Question.objects.filter(state=1).filter(q_type=question_type.value[0])
+        selected_questions = testpaper.question_list.filter(q_type=question_type.value[0])
 
-        return render(request, 'exam/testpaper_manual_pick.html', locals())
+        return render(request, 'exam/manual_pick.html', locals())
 
 
 # 自動選題（已完成）
@@ -241,20 +231,11 @@ def auto_pick(request, testpaper_id, question_type):
     except ObjectDoesNotExist:
         messages.error(request, 'Testpaper does not exist, testpaper id: {}'.format(testpaper_id))
 
-    if type(question_type) is int:
-        raise IllegalArgumentError('question_type does match category.')
-
-    for q_type in QuestionType.__members__.values():
-        if q_type.value[0] == int(question_type):
-            question_type = q_type
-            break
-
-    if testmanager.limit_check(testpaper=testpaper, q_type=question_type):
+    if testmanager.quantity_confirmation(testpaper=testpaper):
         messages.warning(request, 'This type had reached limit amount.')
         return redirect('/exam/testpaper/{}/edit'.format(testpaper_id))
 
-    selected_num = testmanager.auto_pick(testpaper=testpaper, type_counts=QuestionTypeCounts.Exam.value[0],
-                                         question_type=int(question_type.value[0]))
+    selected_num = testmanager.auto_pick(testpaper=testpaper, question_type=int(question_type))
 
     messages.success(request, selected_num)
 

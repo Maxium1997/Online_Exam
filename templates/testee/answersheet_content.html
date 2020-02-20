@@ -1,4 +1,4 @@
-{% extends 'base_long_page.html' %}
+{% extends 'base.html' %}
 
 {% load web_filters %}
 
@@ -63,11 +63,15 @@
             </tbody>
         </table>
 
-        <div class="back">
+        <div class="btn">
             <button type="button" onclick="self.location=document.referrer;">確認</button>
         </div>
 
         <style>
+            .info{
+                overflow-x: scroll;
+            }
+
             .table-responsive .table{
                 text-align: center;
             }
@@ -93,19 +97,10 @@
                 color: #2C3232;
             }
 
-            .back{
+            .btn{
                 position: relative;
                 top: 15px;
                 left: 45%;
-            }
-            .back button{
-                font-size: 25px;
-                padding: 10px;
-                padding-left: 15px;
-                padding-right: 15px;
-                color: #FFFEF6;
-                background-color: #4CCABD;
-                border: none;
             }
 
         </style>

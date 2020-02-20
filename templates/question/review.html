@@ -1,6 +1,43 @@
-{% extends 'base_long_page.html' %}
+{% extends 'base.html' %}
 
 {% load web_filters %}
+
+{% block scripts %}
+    <script>
+        function toggle(index){
+            var mainDataIndex = 'mainData'+index;
+            var mainData = document.getElementById(mainDataIndex);
+            var dataIndex = 'detailData'+index;
+            var data = document.getElementById(dataIndex);
+            var summaryIndex = 'summary_Q_content'+index;
+            var summary_Q_content = document.getElementById(summaryIndex);
+            var fullIndex = 'full_Q_content'+index;
+            var full_Q_content = document.getElementById(fullIndex);
+            var iconRightIndex = 'iconRight'+index;
+            var iconRight = document.getElementById(iconRightIndex);
+            var iconDownIndex = 'iconDown'+index;
+            var iconDown = document.getElementById(iconDownIndex);
+
+            if (data.style.display === "none"){
+                mainData.style.fontWeight = 600;
+                mainData.style.backgroundColor = "rgb(220, 220, 220, 0.5)";
+                data.style.display = "table-row";
+                iconRight.style.display = "none";
+                iconDown.style.display = "block";
+                summary_Q_content.style.display = 'none';
+                full_Q_content.style.display = 'block';
+            } else {
+                mainData.style.fontWeight = "normal";
+                mainData.style.backgroundColor = "rgb(220, 220, 220, 0)";
+                data.style.display = "none";
+                iconRight.style.display = "block";
+                iconDown.style.display = "none";
+                summary_Q_content.style.display = 'block';
+                full_Q_content.style.display = 'none';
+            }
+        }
+    </script>
+{% endblock %}
 
 {% block path %}
     <a href="">題庫管理員</a>
@@ -16,18 +53,24 @@
             <caption style="font-size: 30px;">&nbsp;&nbsp;題目列表（共{% if query_content %}{{ questions.count }}{% elif reviewed_questions %}{{ reviewed_questions.count }}{% else %} 0 {% endif %}條結果）</caption>
             <thead class="title">
                 <tr>
-                    <th class="col-md-1">ＩＤ</th>
-                    <th class="col-md-4">題目</th>
-                    <th class="col-md-2">類型</th>
-                    <th class="col-md-2">題目選項</th>
-                    <th class="col-md-1">審核</th>
                     <th class="col-md-1"></th>
+                    <th class="col-md-1">編號</th>
+                    <th class="col-md-6">題目</th>
+                    <th class="col-md-2">類型</th>
+                    <th class="col-md-2">審核</th>
                 </tr>
             </thead>
             <tbody>
                 {% for question in questionList %}
-                    <tr>
-                        <td style="vertical-align: middle">{{ question.id }}</td>
+                    <tr id="mainData{{ forloop.counter }}" onclick="toggle('{{ forloop.counter }}')">
+                        <td>
+                            <i id="iconRight{{ forloop.counter }}" class="fa fa-angle-right" style="padding-left: 0px"></i>
+                            <i id="iconDown{{ forloop.counter }}" class="fa fa-angle-down" style="display: none; padding-left: 0px"></i>
+                        </td>
+
+                        <td style="vertical-align: middle">
+                            {{ question.id }}
+                        </td>
                         <td style="text-align: left; vertical-align: middle">
                             {% if question.q_file %}
                                 <audio controls preload="none">
@@ -35,49 +78,30 @@
                                     Your browser does not support the audio tag.
                                 </audio>
                             {% else %}
-                                {{ question.q_content }}
+                                <div id="summary_Q_content{{ forloop.counter }}">
+                                    {{ question.q_content|summary:250 }}
+                                </div>
+                                <div id="full_Q_content{{ forloop.counter }}" style="display: none">
+                                    {{ question.q_content }}
+                                </div>
+
                             {% endif %}
                         </td>
                         <td style="text-align: center; vertical-align: middle">{{ question.q_type|readable_question_type }}</td>
-                        <td style="text-align: left; vertical-align: middle">
-                            {% for option in question.choice_set.all %}
-                                {% if option.is_answer %}
-                                    <span style="color: red"><li>{{ option }}</li></span>
-                                {% else %}
-                                    <li>{{ option }}</li>
-                                {% endif %}
-                            {% endfor %}
-                        </td>
 
                         <td class="functions-btn" style="vertical-align: middle">
-                            <button id="pass" type="button" onclick="window.location.href='{% url 'question_pass' question.id %}'">Pass</button>
-                            <button id="reject" type="button" onclick="window.location.href='{% url 'question_reject' question.id %}'">Reject</button>
-                            <button type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'">edit</button>
-                        </td>
+                            <ul>
+                                <li><button id="pass" type="button" onclick="window.location.href='{% url 'question_pass' question.id %}'">Pass</button></li>
+                                <li><button id="reject" type="button" onclick="window.location.href='{% url 'question_reject' question.id %}'">Reject</button></li>
+                                <li><button type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'">edit</button></li>
+                            </ul>
 
-                        <td style="vertical-align: middle">
-                            <div class="detail">
-                                <button type="button" class="btn btn-primary dropdown-toggle pull-right" data-toggle="dropdown" style="background-color: #4CCABD;
-                                border-color: #FFFEF6;">
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right" style="width: 300px">
-                                      <ul style="text-align: left; font-size: 16px">
-                                          <li>備註：{% if question.fault_reason %}{{ question.fault_reason }}{% else %}無{% endif %}</li>
-                                          <li>更新時間：{{ question.update_time|date:'Y年m月d日, H時i分' }}</li>
-                                          <li>難度：{{ question.difficulty }}</li>
-                                          <li>建立者：{{ question.created_by.name }}</li>
-                                      </ul>
-                                </div>
-                            </div>
                         </td>
 
                         <style>
-                            .detail li{
+                            .functions-btn ul, li{
                                 list-style: none;
-                                padding-left: 10px;
                             }
-
                             .functions-btn button{
                                 width: 70px;
 
@@ -98,6 +122,34 @@
                             }
                         </style>
                     </tr>
+
+                    <tr id="detailData{{ forloop.counter }}" style="display: none;">
+                        <td colspan="3" style="text-align: left; vertical-align: middle; padding-left: 20%">
+                            <ol type="A">
+                                {% for option in question.choice_set.all %}
+                                    {% if option.is_answer %}
+                                        <li style="color: red">{{ option }}</li>
+                                    {% else %}
+                                        <li>{{ option }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ol>
+                        </td>
+
+                        <td style="vertical-align: middle">
+                            備註：{% if question.fault_reason %}{{ question.fault_reason }}{% else %}無{% endif %}
+                        </td>
+
+                        <td style="vertical-align: middle">
+                            <div class="detail">
+                              <ul style="text-align: left; font-size: 16px">
+                                  <li>更新時間：{{ question.update_time|date:'H:i, m/d/Y' }}</li>
+                                  <li>難度：{{ question.difficulty }}</li>
+                                  <li>建立者：{{ question.created_by.name }}</li>
+                              </ul>
+                            </div>
+                        </td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -110,6 +162,12 @@
                 text-align: center;
             }
 
+            .table-hover > tbody > tr > td{
+                vertical-align: middle;
+            }
+            .table-hover > tbody > tr:hover{
+                cursor: pointer;
+            }
             .table-hover > tbody > tr:hover > td,
             .table-hover > tbody > tr:hover > th {
                 background-color: #4CCABD;
@@ -203,5 +261,9 @@
         </style>
     </div>
 
-
+    <style>
+        .info{
+            overflow-x: scroll;
+        }
+    </style>
 {% endblock %}

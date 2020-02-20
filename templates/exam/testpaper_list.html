@@ -48,7 +48,6 @@
 
     <!-- 表格的部分 -->
     <div class="table-responsive">
-        {% if testpapers %}
             <table class="table table-hover">
                 <caption style="font-size: 30px;">&nbsp;&nbsp;考卷列表</caption>
                 <thead class="title">
@@ -62,26 +61,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for testpaper in testpaperList %}
-                        <tr style="cursor: pointer" onclick="window.location.href=('{% url 'view_testpaper_content' testpaper.id %}')">
-                            <td style="text-align: center; vertical-align:middle;">{{ testpaper.name }}</td>
-                            <td style="vertical-align:middle;">{{ testpaper.valid }}</td>
-                            <td style="vertical-align:middle;">{{ testpaper.is_used }}</td>
-                            <td style="vertical-align:middle;">{{ testpaper.update_time|date:'Y年m月d日, H時i分' }}</td>
-                            <td style="vertical-align:middle;">{{ testpaper.created_by.name }}</td>
-                            <td style="vertical-align:middle;">
-                                {% if testpaper.is_testpaper %}
-                                    <a href="{% url 'testpaper_edit' testpaper.id %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
-                                    <a href="{% url 'testpaper_delete' testpaper.id %}" onclick="return confirm('確認刪除此考卷？')"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                {% endif %}
-                            </td>
+                    {% if testpapers %}
+                        {% for testpaper in testpaperList %}
+                            <tr style="cursor: pointer" onclick="window.location.href=('{% url 'view_testpaper_content' testpaper.id %}')">
+                                <td style="text-align: center; vertical-align:middle;">{{ testpaper.name }}</td>
+                                <td style="vertical-align:middle;">{{ testpaper.valid }}</td>
+                                <td style="vertical-align:middle;">{{ testpaper.is_used }}</td>
+                                <td style="vertical-align:middle;">{{ testpaper.update_time|date:'Y年m月d日, H時i分' }}</td>
+                                <td style="vertical-align:middle;">{{ testpaper.created_by.name }}</td>
+                                <td style="vertical-align:middle;">
+                                    {% if testpaper.is_testpaper %}
+                                        <a href="{% url 'testpaper_edit' testpaper.id %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
+                                        <a href="{% url 'testpaper_delete' testpaper.id %}" onclick="return confirm('確認刪除此考卷？')"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6"><h2>目前暫無資料</h2></td>
                         </tr>
-                    {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
-        {% else %}
-            <h2>目前暫無資料</h2>
-        {% endif %}
 
         <style>
             .table-responsive .table{

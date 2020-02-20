@@ -29,15 +29,15 @@ def query_questions(*, question_type: int, question_content: str, difficulty: in
             elif question_type == 2:
                 questions = all_questions.filter(q_type=2).filter(choice__c_content__icontains=question_content).filter(queries)
             elif question_type == 3:
-                questions = all_questions.filter(q_type=3).filter(queries).filter(q_content__icontains=question_content)
+                query1 = all_questions.filter(q_type=3).filter(queries).filter(q_content__icontains=question_content)
                 query2 = all_questions.filter(q_type=3).filter(queries).filter(choice__c_content__icontains=question_content)
                 questions = (query1 | query2)
             elif question_type == 4:
-                questions = all_questions.filter(q_type=4).filter(queries).filter(q_content__icontains=question_content)
+                query1 = all_questions.filter(q_type=4).filter(queries).filter(q_content__icontains=question_content)
                 query2 = all_questions.filter(q_type=4).filter(queries).filter(choice__c_content__icontains=question_content)
                 questions = (query1 | query2)
             elif question_type == 5:
-                questions = all_questions.filter(q_type=5).filter(queries).filter(q_content__icontains=question_content)
+                query1 = all_questions.filter(q_type=5).filter(queries).filter(q_content__icontains=question_content)
                 query2 = all_questions.filter(q_type=5).filter(queries).filter(choice__c_content__icontains=question_content)
                 questions = (query1 | query2)
 
@@ -55,7 +55,7 @@ def query_questions(*, question_type: int, question_content: str, difficulty: in
             queries &= Q(q_type=question_type)
             query_content += "&question_type=" + str(question_type)
 
-        questions = all_questions.filter(queries).order_by('id')
+        questions = all_questions.filter(queries).order_by('-created_time')
 
     return query_content, questions
 

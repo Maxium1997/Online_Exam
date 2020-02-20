@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block path %}
+
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <input name="name" value="{{ edited_unit.name }}" placeholder="Enter the edited unit name..." required>
+
+        <div class="btn">
+            <button type="submit">送出</button>
+            <button type="button" onclick="window.location.href='{% url 'unit_list' %}'">取消</button>
+        </div>
+    </form>
+{% endblock %}

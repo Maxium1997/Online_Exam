@@ -31,7 +31,7 @@ urlpatterns = [
         url(r'^(?P<report_id>[0-9]+)/detail$', registration.report_detail, name='report_detail'),
         url(r'^list/(?P<responsibility>(SystemManager|TestManager|TBManager))', system.responsible_report_list, name='responsible_report_list'),
         url(r'^reply/(?P<report_id>[0-9]+)$', system.report_reply, name='report_reply'),
-        url(r'^reply/(?P<report_id>[0-9]+)/done$', system.report_done, name='report_done'),
+        url(r'^(?P<report_id>[0-9]+)/done$', system.report_done, name='report_done'),
     ])),
 
     url(r'^email_verification$', registration.verification, name='email_verification'),
@@ -39,8 +39,8 @@ urlpatterns = [
     url(r'^captcha/', include('captcha.urls')),
 
     url(r'^accounts/', include([
-        url(r'^login/', registration.login, name='login'),  # 登入
-        url(r'^logout/', registration.logout, name='logout'),  # 登出
+        url(r'^login/', registration.login, name='login'),
+        url(r'^logout/', registration.logout, name='logout'),
         url(r'^profile$', registration.profile, name='profile'),
         url(r'^edit$', registration.edit_profile, name='profile_edit'),
         url(r'^password/change$', registration.change_password, name='password_change'),
@@ -60,7 +60,8 @@ urlpatterns = [
         url(r'^unit_list/', include([
             url(r'^create$', system.create_unit, name='unit_create'),
             url(r'^(?P<unit_kind>(squadron|department))/(?P<unit_name>[\w]+)$', system.unit_member_list, name='unit_member_list'),
-            url(r'^check_unit_name$', system.check_unit_name, name='check_unit_name'),
+            # url(r'^check_unit_name$', system.check_unit_name, name='check_unit_name'),
+            url(r'^(?P<unit_kind>(squadron|department))/(?P<unit_name>[\w]+)/edit$', system.unit_edit, name='unit_edit'),
         ])),
 
         url(r'^proclamation/', include([

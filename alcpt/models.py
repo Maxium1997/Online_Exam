@@ -124,6 +124,7 @@ class Student(models.Model):
 # valid: True = testpaper is valid and can be used; False is the opposite
 class TestPaper(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    question_list = models.ManyToManyField('Question')
     created_time = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey("User", on_delete=models.PROTECT, related_name='testee_created')
     is_testpaper = models.BooleanField(default=False)
@@ -148,8 +149,8 @@ class Exam(models.Model):
     name = models.CharField(max_length=100, unique=True)
     exam_type = models.PositiveSmallIntegerField(default=2)
     testpaper = models.ForeignKey('TestPaper', on_delete=models.CASCADE, null=True)
-    use_freq = models.IntegerField(default=0)
-    modified_times = models.IntegerField(default=0)
+    use_freq = models.IntegerField(default=0)       # 似乎沒用到
+    modified_times = models.IntegerField(default=0)     # 似乎沒用到
     average_score = models.FloatField(default=0)     # 資料庫我有加一欄，不影響可以不用刪掉
     start_time = models.DateTimeField(blank=True, null=True)
     created_time = models.DateTimeField(auto_now_add=True)
@@ -188,14 +189,12 @@ class Question(models.Model):
     difficulty = models.PositiveSmallIntegerField(default=0)
     issued_freq = models.IntegerField(default=0)
     correct_freq = models.IntegerField(default=0)
-    used_freq = models.PositiveIntegerField(default=0)
     created_time = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey('User', on_delete=models.PROTECT, related_name='question_created')
     update_time = models.DateTimeField(auto_now=True)
     last_updated_by = models.ForeignKey('User', on_delete=models.SET_NULL, blank=True, null=True,
                                         related_name='last_updated')
-    is_valid = models.BooleanField(default=False)
-    used_to = models.ManyToManyField(TestPaper)
+    is_valid = models.BooleanField(default=False)       # 似乎沒用到
     faulted_reason = models.CharField(max_length=255, blank=True, null=True, default="")
     STATES_CHOICES = (
         (1, '審核通過'),
@@ -242,7 +241,7 @@ class AnswerSheet(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE)      # Student -> User
     finish_time = models.DateTimeField(auto_now_add=True)
     is_finished = models.BooleanField(default=False)
-    score = models.PositiveSmallIntegerField(null=True)
+    score = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):
         return str(self.user) + '\'s' + str(self.exam)

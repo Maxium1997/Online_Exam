@@ -37,6 +37,18 @@ def readable_question_type(question_type: int):
         raise IllegalArgumentError(message='Unknown question type {}.'.format(question_type))
 
 
+@register.filter(name='readable_question_difficulty')
+def readable_question_difficulty(difficulty: int):
+    DIFFICULTY = (
+        (0, ''),
+        (1, '簡單'),
+        (2, '中等'),
+        (3, '困難'),
+    )
+
+    return DIFFICULTY[difficulty][1]
+
+
 # check whether user_type is readable user_type(int or str)
 @register.filter(name='readable_privilege')
 def readable_user_type(privilege):
@@ -269,3 +281,16 @@ def readable_user_query_content(user_query_content: str):
             readable_user_query_content += '學號/姓名="' + item[1] + '"'
 
     return readable_user_query_content
+
+
+@register.filter(name='question_type_transfer_to_original_data')
+def question_type_transfer_to_original_data(q_type: int):
+    QUESTION_TYPE = (
+        (0, ''),
+        (1, 'QA'),
+        (2, 'ShortConversation'),
+        (3, 'Grammar'),
+        (4, 'Phrase'),
+        (5, 'ParagraphUnderstanding'),
+    )
+    return QUESTION_TYPE[q_type][1]

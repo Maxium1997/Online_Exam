@@ -83,7 +83,7 @@
                                 <td>{{ department.name }}</td>
                                 <td>{{ department.student_set.all.count }}</td>
                                 <td>
-                                    <a href=""><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
+                                    <a href="{% url 'unit_edit' 'department' department.name %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -112,7 +112,7 @@
                                 <td>{{ squadron.name }}</td>
                                 <td>{{ squadron.student_set.all.count }}</td>
                                 <td>
-                                    <a href=""><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
+                                    <a href="{% url 'unit_edit' 'squadron' squadron.name %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
                                 </td>
                             </tr>
                         {% endfor %}
