@@ -2,6 +2,73 @@
 
 {% load web_filters %}
 
+{% block scripts %}
+    <script type="text/javascript">
+        var passPrivilege = true;
+        var passID = false;
+
+        function IDValid(kind) {
+            var regIDs = document.getElementById('reg_ids');
+            var usersFile = document.getElementById('users_file');
+
+            if(kind === 'reg_ids'){
+                if(regIDs.value !== ''){
+                    usersFile.value = '';
+                    usersFile.disabled = true;
+                    passID = true;
+                } else {
+                    usersFile.disabled = false;
+                    passID = false;
+                }
+            }
+
+            if(kind === 'file') {
+                if(usersFile.value !== ''){
+                    regIDs.value = '';
+                    regIDs.disabled = true;
+                    passID = true;
+                } else{
+                    regIDs.disabled = false;
+                    passID = false;
+                }
+            }
+            AllValid();
+        }
+
+        function PrivilegeNotEmpty(){
+            var privilegeInvalid = document.getElementById('privilege_invalid');
+            var system = document.getElementById('32');
+            var testM = document.getElementById('16');
+            var tbM = document.getElementById('8');
+            var tbO = document.getElementById('4');
+            var viewer = document.getElementById('2');
+            var testee = document.getElementById('1');
+
+            if (system.checked === false && testM.checked === false && tbM.checked === false &&
+                tbO.checked === false && viewer.checked === false && testee.checked === false) {
+                privilegeInvalid.innerHTML = '最少選一個權限';
+                passPrivilege = false;
+            } else {
+                privilegeInvalid.innerHTML = '';
+                passPrivilege = true;
+            }
+            AllValid();
+        }
+        
+        function AllValid() {
+            var submit = document.getElementById('submit');
+
+            if(passID === true && passPrivilege === true){
+                submit.disabled = false;
+                submit.style.backgroundColor = '#4CCABD';
+            } else{
+                submit.disabled = true;
+                submit.style.backgroundColor = 'grey';
+            }
+        }
+    </script>
+{% endblock %}
+
 {% block path %}
     <a href="">系統管理員</a>
     <a class="fa fa-angle-double-right fa-lg box"></a>
@@ -19,28 +86,29 @@
                 <tr>
                     <td class="col-md-1">帳號清單</td>
                     <td class="col-md-2">
-                        <textarea class="form-control" name="reg_ids" rows="5" placeholder="帳號1, 帳號2, ..."></textarea>
-                        <small>學號即為帳號，僅限英文、數字，請用半形逗號區隔。<strong>預設密碼為學號。</strong></small>
+                        <textarea class="form-control" id="reg_ids" name="reg_ids" rows="5" onkeyup="IDValid('reg_ids')" placeholder="帳號1, 帳號2, ..."></textarea>
+                        <small>學號即為帳號，僅限英文、數字，請用全形頓號區隔。<strong>預設密碼為學號。</strong></small>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="col-md-1">選擇檔案</td>
-                    <td class="col-md-2"><input type="file" name="users_file" accept=".xls, .xlsx"></td>
+                    <td class="col-md-2"><input type="file" id="users_file" name="users_file" accept=".xls, .xlsx" onchange="IDValid('file')"></td>
                 </tr>
 
                 <tr>
                     <td class="col-md-1">權限</td>
                     <td class="col-md-2">
                         {% for privilege in privileges.values %}
-                            <input type="checkbox" id="{{ privilege.value.0 }}" name="privilege_{{ forloop.counter0 }}" {% if privilege == privileges.Testee %} checked {% endif %}>{{ privilege.value.1 }}&nbsp;
+                            <input type="checkbox" id="{{ privilege.value.0 }}" name="privilege_{{ forloop.counter0 }}" onclick="PrivilegeNotEmpty()" {% if privilege == privileges.Testee %} checked {% endif %}>{{ privilege.value.1 }}&nbsp;
                         {% endfor %}
+                        <label id="privilege_invalid" class="privilege_invalid"></label>
                     </td>
                 </tr>
             </table>
 
             <div class="btn">
-                <button type="submit" onclick="return confirm('確認新增？')">新增使用者</button>
+                <button type="submit" id="submit" style="background-color: grey" onclick="return confirm('確認新增？')" disabled>新增使用者</button>
                 <button type="reset" onclick="return confirm('確認重設？')">重設</button>
                 <button type="button" onclick="self.location=document.referrer;">取消</button>
             </div>
@@ -94,6 +162,9 @@
                 color: #FFFEF6;
                 background-color: #4CCABD;
                 border: none;
+            }
+            .privilege_invalid {
+                color: red;
             }
         </style>
 

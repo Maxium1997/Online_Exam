@@ -16,7 +16,7 @@
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
     <script>
-        {#Checkout whether data is different from before.#}
+        {#Checkout whether data is different from database.#}
         document.getElementById('submit').disabled = true;
         document.getElementById('submit').style.backgroundColor = 'grey';
 
@@ -37,39 +37,77 @@
         {#var $progress = $('#progress');#}
         {#var prg = 0;#}
         {#var timer = window.setInterval(frame, 10);#}
-        {#function frame(){#}
-        {#    if(prg === 100) {#}
+        {#function frame() {#}
+        {#    if (prg === 100) {#}
         {#        clearInterval(timer);#}
-        {#    }#}
-        {#    else {#}
+        {#    } else {#}
         {#        prg++;#}
         {#    }#}
         {#    $progress.html(prg + "%");#}
-        {#}#}
-        {#window.onload = () => {#}
-        {#    $loading.hide();#}
-        {#};#}
+        {#    window.onload = () => {#}
+        {#        $loading.hide();}}#}
 
         <!--Checkout whether data is different from database.-->
         function data_unique(names , input) {
-            var submit_btn = document.getElementById('submit');
+            var submit = document.getElementById('submit');
             var arr = names;
 
             for(var i = 0; i < arr.length; i++) {
                 if (input.value === arr[i]) {
                     document.getElementById('invalid').innerHTML = "此名稱已存在。";
-                    submit_btn.style.backgroundColor = 'grey';
-                    submit_btn.disabled = true;
+                    submit.style.backgroundColor = 'grey';
+                    submit.disabled = true;
                     break;
                 } else if (input.value === ""){
-                    submit_btn.style.backgroundColor = 'grey';
-                    submit_btn.disabled = true;
+                    submit.style.backgroundColor = 'grey';
+                    submit.disabled = true;
                 } else {
                     document.getElementById('invalid').innerHTML = "";
-                    submit_btn.style.backgroundColor = '#4CCABD';
-                    submit_btn.disabled = false;
+                    submit.style.backgroundColor = '#4CCABD';
+                    submit.disabled = false;
                 }
             }
+        }
+
+        <!--Checkout whether privilege is empty.-->
+        function PrivilegeNotEmpty(){
+            var system = document.getElementById('32');
+            var testM = document.getElementById('16');
+            var tbM = document.getElementById('8');
+            var tbO = document.getElementById('4');
+            var viewer = document.getElementById('2');
+            var testee = document.getElementById('1');
+
+            if (system.checked === false && testM.checked === false && tbM.checked === false &&
+                tbO.checked === false && viewer.checked === false && testee.checked === false) {
+                submit.disabled = true;
+                submit.style.backgroundColor = 'grey';
+            }
+            else {
+                submit.disabled = false;
+                submit.style.backgroundColor = '#4CCABD';
+            }
+        }
+
+        <!--Checkout whether privilege is empty.-->
+        function PrivilegeNotEmpty() {
+            var privilegeInvalid = document.getElementById('privilege_invalid');
+            var system = document.getElementById('32');
+            var testM = document.getElementById('16');
+            var tbM = document.getElementById('8');
+            var tbO = document.getElementById('4');
+            var viewer = document.getElementById('2');
+            var testee = document.getElementById('1');
+
+            if (system.checked === false && testM.checked === false && tbM.checked === false &&
+                tbO.checked === false && viewer.checked === false && testee.checked === false) {
+                privilegeInvalid.innerHTML = '最少選一個權限';
+                passPrivilege = false;
+            } else {
+                privilegeInvalid.innerHTML = '';
+                passPrivilege = true;
+            }
+            DataAllValid();
         }
     </script>
 

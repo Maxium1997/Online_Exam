@@ -2,6 +2,69 @@
 
 {% load web_filters %}
 
+{% block scripts %}
+    <script type="text/javascript">
+        var passName = false;
+        var passPrivilege = true;
+
+        // Checkout whether privilege is unique.
+        function unique_name(names , input) {
+            var arr = names;
+            var invalid = document.getElementById('name_invalid');
+
+            for (var i = 0; i < arr.length; i++) {
+                if (input.value === arr[i]) {
+                    invalid.innerHTML = "<span style='color: red'>名稱已存在</span>";
+                    passName = false;
+                    break;
+                }
+                else if (input.value === ""){
+                    invalid.innerHTML = "<span style='color: red'>必填</span>";
+                    passName = false;
+                }
+                else {
+                    invalid.innerHTML = '<i class="fa fa-check"></i>';
+                    passName = true;
+                }
+            }
+            data_valid();
+        }
+
+        // Checkout whether privilege is empty.
+        function privilege_not_empty() {
+            var privilegeInvalid = document.getElementById('privilege_invalid');
+            var system = document.getElementById('32');
+            var testM = document.getElementById('16');
+            var tbM = document.getElementById('8');
+            var tbO = document.getElementById('4');
+            var viewer = document.getElementById('2');
+            var testee = document.getElementById('1');
+
+            if (system.checked === false && testM.checked === false && tbM.checked === false &&
+                tbO.checked === false && viewer.checked === false && testee.checked === false) {
+                privilegeInvalid.innerHTML = "<span style=\'color: red\'>必填</span>";
+                passPrivilege = false;
+            } else {
+                privilegeInvalid.innerHTML = '<i class="fa fa-check"></i>';
+                passPrivilege = true;
+            }
+            data_valid();
+        }
+
+        // Checkout whether all data is valid.
+        function data_valid(){
+            if (passName === true && passPrivilege === true){
+                submit.disabled = false;
+                submit.style.backgroundColor = "#4CCABD";
+            }
+            else{
+                submit.disabled = true;
+                submit.style.backgroundColor = "grey";
+            }
+        }
+    </script>
+{% endblock %}
+
 {% block path %}
     <a href="">系統管理員</a>
     <a class="fa fa-angle-double-right fa-lg box"></a>
@@ -18,7 +81,8 @@
             <table>
                 <tr>
                     <td class="col-md-2">回報類別名稱</td>
-                    <td class="col-md-5"><input type="text" name="category_name" onkeyup="data_unique({{ categories_names }}, this)" required></td>
+                    <td class="col-md-5"><input type="text" name="category_name" onkeyup="unique_name({{ categories_names }}, this)" required></td>
+                    <td id="name_invalid" class="name_invalid"></td>
                 </tr>
 
                 <tr>
@@ -26,20 +90,19 @@
                     <td class="col-md-5">
                         <ul style="list-style: none; line-height: 40px">
                             {% for privilege in privileges %}
-                                <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" {% if privilege.value.0 == 32 %} checked {% endif %}> {{ privilege.value.1 }}</li>
+                                <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_not_empty()" {% if privilege.value.0 == 32 %} checked {% endif %}> {{ privilege.value.1 }}</li>
                             {% endfor %}
+                            <label class="privilege_invalid" id="privilege_invalid"></label>
                         </ul>
                     </td>
                 </tr>
             </table>
 
             <div class="btn">
-                <button type="submit" id="submit" onclick="return confirm('確認新增此類別？')">新增</button>
+                <button type="submit" id="submit" style="background-color: grey" onclick="return confirm('確認新增此類別？')" disabled>新增</button>
                 <button type="reset">重設</button>
                 <button type="reset" onclick="self.location=document.referrer;">取消</button>
             </div>
-
-            <div id="invalid" class="invalid"></div>
         </form>
 
         <style>
@@ -79,12 +142,8 @@
                 top: 30px;
                 left: 40%;
             }
-            .invalid {
-                font-size: 28px;
-                color: #c12e2a;
-                position: absolute;
-                left: 69%;
-                top: 23%;
+            .name_invalid, .privilege_invalid{
+                color: limegreen;
             }
         </style>
     </div>

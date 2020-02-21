@@ -262,6 +262,9 @@ def user_edit(request, reg_id):
                     except ObjectDoesNotExist:
                         pass
 
+                    reg_ids = [_.reg_id for _ in User.objects.all().exclude(reg_id=reg_id)]
+                    stu_ids = [_.stu_id for _ in Student.objects.all().exclude(stu_id=edited_user.reg_id)]
+
                     return render(request, 'user/edit_user.html', locals())
 
         except ObjectDoesNotExist:
@@ -277,7 +280,10 @@ def user_edit(request, reg_id):
             except ObjectDoesNotExist:
                 pass
 
+            reg_ids = [_.reg_id for _ in User.objects.all().exclude(reg_id=reg_id)]
+            stu_ids = [_.stu_id for _ in Student.objects.all().exclude(stu_id=edited_user.reg_id)]
             return render(request, 'user/edit_user.html', locals())
+
         except ObjectDoesNotExist:
             messages.error(request, "User doesn't exist, user register id: {}".format(reg_id))
             return redirect('user_list')
@@ -511,6 +517,7 @@ def report_category_edit(request, category_id):
             messages.error(request, "Existed category name: {}".format(category_name))
             return redirect('report_category_edit', category_id=category.id)
     else:
+        categories_names = [_.name for _ in ReportCategory.objects.all().exclude(id=category_id)]
         return render(request, 'report/report_category_edit.html', locals())
 
 
