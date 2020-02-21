@@ -9,49 +9,70 @@
         var passPrivilege = true;
         var passStuID = false;
 
-        function uniqueID(reg_ids , input) {
+        function unique_ID(reg_ids , input) {
             var arr = reg_ids;
             var invalid_id = document.getElementById('invalid_id');
 
             for(var i = 0; i < arr.length; i++) {
                 if (input.value === arr[i]) {
-                    invalid_id.innerHTML = "此ID已存在";
+                    invalid_id.innerHTML = "<span style='color: red'>ＩＤ已存在</span>";
                     passRegId = false;
                     break;
                 }
                 else if (input.value === ""){
-                    invalid_id.innerHTML = "此為必填，請勿留白";
+                    invalid_id.innerHTML = "<span style='color: red'>必填</span>";
                     passRegId = false;
                 }
                 else {
-                    invalid_id.innerHTML = "";
+                    invalid_id.innerHTML = '<i class="fa fa-check"></i>';
                     passRegId = true;
                 }
             }
-            DataAllValid()
+            data_valid();
         }
 
-        function uniqueStuID(stu_ids , input) {
+        function unique_stuID(stu_ids , input) {
             var arr = stu_ids;
             var invalid_stu_id = document.getElementById('invalid_stu_id');
 
             for(var i = 0; i < arr.length; i++) {
                 if (input.value === arr[i]) {
-                    invalid_stu_id.innerHTML = "此ID已存在";
+                    invalid_stu_id.innerHTML = "<span style='color: red'>ＩＤ已存在</span>";
                     passStuID = false;
                     break;
                 } else if (input.value === ""){
-                    invalid_stu_id.innerHTML = "此為必填，請勿留白";
+                    invalid_stu_id.innerHTML = "<span style='color: red'>必填</span>";
                     passStuID = false;
                 } else {
-                    invalid_stu_id.innerHTML = "";
+                    invalid_stu_id.innerHTML = '<i class="fa fa-check"></i>';
                     passStuID = true;
                 }
             }
-            DataAllValid()
+            data_valid();
         }
 
-        function IsStudent() {
+        // Checkout whether privilege is empty.
+        function privilege_not_empty() {
+            var privilegeInvalid = document.getElementById('privilege_invalid');
+            var system = document.getElementById('32');
+            var testM = document.getElementById('16');
+            var tbM = document.getElementById('8');
+            var tbO = document.getElementById('4');
+            var viewer = document.getElementById('2');
+            var testee = document.getElementById('1');
+
+            if (system.checked === false && testM.checked === false && tbM.checked === false &&
+                tbO.checked === false && viewer.checked === false && testee.checked === false) {
+                privilegeInvalid.innerHTML = "<span style='color: red'>最少選一個選項</span>";
+                passPrivilege = false;
+            } else {
+                privilegeInvalid.innerHTML = '<i class="fa fa-check"></i>';
+                passPrivilege = true;
+            }
+            data_valid();
+        }
+
+        function is_student() {
             var stuID = document.getElementById('stu_id');
             var department = document.getElementById('department');
             var squadron = document.getElementById('squadron');
@@ -71,20 +92,25 @@
                     passIdentity = false;
                 } else{
                     passIdentity = true;}
+
                 stuID.value = '';
                 department.value = '';
                 squadron.value = '';
                 grade.value = '';
+
+                document.getElementById('invalid_stu_id').innerHTML = '';
+
                 stuID.disabled = true;
                 department.disabled = true;
                 squadron.disabled = true;
                 grade.disabled = true;
             }
-            DataAllValid()
+            data_valid();
         }
 
-        function DataAllValid() {
+        function data_valid() {
             var identity = document.getElementById('identity');
+            var submit = document.getElementById('submit');
 
             if(identity.value === '2'){
                 if (passRegId===true && passIdentity===true && passPrivilege===true && passStuID===true){
@@ -112,6 +138,7 @@
     </script>
 {% endblock %}
 
+
 {% block path %}
     <a href="">系統管理員</a>
     <a class="fa fa-angle-double-right fa-lg box"></a>
@@ -129,7 +156,7 @@
                     <tr>
                         <td>Reg ID</td>
                         <td>
-                            <input type="text" id="reg_id" name="reg_id" placeholder="Register ID number..." onkeyup="uniqueID({{ reg_ids }}, this)" required>
+                            <input type="text" id="reg_id" name="reg_id" placeholder="Register ID number..." onkeyup="unique_ID({{ reg_ids }}, this)" required>
                             <label class="unique_id" id="invalid_id"></label>
                         </td>
                     </tr>
@@ -137,7 +164,7 @@
                     <tr>
                         <td>身份</td>
                         <td>
-                            <select id="identity" name="identity" onchange="IsStudent();" required>
+                            <select id="identity" name="identity" onchange="is_student()" required>
                                 <option value="" disabled selected>請選擇身份</option>
                                 {% for identity in identities %}
                                     <option value="{{ identity.value.0 }}">{{ identity.value.1 }}</option>
@@ -150,7 +177,7 @@
                         <td>權限</td>
                         <td>
                             {% for privilege in privileges.values %}
-                                <input type="checkbox" id="{{ privilege.value.0 }}" name="privilege_{{ forloop.counter0 }}" onclick="PrivilegeNotEmpty()" {% if privilege == privileges.Testee %} checked {% endif %}>
+                                <input type="checkbox" id="{{ privilege.value.0 }}" name="privilege_{{ forloop.counter0 }}" onclick="privilege_not_empty()" {% if privilege == privileges.Testee %} checked {% endif %}>
                                 <label for="{{ privilege.value.0 }}">{{ privilege.value.1 }}&nbsp;&nbsp;&nbsp;</label>
                             {% endfor %}
                             <label class="privilege_invalid" id="privilege_invalid"></label>
@@ -166,7 +193,7 @@
                     <tr>
                         <td>Stu ID</td>
                         <td>
-                            <input type="text" id="stu_id" name="stu_id" placeholder="Student ID number..." onkeyup="uniqueStuID({{ stu_ids }}, this)" disabled>
+                            <input type="text" id="stu_id" name="stu_id" placeholder="Student ID number..." onkeyup="unique_stuID({{ stu_ids }}, this)" disabled>
                             <label class="unique_stu_id" id="invalid_stu_id"></label>
                         </td>
                     </tr>
@@ -251,21 +278,8 @@
                 background-color: grey;
             }
 
-            .unique_id {
-                color: #c12e2a;
-                font-size: 18px;
-            }
-
-            .unique_stu_id {
-                color: #c12e2a;
-                font-size: 18px;
-                position: relative;
-                top: 270px;
-                left: 48%;
-            }
-            .privilege_invalid {
-                color: #c12e2a;
-                font-size: 18px;
+            .unique_id, .unique_stu_id, .privilege_invalid{
+                color: limegreen;
             }
         </style>
     </div>

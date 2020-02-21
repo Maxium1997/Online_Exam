@@ -2,6 +2,290 @@
 
 {% load web_filters %}
 
+{% block scripts %}
+    <script type="text/javascript">
+        var validRegId = false;
+        var validName = false;
+        var validEmail = false;
+        var validGender = false;
+        var validIdentity = false;
+        var validPrivilege = false;
+        var validStuId = false;
+        var validGrade = false;
+        var validSquadron = false;
+        var validDepartment = false;
+
+        var originSystem = false;
+        var originTestM = false;
+        var originTBM = false;
+        var originTBO = false;
+        var originViewer = false;
+        var originTestee = false;
+
+        // Get original privilege
+        window.onload = function() {
+            var system = document.getElementById('32');
+            var testM = document.getElementById('16');
+            var tbM = document.getElementById('8');
+            var tbO = document.getElementById('4');
+            var viewer = document.getElementById('2');
+            var testee = document.getElementById('1');
+
+            if(system.checked === true) originSystem = true;
+            if(testM.checked === true) originTestM = true;
+            if(tbM.checked === true) originTBM = true;
+            if(tbO.checked === true) originTBO = true;
+            if(viewer.checked === true) originViewer = true;
+            if(testee.checked === true) originTestee = true;
+        };
+
+        // Checkout whether privilege change and privilege can't be empty.
+        function privilege_valid() {
+            var privilegeInvalid = document.getElementById('privilege_invalid');
+            var system = document.getElementById('32');
+            var testM = document.getElementById('16');
+            var tbM = document.getElementById('8');
+            var tbO = document.getElementById('4');
+            var viewer = document.getElementById('2');
+            var testee = document.getElementById('1');
+
+            // Checkout whether privilege is changed.
+            if (system.checked === originSystem && testM.checked === originTestM && tbM.checked === originTBM &&
+                tbO.checked === originTBO && viewer.checked === originViewer && testee.checked === originTestee){
+                privilegeInvalid.innerHTML = '';
+                validPrivilege = false;
+            }
+            // Checkout whether privilege isn't null.
+            else if (system.checked === false && testM.checked === false && tbM.checked === false &&
+                tbO.checked === false && viewer.checked === false && testee.checked === false) {
+                privilegeInvalid.innerHTML = "<span style='color: red'>最少選一個權限</span>";
+                validPrivilege = false;
+            }
+            else {
+                privilegeInvalid.innerHTML = '<i class="fa fa-check"></i>';
+                validPrivilege = true;
+            }
+            data_valid();
+        }
+
+        // Checkout whether name change and name can't be empty.
+        function reg_id_valid(origin, reg_ids ,input) {
+            var arr = reg_ids;
+            var invalid_id = document.getElementById('reg_id_invalid');
+
+            for(var i = 0; i < arr.length; i++) {
+                if (input.value === arr[i]) {
+                    invalid_id.innerHTML = "<span style='color: red'>此ＩＤ已存在</span>";
+                    validRegId = false;
+                    break;
+                }
+                else if (input.value === ""){
+                    invalid_id.innerHTML = "<span style='color: red'>必填</span>";
+                    validRegId = false;
+                }
+                else if (origin === input.value) {
+                    invalid_id.innerHTML = '';
+                    validRegId = false;
+                }
+                else {
+                    invalid_id.innerHTML = '<i class="fa fa-check"></i>';
+                    validRegId = true;
+                }
+            }
+            data_valid();
+        }
+
+        // Checkout whether name change.
+        function name_valid(origin ,input) {
+            var name_invalid = document.getElementById('name_invalid');
+
+            if (origin === input.value) {
+                validName = false;
+                name_invalid.innerHTML = '';
+            }
+            else if(input.value === ''){
+                validName = false;
+                name_invalid.innerHTML = "<span style='color: red'>必填</span>";
+            }
+            else {
+                validName = true;
+                name_invalid.innerHTML = '<i class="fa fa-check"></i>';
+            }
+            data_valid();
+        }
+
+        // Checkout whether email change.
+        function email_valid(origin ,input) {
+            var email_invalid = document.getElementById('email_invalid');
+
+            if (origin === input.value) {
+                validEmail = false;
+                email_invalid.innerHTML = '';
+            }
+            else if(input.value === ''){
+                validEmail = false;
+                email_invalid.innerHTML = "<span style='color: red'>必填</span>";
+            }
+            else {
+                validEmail = true;
+                email_invalid.innerHTML = '<i class="fa fa-check"></i>';
+            }
+            data_valid();
+        }
+
+        // Checkout whether gender change.
+        function gender_valid(origin ,input) {
+            var gender_invalid = document.getElementById('gender_invalid');
+
+            if (origin === input.value) {
+                validGender = false;
+                gender_invalid.innerHTML = '';
+            }
+            else if(input.value === ''){
+                validGender = false;
+                gender_invalid.innerHTML = "<span style='color: red'>必填</span>";
+            }
+            else {
+                validGender = true;
+                gender_invalid.innerHTML = '<i class="fa fa-check"></i>';
+            }
+            data_valid();
+        }
+
+        // Checkout whether identity change.
+        function identity_valid(origin ,input) {
+            if (origin === input.value) {
+                validIdentity = false;
+                document.getElementById('identity_invalid').innerHTML = '';
+            }
+            else if(input.value === ''){
+                validIdentity = false;
+                document.getElementById('identity_invalid').innerHTML = "<span style='color: red'>必填</span>";
+            }
+            else {
+                validIdentity = true;
+                document.getElementById('identity_invalid').innerHTML = '<i class="fa fa-check"></i>';
+            }
+            data_valid();
+        }
+
+        // Checkout whether name change and name can't be empty.
+        function stu_id_valid(origin, stu_ids ,input) {
+            var arr = stu_ids;
+            var invalid_id = document.getElementById('stu_id_invalid');
+
+            for(var i = 0; i < arr.length; i++) {
+                if (input.value === arr[i]) {
+                    invalid_id.innerHTML = "<span style='color: red'>此ＩＤ已存在</span>";
+                    validStuId = false;
+                    break;
+                }
+                else if (input.value === ""){
+                    invalid_id.innerHTML = "<span style='color: red'>必填</span>";
+                    validStuId = false;
+                }
+                else if (origin === input.value) {
+                    invalid_id.innerHTML = '';
+                    validStuId = false;
+                }
+                else {
+                    invalid_id.innerHTML = '<i class="fa fa-check"></i>';
+                    validStuId = true;
+                }
+            }
+            data_valid();
+        }
+
+        // Checkout whether grade change and not null.
+        function grade_valid(origin ,input) {
+            var grade_invalid = document.getElementById('grade_invalid');
+
+            if (origin === input.value) {
+                validGrade = false;
+                grade_invalid.innerHTML = '';
+            }
+            else if(input.value === ''){
+                validGrade = false;
+                grade_invalid.innerHTML = "<span style='color: red'>必填</span>";
+            }
+            else {
+                validGrade = true;
+                grade_invalid.innerHTML = '<i class="fa fa-check"></i>';
+            }
+            data_valid();
+        }
+
+        // Checkout whether department change.
+        function department_valid(origin ,input) {
+            var department_invalid = document.getElementById('department_invalid');
+
+            if (origin === input.value) {
+                validDepartment = false;
+                department_invalid.innerHTML = '';
+            }
+            else if(input.value === ''){
+                validDepartment = false;
+                department_invalid.innerHTML = "<span style='color: red'>必填</span>";
+            }
+            else {
+                validDepartment = true;
+               department_invalid.innerHTML = '<i class="fa fa-check"></i>';
+            }
+            data_valid();
+        }
+
+        // Checkout whether squadron change.
+        function squadron_valid(origin ,input) {
+            var squadron_invalid = document.getElementById('squadron_invalid');
+
+            if (origin === input.value) {
+                validSquadron = false;
+                squadron_invalid.innerHTML = '';
+            }
+            else if(input.value === ''){
+                validSquadron = false;
+                squadron_invalid.innerHTML = "<span style='color: red'>必填</span>";
+            }
+            else {
+                validSquadron = true;
+                squadron_invalid.innerHTML = '<i class="fa fa-check"></i>';
+            }
+            data_valid();
+        }
+
+        // Checkout whether all of data is valid.
+        function data_valid() {
+            var identity = document.getElementById('identity');
+            var submit = document.getElementById('submit');
+
+            if(identity.value === '2'){
+                if (validRegId===true || validName===true || validEmail===true || validGender===true || validIdentity===true ||
+                    validPrivilege===true || validStuId===true || validGrade===true|| validSquadron===true || validDepartment===true){
+                    submit.disabled = false;
+                    submit.style.backgroundColor = "#4CCABD";
+                } else {
+                    submit.disabled = true;
+                    submit.style.backgroundColor = "grey";
+                }
+            }
+            else if(identity.value === '1' || identity.value === '3'){
+                if (validRegId===true || validName===true || validEmail===true || validGender===true || validIdentity===true ||
+                    validPrivilege===true ){
+                    submit.disabled = false;
+                    submit.style.backgroundColor = "#4CCABD";
+                } else{
+                    submit.disabled = true;
+                    submit.style.backgroundColor = "grey";
+                }
+            }
+            else{
+                submit.disabled = true;
+                submit.style.backgroundColor = "grey";
+            }
+        }
+    </script>
+{% endblock %}
+
 {% block path %}
     <a href="">系統管理員</a>
     <a class="fa fa-angle-double-right fa-lg box"></a>
@@ -42,31 +326,43 @@
             </ul>
 
             <ul class="user_info1_">
-                <li><input type="text" name="reg_id" value="{{ edited_user.reg_id }}" onkeyup="ChangeJudgementButton('{{ edited_user.reg_id }}', this)" required></li>
-                <li><input type="text" name="name" {% if edited_user.name %}value="{{ edited_user.name }}"{% endif %} onkeyup="ChangeJudgementButton('{{ edited_user.name }}', this)" placeholder="Name..." required></li>
-                <li><input type="text" name="email" {% if edited_user.email %}value="{{ edited_user.email }}"{% endif %} onkeyup="ChangeJudgementButton('{{ edited_user.email }}', this)" placeholder="Email..." required></li>
                 <li>
-                    <select name="gender" id="gender" onchange="ChangeJudgementButton('{{ edited_user.gender }}', document.getElementById('gender').value)" required>
+                    <input type="text" name="reg_id" id="reg_id" value="{{ edited_user.reg_id }}" onkeyup="reg_id_valid('{{ edited_user.reg_id }}' , {{ reg_ids }}, this)" required>
+                    <label id="reg_id_invalid" class="reg_id_invalid"></label>
+                </li>
+                <li>
+                    <input type="text" name="name" {% if edited_user.name %}value="{{ edited_user.name }}"{% endif %} onkeyup="name_valid('{{ edited_user.name }}', this)" placeholder="Name..." required>
+                    <label id="name_invalid" class="name_invalid"></label>
+                </li>
+                <li>
+                    <input type="text" name="email" {% if edited_user.email %}value="{{ edited_user.email }}"{% endif %} onkeyup="email_valid('{{ edited_user.email }}', this)" placeholder="Email..." required>
+                    <label id="email_invalid" class="email_invalid"></label>
+                </li>
+                <li>
+                    <select name="gender" id="gender" onchange="gender_valid('{{ edited_user.gender }}', document.getElementById('gender'))" required>
                         <option value="" disabled selected>請選擇性別</option>
                         <option value="0" {% if edited_user.gender == 0 %}selected{% endif %}>男</option>
                         <option value="1" {% if edited_user.gender == 1 %}selected{% endif %}>女</option>
                         <option value="2" {% if edited_user.gender == 2 %}selected{% endif %}>不想公開</option>
                     </select>
+                    <label id="gender_invalid" class="gender_invalid"></label>
                 </li>
                 <li>
-                    <select name="identity" id="identity" onchange="ChangeJudgementButton('{{ edited_user.identity }}', document.getElementById('identity').value)" required>
+                    <select name="identity" id="identity" onchange="identity_valid('{{ edited_user.identity }}', document.getElementById('identity'))" required>
                         <option value="" disabled selected>請選擇身份</option>
                         {% for identity in identities %}
                             <option value="{{ identity.value.0 }}" {% if edited_user.identity == identity.value.0 %}selected{% endif %}>{{ identity.value.1 }}</option>
                         {% endfor %}
                     </select>
+                    <label id="identity_invalid" class="identity_invalid"></label>
                 </li>
 
                 <li>
                     {% for privilege in privileges %}
-                        <input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" {% if edited_user|has_permission:privilege %} checked {% endif %}>
+                        <input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>
                         <label for="{{ privilege.value.0 }}">{{ privilege.value.1 }}&nbsp;&nbsp;&nbsp;</label>
                     {% endfor %}
+                    <label id="privilege_invalid" class="privilege_invalid"></label>
                 </li>
             </ul>
 
@@ -79,29 +375,37 @@
                 </ul>
 
                 <ul class="student_info1_">
-                    <li><input type="text" name="stu_id" value="{{ edited_user.student.stu_id }}" onkeyup="ChangeJudgementButton('{{ edited_user.student.stu_id }}', this)" required></li>
-                    <li><input type="text" name="grade" value="{{ edited_user.student.grade }}" onkeyup="ChangeJudgementButton('{{ edited_user.student.grade }}', this)" required></li>
                     <li>
-                        <select name="department" id="department" onchange="ChangeJudgementButton('{{ edited_user.student.department }}', document.getElementById('department').value)" required>
+                        <input type="text" name="stu_id" value="{{ edited_user.student.stu_id }}" onkeyup="stu_id_valid('{{ edited_user.student.stu_id }}', {{ stu_ids }}, this)" required>
+                        <label id="stu_id_invalid" class="stu_id_invalid"></label>
+                    </li>
+                    <li>
+                        <input type="text" name="grade" value="{{ edited_user.student.grade }}" onkeyup="grade_valid('{{ edited_user.student.grade }}', this)" required>
+                        <label id="grade_invalid" class="grade_invalid"></label>
+                    </li>
+                    <li>
+                        <select name="department" id="department" onchange="department_valid('{{ edited_user.student.department.id }}', document.getElementById('department'))" required>
                             <option value="" disabled selected>請選擇科系</option>
                             {% for department in departments %}
                                 <option value="{{ department.id }}" {% if department == edited_user.student.department %}selected{% endif %}>{{ department }}</option>
                             {% endfor %}
                         </select>
+                        <label id="department_invalid" class="department_invalid"></label>
                     </li>
                     <li>
-                        <select name="squadron" id="squadron" onchange="ChangeJudgementButton('{{ edited_user.student.squadron }}', document.getElementById('squadron').value)" required>
+                        <select name="squadron" id="squadron" onchange="squadron_valid('{{ edited_user.student.squadron.id }}', document.getElementById('squadron'))" required>
                             <option value="" disabled selected>請選擇連隊單位</option>
                             {% for squadron in squadrons %}
                                 <option value="{{ squadron.id }}" {% if squadron == edited_user.student.squadron %}selected{% endif %}>{{ squadron }}</option>
                             {% endfor %}
                         </select>
+                        <label id="squadron_invalid" class="squadron_invalid"></label>
                     </li>
                 </ul>
             {% endif %}
 
             <div class="btn">
-                <button type="submit" id="submit">送出</button>
+                <button type="submit" id="submit" class="submit">送出</button>
                 <button type="button" onclick="window.location.href='{% url 'user_list' %}'">返回</button>
             </div>
         </form>
@@ -151,6 +455,13 @@
                 position: absolute;
                 top: 80%;
                 right: 10%;
+            }
+            .btn .submit{
+                background-color: grey;
+            }
+            .reg_id_invalid, .name_invalid, .email_invalid, .gender_invalid, .identity_invalid, .privilege_invalid,
+            .stu_id_invalid, .grade_invalid, .department_invalid, .squadron_invalid{
+                color: limegreen;
             }
         </style>
 

@@ -2,11 +2,10 @@
 
 {% block scripts %}
     <script type="text/javascript">
-        function UniqueName(departments, squadrons, mode, input_unit){
+        function unique_name(departments, squadrons, mode, input_unit){
             var arr = squadrons;
-            var valid_element = document.getElementById("valid");
-            var invalid_element = document.getElementById("invalid");
-            var submit_element = document.getElementById("submit");
+            var invalid = document.getElementById("invalid");
+            var submit = document.getElementById("submit");
 
             if(mode === 'department'){
                 arr = departments;
@@ -14,28 +13,25 @@
 
             for(var i = 0; i < arr.length; i++) {
                 if (input_unit.value === ''){
-                    valid_element.innerHTML = '';
-                    invalid_element.innerHTML = '請輸入名稱，勿留白';
-                    submit_element.disabled = true;
-                    submit_element.style.backgroundColor = 'grey';
+                    invalid.innerHTML = "<span style='color: red'>必填</span>";
+                    submit.disabled = true;
+                    submit.style.backgroundColor = 'grey';
                 }
                 else if (input_unit.value === arr[i]) {
-                    valid_element.innerHTML = '';
-                    invalid_element.innerHTML = '此名稱已存在';
-                    submit_element.disabled = true;
-                    submit_element.style.backgroundColor = 'grey';
+                    invalid.innerHTML = "<span style='color: red'>名稱已存在</span>";
+                    submit.disabled = true;
+                    submit.style.backgroundColor = 'grey';
                     break;
                 }
                 else {
-                    valid_element.innerHTML = '此名稱可使用。';
-                    invalid_element.innerHTML = '';
-                    submit_element.disabled = false;
-                    submit_element.style.backgroundColor = '#4CCABD';
+                    invalid.innerHTML = '<i class="fa fa-check"></i>';
+                    submit.disabled = false;
+                    submit.style.backgroundColor = '#4CCABD';
                 }
             }
         }
 
-        function Selected() {
+        function is_selected() {
             var unitName = document.getElementById("unit_name");
             var unit = document.getElementById("unit");
 
@@ -66,7 +62,7 @@
                 <tr>
                     <td class="col-md-2" style="text-align: center">單位</td>
                     <td class="col-md-5">
-                        <select id='unit' name='unit' onchange="Selected();" required>
+                        <select id='unit' name='unit' onchange="is_selected();" required>
                             <option value='' selected disabled hidden>選擇要新增單位</option>
                             <option value='department'> 科系 </option>
                             <option value='squadron'> 中隊 </option>
@@ -76,13 +72,12 @@
 
                 <tr>
                     <td class="col-md-2" style="text-align: center">單位名稱</td>
-                    <td class="col-md-5"><input type="text" id="unit_name" name="unit_name" onkeyup="UniqueName({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="輸入要新增的單位名稱" required disabled></td>
+                    <td class="col-md-5"><input type="text" id="unit_name" name="unit_name" onkeyup="unique_name({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="輸入要新增的單位名稱" required disabled></td>
                 </tr>
 
                 <tr>
                     <td colspan="2" style="text-align: center">
                         <span id="invalid" class="result">&nbsp;請先選擇單位，再填寫名稱</span>
-                        <span id="valid" class="result">&nbsp;</span>
                     </td>
                 </tr>
             </table>
@@ -141,11 +136,9 @@
             .create_unit table span{
                 font-size: 16px;
             }
-            #valid{
-                color: green;
-            }
+
             #invalid{
-                color: red;
+                color: limegreen;
             }
         </style>
     </div>

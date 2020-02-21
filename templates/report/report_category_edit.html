@@ -34,7 +34,7 @@
         };
 
         // Checkout whether privilege change and privilege can't be empty.
-        function PrivilegeChange() {
+        function privilege_change() {
             var privilegeInvalid = document.getElementById('privilege_invalid');
             var system = document.getElementById('32');
             var testM = document.getElementById('16');
@@ -43,56 +43,54 @@
             var viewer = document.getElementById('2');
             var testee = document.getElementById('1');
 
+            {# Checkout wether privilege is changed. #}
             if (system.checked === originSystem && testM.checked === originTestM && tbM.checked === originTBM &&
                 tbO.checked === originTBO && viewer.checked === originViewer && testee.checked === originTestee){
+                privilegeInvalid.innerHTML = '';
                 changePrivilege = false;
             }
-            else {
-                changePrivilege = true;
-            }
-
             {# Checkout wether privilege isn't null. #}
-            if (system.checked === false && testM.checked === false && tbM.checked === false &&
+            else if (system.checked === false && testM.checked === false && tbM.checked === false &&
                 tbO.checked === false && viewer.checked === false && testee.checked === false) {
-                privilegeInvalid.innerHTML = '最少選一個權限';
+                privilegeInvalid.innerHTML = "<span style='color: red'>必填</span>";
                 passPrivilege = false;
-            } else {
-                privilegeInvalid.innerHTML = '';
+            }
+            else {
+                privilegeInvalid.innerHTML = '<i class="fa fa-check"></i>';
+                changePrivilege = true;
                 passPrivilege = true;
             }
-            AllValid();
+            data_valid();
         }
 
-         // Checkout whether name change and name can't be empty.
-        function NameChange(origin, names ,input) {
-            var invalid = document.getElementById('invalid');
+        // Checkout whether name change and name can't be empty.
+        function name_change(origin, names ,input) {
+            var invalid = document.getElementById('name_invalid');
             var arr = names;
 
             for(var i = 0; i < arr.length; i++) {
                 if (input.value === arr[i]) {
-                    invalid.innerHTML = "此名稱已存在。";
+                    invalid.innerHTML = "<span style='color: red'>名稱已存在</span>";
                     passName = false;
-                    break;
-                } else if (input.value === ""){
-                    invalid.innerHTML = "名稱不能為空";
-                    passName = false;
-                } else {
+                    break;}
+                else if (input.value === ""){
+                    invalid.innerHTML = "<span style='color: red'>必填</span>";
+                    passName = false;}
+                else if (origin === input.value) {
                     invalid.innerHTML = "";
+                    changeName = false;}
+                else {
+                    invalid.innerHTML = '<i class="fa fa-check"></i>';
+                    changeName = true;
                     passName = true;
                 }
             }
-
-            if (origin === input.value) {
-                changeName = false;
-            } else {
-                changeName = true;
-            }
-
-            AllValid();
+            data_valid();
         }
 
+
         // Checkout whether all of data is valid.
-        function AllValid() {
+        function data_valid() {
             var submit = document.getElementById('submit');
 
             if(changeName === true || changePrivilege === true){
@@ -129,8 +127,8 @@
             <table>
                 <tr>
                     <td class="col-md-2">回報類別名稱</td>
-                    <td class="col-md-5"><input type="text" name="category_name" value="{{ category }}" onkeyup="NameChange('{{ category }}', {{ categories_names }},this)" required></td>
-                    <label id="invalid" class="invalid"></label>
+                    <td class="col-md-5"><input type="text" name="category_name" value="{{ category }}" onkeyup="name_change('{{ category }}', {{ categories_names }}, this)" required></td>
+                    <td id="name_invalid" class="name_invalid"></td>
                 </tr>
 
                 <tr>
@@ -138,7 +136,7 @@
                     <td class="col-md-5">
                         <ul style="list-style: none; line-height: 40px">
                             {% for privilege in privileges %}
-                                <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="PrivilegeChange()" {% if category|belongs_to:privilege %} checked {% endif %}> {{ privilege.value.1 }}</li>
+                                <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_change()" {% if category|belongs_to:privilege %} checked {% endif %}> {{ privilege.value.1 }}</li>
                             {% endfor %}
                             <label class="privilege_invalid" id="privilege_invalid"></label>
                         </ul>
@@ -189,18 +187,11 @@
                 top: 30px;
                 left: 40%;
             }
-            .privilege_invalid {
-                color: #c12e2a;
-                font-size: 18px;
+            .privilege_invalid, .name_invalid{
+                color: limegreen;
             }
             .btn .submit {
                 background-color: grey;
-            }
-            .invalid{
-                color: red;
-                position: relative;
-                top: 40px;
-                left: 59%;
             }
         </style>
     </div>
