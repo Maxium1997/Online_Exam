@@ -15,7 +15,7 @@
             <h5 class="card-title">{{ proclamation.title }}</h5>
             <p class="card-text">{{ proclamation.text }}</p>
             <footer class="blockquote-footer">{{ proclamation.created_by }} in <cite title="Source Title">{{ proclamation.created_time }}</cite></footer>
-            <button type="button" class="btn btn-primary" onclick="self.location=document.referrer;">確認</button>&nbsp;
+            <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'Homepage' %}'">確認</button>
             </div>
         </div>
     </main>
