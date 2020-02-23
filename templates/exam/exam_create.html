@@ -2,73 +2,112 @@
 
 {% load staticfiles %}
 
-{#{% block scripts %}#}
-{#    <script type="text/javascript">#}
-{#        var passName = false;#}
-{#        var passTime = false;#}
-{#        var passDuration = false;#}
-{#        var passTestpaper = false;#}
-{#        var passGroup = false;#}
-{##}
-{#        var submit = document.getElementById('submit');#}
-{#        document.getElementById('submit').disabled = true;#}
-{#        document.getElementById('submit').style.backgroundColor = 'grey';#}
-{##}
-{##}
-{#        function data_unique(names , input) {#}
-{#            var submit = document.getElementById('submit');#}
-{#            var arr = names;#}
-{##}
-{#            for(var i = 0; i < arr.length; i++) {#}
-{#                if (input.value === arr[i]) {#}
-{#                    document.getElementById('invalid').innerHTML = "此名稱已存在。";#}
-{#                    submit.style.backgroundColor = 'grey';#}
-{#                    submit.disabled = true;#}
-{#                    break;#}
-{#                } else if (input.value === ""){#}
-{#                    submit.style.backgroundColor = 'grey';#}
-{#                    submit.disabled = true;#}
-{#                } else {#}
-{#                    document.getElementById('invalid').innerHTML = "";#}
-{#                    submit.style.backgroundColor = '#4CCABD';#}
-{#                    submit.disabled = false;#}
-{#                }#}
-{#            }#}
-{#        }#}
-{##}
-        {#Checkout whether Select tag is not null.#}
-{#        function Selected(selectedData, kind) {#}
-{#            if (selectedData.value === ''){#}
-{#                if(kind === 'Group'){#}
-{#                    passGroup = false;#}
-{#                } else {#}
-{#                    passTestpaper = false;#}
-{#                }#}
-{#            }#}
-{#            else {#}
-{#                if(kind === 'Group'){#}
-{#                    passGroup = true;#}
-{#                } else{#}
-{#                    passTestpaper = true;#}
-{#                }#}
-{#            }#}
-{#        }#}
-{##}
+{% block scripts %}
+    <script type="text/javascript">
+        var validName = false;
+        var validTime = false;
+        var validDuration = true;
+        var validTestpaper = false;
+        var validGroup = false;
+
+        function time_valid() {
+            var time = document.getElementById('start_time');
+            var time_invalid = document.getElementById('time_invalid');
+
+            var now = new Date();
+
+            validTime = true;
+            time_invalid.innerHTML = '<i style="color: limegreen" class="fa fa-check"></i>';
+            data_valid();
+        }
+
+        function unique_name(names, input){
+            var invalid = document.getElementById("name_invalid");
+            var arr = names;
+
+            for(var i = 0; i < arr.length; i++) {
+                if (input.value === ''){
+                    invalid.innerHTML = "<span style='color: red'>必填</span>";
+                    validName = false;
+                }
+                else if (input.value === arr[i]) {
+                    invalid.innerHTML = "<span style='color: red'>名稱已存在</span>";
+                    validName = false;
+                    break;
+                }
+                else {
+                    invalid.innerHTML = '<i class="fa fa-check"></i>';
+                    validName = true;
+                }
+            }
+            data_valid();
+        }
+
+        {#Checkout whether duration not null and not negative.#}
+        function duration_valid(input){
+            var duration_invalid = document.getElementById("duration_invalid");
+            var reMatch = input.value.match(/[0-9]/g);
+
+
+            if(input.value === ''){
+                duration_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                validDuration = false;
+            }
+            else if(parseInt(input.value) <= 0){
+                duration_invalid.innerHTML = "<span style='color: red'>必須為正整數</span>";
+                validDuration = false;
+            }
+            else if(reMatch.length !== (input.value).length){
+                duration_invalid.innerHTML = '<span style=\'color: red\'>勿出現其他字元</span>';
+                validDuration = false;
+            }
+            else{
+                duration_invalid.innerHTML = '<i class="fa fa-check"></i>';
+                validDuration = true;
+            }
+            data_valid();
+        }
+
+        {#Checkout whether testpaper and group are not null.#}
+        function is_selected(selectedData, kind) {
+            var testpaper_invalid = document.getElementById("testpaper_invalid");
+            var group_invalid = document.getElementById("group_invalid");
+
+            if (selectedData.value === ''){
+                if(kind === 'Group'){
+                    validGroup = false;
+                    group_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                } else {
+                    validTestpaper = false;
+                    testpaper_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                }
+            }
+            else {
+                if(kind === 'group'){
+                    validGroup = true;
+                    group_invalid.innerHTML = '<i class="fa fa-check"></i>';
+                } else{
+                    validTestpaper = true;
+                    testpaper_invalid.innerHTML = '<i class="fa fa-check"></i>';
+                }
+            }
+            data_valid();
+        }
+
         {#Checkout whether all tag is valid and can send the form.#}
-{#        function IsPass() {#}
-{#            if(passName===true && passTime===true && passDuration===true && passTestpaper===true &&passGroup===true){#}
-{#                submit.style.backgroundColor = '#4CCABD';#}
-{#                submit.disabled = false;#}
-{#            }#}
-{#            else{#}
-{#                submit.style.backgroundColor = 'grey';#}
-{#                submit.disabled = true;#}
-{#            }#}
-{#        }#}
-{##}
-{#        document.getElementById('result').innerHTML = 'this is test';#}
-{#    </script>#}
-{#{% endblock %}#}
+        function data_valid() {
+            if(validName===true && validTime===true && validDuration===true && validTestpaper===true && validGroup===true){
+                submit.style.backgroundColor = '#4CCABD';
+                submit.disabled = false;
+            }
+            else{
+                submit.style.backgroundColor = 'grey';
+                submit.disabled = true;
+            }
+            {#document.getElementById('time_invalid').innerHTML = validName + ','+validTime + validDuration + validTestpaper + validGroup;#}
+        }
+    </script>
+{% endblock %}
 
 
 {% block path %}
@@ -80,9 +119,6 @@
 {% endblock %}
 
 {% block content %}
-
-    <label id="result">test</label>
-
     <div class="exam_create">
         <div class="title"><h1>Create Exam.</h1></div>
         <form method="post" class="form-horizontal" role="form">
@@ -90,53 +126,60 @@
             <table>
                 <tr>
                     <td>測驗名稱</td>
-                    <td><input type="text" name="exam_name" required></td>
+                    <td><input type="text" onkeyup="unique_name({{ exam_names }}, this)" name="exam_name" required></td>
+                    <td id="name_invalid" class="name_invalid"></td>
                 </tr>
 
                 <tr>
                     <td>開始時間</td>
                     <td>
-                        <div class="input-group date form_datetime col-md-4" data-date="" data-date-format="yyyy-mm-ddThh:ii:ss" data-link-field="dtp_input1">
+                        <div class="input-group date form_datetime col-md-4" data-date="" onchange="time_valid()" data-date-format="yyyy-mm-ddThh:ii:ss" data-link-field="dtp_input1">
                             <input style="width: 550%" class="form-control" size="16" type="text" id="start_time" name="start_time" required>
-                            <span style="position: relative; left: 200%" class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                            <span style="position: relative; left: 200%" class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            <span style="position: relative; left: 200%" class="input-group-addon" ><span class="glyphicon glyphicon-remove"></span></span>
+                            <span style="position: relative; left: 200%" class="input-group-addon" ><span class="glyphicon glyphicon-th"></span></span>
                         </div>
-                        <input type="hidden" id="dtp_input1" value="" />
+                        <input type="hidden" id="dtp_input1" onchange="time_valid()" value="" />
+                    </td>
+                    <td>
+                        <label id="time_invalid" class="time_invalid" style='color: red'>必填</label>
                     </td>
                 </tr>
 
                 <tr>
                     <td>測驗時間</td>
-                    <td><input type="number" name="duration" value="40" required></td>
+                    <td><input type="text" name="duration" onkeyup="duration_valid(this)" value="40" required></td>
+                    <td id="duration_invalid" class="duration_invalid"><i class="fa fa-check"></i></td>
                 </tr>
 
                 <tr>
                     <td>測驗試卷</td>
                     <td>
-                        <select name="selected_testpaper" id="selected_testpaper" onchange="Selected(document.getElementById('selected_testpaper'), 'testpaper')" required>
+                        <select name="selected_testpaper" id="selected_testpaper" onchange="is_selected(document.getElementById('selected_testpaper'), 'testpaper')" required>
                             <option value="" disabled selected>請選擇測驗用試卷</option>
                             {% for testpaper in testpapers %}
                                 <option value="{{ testpaper.id }}">{{ testpaper.name }}</option>
                             {% endfor %}
                         </select>
                     </td>
+                    <td id="testpaper_invalid" class="testpaper_invalid"></td>
                 </tr>
 
                 <tr>
                     <td>測驗群組</td>
                     <td>
-                        <select name="selected_group" id="selected_group" onchange="Selected(document.getElementById('selected_group'), 'group')" required>
+                        <select name="selected_group" id="selected_group" onchange="is_selected(document.getElementById('selected_group'), 'group')" required>
                             <option value="" disabled selected>請選擇受測者群組</option>
                             {% for group in groups %}
                                 <option value="{{ group.id }}">{{ group.name }}</option>
                             {% endfor %}
                         </select>
                     </td>
+                    <td id="group_invalid" class="group_invalid"></td>
                 </tr>
             </table>
 
             <div class="btn">
-                <button type="submit" id="submit">送出</button>
+                <button type="submit" id="submit" class="submit" disabled>送出</button>
                 <button type="reset">重設</button>
                 <button type="button" onclick="self.location=document.referrer;">取消</button>&nbsp;
             </div>
@@ -174,6 +217,12 @@
                 position: relative;
                 top: 30px;
                 left: 38%;
+            }
+            .name_invalid, .testpaper_invalid, .group_invalid, .duration_invalid, .time_invalid {
+                color: limegreen;
+            }
+            .btn .submit{
+                background-color : grey;
             }
         </style>
 

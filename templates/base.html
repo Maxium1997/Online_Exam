@@ -54,15 +54,16 @@
 
             for(var i = 0; i < arr.length; i++) {
                 if (input.value === arr[i]) {
-                    document.getElementById('invalid').innerHTML = "此名稱已存在。";
+                    document.getElementById('invalid').innerHTML = "<span style='color: red'>已存在</span>";
                     submit.style.backgroundColor = 'grey';
                     submit.disabled = true;
                     break;
                 } else if (input.value === ""){
+                    document.getElementById('invalid').innerHTML = "<span style='color: red'>必填</span>";
                     submit.style.backgroundColor = 'grey';
                     submit.disabled = true;
                 } else {
-                    document.getElementById('invalid').innerHTML = "";
+                    document.getElementById('invalid').innerHTML = '<i style="color: limegreen" class="fa fa-check"></i>';
                     submit.style.backgroundColor = '#4CCABD';
                     submit.disabled = false;
                 }

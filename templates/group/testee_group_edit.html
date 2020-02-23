@@ -2,32 +2,32 @@
 
 {% block scripts %}
     <script type="text/javascript">
-    function selAll(){
-        //變數checkItem為checkbox的集合
-        var checkItem = document.getElementsByName("testee");
-        for(var i=0;i<checkItem.length;i++){
-            checkItem[i].checked=true;
+        function selAll(){
+            //變數checkItem為checkbox的集合
+            var checkItem = document.getElementsByName("testee");
+            for(var i=0;i<checkItem.length;i++){
+                checkItem[i].checked=true;
+            }
         }
-    }
-    function unselAll(){
-        //變數checkItem為checkbox的集合
-        var checkItem = document.getElementsByName("testee");
-        for(var i=0;i<checkItem.length;i++){
-            checkItem[i].checked=false;
+        function unselAll(){
+            //變數checkItem為checkbox的集合
+            var checkItem = document.getElementsByName("testee");
+            for(var i=0;i<checkItem.length;i++){
+                checkItem[i].checked=false;
+            }
         }
-    }
-    function usel(){
-        //變數checkItem為checkbox的集合
-        var checkItem = document.getElementsByName("testee");
-        for (var i = 0; i < checkItem.length; i++) {
-            checkItem[i].checked = !checkItem[i].checked;
+        function usel(){
+            //變數checkItem為checkbox的集合
+            var checkItem = document.getElementsByName("testee");
+            for (var i = 0; i < checkItem.length; i++) {
+                checkItem[i].checked = !checkItem[i].checked;
+            }
         }
-    }
 
-    function selectRow(row){
-        var firstInput = row.getElementsByTagName('input')[0];
-        firstInput.checked = !firstInput.checked;
-    }
+        function selectRow(row){
+            var firstInput = row.getElementsByTagName('input')[0];
+            firstInput.checked = !firstInput.checked;
+        }
     </script>
 {% endblock %}
 
@@ -71,7 +71,7 @@
             </table>
 
             <div class="btn">
-                <button type="submit" onclick="return confirm('確認變更群組？')">變更群組</button>
+                <button type="submit" class="submit" id="submit" onclick="return confirm('確認變更群組？')" disabled>變更群組</button>
                 <button type="reset">取消</button>
                 <button type="button" onclick="self.location=document.referrer;">返回</button>
             </div>
@@ -120,6 +120,9 @@
             .btn {
                 position: relative;
                 left: 38%;
+            }
+            .btn .submit{
+                background-color : grey;
             }
         </style>
     </div>
