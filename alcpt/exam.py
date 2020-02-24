@@ -70,6 +70,7 @@ def exam_create(request):
 
         return redirect('exam_list')
     else:
+        exam_names = [_.name for _ in Exam.objects.all()]
         testpapers = TestPaper.objects.filter(is_testpaper=True, valid=True)
         groups = Group.objects.all()
         return render(request, 'exam/exam_create.html', locals())

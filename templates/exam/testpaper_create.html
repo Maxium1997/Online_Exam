@@ -20,12 +20,12 @@
                 </tr>
 
                 <tr>
-                    <td colspan="2" style="text-align: center; font-size: 18px; color: #c12e2a;"><label class="invalid" id="invalid"></label></td>
+                    <td colspan="2" style="text-align: center; font-size: 18px; color: limegreen;"><label class="invalid" id="invalid"></label></td>
                 </tr>
             </table>
 
             <div class="btn">
-                <button type="submit" id="submit">送出</button>
+                <button type="submit" id="submit" class="submit" disabled>送出</button>
                 <button type="reset">重設</button>
                 <button type="button" onclick="self.location=document.referrer;">取消</button>&nbsp;
             </div>
@@ -68,6 +68,10 @@
                     position: relative;
                     top: 30px;
                     left: 38%;
+                }
+
+                .btn .submit{
+                    background-color : grey;
                 }
             </style>
         </form>
