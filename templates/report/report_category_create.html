@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% load web_filters %}
 
@@ -14,7 +14,7 @@
 
             for (var i = 0; i < arr.length; i++) {
                 if (input.value === arr[i]) {
-                    invalid.innerHTML = "<span style='color: red'>名稱已存在</span>";
+                    invalid.innerHTML = "<span style='color: red'>此名稱已存在</span>";
                     passName = false;
                     break;
                 }
@@ -23,7 +23,7 @@
                     passName = false;
                 }
                 else {
-                    invalid.innerHTML = '<i class="fa fa-check"></i>';
+                    invalid.innerHTML = '';
                     passName = true;
                 }
             }
@@ -42,10 +42,10 @@
 
             if (system.checked === false && testM.checked === false && tbM.checked === false &&
                 tbO.checked === false && viewer.checked === false && testee.checked === false) {
-                privilegeInvalid.innerHTML = "<span style=\'color: red\'>必填</span>";
+                privilegeInvalid.innerHTML = "<span style='color: red; font-size: 14px'>必選</span>";
                 passPrivilege = false;
             } else {
-                privilegeInvalid.innerHTML = '<i class="fa fa-check"></i>';
+                privilegeInvalid.innerHTML = '';
                 passPrivilege = true;
             }
             data_valid();
@@ -55,96 +55,79 @@
         function data_valid(){
             if (passName === true && passPrivilege === true){
                 submit.disabled = false;
-                submit.style.backgroundColor = "#4CCABD";
             }
             else{
                 submit.disabled = true;
-                submit.style.backgroundColor = "grey";
             }
         }
     </script>
 {% endblock %}
 
 {% block path %}
-    <a href="">系統管理員</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="{% url 'report_category_list' %}">回報類別列表</a>
-    <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="">新增回報類別</a>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'report_category_list' %}">回報類別列表</a></li>
+    <li class="breadcrumb-item active" aria-current="page">新增回報類別</li>
 {% endblock %}
 
 {% block content %}
-    <div class="add_category">
-        <form method="post">
-            <div class="title"><h1>Add Report Category.</h1></div>
-            {% csrf_token %}
-            <table>
-                <tr>
-                    <td class="col-md-2">回報類別名稱</td>
-                    <td class="col-md-5"><input type="text" name="category_name" onkeyup="unique_name({{ categories_names }}, this)" required></td>
-                    <td id="name_invalid" class="name_invalid"></td>
-                </tr>
+    <main class="report-category-create">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">ReportCategory Create.</div>
 
-                <tr>
-                    <td class="col-md-2">所屬權限</td>
-                    <td class="col-md-5">
-                        <ul style="list-style: none; line-height: 40px">
-                            {% for privilege in privileges %}
-                                <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_not_empty()" {% if privilege.value.0 == 32 %} checked {% endif %}> {{ privilege.value.1 }}</li>
-                            {% endfor %}
-                            <label class="privilege_invalid" id="privilege_invalid"></label>
-                        </ul>
-                    </td>
-                </tr>
-            </table>
+                        <div class="card-body">
+                            <form method="post">
+                                {% csrf_token %}
 
-            <div class="btn">
-                <button type="submit" id="submit" style="background-color: grey" onclick="return confirm('確認新增此類別？')" disabled>新增</button>
-                <button type="reset">重設</button>
-                <button type="reset" onclick="self.location=document.referrer;">取消</button>
+                                <div class="form-group row">
+                                    <label for="p_title" class="col-md-4 col-form-label text-md-right">回報類別名稱</label>
+                                    <div class="col-md-6">
+                                        <input class="form-control" type="text" name="category_name" onkeyup="unique_name({{ categories_names }}, this)" placeholder="ReportCategory Name..." required>
+                                        <label id="name_invalid" class="name_invalid"></label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="p_title" class="col-md-4 col-form-label text-md-right">權限設置</label>
+                                    <div class="col-md-6">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="button-group">
+                                                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="fa fa-gears align-middle"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li class="dropdown-header">設置權限</li>
+                                                            {% for privilege in privileges %}
+                                                                <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_not_empty()" {% if privilege == privilege.SystemManager %} checked {% endif %}>{{ privilege.value.1 }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                        <label class="privilege_invalid" id="privilege_invalid"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" id="submit" class="btn btn-primary" onclick="return confirm('確認新增？')">
+                                        新增
+                                    </button>
+                                    <button type="reset" class="btn btn-light">
+                                        重設
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" onclick="history.back()">
+                                        取消
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </form>
-
-        <style>
-            .add_category .title h1{
-                    width: 30%;
-                    font-size: 28px;
-                    color: #FFFEF6;
-                    background-color: #4CCABD;
-                    padding-top: 10px;
-                    padding-bottom: 10px;
-                    padding-right: 15px;
-                    padding-left: 45px;
-                    text-align: center;
-                }
-
-            .add_category table{
-                    position: relative;
-                    left: 30%;
-                    width: 50%;
-                    font-size: 20px;
-                }
-            .add_category table td{
-                    padding: 4px;
-            }
-            .add_category form input{
-                padding: 6px;
-            }
-            .add_category form textarea{
-                font-size: 20px;
-                width: 100%;
-                height: 45%;
-                padding: 10px;
-            }
-
-            .add_category .btn{
-                position: relative;
-                top: 30px;
-                left: 40%;
-            }
-            .name_invalid, .privilege_invalid{
-                color: limegreen;
-            }
-        </style>
-    </div>
+        </div>
+    </main>
 {% endblock %}

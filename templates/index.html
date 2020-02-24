@@ -4,63 +4,86 @@
 
 {% block content %}
     <!--資料的部分 -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+{#    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">#}
+{#        <span class="navbar-toggler-icon"></span>#}
+{#    </button>#}
 
-
-    <div class="table-responsive-md">
-        <table class="table table-hover">
-            <thead class="thead-light">
-                <tr>
-                    {% if request.user|has_perm:'SystemManager' %}
-                        <th scope="col">公告標題</th>
-                        <th scope="col">公告內容</th>
-                        <th scope="col">公告人</th>
-                        <th scope="col">公告時間</th>
-                        <th scope="col">
+    <main class="index">
+        <div class="container">
+            <div class="table-responsive-md">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
                             {% if request.user|has_perm:'SystemManager' %}
-                                <div class="add">
-                                    <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'proclamation_create' %}'"><i class="fa fa-plus"></i></button>
-                                </div>
+                                <th scope="col">公告標題</th>
+                                <th scope="col">公告內容</th>
+                                <th scope="col">公告人</th>
+                                <th scope="col">公告時間</th>
+                                <th scope="col">
+                                    {% if request.user|has_perm:'SystemManager' %}
+                                        <div class="add">
+                                            <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'proclamation_create' %}'"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    {% endif %}
+                                </th>
+                            {% else %}
+                                <th scope="col">公告標題</th>
+                                <th scope="col">公告內容</th>
+                                <th scope="col">公告人</th>
+                                <th scope="col">公告時間</th>
                             {% endif %}
-                        </th>
-                    {% else %}
-                        <th scope="col">公告標題</th>
-                        <th scope="col">公告內容</th>
-                        <th scope="col">公告人</th>
-                        <th scope="col">公告時間</th>
-                    {% endif %}
-                </tr>
-            </thead>
+                        </tr>
+                    </thead>
 
-            <tbody>
-                {% for pro in pros %}
-                    <tr style="cursor: pointer" onclick="window.location.href='{% url 'proclamation_detail' pro.id %}'">
-                        <td>{{ pro.title }}</td>
+                    <tbody>
+                        {% for pro in pros %}
+                            <tr style="cursor: pointer" data-toggle="modal" data-target="#pro_{{ pro.id }}">
+{#                            <tr style="cursor: pointer" onclick="window.location.href='{% url 'proclamation_detail' pro.id %}'">#}
+                                <td>{{ pro.title }}</td>
 
-                        {% if request.user|has_perm:'SystemManager' %}
-                            <td>{{ pro.text|safe|summary:37 }}</td>
-                        {% else %}
-                            <td>{{ pro.text|safe|summary:40 }}</td>
-                        {% endif %}
+                                {% if request.user|has_perm:'SystemManager' %}
+                                    <td>{{ pro.text|safe|summary:37 }}</td>
+                                {% else %}
+                                    <td>{{ pro.text|safe|summary:40 }}</td>
+                                {% endif %}
 
-                        <td>{{ pro.created_by.name}}</td>
+                                <td>{{ pro.created_by.name}}</td>
 
-                        <td>{{ pro.created_time|date:'H:i, Y/m/d' }}</td>
+                                <td>{{ pro.created_time|date:'H:i, Y/m/d' }}</td>
 
-                        {% if request.user|has_perm:'SystemManager' %}
-                            <td>
-                                <a href="{% url 'proclamation_edit' pro.id %}"><i class="fa fa-pencil-square-o"></i></a>
-                                <a href="{% url 'proclamation_delete' pro.id %}" onclick="return confirm('確認刪除此公告？')"><i class="fa fa-trash-o"></i></a>
-                            </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                                {% if request.user|has_perm:'SystemManager' %}
+                                    <td>
+                                        <a href="{% url 'proclamation_edit' pro.id %}"><i class="fa fa-pencil-square-o"></i></a>
+                                        <a href="{% url 'proclamation_delete' pro.id %}" onclick="return confirm('確認刪除此公告？')"><i class="fa fa-trash-o"></i></a>
+                                    </td>
+                                {% endif %}
 
+                                <div class="modal fade" id="pro_{{ pro.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">{{ pro.title }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="modal-body">{{ pro.text }}</div>
+
+                                            <div class="modal-footer">
+                                                <footer class="blockquote-footer">{{ pro.created_by }} in <cite title="Source Title">{{ pro.created_time }}</cite></footer>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">確認</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
 
 {% endblock %}
 

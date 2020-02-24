@@ -7,8 +7,8 @@
 {% endblock %}
 
 {% block content %}
-    <main class="create-proclamation-form">
-        <div class="cotainer">
+    <main class="proclamation-edit-form">
+        <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
@@ -35,7 +35,7 @@
                                     <button type="submit" class="btn btn-primary" onclick="return confirm('確認更改？')">
                                         確認更改
                                     </button>
-                                    <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">
+                                    <button type="button" class="btn btn-secondary" onclick="history.back()">
                                         取消
                                     </button>
                                 </div>

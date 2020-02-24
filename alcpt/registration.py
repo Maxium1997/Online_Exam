@@ -14,7 +14,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from Online_Exam.settings import LOGIN_REDIRECT_URL
 from alcpt.definitions import UserType, Identity
 from alcpt.forms import CaptchaForm
-from alcpt.models import User, Student, Department, Squadron, Report
+from alcpt.models import User, Student, Department, Squadron, Report, Reply
 from alcpt.email_verification import email_verified
 
 # Create your views here.
@@ -87,24 +87,25 @@ def edit_profile(request):
     user = request.user
 
     if request.method == 'POST':
-        user.name = request.POST.get('name',)
-        user.gender = int(request.POST.get('gender',))
+        user.name = request.POST.get('name')
+        user.gender = int(request.POST.get('gender'))
+        user.introduction = request.POST.get('introduction')
         user.save()
 
-        email = request.POST.get('email',)
-        if not re.match("[^@]+@[^@]+\.[^@]+", email):
-            messages.warning(request, "email doesn't match regular expression.")
-            departments = Department.objects.all()
-            squadrons = Squadron.objects.all()
-            return render(request, 'registration/edit_profile.html', locals())
-        else:
-            if email == user.email:
-                pass
-            else:
-                user.email = email
-                user.email_is_verified = False
-                messages.warning(request, 'Your have to verify email again.')
-                user.save()
+        # email = request.POST.get('email',)
+        # if not re.match("[^@]+@[^@]+\.[^@]+", email):
+        #     messages.warning(request, "email doesn't match regular expression.")
+        #     departments = Department.objects.all()
+        #     squadrons = Squadron.objects.all()
+        #     return render(request, 'registration/edit_profile.html', locals())
+        # else:
+        #     if email == user.email:
+        #         pass
+        #     else:
+        #         user.email = email
+        #         user.email_is_verified = False
+        #         messages.warning(request, 'Your have to verify email again.')
+        #         user.save()
 
         try:
             student = user.student
@@ -249,14 +250,15 @@ def report_detail(request, report_id):
             messages.warning(request, 'This report had been resolved.')
             return redirect('report_list')
         reply = request.POST.get('reply')
-        viewed_report.supplement_note += (str(datetime.datetime.now()) + ': ' + reply + '<br>')
+        new_reply = Reply.objects.create(source=viewed_report, content=reply, created_by=request.user)
         viewed_report.user_notification = False
         viewed_report.staff_notification = True
         viewed_report.save()
         return redirect('report_list')
     else:
-        viewed_report.user_notification = False
-        viewed_report.save()
+        Report.objects.filter(id=report_id).update(user_notification=False)
+
+        replies = viewed_report.reply_set.all().order_by('created_time')
         return render(request, 'registration/report_detail.html', locals())
 
 

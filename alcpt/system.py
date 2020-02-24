@@ -16,7 +16,7 @@ from django.db import IntegrityError
 from django.contrib import messages
 
 from alcpt.managerfuncs import systemmanager
-from alcpt.models import User, Student, Department, Squadron, Proclamation, ReportCategory, Report
+from alcpt.models import User, Student, Department, Squadron, Proclamation, ReportCategory, Report, Reply
 from alcpt.definitions import UserType, Identity
 from alcpt.decorators import permission_check, login_required
 from alcpt.exceptions import IllegalArgumentError
@@ -76,11 +76,9 @@ def user_create(request):
         reg_id = request.POST.get('reg_id',)
 
         privilege_value = 0
-        i = 0
         for privilege in UserType.__members__.values():
-            if privilege and request.POST.get('privilege_{}'.format(i)):
+            if privilege and request.POST.get('{}'.format(privilege)):
                 privilege_value |= privilege.value[0]
-            i += 1
 
         try:
             identity = int(request.POST.get('identity'))
@@ -132,7 +130,7 @@ def user_create(request):
     else:
         reg_ids = [_.reg_id for _ in User.objects.all()]
         stu_ids = [_.stu_id for _ in Student.objects.all()]
-        privileges = UserType.__members__
+        privileges = UserType.__members__.values()
         identities = Identity.__members__.values()
         departments = Department.objects.all()
         squadrons = Squadron.objects.all()
@@ -561,7 +559,7 @@ def report(request):
             categories = ReportCategory.objects.all()
             return render(request, 'report/report.html', locals())
 
-        supplement_note = request.POST.get('supplement_note',)+'<br>'
+        supplement_note = request.POST.get('supplement_note')
 
         user_report = Report.objects.create(category=category,
                                             supplement_note=supplement_note,
@@ -612,14 +610,16 @@ def report_reply(request, report_id):
         if replying_report.state == 3:
             messages.warning(request, 'This report had been resolved.')
             return redirect('responsible_report_list', responsibility=permission)
+
         reply = request.POST.get('reply')
-        replying_report.reply += (str(datetime.datetime.now()) + ': ' + reply + '<br>')
+        new_reply = Reply.objects.create(source=replying_report, content=reply, created_by=request.user)
         replying_report.user_notification = True
         replying_report.save()
         return redirect('responsible_report_list', responsibility=permission)
     else:
-        replying_report.staff_notification = False
-        replying_report.save()
+        Report.objects.filter(id=report_id).update(staff_notification=False)
+
+        replies = replying_report.reply_set.all().order_by('created_time')
         return render(request, 'report/reply.html', locals())
 
 

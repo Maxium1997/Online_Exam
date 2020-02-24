@@ -1,17 +1,35 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% block path %}
-
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'unit_list' %}">單位列表</a></li>
+    <li class="breadcrumb-item active" aria-current="page">修改單位名稱</li>
 {% endblock %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        <input name="name" value="{{ edited_unit.name }}" placeholder="Enter the edited unit name..." required>
+    <main class="unit-edit-form">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="card">
+                            <div class="card-header">Unit Edit.</div>
 
-        <div class="btn">
-            <button type="submit">送出</button>
-            <button type="button" onclick="window.location.href='{% url 'unit_list' %}'">取消</button>
+                            <div class="card-body">
+                                <h5 class="card-subtitle mb-2 text-muted">Unit Name.</h5>
+                                <p class="card-text">
+                                    <input class="form-control" type="text" name="name" value="{{ edited_unit.name }}" required>
+                                </p>
+
+                                <div class="float-right">
+                                    <button type="submit" class="btn btn-primary">更改</button>
+                                    <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">取消</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </form>
+    </main>
 {% endblock %}

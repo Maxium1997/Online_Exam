@@ -53,6 +53,7 @@
 
     .prompt_container #prompt{
         text-align: left;
+        height: 25px;
     }
     .prompt_container #danger{
         color: rgb(44, 50, 50);
@@ -71,6 +72,7 @@
 <script type="text/javascript">
     var timer = window.setInterval(disappear, 3000); // display 3 seconds , then disappear
     function disappear() {
-        document.getElementById('prompt').innerHTML = "";
+        document.getElementById('prompt').style.height = "0";
+        document.getElementById('prompt').style.transition = "0.1s";
     }
 </script>

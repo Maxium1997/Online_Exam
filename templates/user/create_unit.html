@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% block scripts %}
     <script type="text/javascript">
@@ -45,101 +45,81 @@
 {% endblock %}
 
 {% block path %}
-    <a href="">系統管理員</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="{% url 'unit_list' %}">單位列表</a>
-    <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="">新增單位</a>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'unit_list' %}">單位列表</a></li>
+    <li class="breadcrumb-item active" aria-current="page">新增單位</li>
 {% endblock %}
 
 {% block content %}
-    <div class="create_unit">
-        <div class="title"><h1>Unit Create.</h1></div>
-        <form action="{% url 'unit_create' %}" method="post" autocomplete="off">
-            {% csrf_token %}
+{#    <div class="create_unit">#}
+{#        <div class="title"><h1>Unit Create.</h1></div>#}
+{#        <form action="{% url 'unit_create' %}" method="post" autocomplete="off">#}
+{#            {% csrf_token %}#}
+{##}
+{#            <table>#}
+{#                <tr>#}
+{#                    <td class="col-md-2" style="text-align: center">單位</td>#}
+{#                    <td class="col-md-5">#}
+{#                        <select id='unit' name='unit' onchange="is_selected();" required>#}
+{#                            <option value='' selected disabled hidden>選擇要新增單位</option>#}
+{#                            <option value='department'> 科系 </option>#}
+{#                            <option value='squadron'> 中隊 </option>#}
+{#                        </select>#}
+{#                    </td>#}
+{#                </tr>#}
+{##}
+{#                <tr>#}
+{#                    <td class="col-md-2" style="text-align: center">單位名稱</td>#}
+{#                    <td class="col-md-5"><input type="text" id="unit_name" name="unit_name" onkeyup="unique_name({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="輸入要新增的單位名稱" required disabled></td>#}
+{#                </tr>#}
+{##}
+{#                <tr>#}
+{#                    <td colspan="2" style="text-align: center">#}
+{#                        <span id="invalid" class="result">&nbsp;請先選擇單位，再填寫名稱</span>#}
+{#                    </td>#}
+{#                </tr>#}
+{#            </table>#}
+{##}
+{#            <div class="btn">#}
+{#                <button type="submit" id="submit" disabled>新增</button>#}
+{#                <button type="reset">重設</button>#}
+{#                <button type="button" onclick="self.location=document.referrer;">取消</button>&nbsp;#}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
 
-            <table>
-                <tr>
-                    <td class="col-md-2" style="text-align: center">單位</td>
-                    <td class="col-md-5">
-                        <select id='unit' name='unit' onchange="is_selected();" required>
-                            <option value='' selected disabled hidden>選擇要新增單位</option>
-                            <option value='department'> 科系 </option>
-                            <option value='squadron'> 中隊 </option>
-                        </select>
-                    </td>
-                </tr>
+    <main class="unit-create-form">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="card">
+                            <div class="card-header">Unit Create.</div>
 
-                <tr>
-                    <td class="col-md-2" style="text-align: center">單位名稱</td>
-                    <td class="col-md-5"><input type="text" id="unit_name" name="unit_name" onkeyup="unique_name({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="輸入要新增的單位名稱" required disabled></td>
-                </tr>
+                            <div class="card-body">
+                                <h5 class="card-subtitle mb-2 text-muted">Unit.</h5>
+                                <p class="card-text">
+                                    <select class="custom-select custom-select-sm" id='unit' name='unit' onchange="is_selected();" required>
+                                        <option value='' selected disabled hidden>選擇要新增單位</option>
+                                        <option value='department'> 科系 </option>
+                                        <option value='squadron'> 中隊 </option>
+                                    </select>
+                                </p>
 
-                <tr>
-                    <td colspan="2" style="text-align: center">
-                        <span id="invalid" class="result">&nbsp;請先選擇單位，再填寫名稱</span>
-                    </td>
-                </tr>
-            </table>
+                                <h5 class="card-subtitle mb-2 text-muted">Unit Name.</h5>
+                                <p class="card-text">
+                                    <input class="form-control" type="text" id="unit_name" name="unit_name" onkeyup="unique_name({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="輸入要新增的單位名稱" required disabled>
+                                </p>
 
-            <div class="btn">
-                <button type="submit" id="submit" disabled>新增</button>
-                <button type="reset">重設</button>
-                <button type="button" onclick="self.location=document.referrer;">取消</button>&nbsp;
+                                <div class="float-right">
+                                    <button class="btn btn-primary" type="submit">送出</button>
+                                    <button class="btn btn-secondary" type="button" onclick="self.location=document.referrer;">取消</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
-
-        <style>
-            .create_unit .title h1{
-                width: 30%;
-                font-size: 28px;
-                color: #FFFEF6;
-                background-color: #4CCABD;
-                padding-top: 10px;
-                padding-bottom: 10px;
-                padding-right: 15px;
-                padding-left: 45px;
-                text-align: center;
-            }
-
-            .create_unit table{
-                position: relative;
-                left: 20%;
-
-                width: 60%;
-
-                font-size: 20px;
-            }
-            .create_unit table td{
-                padding: 4px;
-            }
-            .create_unit form input{
-                width: 80%;
-                padding: 6px;
-            }
-            .create_unit form textarea{
-                font-size: 20px;
-                width: 100%;
-                height: 45%;
-                padding: 10px;
-            }
-
-            .create_unit .btn{
-                position: relative;
-                top: 30px;
-                left: 40%;
-            }
-            .create_unit .btn #submit{
-                background-color: grey;
-            }
-
-            .create_unit table span{
-                font-size: 16px;
-            }
-
-            #invalid{
-                color: limegreen;
-            }
-        </style>
-    </div>
+        </div>
+    </main>
 {% endblock %}

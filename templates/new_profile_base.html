@@ -57,13 +57,47 @@
     </style>
 
     <!--主要資料區-->
-    <div id="main-block">
-        {% block content %}
-        {% endblock %}
+    <div id="sidebar">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-2 bg-secondary">
+                    <nav>
+                        <ul class="nav nav-stacked">
+                            <li><a id="profile" href="{% url 'profile' %}">基本資料</a></li>
+                            <li><a id="edit_profile" href="{% url 'profile_edit' %}">編輯個人檔案</a></li>
+                            <li><a id="email" href="{% url 'email_confirmation' %}">電子信箱</a></li>
+                            <li><a id="password_change" href="{% url 'password_change' %}">更改密碼</a></li>
+                            <li><a id="report" href="{% url 'report_list' %}">問題回報</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-lg-10 bg-light">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
     </div>
     <style>
-        #main-block{
-            height: 65%;
+        #sidebar .container .row{
+            height: 76vh;
+        }
+        #sidebar nav > ul{
+            display: inline;
+            font-size: 20px;
+            padding: 2px;
+        }
+        #sidebar nav > ul > li{
+            padding: 10px;
+        }
+        #sidebar nav > ul > li > a{
+            text-decoration: none;
+            color: white;
+        }
+        #sidebar nav > ul > li > a:hover{
+            background-color: rgb(108, 117, 125);
+            opacity: 0.1;
         }
         .add button{
             border-radius: 24px;

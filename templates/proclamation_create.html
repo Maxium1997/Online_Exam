@@ -5,12 +5,13 @@
 {% endblock %}
 
 {% block content %}
-    <main class="create-proclamation-form">
-        <div class="cotainer">
+    <main class="proclamation-create-form">
+        <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">Proclamation Create.</div>
+
                         <div class="card-body">
                             <form method="post">
                                 {% csrf_token %}
@@ -31,12 +32,12 @@
 
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary" onclick="return confirm('確認新增？')">
-                                        確認新增
+                                        新增
                                     </button>
                                     <button type="reset" class="btn btn-light">
                                         重設
                                     </button>
-                                    <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">
+                                    <button type="button" class="btn btn-secondary" onclick="history.back()">
                                         取消
                                     </button>
                                 </div>

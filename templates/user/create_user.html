@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% load web_filters %}
 
@@ -15,16 +15,19 @@
 
             for(var i = 0; i < arr.length; i++) {
                 if (input.value === arr[i]) {
-                    invalid_id.innerHTML = "<span style='color: red'>ＩＤ已存在</span>";
+                    invalid_id.innerHTML = "<span style='color: red; font-size: 14px'>此ID已存在</span>";
+                    invalid_id.style.display = 'block';
                     passRegId = false;
                     break;
                 }
                 else if (input.value === ""){
-                    invalid_id.innerHTML = "<span style='color: red'>必填</span>";
+                    invalid_id.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
+                    invalid_id.style.display = 'block';
                     passRegId = false;
                 }
                 else {
-                    invalid_id.innerHTML = '<i class="fa fa-check"></i>';
+                    invalid_id.innerHTML = '';
+                    invalid_id.style.display = 'none';
                     passRegId = true;
                 }
             }
@@ -37,14 +40,17 @@
 
             for(var i = 0; i < arr.length; i++) {
                 if (input.value === arr[i]) {
-                    invalid_stu_id.innerHTML = "<span style='color: red'>ＩＤ已存在</span>";
+                    invalid_stu_id.innerHTML = "<span style='color: red; font-size: 14px'>此ID已存在</span>";
+                    invalid_stu_id.style.display = 'block';
                     passStuID = false;
                     break;
                 } else if (input.value === ""){
-                    invalid_stu_id.innerHTML = "<span style='color: red'>必填</span>";
+                    invalid_stu_id.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
+                    invalid_stu_id.style.display = 'block';
                     passStuID = false;
                 } else {
-                    invalid_stu_id.innerHTML = '<i class="fa fa-check"></i>';
+                    invalid_stu_id.innerHTML = '';
+                    invalid_stu_id.style.display = 'none';
                     passStuID = true;
                 }
             }
@@ -63,10 +69,12 @@
 
             if (system.checked === false && testM.checked === false && tbM.checked === false &&
                 tbO.checked === false && viewer.checked === false && testee.checked === false) {
-                privilegeInvalid.innerHTML = "<span style='color: red'>最少選一個選項</span>";
+                privilegeInvalid.innerHTML = "<span style='color: red; font-size: 14px'>最少選一個選項</span>";
+                privilegeInvalid.style.display = 'block';
                 passPrivilege = false;
             } else {
-                privilegeInvalid.innerHTML = '<i class="fa fa-check"></i>';
+                privilegeInvalid.innerHTML = '';
+                privilegeInvalid.style.display = 'none';
                 passPrivilege = true;
             }
             data_valid();
@@ -88,51 +96,52 @@
                 passIdentity = true;
             }
             else {
-                if (identity.value === ''){
-                    passIdentity = false;
-                } else{
-                    passIdentity = true;}
-
-                stuID.value = '';
-                department.value = '';
-                squadron.value = '';
-                grade.value = '';
-
-                document.getElementById('invalid_stu_id').innerHTML = '';
+                {#if (identity.value === ''){#}
+                {#    passIdentity = false;#}
+                {#} else{#}
+                {#    passIdentity = true;}#}
+                {##}
+                {#stuID.value = '';#}
+                {#department.value = '';#}
+                {#squadron.value = '';#}
+                {#grade.value = '';#}
+                {##}
+                {#document.getElementById('invalid_stu_id').innerHTML = '';#}
 
                 stuID.disabled = true;
+                stuID.value = '';
                 department.disabled = true;
+                department.value = '';
                 squadron.disabled = true;
+                squadron.value = '';
                 grade.disabled = true;
+                grade.value = '';
+                document.getElementById('invalid_stu_id').innerHTML = '';
+                document.getElementById('invalid_stu_id').style.display = 'none';
             }
             data_valid();
         }
 
         function data_valid() {
-            var identity = document.getElementById('identity');
             var submit = document.getElementById('submit');
+            var identity = document.getElementById('identity');
 
             if(identity.value === '2'){
                 if (passRegId===true && passIdentity===true && passPrivilege===true && passStuID===true){
                     submit.disabled = false;
-                    submit.style.backgroundColor = "#4CCABD";
                 } else {
                     submit.disabled = true;
-                    submit.style.backgroundColor = "grey";
                 }
             }
             else if(identity.value === '1' || identity.value === '3'){
                 if (passRegId===true && passIdentity===true && passPrivilege===true){
                     submit.disabled = false;
-                    submit.style.backgroundColor = "#4CCABD";
                 } else{
                     submit.disabled = true;
-                    submit.style.backgroundColor = "grey";
                 }
             }
             else{
                 submit.disabled = true;
-                submit.style.backgroundColor = "grey";
             }
         }
     </script>
@@ -140,162 +149,131 @@
 
 
 {% block path %}
-    <a href="">系統管理員</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="{% url 'user_list' %}">使用者列表</a>
-    <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="">新增使用者（單一）</a>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'user_list' %}">使用者列表</a></li>
+    <li class="breadcrumb-item active" aria-current="page">新增使用者（單一）</li>
 {% endblock %}
 
 {% block content %}
-    <div class="create_user">
-        <form method="post">
-            <div class="title"><h1>User Create.</h1></div>
-            {% csrf_token %}
-                <table>
-                    <tr>
-                        <td>Reg ID</td>
-                        <td>
-                            <input type="text" id="reg_id" name="reg_id" placeholder="Register ID number..." onkeyup="unique_ID({{ reg_ids }}, this)" required>
-                            <label class="unique_id" id="invalid_id"></label>
-                        </td>
-                    </tr>
+    <main class="create-user">
+    <form method="post">
+        {% csrf_token %}
+        <div class="container">
+            <div class="row justify-content-center">
 
-                    <tr>
-                        <td>身份</td>
-                        <td>
-                            <select id="identity" name="identity" onchange="is_student()" required>
-                                <option value="" disabled selected>請選擇身份</option>
-                                {% for identity in identities %}
-                                    <option value="{{ identity.value.0 }}">{{ identity.value.1 }}</option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                    </tr>
 
-                    <tr>
-                        <td>權限</td>
-                        <td>
-                            {% for privilege in privileges.values %}
-                                <input type="checkbox" id="{{ privilege.value.0 }}" name="privilege_{{ forloop.counter0 }}" onclick="privilege_not_empty()" {% if privilege == privileges.Testee %} checked {% endif %}>
-                                <label for="{{ privilege.value.0 }}">{{ privilege.value.1 }}&nbsp;&nbsp;&nbsp;</label>
-                            {% endfor %}
-                            <label class="privilege_invalid" id="privilege_invalid"></label>
-                        </td>
-                    </tr>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">Create User.</div>
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="reg_id" class="col-md-4 col-form-label text-md-right">Reg ID</label>
+                                    <div class="col-md-6">
+                                        <input class="form-control" type="text" id="reg_id" name="reg_id" placeholder="Register ID..." onkeyup="unique_ID({{ reg_ids }}, this)" required>
+                                        <label class="unique_id" id="invalid_id" style="display: none"></label>
+                                    </div>
+                                </div>
 
-                    <tr>
-                        <td colspan="2" style="color: red; text-align: center">
-                            --------------------身份非學生請勿填寫以下資訊--------------------
-                        </td>
-                    </tr>
+                                <div class="form-group row">
+                                    <label for="password" class="col-md-4 col-form-label text-md-right">身份</label>
+                                    <div class="col-md-6">
+                                        <select class="custom-select custom-select-sm" id="identity" name="identity" onchange="is_student()" required>
+                                            <option value="" disabled selected>請選擇身份</option>
+                                            {% for identity in identities %}
+                                                <option value="{{ identity.value.0 }}">{{ identity.value.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
 
-                    <tr>
-                        <td>Stu ID</td>
-                        <td>
-                            <input type="text" id="stu_id" name="stu_id" placeholder="Student ID number..." onkeyup="unique_stuID({{ stu_ids }}, this)" disabled>
-                            <label class="unique_stu_id" id="invalid_stu_id"></label>
-                        </td>
-                    </tr>
+                                <div class="form-group row">
+                                    <label for="verification" class="col-md-4 col-form-label text-md-right">權限</label>
+                                    <div class="col-md-6">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="button-group">
+                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="fa fa-gears"></i>
+                                                    </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li class="dropdown-header">設置權限</li>
+                                                            {% for privilege in privileges %}
+                                                                <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_not_empty()" {% if privilege == privilege.Testee %} checked {% endif %}>{{ privilege.value.1 }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <label class="privilege_invalid" id="privilege_invalid" style="display: none"></label>
+                                    </div>
+                                </div>
 
-                    <tr>
-                        <td>科系</td>
-                        <td>
-                            <select name="department" id="department" disabled>
-                                <option value="" disabled selected>請選擇科系</option>
-                                {% for department in departments %}
-                                    <option value="{{ department.id }}">{{ department }}</option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                    </tr>
+                                <div class="dropdown-divider"></div>
 
-                    <tr>
-                        <td>中隊</td>
-                        <td>
-                            <select name="squadron" id="squadron" disabled>
-                                <option value="" disabled selected>請選擇中隊單位</option>
-                                {% for squadron in squadrons %}
-                                    <option value="{{ squadron.id }}">{{ squadron }}</option>
-                                {% endfor %}
-                            </select>
-                        </td>
-                    </tr>
+                                <div class="float-right align-bottom">
+                                    <a href="{% url 'user_multiCreate' %}">一次新增多個使用者？</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <tr>
-                        <td>年班</td>
-                        <td><input type="text" name="grade" id="grade" disabled></td>
-                    </tr>
+                    <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Create Student.</div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="reg_id" class="col-md-4 col-form-label text-md-right">Student ID</label>
+                                <div class="col-md-6">
+                                    <input class="form-control" type="text" id="stu_id" name="stu_id" placeholder="Student ID..." onkeyup="unique_stuID({{ stu_ids }}, this)" disabled required>
+                                    <label class="unique_stu_id" id="invalid_stu_id" style="display: none"></label>
+                                </div>
+                            </div>
 
-                </table>
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">科系</label>
+                                <div class="col-md-6">
+                                    <select class="custom-select custom-select-sm" name="department" id="department" disabled>
+                                        <option value="" disabled selected>請選擇科系</option>
+                                        {% for department in departments %}
+                                            <option value="{{ department.id }}">{{ department }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
 
-                <div class="btn">
-                    <button type="submit" id="submit" onclick="return confirm('確認新增？')" disabled>新增使用者</button>
-                    <button type="reset">重設</button>
-                    <button type="button" onclick="self.location=document.referrer;">取消</button>
+                            <div class="form-group row">
+                                <label for="verification" class="col-md-4 col-form-label text-md-right">中隊</label>
+                                <div class="col-md-6">
+                                    <select class="custom-select custom-select-sm" name="squadron" id="squadron" disabled>
+                                        <option value="" disabled selected>請選擇中隊單位</option>
+                                        {% for squadron in squadrons %}
+                                            <option value="{{ squadron.id }}">{{ squadron }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="reg_id" class="col-md-4 col-form-label text-md-right">Grade.</label>
+                                <div class="col-md-6">
+                                    <input class="form-control" type="text" name="grade" id="grade" placeholder="Grade..." disabled required>
+                                </div>
+                            </div>
+
+                            <div class="dropdown-divider"></div>
+
+                            <div class="col-md-12 offset-md-4 text-center">
+                                <button type="submit" id="submit" class="btn btn-primary">提交</button>
+                                <button type="reset" class="btn btn-light">重設</button>
+                                <button type="button" class="btn btn-secondary" onclick="history.back()">取消</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-        </form>
 
-        <style>
-            .create_user .title h1{
-                width: 30%;
-                font-size: 28px;
-                color: #FFFEF6;
-                background-color: #4CCABD;
-                padding-top: 10px;
-                padding-bottom: 10px;
-                padding-right: 15px;
-                padding-left: 45px;
-                text-align: center;
-            }
-
-            .create_user table{
-                position: relative;
-                left: 15%;
-
-                width: 70%;
-
-                font-size: 20px;
-            }
-            .create_user table td{
-                padding: 4px;
-            }
-            .create_user form input{
-                padding: 6px;
-
-                border-style: solid;
-                border-width: 0.1em;
-                border-radius: 4px;
-                border-color: rgb(220, 220, 220);
-            }
-
-            .create_user .btn{
-                position: relative;
-                top: 10px;
-                left: 35%;
-            }
-            .create_user .btn #submit{
-                background-color: grey;
-            }
-
-            .unique_id, .unique_stu_id, .privilege_invalid{
-                color: limegreen;
-            }
-        </style>
-    </div>
-
-    <div class="mulit">
-        <a href="{% url 'user_multiCreate' %}">一次新增多個使用者？</a>
-
-        <style>
-            .mulit a{
-                position: absolute;
-                top: 87%;
-                left: 75%;
-                color: #4CCABD;
-                font-size: 25px;
-                text-decoration: none;
-            }
-        </style>
-    </div>
+            </div>
+        </div>
+    </form>
+    </main>
 {% endblock %}

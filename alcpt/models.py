@@ -58,6 +58,7 @@ class User(AbstractBaseUser):
         (3, '老師'),
     )
     identity = models.PositiveSmallIntegerField(null=True, default=0)
+    introduction = models.TextField(null=True)
 
     objects = UserManager()
 
@@ -327,7 +328,6 @@ class Report(models.Model):
     staff_notification = models.BooleanField(default=False)
     category = models.ForeignKey('ReportCategory', on_delete=models.PROTECT)
     question = models.ForeignKey('Question', on_delete=models.PROTECT, blank=True, null=True)
-    reply = models.TextField()
     supplement_note = models.TextField()
     STATES_CHOICES = (
         (1, '待處理'),
@@ -344,8 +344,15 @@ class Report(models.Model):
     def __str__(self):
         return self.category
 
-    def store_reply(self, reply):
-        self.reply = json.dumps(reply).encode('utf-8').decode('unicode_escape')
 
-    def get_reply(self):
-        return json.loads(self.reply)
+class Reply(models.Model):
+    source = models.ForeignKey('Report', null=True, on_delete=models.SET_NULL)
+    content = models.TextField()
+    created_by = models.ForeignKey('User', null=True, on_delete=models.SET_NULL)
+    created_time = models.DateTimeField(auto_now_add=True)
+
+    def store_content(self, content):
+        self.reply = json.dumps(content).encode('utf-8').decode('unicode_escape')
+
+    def get_content(self):
+        return json.loads(self.content)

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% load web_filters %}
 
@@ -58,7 +58,7 @@
             // Checkout whether privilege isn't null.
             else if (system.checked === false && testM.checked === false && tbM.checked === false &&
                 tbO.checked === false && viewer.checked === false && testee.checked === false) {
-                privilegeInvalid.innerHTML = "<span style='color: red'>最少選一個權限</span>";
+                privilegeInvalid.innerHTML = "<span style='color: red; font-size: 14px'>最少選一個權限</span>";
                 validPrivilege = false;
             }
             else {
@@ -80,7 +80,7 @@
                     break;
                 }
                 else if (input.value === ""){
-                    invalid_id.innerHTML = "<span style='color: red'>必填</span>";
+                    invalid_id.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
                     validRegId = false;
                 }
                 else if (origin === input.value) {
@@ -105,7 +105,7 @@
             }
             else if(input.value === ''){
                 validName = false;
-                name_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                name_invalid.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
             }
             else {
                 validName = true;
@@ -124,7 +124,7 @@
             }
             else if(input.value === ''){
                 validEmail = false;
-                email_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                email_invalid.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
             }
             else {
                 validEmail = true;
@@ -143,7 +143,7 @@
             }
             else if(input.value === ''){
                 validGender = false;
-                gender_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                gender_invalid.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
             }
             else {
                 validGender = true;
@@ -160,7 +160,7 @@
             }
             else if(input.value === ''){
                 validIdentity = false;
-                document.getElementById('identity_invalid').innerHTML = "<span style='color: red'>必填</span>";
+                document.getElementById('identity_invalid').innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
             }
             else {
                 validIdentity = true;
@@ -176,12 +176,12 @@
 
             for(var i = 0; i < arr.length; i++) {
                 if (input.value === arr[i]) {
-                    invalid_id.innerHTML = "<span style='color: red'>此ＩＤ已存在</span>";
+                    invalid_id.innerHTML = "<span style='color: red; font-size: 14px'>此ＩＤ已存在</span>";
                     validStuId = false;
                     break;
                 }
                 else if (input.value === ""){
-                    invalid_id.innerHTML = "<span style='color: red'>必填</span>";
+                    invalid_id.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
                     validStuId = false;
                 }
                 else if (origin === input.value) {
@@ -206,7 +206,7 @@
             }
             else if(input.value === ''){
                 validGrade = false;
-                grade_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                grade_invalid.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
             }
             else {
                 validGrade = true;
@@ -225,7 +225,7 @@
             }
             else if(input.value === ''){
                 validDepartment = false;
-                department_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                department_invalid.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
             }
             else {
                 validDepartment = true;
@@ -244,7 +244,7 @@
             }
             else if(input.value === ''){
                 validSquadron = false;
-                squadron_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                squadron_invalid.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
             }
             else {
                 validSquadron = true;
@@ -262,266 +262,314 @@
                 if (validRegId===true || validName===true || validEmail===true || validGender===true || validIdentity===true ||
                     validPrivilege===true || validStuId===true || validGrade===true|| validSquadron===true || validDepartment===true){
                     submit.disabled = false;
-                    submit.style.backgroundColor = "#4CCABD";
                 } else {
                     submit.disabled = true;
-                    submit.style.backgroundColor = "grey";
                 }
             }
             else if(identity.value === '1' || identity.value === '3'){
                 if (validRegId===true || validName===true || validEmail===true || validGender===true || validIdentity===true ||
                     validPrivilege===true ){
                     submit.disabled = false;
-                    submit.style.backgroundColor = "#4CCABD";
                 } else{
                     submit.disabled = true;
-                    submit.style.backgroundColor = "grey";
                 }
             }
             else{
                 submit.disabled = true;
-                submit.style.backgroundColor = "grey";
             }
         }
     </script>
 {% endblock %}
 
 {% block path %}
-    <a href="">系統管理員</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="{% url 'user_list' %}">使用者列表</a>
-    <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="#">編輯使用者</a>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'user_list' %}">使用者列表</a></li>
+    <li class="breadcrumb-item active" aria-current="page">編輯使用者</li>
 {% endblock %}
 
 {% block content %}
-    <!-- 大頭貼 -->
-    <div class="photo">
-        <i class="fa fa-user-circle"></i>
-
-        <style>
-            .photo{
-                position: absolute;
-                left: 8%;
-                top: 6%;
-            }
-
-            .photo i{
-                font-size: 160px;
-                color: #5e5e5e;
-            }
-        </style>
-    </div>
-
-    <div class="user_info">
-        <form action="" method="post">
+    <main class="edit-user-form">
+        <form method="post">
             {% csrf_token %}
-            <ul class="user_info1">
-                <li>使用者帳號</li>
-                <li>姓名</li>
-                <li>Email</li>
-                <li>性別</li>
-                <li>身份</li>
-                <li>權限</li>
-            </ul>
 
-            <ul class="user_info1_">
-                <li>
-                    <input type="text" name="reg_id" id="reg_id" value="{{ edited_user.reg_id }}" onkeyup="reg_id_valid('{{ edited_user.reg_id }}' , {{ reg_ids }}, this)" required>
-                    <label id="reg_id_invalid" class="reg_id_invalid"></label>
-                </li>
-                <li>
-                    <input type="text" name="name" {% if edited_user.name %}value="{{ edited_user.name }}"{% endif %} onkeyup="name_valid('{{ edited_user.name }}', this)" placeholder="Name..." required>
-                    <label id="name_invalid" class="name_invalid"></label>
-                </li>
-                <li>
-                    <input type="text" name="email" {% if edited_user.email %}value="{{ edited_user.email }}"{% endif %} onkeyup="email_valid('{{ edited_user.email }}', this)" placeholder="Email..." required>
-                    <label id="email_invalid" class="email_invalid"></label>
-                </li>
-                <li>
-                    <select name="gender" id="gender" onchange="gender_valid('{{ edited_user.gender }}', document.getElementById('gender'))" required>
-                        <option value="" disabled selected>請選擇性別</option>
-                        <option value="0" {% if edited_user.gender == 0 %}selected{% endif %}>男</option>
-                        <option value="1" {% if edited_user.gender == 1 %}selected{% endif %}>女</option>
-                        <option value="2" {% if edited_user.gender == 2 %}selected{% endif %}>不想公開</option>
-                    </select>
-                    <label id="gender_invalid" class="gender_invalid"></label>
-                </li>
-                <li>
-                    <select name="identity" id="identity" onchange="identity_valid('{{ edited_user.identity }}', document.getElementById('identity'))" required>
-                        <option value="" disabled selected>請選擇身份</option>
-                        {% for identity in identities %}
-                            <option value="{{ identity.value.0 }}" {% if edited_user.identity == identity.value.0 %}selected{% endif %}>{{ identity.value.1 }}</option>
-                        {% endfor %}
-                    </select>
-                    <label id="identity_invalid" class="identity_invalid"></label>
-                </li>
+            <div class="container">
+                {% if edited_user.student %}
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    User Photo.
+                                </div>
 
-                <li>
-                    {% for privilege in privileges %}
-                        <input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>
-                        <label for="{{ privilege.value.0 }}">{{ privilege.value.1 }}&nbsp;&nbsp;&nbsp;</label>
-                    {% endfor %}
-                    <label id="privilege_invalid" class="privilege_invalid"></label>
-                </li>
-            </ul>
+                                <img class="card-img-top" src="..." alt="{{ edited_user.name }}">
 
-            {% if edited_user.student %}
-                <ul class="student_info1">
-                    <li>學號</li>
-                    <li>年班</li>
-                    <li>科系</li>
-                    <li>中隊</li>
-                </ul>
+                                <div class="card-body">
+                                    <p class="card-text">ALCPT Development.</p>
+                                </div>
+                            </div>
+                        </div>
 
-                <ul class="student_info1_">
-                    <li>
-                        <input type="text" name="stu_id" value="{{ edited_user.student.stu_id }}" onkeyup="stu_id_valid('{{ edited_user.student.stu_id }}', {{ stu_ids }}, this)" required>
-                        <label id="stu_id_invalid" class="stu_id_invalid"></label>
-                    </li>
-                    <li>
-                        <input type="text" name="grade" value="{{ edited_user.student.grade }}" onkeyup="grade_valid('{{ edited_user.student.grade }}', this)" required>
-                        <label id="grade_invalid" class="grade_invalid"></label>
-                    </li>
-                    <li>
-                        <select name="department" id="department" onchange="department_valid('{{ edited_user.student.department.id }}', document.getElementById('department'))" required>
-                            <option value="" disabled selected>請選擇科系</option>
-                            {% for department in departments %}
-                                <option value="{{ department.id }}" {% if department == edited_user.student.department %}selected{% endif %}>{{ department }}</option>
-                            {% endfor %}
-                        </select>
-                        <label id="department_invalid" class="department_invalid"></label>
-                    </li>
-                    <li>
-                        <select name="squadron" id="squadron" onchange="squadron_valid('{{ edited_user.student.squadron.id }}', document.getElementById('squadron'))" required>
-                            <option value="" disabled selected>請選擇連隊單位</option>
-                            {% for squadron in squadrons %}
-                                <option value="{{ squadron.id }}" {% if squadron == edited_user.student.squadron %}selected{% endif %}>{{ squadron }}</option>
-                            {% endfor %}
-                        </select>
-                        <label id="squadron_invalid" class="squadron_invalid"></label>
-                    </li>
-                </ul>
-            {% endif %}
+                        <div class="col-lg-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    User Profile.
+                                </div>
 
-            <div class="btn">
-                <button type="submit" id="submit" class="submit">送出</button>
-                <button type="button" onclick="window.location.href='{% url 'user_list' %}'">返回</button>
+                                <div class="card-body text-left">
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Register ID.<label id="reg_id_invalid" class="reg_id_invalid"></label>
+                                    </h5>
+                                    <p>
+                                        <input class="form-control" type="text" name="reg_id" id="reg_id" value="{{ edited_user.reg_id }}" onkeyup="reg_id_valid('{{ edited_user.reg_id }}' , {{ reg_ids }}, this)" required>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Name.<label id="name_invalid" class="name_invalid"></label>
+                                    </h5>
+                                    <p class="card-text">
+                                        <input class="form-control" type="text" name="name" {% if edited_user.name %}value="{{ edited_user.name }}"{% endif %} onkeyup="name_valid('{{ edited_user.name }}', this)" placeholder="Name..." required>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Email.<label id="email_invalid" class="email_invalid"></label>
+                                    </h5>
+                                    <p class="card-text">
+                                        <input class="form-control" type="text" name="email" {% if edited_user.email %}value="{{ edited_user.email }}"{% endif %} onkeyup="email_valid('{{ edited_user.email }}', this)" placeholder="Email..." required>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Gender.<label id="gender_invalid" class="gender_invalid"></label>
+                                    </h5>
+                                    <p class="card-text">
+                                        <select class="custom-select custom-select-sm" name="gender" id="gender" onchange="gender_valid('{{ edited_user.gender }}', document.getElementById('gender'))" required>
+                                            <option value="" disabled selected>請選擇性別</option>
+                                            <option value="0" {% if edited_user.gender == 0 %}selected{% endif %}>男</option>
+                                            <option value="1" {% if edited_user.gender == 1 %}selected{% endif %}>女</option>
+                                            <option value="2" {% if edited_user.gender == 2 %}selected{% endif %}>不想公開</option>
+                                        </select>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Identity.<label id="identity_invalid" class="identity_invalid"></label>
+                                    </h5>
+                                    <p class="card-text">
+                                        <select class="custom-select custom-select-sm" name="identity" id="identity" onchange="identity_valid('{{ edited_user.identity }}', document.getElementById('identity'))" required>
+                                            <option value="" disabled selected>請選擇身份</option>
+                                            {% for identity in identities %}
+                                                <option value="{{ identity.value.0 }}" {% if edited_user.identity == identity.value.0 %}selected{% endif %}>{{ identity.value.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Privilege.<label id="privilege_invalid" class="privilege_invalid"></label>
+                                    </h5>
+                                    <p class="card-text">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="button-group">
+                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="fa fa-gears"></i>
+                                                    </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li class="dropdown-header">設置權限</li>
+                                                            {% for privilege in privileges %}
+                                                                <li data-value="{{ privilege.value.0 }}"><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>{{ privilege.value.1 }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p>
+                                </div>
+
+                                <div class="card-footer text-muted">
+                                    <p>Last login - {{ edited_user.last_login }}</p>
+                                    <p>Create time - {{ edited_user.created_time }}</p>
+                                    <p>
+                                        Status -
+                                        {% if edited_user.is_active %}
+                                            <span>active</span>
+                                        {% elif edited_user.is_staff %}
+                                            <span>staff</span>
+                                        {% elif edited_user.is_superuser %}
+                                            <span>superuser</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="card lg-3">
+                                <div class="card-header">
+                                    Student Profile.
+                                </div>
+
+                                <div class="card-body text-left">
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Student ID.<span id="stu_id_invalid" class="stu_id_invalid"></span>
+                                    </h5>
+                                    <h3 class="card-title">
+                                        <input class="form-control" type="text" name="stu_id" value="{{ edited_user.student.stu_id }}" onkeyup="stu_id_valid('{{ edited_user.student.stu_id }}', {{ stu_ids }}, this)" required>
+                                    </h3>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Department.<label id="department_invalid" class="department_invalid"></label>
+                                    </h5>
+                                    <p class="card-text">
+                                        <select class="custom-select custom-select-sm" name="department" id="department" onchange="department_valid('{{ edited_user.student.department.id }}', document.getElementById('department'))" required>
+                                            <option value="" disabled selected>請選擇科系</option>
+                                            {% for department in departments %}
+                                                <option value="{{ department.id }}" {% if department == edited_user.student.department %}selected{% endif %}>{{ department }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Squadron.<label id="squadron_invalid" class="squadron_invalid"></label>
+                                    </h5>
+                                    <p class="card-text">
+                                        <select class="custom-select custom-select-sm" name="squadron" id="squadron" onchange="squadron_valid('{{ edited_user.student.squadron.id }}', document.getElementById('squadron'))" required>
+                                            <option value="" disabled selected>請選擇中隊單位</option>
+                                            {% for squadron in squadrons %}
+                                                <option value="{{ squadron.id }}" {% if squadron == edited_user.student.squadron %}selected{% endif %}>{{ squadron }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Grade.<label id="grade_invalid" class="grade_invalid"></label>
+                                    </h5>
+                                    <p class="card-text">
+                                        <input class="form-control" type="text" name="grade" value="{{ edited_user.student.grade }}" onkeyup="grade_valid('{{ edited_user.student.grade }}', this)" required>
+                                    </p>
+                                </div>
+
+                                <div class="card-footer text-right">
+                                    <button type="submit" class="btn btn-primary" id="submit">提交</button>
+                                    <button type="button" class="btn btn-secondary" onclick="history.back()">取消</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    User Photo.
+                                </div>
+
+                                <img class="card-img-top" src="..." alt="{{ edited_user.name }}">
+
+                                <div class="card-body">
+                                    <p class="card-text">ALCPT Development.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-8">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    User Profile.
+                                </div>
+
+                                <div class="card-body text-left">
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Register ID.<label id="reg_id_invalid" class="reg_id_invalid"></label>
+                                    </h5>
+                                    <p>
+                                        <input class="form-control" type="text" name="reg_id" id="reg_id" value="{{ edited_user.reg_id }}" onkeyup="reg_id_valid('{{ edited_user.reg_id }}' , {{ reg_ids }}, this)" required>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Name.<label id="name_invalid" class="name_invalid"></label>
+                                    </h5>
+                                    <p class="card-text">
+                                        <input class="form-control" type="text" name="name" {% if edited_user.name %}value="{{ edited_user.name }}"{% endif %} onkeyup="name_valid('{{ edited_user.name }}', this)" placeholder="Name..." required>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Email.<label id="email_invalid" class="email_invalid"></label>
+                                    </h5>
+                                    <p class="card-text">
+                                        <input class="form-control" type="text" name="email" {% if edited_user.email %}value="{{ edited_user.email }}"{% endif %} onkeyup="email_valid('{{ edited_user.email }}', this)" placeholder="Email..." required>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Gender.<label id="gender_invalid" class="gender_invalid"></label>
+                                    </h5>
+                                    <p class="card-text">
+                                        <select class="custom-select custom-select-sm" name="gender" id="gender" onchange="gender_valid('{{ edited_user.gender }}', document.getElementById('gender'))" required>
+                                            <option value="" disabled selected>請選擇性別</option>
+                                            <option value="0" {% if edited_user.gender == 0 %}selected{% endif %}>男</option>
+                                            <option value="1" {% if edited_user.gender == 1 %}selected{% endif %}>女</option>
+                                            <option value="2" {% if edited_user.gender == 2 %}selected{% endif %}>不想公開</option>
+                                        </select>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Identity.<label id="identity_invalid" class="identity_invalid"></label>
+                                    </h5>
+                                    <p class="card-text">
+                                        <select class="custom-select custom-select-sm" name="identity" id="identity" onchange="identity_valid('{{ edited_user.identity }}', document.getElementById('identity'))" required>
+                                            <option value="" disabled selected>請選擇身份</option>
+                                            {% for identity in identities %}
+                                                <option value="{{ identity.value.0 }}" {% if edited_user.identity == identity.value.0 %}selected{% endif %}>{{ identity.value.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Privilege.<label id="privilege_invalid" class="privilege_invalid"></label>
+                                    </h5>
+                                    <p class="card-text">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="button-group">
+                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="fa fa-gears"></i>
+                                                    </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li class="dropdown-header">設置權限</li>
+                                                            {% for privilege in privileges %}
+                                                                <li data-value="{{ privilege.value.0 }}"><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>{{ privilege.value.1 }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p>
+                                </div>
+
+                                <div class="card-footer text-muted">
+                                    <p>Last login - {{ edited_user.last_login }}</p>
+                                    <p>Create time - {{ edited_user.created_time }}</p>
+                                    <p>
+                                        Status -
+                                        {% if edited_user.is_active %}
+                                            <span>active</span>
+                                        {% elif edited_user.is_staff %}
+                                            <span>staff</span>
+                                        {% elif edited_user.is_superuser %}
+                                            <span>superuser</span>
+                                        {% endif %}
+                                    </p>
+
+                                    <div class="text-right">
+                                        <button type="submit" id="submit" class="btn btn-primary">提交</button>
+                                        <button type="button" onclick="history.back()" class="btn btn-secondary">取消</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </form>
-
-        <style>
-            .user_info1{
-                position: absolute;
-                left: 30%;
-                top: 1%;
-            }
-            .user_info1 li{
-                font-size: 20px;
-                list-style: none;
-                line-height: 60px;
-            }
-            .user_info1_{
-                position: absolute;
-                left: 40%;
-                top: 1%;
-            }
-            .user_info1_ li{
-                list-style: none;
-                line-height: 58px;
-            }
-
-            .student_info1{
-                position: absolute;
-                left: 62%;
-                top: 1%;
-            }
-            .student_info1 li{
-                font-size: 20px;
-                list-style: none;
-                line-height: 60px;
-            }
-            .student_info1_{
-                position: absolute;
-                left: 72%;
-                top: 1%;
-            }
-            .student_info1_ li{
-                list-style: none;
-                line-height: 58px;
-            }
-
-            .btn{
-                position: absolute;
-                top: 80%;
-                right: 10%;
-            }
-            .btn .submit{
-                background-color: grey;
-            }
-            .reg_id_invalid, .name_invalid, .email_invalid, .gender_invalid, .identity_invalid, .privilege_invalid,
-            .stu_id_invalid, .grade_invalid, .department_invalid, .squadron_invalid{
-                color: limegreen;
-            }
-        </style>
-
-    </div>
-
-    <div class="time-block">
-        <div class="time_icon">
-            <i class="fa fa-clock-o"></i>
-        </div>
-
-        <div class="time">
-            <li>最近登入：<br>{{ edited_user.last_login|date:"Y年m月d日, H時i分" }}</li>
-            <li style="border-top-style: solid; border-top-color: #adadad; border-top-width: 0.7px;">&nbsp;</li>
-            <li>更新時間：<br>{{ edited_user.update_time|date:"Y年m月d日, H時i分" }}</li>
-            <li style="border-top-style: solid; border-top-color: #adadad; border-top-width: 0.7px;">&nbsp;</li>
-            <li>加入時間：<br>{{ edited_user.created_time|date:"Y年m月d日, H時i分" }}</li>
-            <li style="border-top-style: solid; border-top-color: #adadad; border-top-width: 0.7px;">&nbsp;</li>
-            <li>狀態：{% if edited_user.is_active %}
-                    <span>active</span>
-                {% elif edited_user.is_staff %}
-                    <span>staff</span>
-                {% elif edited_user.is_superuser %}
-                    <span>superuser</span>
-                {% endif %}
-            </li>
-        </div>
-
-        <style>
-            .time-block{
-                position: absolute;
-                top: 40%;
-                left: 7%;
-            }
-
-            .time_icon{
-                position: relative;
-                top: 35px;
-                left: -10px;
-
-                width: 20px;
-
-                font-size: 22px;
-                color: #5e5e5e;
-                background-color: #F3F3F3;
-            }
-
-            .time{
-                color: #5e5e5e;
-
-                border: #c0c0c0 solid 0.7px;
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-
-            .time li{
-                list-style: none;
-                width: 100%;
-                font-size: 14px;
-                top: 85%;
-            }
-        </style>
-    </div>
+    </main>
 {% endblock %}
