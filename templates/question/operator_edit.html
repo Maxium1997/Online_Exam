@@ -1,5 +1,29 @@
 {% extends 'base.html' %}
 
+{% block scripts %}
+    <script type="text/javascript">
+        var changeType = false;
+        var changeAnswer = false;
+
+        function type_changed(origin, input) {
+            if(origin !== input) changeType = true;
+            else changeType = false;
+        }
+
+        {#function answer_changed() {#}
+        {#    var answers = document.getElementsByName('answer_choice');#}
+        {#    var ans = '';#}
+        {#    for(var i = 0; i < answers.length; i++) {#}
+        {#        if(answers[i].checked === true){#}
+        {#            document.getElementById('result').innerHTML = answers[i].value + '';#}
+        {#            break;#}
+                    {#if(answers[_] === )#}
+        {#        }#}
+        {#    }#}
+        {#}#}
+    </script>
+{% endblock %}
+
 {% block path %}
     <a href="{% url 'tboperator_question_list' %}">題目操作員</a>
     <a class="fa fa-angle-double-right fa-lg box"></a>
@@ -29,7 +53,7 @@
                 <tr>
                     <td class="col-md-2" style="font-size: 20px">選擇題目類型</td>
                     <td class="col-md-5">
-                        <select name="question_type" id="question_type" onchange="ChangeJudgementButton('{{ question_type }}', this)" required>
+                        <select name="question_type" id="question_type" onchange="type_changed('{{ question.q_type }}', this)" required>
                             <option value="" disabled selected>請選擇題目類型</option>
                             {% if question.q_content %}
                                 <option value="3" {% if question.q_type == 3 %}selected{% endif %}>文法</option>
@@ -50,7 +74,7 @@
                     {% else %}
                         <td class="col-md-2"></td>
                     {% endif %}
-                    <td class="col-md-5"><input type="radio" name="answer_choice" {% if choice.is_answer %}checked{% endif %}>{{ choice }}</td>
+                    <td class="col-md-5"><input type="radio" name="answer_choice" {% if choice.is_answer %}checked{% endif %} onclick="answer_changed()">{{ choice }}</td>
                 </tr>
                 {% endfor %}
             </table>

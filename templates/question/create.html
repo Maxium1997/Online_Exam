@@ -1,5 +1,122 @@
 {% extends 'base.html'%}
 
+{% block scripts %}
+    <script type="text/javascript">
+        var validHeading = false;
+        var validType = false;
+        var validDifficulty = true;
+        var validChoice = false;
+
+        function heading_valid(type){
+            var content = document.getElementById('question_content');
+            var content_invalid = document.getElementById('content_invalid');
+            var file = document.getElementById('question_file');
+            var file_invalid = document.getElementById('file_invalid');
+
+            if(type === 'listening') {
+                if (file) {
+                    validHeading = true;
+                    file_invalid.innerHTML = '<i style="color: limegreen" class="fa fa-check"></i>';
+                } else {
+                    validHeading = false;
+                    file_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                }
+            }
+            else {
+                 if (content.value) {
+                    validHeading = true;
+                    content_invalid.innerHTML = '<i style="color: limegreen" class="fa fa-check"></i>';
+                } else {
+                    validHeading = false;
+                    content_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                 }
+            }
+
+            data_valid();
+        }
+
+        function type_valid(type) {
+            var listening_invalid = document.getElementById('listening_invalid');
+            var reading_invalid = document.getElementById('reading_invalid');
+            var listening = document.getElementById('question_type_listening');
+            var reading = document.getElementById('question_type_reading');
+
+            if(type === 'listening'){
+                if(listening){
+                    validType = true;
+                    listening_invalid.innerHTML = '<i style="color: limegreen" class="fa fa-check"></i>';
+                }
+                else{
+                    validType = false;
+                    listening_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                }
+            }
+            else{
+                if(reading){
+                    validType = true;
+                    reading_invalid.innerHTML = '<i style="color: limegreen" class="fa fa-check"></i>';
+                }
+                else{
+                    validType = false;
+                    reading_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                }
+            }
+            data_valid();
+        }
+
+        function difficulty_valid() {
+            var difficulty_invalid = document.getElementById('difficulty_invalid');
+            var difficulty = document.getElementById('question_difficulty');
+
+            if(difficulty){
+                validDifficulty = true;
+                difficulty_invalid.innerHTML = '<i style="color: limegreen" class="fa fa-check"></i>';
+            }
+            else {
+                validDifficulty = false;
+                difficulty_invalid.innerHTML = "<span style='color: red'>必填</span>";
+            }
+            data_valid();
+        }
+
+        function choice_valid() {
+            var choice_invalid = document.getElementById('choice_invalid');
+            choice1 = document.getElementById('choice1').value;
+            choice2 = document.getElementById('choice2').value;
+            choice3 = document.getElementById('choice3').value;
+            choice4 = document.getElementById('choice4').value;
+
+            var arr = [choice1, choice2, choice3, choice4];
+            var items = new Set(arr);
+
+            if (!choice1 || !choice2 || !choice3 || !choice4) {
+                validChoice = false;
+                choice_invalid.innerHTML = "<span style='color: red'>選項物留白</span>";
+            }
+            else if(items.size !== arr.length){
+                validChoice = false;
+                choice_invalid.innerHTML = "<span style='color: red'>選項勿重複</span>";
+            }
+            else{
+                validChoice = true;
+                choice_invalid.innerHTML = '<i style="color: limegreen" class="fa fa-check"></i>';
+            }
+            data_valid();
+        }
+
+        function data_valid() {
+            if(validHeading && validType && validDifficulty && validChoice){
+                submit.style.backgroundColor = '#4CCABD';
+                submit.disabled = false;
+            }
+            else{
+                submit.style.backgroundColor = 'grey';
+                submit.disabled = true;
+            }
+        }
+    </script>
+{% endblock  %}
+
 {% block path %}
     <a href="">題目操作員</a>
     <a class="fa fa-angle-double-right fa-lg box"></a>
@@ -16,36 +133,40 @@
                 {% if kind == 'listening' %}
                     <tr>
                         <td class="col-md-2">試題聽力音檔</td>
-                        <td><input type="file" name="question_file" id="question_file" accept="audio/mpeg" onchange="OpenButton('listening')" required></td>
+                        <td><input type="file" name="question_file" id="question_file" accept="audio/mpeg" onchange="heading_valid('listening')" required></td>
+                        <td id="file_invalid" class="file_invalid"></td>
                     </tr>
 
                     <tr>
                         <td class="col-md-2">試題類型</td>
                         <td>
-                            <select name="question_type" id="question_type_listening" onkeyup="OpenButton('listening')" required>
+                            <select name="question_type" id="question_type_listening" onchange="type_valid('listening')" required>
                                 <option value="" disabled selected>請選擇試題類型</option>
                                 <option value="1">問答</option>
                                 <option value="2">簡短對話</option>
                             </select>
                         </td>
+                        <td id="listening_invalid" class="listening_invalid"></td>
                     </tr>
 
                 {% elif kind == 'reading' %}
                     <tr>
                         <td class="col-md-2">試題題目</td>
-                        <td><textarea class="form-control" cols="100" rows="3" name="question_content" id="question_content" onkeyup="OpenButton('reading')" placeholder="請輸入試題題目" required></textarea></td>
+                        <td><textarea class="form-control" cols="100" rows="3" name="question_content" id="question_content" onkeyup="heading_valid('reading')" placeholder="請輸入試題題目" required></textarea></td>
+                        <td id="content_invalid" class="content_invalid"></td>
                     </tr>
 
                     <tr>
                         <td class="col-md-2">試題類型</td>
                         <td>
-                            <select name="question_type" id="question_type_reading" onchange="OpenButton('reading')" required>
+                            <select name="question_type" id="question_type_reading" onchange="type_valid('reading')" required>
                                 <option value="" disabled selected>請選擇試題類型</option>
                                 <option value="3">文法</option>
                                 <option value="4">名詞片語</option>
                                 <option value="5">段落理解</option>
                             </select>
                         </td>
+                        <td id="reading_invalid" class="reading_invalid"></td>
                     </tr>
 
                 {% else %}
@@ -58,28 +179,30 @@
                 <tr>
                     <td>試題難度</td>
                     <td>
-                        <select name="question_difficulty">
+                        <select id="question_difficulty" name="question_difficulty" onchange="difficulty_valid()">
                             <option value="1" selected>簡單</option>
                             <option value="2">中等</option>
                             <option value="3">困難</option>
                         </select>
                     </td>
+                    <td id="difficulty_invalid" name="difficulty_invalid"></td>
                 </tr>
 
                 <tr>
                     <td>試題選項</td>
                     <td>
-                        <input class="form-control" type="text" name="choice1" id="choice1" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                        <input class="form-control" type="text" name="choice2" id="choice2" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                        <input class="form-control" type="text" name="choice3" id="choice3" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                        <input class="form-control" type="text" name="choice4" id="choice4" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
+                        <input class="form-control" type="text" name="choice1" id="choice1" onkeyup="choice_valid()" placeholder="Enter Choice content..." required>
+                        <input class="form-control" type="text" name="choice2" id="choice2" onkeyup="choice_valid()" placeholder="Enter Choice content..." required>
+                        <input class="form-control" type="text" name="choice3" id="choice3" onkeyup="choice_valid()" placeholder="Enter Choice content..." required>
+                        <input class="form-control" type="text" name="choice4" id="choice4" onkeyup="choice_valid()" placeholder="Enter Choice content..." required>
                     </td>
+                    <td id="choice_invalid" class="choice_invalid"></td>
                 </tr>
 
             </table>
 
             <div class="btn">
-                <button type="submit" id="submit" onclick="return confirm('確認新增此試題？')">新增試題</button>
+                <button type="submit" id="submit" class="submit" onclick="return confirm('確認新增此試題？')" disabled>新增試題</button>
                 <button type="reset">重設</button>
                 <button type="button" onclick="window.location.href='{% url 'tboperator_question_list' %}'">取消</button>
             </div>
@@ -124,68 +247,11 @@
                     top: 30px;
                     left: 35%;
                 }
+
+                .btn .submit{
+                    background-color: grey;
+                }
             </style>
         </form>
     </div>
-    
-    <script type="text/javascript">
-        var questionFile = document.getElementById('question_file');
-        var questionTypeListening = document.getElementById('question_type_listening');
-
-        var questionTypeReading = document.getElementById('question_type_reading');
-        var questionContent = document.getElementById('question_content');
-
-        var choice1 = document.getElementById('choice1');
-        var choice2 = document.getElementById('choice2');
-        var choice3 = document.getElementById('choice3');
-        var choice4 = document.getElementById('choice4');
-
-        var submit = document.getElementById('submit');
-
-        var repeat = document.getElementById('repeat');
-
-
-        function OpenButton(kind) {
-            if (kind === 'reading') {
-                Repeated();
-                if (choice1.value === '' || choice2.value === '' || choice3.value === '' || choice4.value === ''
-                    || questionTypeReading.value === '' || questionContent.value === '') {
-                    submit.disabled = true;
-                    submit.style.backgroundColor = 'grey';
-                } else {
-                    submit.disabled = false;
-                    submit.style.backgroundColor = '#4CCABD';
-                }
-            }
-            else{
-               if (choice1.value === '' || choice2.value === '' || choice3.value === '' || choice4.value === ''
-                   || questionTypeListening.value === '' || questionFile.value === '') {
-                   submit.disabled = true;
-                   submit.style.backgroundColor = 'grey';
-               } else {
-                   submit.disabled = false;
-                   submit.style.backgroundColor = '#4CCABD';
-               }
-            }
-        }
-        
-        {#function Repeated() {#}
-        {#    var choiceArr = [choice1, choice2, choice3, choice4];#}
-        {#    var strArr = '';#}
-        {##}
-        {#    for(var i = 0; i < sortArr.length-1; i++){#}
-        {#        if (sortArr[i].value === sortArr[i+1].value) {#}
-        {#            if(sortArr[i].value !== ''){#}
-        {#                repeat.innerHTML = '試題選項不能重複';#}
-        {#                break;#}
-        {#            }#}
-        {#            else {#}
-        {#                repeat.innerHTML = '';#}
-        {#            }#}
-        {#        }#}
-        {#    }#}
-        {#    repeat.innerHTML = strArr;#}
-        {##}
-        {#}#}
-    </script>
 {% endblock %}

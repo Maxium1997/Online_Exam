@@ -2,6 +2,27 @@
 
 {% load web_filters %}
 
+{% block scripts %}
+    <script type="text/javascript">
+        function answer_valid() {
+            var answers = document.getElementsByName('is_answer');
+            var submit = document.getElementById('submit');
+
+            for(var _ = 0; _ < answers.length; _++) {
+                if (answers[_].checked === true) {
+                    submit.disabled = false;
+                    submit.style.color = 'limegreen';
+                    break;
+                }
+                else{
+                    submit.disabled = true;
+                    submit.style.color = 'grey';
+                }
+            }
+        }    
+    </script>
+{% endblock %}
+
 {% block path %}
     <a href="">題目操作員</a>
     <a class="fa fa-angle-double-right fa-lg box"></a>
@@ -34,17 +55,17 @@
                     <td class="col-md-2">選項</td>
                     <td class="col-md-10">
                         <ol type="A">
-                            <li><input type="radio" name="is_answer" id="is_answer" value="{{ option1.id }}">{{ option1 }}</li>
-                            <li><input type="radio" name="is_answer" id="is_answer" value="{{ option2.id }}">{{ option2 }}</li>
-                            <li><input type="radio" name="is_answer" id="is_answer" value="{{ option3.id }}">{{ option3 }}</li>
-                            <li><input type="radio" name="is_answer" id="is_answer" value="{{ option4.id }}">{{ option4 }}</li>
+                            <li><input type="radio" name="is_answer" id="is_answer" value="{{ option1.id }}" onclick="answer_valid()">{{ option1 }}</li>
+                            <li><input type="radio" name="is_answer" id="is_answer" value="{{ option2.id }}" onclick="answer_valid()">{{ option2 }}</li>
+                            <li><input type="radio" name="is_answer" id="is_answer" value="{{ option3.id }}" onclick="answer_valid()">{{ option3 }}</li>
+                            <li><input type="radio" name="is_answer" id="is_answer" value="{{ option4.id }}" onclick="answer_valid()">{{ option4 }}</li>
                         </ol>
                     </td>
                 </tr>
             </table>
 
             <div class="btn">
-                <input type="submit" id="submit" value="送出">
+                <input type="submit" id="submit" value="送出" disabled>
             </div>
 
         </form>
@@ -78,6 +99,7 @@
             }
 
             .set_answer .btn{
+                color: grey;
                 position: relative;
                 top: 30px;
                 left: 38%;

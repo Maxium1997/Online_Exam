@@ -2,6 +2,43 @@
 
 {% load web_filters %}
 
+{% block scripts %}
+    <script type="text/javascript">
+        var validContent = true;
+
+        function content_valid(origin ,input) {
+            var content_invalid = document.getElementById('content_invalid');
+
+            if(!input.value){
+                content_invalid.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
+                validContent = false;
+            }
+            else if(origin === input.value){
+                content_invalid.innerHTML = "";
+                validContent = false;
+            }
+            else {
+                content_invalid.innerHTML = '<i style="color: limegreen" class="fa fa-check"></i>';
+                validContent = true;
+            }
+        }
+
+        function answer_valid() {
+            var choices = document.getElementsByName('answer_choice');
+            var answer_invalid = document.getElementById('answer_invalid');
+            var checked = '';
+
+            for(var _ = 0; _ < choices.length; _++){
+                if(choices[_].checked === true){
+                    checked = choices[_].value;
+                    break;
+                }
+            }
+            answer_invalid.innerHTML = checked + '~~~';
+        }
+    </script>
+{% endblock %}
+
 {% block path %}
     <a {% if request.user|has_perm:'TBManager' %}href="{% url 'tbmanager_question_list' %}">題庫管理員{% else %}href="{% url 'tboperator_question_list' %}">題目操作員{% endif %}</a>
     <a class="fa fa-angle-double-right fa-lg box"></a>
@@ -23,9 +60,10 @@
                                 Your browser does not support the audio tag.
                             </audio>
                         {% else %}
-                            <textarea class="form-control" name="q_content" cols="55" rows="4" onkeyup="ChangeJudgementButton('{{ question_q_content }}', this)">{{ question.q_content }}</textarea>
+                            <textarea class="form-control" name="q_content" cols="55" rows="4" onkeyup="content_valid('{{ question.q_content }}' ,this)">{{ question.q_content }}</textarea>
                         {% endif %}
                     </td>
+                    <td id="content_invalid" class="content_invalid"></td>
                 </tr>
 
                 {% for choice in question.choice_set.all %}
@@ -35,9 +73,10 @@
                     {% else %}
                         <td class="col-md-2"></td>
                     {% endif %}
-                    <td class="col-md-5" style="padding-left: 10%"><input type="radio" name="answer_choice" value="{{ choice.id }}">{{ choice }}</td>
+                    <td class="col-md-5" style="padding-left: 10%"><input type="radio" name="answer_choice" value="{{ choice.id }}" onclick="answer_valid()">{{ choice }}</td>
                 </tr>
                 {% endfor %}
+                <tr id="answer_invalid" class="answer_invalid"></tr>
             </table>
 
             <div class="btn">
