@@ -17,28 +17,28 @@
                                 {% csrf_token %}
 
                                 <div class="form-group row">
-                                    <label for="p_title" class="col-md-4 col-form-label text-md-right">公告標題</label>
+                                    <label for="p_title" class="col-md-4 col-form-label text-md-right">Title.</label>
                                     <div class="col-md-6">
                                         <input type="text" id="p_title" class="form-control" name="p_title" placeholder="Proclamation Title..." required autofocus>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="p_text" class="col-md-4 col-form-label text-md-right">公告內容</label>
+                                    <label for="p_text" class="col-md-4 col-form-label text-md-right">Content.</label>
                                     <div class="col-md-6">
                                         <textarea class="form-control" name="p_text" cols="100" rows="8" placeholder="Proclamation Content..." required></textarea>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary" onclick="return confirm('確認新增？')">
-                                        新增
+                                    <button type="submit" class="btn btn-primary">
+                                        Submit
                                     </button>
                                     <button type="reset" class="btn btn-light">
-                                        重設
+                                        Reset
                                     </button>
-                                    <button type="button" class="btn btn-secondary" onclick="history.back()">
-                                        取消
+                                    <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">
+                                        Cancel
                                     </button>
                                 </div>
                             </form>

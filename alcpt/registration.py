@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from Online_Exam.settings import LOGIN_REDIRECT_URL
+from Online_Exam.settings import LOGIN_REDIRECT_URL, LOGOUT_REDIRECT_URL
 from alcpt.definitions import UserType, Identity
 from alcpt.forms import CaptchaForm
 from alcpt.models import User, Student, Department, Squadron, Report, Reply
@@ -70,7 +70,7 @@ def logout(request):
     auth.logout(request)
     messages.success(request, 'Logout Success.')
 
-    return redirect('Homepage')
+    return redirect(LOGOUT_REDIRECT_URL)
 
 
 # 檢視個人資料

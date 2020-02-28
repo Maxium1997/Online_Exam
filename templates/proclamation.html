@@ -15,10 +15,10 @@
                     <thead class="thead-light">
                         <tr>
                             {% if request.user|has_perm:'SystemManager' %}
-                                <th scope="col">公告標題</th>
-                                <th scope="col">公告內容</th>
-                                <th scope="col">公告人</th>
-                                <th scope="col">公告時間</th>
+                                <th>Title.</th>
+                                <th class="text-center">Content.</th>
+                                <th>Announcer.</th>
+                                <th>Release Time.</th>
                                 <th scope="col">
                                     {% if request.user|has_perm:'SystemManager' %}
                                         <div class="add">
@@ -27,10 +27,10 @@
                                     {% endif %}
                                 </th>
                             {% else %}
-                                <th scope="col">公告標題</th>
-                                <th scope="col">公告內容</th>
-                                <th scope="col">公告人</th>
-                                <th scope="col">公告時間</th>
+                                <th>Title.</th>
+                                <th class="text-center">Content.</th>
+                                <th>Announcer.</th>
+                                <th>Release Time.</th>
                             {% endif %}
                         </tr>
                     </thead>
@@ -38,13 +38,12 @@
                     <tbody>
                         {% for pro in pros %}
                             <tr style="cursor: pointer" data-toggle="modal" data-target="#pro_{{ pro.id }}">
-{#                            <tr style="cursor: pointer" onclick="window.location.href='{% url 'proclamation_detail' pro.id %}'">#}
                                 <td>{{ pro.title }}</td>
 
                                 {% if request.user|has_perm:'SystemManager' %}
-                                    <td>{{ pro.text|safe|summary:37 }}</td>
+                                    <td>{{ pro.text|safe|summary:32 }}</td>
                                 {% else %}
-                                    <td>{{ pro.text|safe|summary:40 }}</td>
+                                    <td>{{ pro.text|safe|summary:35 }}</td>
                                 {% endif %}
 
                                 <td>{{ pro.created_by.name}}</td>
@@ -72,7 +71,7 @@
 
                                             <div class="modal-footer">
                                                 <footer class="blockquote-footer">{{ pro.created_by }} in <cite title="Source Title">{{ pro.created_time }}</cite></footer>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">確認</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
                                             </div>
                                         </div>
                                     </div>
@@ -100,9 +99,15 @@
         </li>
 
         {% for page in paginator.page_range %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
-            </li>
+            {% if page == pros.number %}
+                <li class="page-item active">
+                    <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                </li>
+            {% endif %}
         {% endfor %}
 
         <li class="page-item {% if not pros.has_next %}disable{% endif %}">

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% load staticfiles %}
 
@@ -17,7 +17,7 @@
             var now = new Date();
 
             validTime = true;
-            time_invalid.innerHTML = '<i style="color: limegreen" class="fa fa-check"></i>';
+            time_invalid.innerHTML = '';
             data_valid();
         }
 
@@ -27,16 +27,16 @@
 
             for(var i = 0; i < arr.length; i++) {
                 if (input.value === ''){
-                    invalid.innerHTML = "<span style='color: red'>必填</span>";
+                    invalid.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
                     validName = false;
                 }
                 else if (input.value === arr[i]) {
-                    invalid.innerHTML = "<span style='color: red'>名稱已存在</span>";
+                    invalid.innerHTML = "<span style='color: red; font-size: 14px'>此名稱已存在</span>";
                     validName = false;
                     break;
                 }
                 else {
-                    invalid.innerHTML = '<i class="fa fa-check"></i>';
+                    invalid.innerHTML = '';
                     validName = true;
                 }
             }
@@ -50,19 +50,19 @@
 
 
             if(input.value === ''){
-                duration_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                duration_invalid.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
                 validDuration = false;
             }
             else if(parseInt(input.value) <= 0){
-                duration_invalid.innerHTML = "<span style='color: red'>必須為正整數</span>";
+                duration_invalid.innerHTML = "<span style='color: red; font-size: 14px'>必須為正整數</span>";
                 validDuration = false;
             }
             else if(reMatch.length !== (input.value).length){
-                duration_invalid.innerHTML = '<span style=\'color: red\'>勿出現其他字元</span>';
+                duration_invalid.innerHTML = "<span style='color: red; font-size: 14px'>勿出現其他字元</span>";
                 validDuration = false;
             }
             else{
-                duration_invalid.innerHTML = '<i class="fa fa-check"></i>';
+                duration_invalid.innerHTML = "";
                 validDuration = true;
             }
             data_valid();
@@ -76,19 +76,19 @@
             if (selectedData.value === ''){
                 if(kind === 'Group'){
                     validGroup = false;
-                    group_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                    group_invalid.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
                 } else {
                     validTestpaper = false;
-                    testpaper_invalid.innerHTML = "<span style='color: red'>必填</span>";
+                    testpaper_invalid.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
                 }
             }
             else {
                 if(kind === 'group'){
                     validGroup = true;
-                    group_invalid.innerHTML = '<i class="fa fa-check"></i>';
+                    group_invalid.innerHTML = '';
                 } else{
                     validTestpaper = true;
-                    testpaper_invalid.innerHTML = '<i class="fa fa-check"></i>';
+                    testpaper_invalid.innerHTML = '';
                 }
             }
             data_valid();
@@ -111,140 +111,170 @@
 
 
 {% block path %}
-    <a href="">考試管理員</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="{% url 'exam_list' %}">考試列表</a>
-    <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="">新增考試</a>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'exam_list' %}">Exam List</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Exam Create</li>
 {% endblock %}
 
 {% block content %}
-    <div class="exam_create">
-        <div class="title"><h1>Create Exam.</h1></div>
-        <form method="post" class="form-horizontal" role="form">
-            {% csrf_token %}
-            <table>
-                <tr>
-                    <td>測驗名稱</td>
-                    <td><input type="text" onkeyup="unique_name({{ exam_names }}, this)" name="exam_name" required></td>
-                    <td id="name_invalid" class="name_invalid"></td>
-                </tr>
-
-                <tr>
-                    <td>開始時間</td>
-                    <td>
+{#    <div class="exam_create">#}
+{#        <div class="title"><h1>Create Exam.</h1></div>#}
+{#        <form method="post" class="form-horizontal" role="form">#}
+{#            {% csrf_token %}#}
+{#            <table>#}
+{#                <tr>#}
+{#                    <td>測驗名稱</td>#}
+{#                    <td><input type="text" onkeyup="unique_name({{ exam_names }}, this)" name="exam_name" required></td>#}
+{#                    <td id="name_invalid" class="name_invalid"></td>#}
+{#                </tr>#}
+{##}
+{#                <tr>#}
+{#                    <td>開始時間</td>#}
+{#                    <td>#}
                         <div class="input-group date form_datetime col-md-4" data-date="" onchange="time_valid()" data-date-format="yyyy-mm-ddThh:ii:ss" data-link-field="dtp_input1">
                             <input style="width: 550%" class="form-control" size="16" type="text" id="start_time" name="start_time" required>
                             <span style="position: relative; left: 200%" class="input-group-addon" ><span class="glyphicon glyphicon-remove"></span></span>
                             <span style="position: relative; left: 200%" class="input-group-addon" ><span class="glyphicon glyphicon-th"></span></span>
                         </div>
-                        <input type="hidden" id="dtp_input1" onchange="time_valid()" value="" />
-                    </td>
-                    <td>
-                        <label id="time_invalid" class="time_invalid" style='color: red'>必填</label>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>測驗時間</td>
-                    <td><input type="text" name="duration" onkeyup="duration_valid(this)" value="40" required></td>
-                    <td id="duration_invalid" class="duration_invalid"><i class="fa fa-check"></i></td>
-                </tr>
-
-                <tr>
-                    <td>測驗試卷</td>
-                    <td>
-                        <select name="selected_testpaper" id="selected_testpaper" onchange="is_selected(document.getElementById('selected_testpaper'), 'testpaper')" required>
-                            <option value="" disabled selected>請選擇測驗用試卷</option>
-                            {% for testpaper in testpapers %}
-                                <option value="{{ testpaper.id }}">{{ testpaper.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                    <td id="testpaper_invalid" class="testpaper_invalid"></td>
-                </tr>
-
-                <tr>
-                    <td>測驗群組</td>
-                    <td>
-                        <select name="selected_group" id="selected_group" onchange="is_selected(document.getElementById('selected_group'), 'group')" required>
-                            <option value="" disabled selected>請選擇受測者群組</option>
-                            {% for group in groups %}
-                                <option value="{{ group.id }}">{{ group.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                    <td id="group_invalid" class="group_invalid"></td>
-                </tr>
-            </table>
-
-            <div class="btn">
-                <button type="submit" id="submit" class="submit" disabled>送出</button>
-                <button type="reset">重設</button>
-                <button type="button" onclick="self.location=document.referrer;">取消</button>&nbsp;
-            </div>
-        </form>
-
-        <style>
-            .exam_create .title h1{
-                width: 30%;
-                font-size: 28px;
-                color: #FFFEF6;
-                background-color: #4CCABD;
-                padding-top: 10px;
-                padding-bottom: 10px;
-                padding-right: 15px;
-                padding-left: 45px;
-                text-align: center;
-            }
-            .exam_create table{
-                position: relative;
-                left: 25%;
-
-                width: 50%;
-
-                font-size: 20px;
-            }
-            .exam_create table td{
-                padding: 4px;
-            }
-            .exam_create form input{
-                width: 100%;
-                padding: 6px;
-            }
-
-            .exam_create .btn{
-                position: relative;
-                top: 30px;
-                left: 38%;
-            }
-            .name_invalid, .testpaper_invalid, .group_invalid, .duration_invalid, .time_invalid {
-                color: limegreen;
-            }
-            .btn .submit{
-                background-color : grey;
-            }
-        </style>
-
-        <link href="{% static '/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
-        <link href="{% static '/bootstrap/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet" media="screen">
-
-        <script type="text/javascript" src="{% static '/bootstrap/js/jquery-1.8.3.min.js' %}" charset="UTF-8"></script>
+{#                        <input type="hidden" id="dtp_input1" onchange="time_valid()" value="" />#}
+{#                    </td>#}
+{#                    <td>#}
+{#                        <label id="time_invalid" class="time_invalid" style='color: red'>必填</label>#}
+{#                    </td>#}
+{#                </tr>#}
+{##}
+{#                <tr>#}
+{#                    <td>測驗時間</td>#}
+{#                    <td><input type="text" name="duration" onkeyup="duration_valid(this)" value="40" required></td>#}
+{#                    <td id="duration_invalid" class="duration_invalid"><i class="fa fa-check"></i></td>#}
+{#                </tr>#}
+{##}
+{#                <tr>#}
+{#                    <td>測驗試卷</td>#}
+{#                    <td>#}
+{#                        <select name="selected_testpaper" id="selected_testpaper" onchange="is_selected(document.getElementById('selected_testpaper'), 'testpaper')" required>#}
+{#                            <option value="" disabled selected>請選擇測驗用試卷</option>#}
+{#                            {% for testpaper in testpapers %}#}
+{#                                <option value="{{ testpaper.id }}">{{ testpaper.name }}</option>#}
+{#                            {% endfor %}#}
+{#                        </select>#}
+{#                    </td>#}
+{#                    <td id="testpaper_invalid" class="testpaper_invalid"></td>#}
+{#                </tr>#}
+{##}
+{#                <tr>#}
+{#                    <td>測驗群組</td>#}
+{#                    <td>#}
+{#                        <select name="selected_group" id="selected_group" onchange="is_selected(document.getElementById('selected_group'), 'group')" required>#}
+{#                            <option value="" disabled selected>請選擇受測者群組</option>#}
+{#                            {% for group in groups %}#}
+{#                                <option value="{{ group.id }}">{{ group.name }}</option>#}
+{#                            {% endfor %}#}
+{#                        </select>#}
+{#                    </td>#}
+{#                    <td id="group_invalid" class="group_invalid"></td>#}
+{#                </tr>#}
+{#            </table>#}
+{##}
+{#            <div class="btn">#}
+{#                <button type="submit" id="submit" class="submit" disabled>送出</button>#}
+{#                <button type="reset">重設</button>#}
+{#                <button type="button" onclick="self.location=document.referrer;">取消</button>&nbsp;#}
+{#            </div>#}
+{#        </form>#}
+{##}
+{#        <link href="{% static '/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">#}
+{#        <link href="{% static '/bootstrap/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet" media="screen">#}
+{##}
+{#        <script type="text/javascript" src="{% static '/bootstrap/js/jquery-1.8.3.min.js' %}" charset="UTF-8"></script>#}
 {#        <script type="text/javascript" src="{% static '/bootstrap/js/bootstrap.min.js' %}"></script>#}
-        <script type="text/javascript" src="{% static '/bootstrap/js/bootstrap-datetimepicker.js' %}" charset="UTF-8"></script>
-        <script type="text/javascript" src="{% static '/bootstrap/js/bootstrap-datetimepicker.fr.js' %}" charset="UTF-8"></script>
+{#        <script type="text/javascript" src="{% static '/bootstrap/js/bootstrap-datetimepicker.js' %}" charset="UTF-8"></script>#}
+{#        <script type="text/javascript" src="{% static '/bootstrap/js/bootstrap-datetimepicker.fr.js' %}" charset="UTF-8"></script>#}
+{##}
+{#        <script type="text/javascript">#}
+{#            $('.form_datetime').datetimepicker({#}
+{#                language:  'en',#}
+{#                weekStart: 1,#}
+{#                todayBtn:  1,#}
+{#                autoclose: 1,#}
+{#                todayHighlight: 1,#}
+{#                startView: 2,#}
+{#                forceParse: 0,#}
+{#                showMeridian: 1#}
+{#            });#}
+{#        </script>#}
+{#    </div>#}
 
-        <script type="text/javascript">
-            $('.form_datetime').datetimepicker({
-                language:  'en',
-                weekStart: 1,
-                todayBtn:  1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 2,
-                forceParse: 0,
-                showMeridian: 1
-            });
-        </script>
-    </div>
+    <main class="exam-create-form">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <form method="post">
+                        <div class="card">
+                            <div class="card-header">Exam Create.</div>
+
+                            <div class="card-body">
+                                <h5 class="card-subtitle mb-2 text-muted">
+                                    Exam Name.<span id="name_invalid" class="name_invalid"></span>
+                                </h5>
+                                <p class="card-text">
+                                    <input class="form-control" type="text" onkeyup="unique_name({{ exam_names }}, this)" name="exam_name" required>
+                                </p>
+
+                                <div class="dropdown-divider"></div>
+
+                                <h5 class="card-subtitle mb-2 text-muted">
+                                    Test Paper.<span id="name_invalid" class="name_invalid"></span>
+                                </h5>
+                                <p class="card-text">
+                                    <select class="custom-select custom-select-sm" name="selected_testpaper" id="selected_testpaper" onchange="is_selected(document.getElementById('selected_testpaper'), 'testpaper')" required>
+                                        <option value="" disabled selected>Choose Test Paper</option>
+                                        {% for testpaper in testpapers %}
+                                            <option value="{{ testpaper.id }}">{{ testpaper.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </p>
+
+                                <div class="dropdown-divider"></div>
+
+                                <h5 class="card-subtitle mb-2 text-muted">
+                                    Group.<span id="group_invalid" class="group_invalid"></span>
+                                </h5>
+                                <p class="card-text">
+                                    <select class="custom-select custom-select-sm" name="selected_group" id="selected_group" onchange="is_selected(document.getElementById('selected_group'), 'group')" required>
+                                        <option value="" disabled selected>Choose Testee Group</option>
+                                        {% for group in groups %}
+                                            <option value="{{ group.id }}">{{ group.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </p>
+
+                                <div class="dropdown-divider"></div>
+
+                                <h5 class="card-subtitle mb-2 text-muted">
+                                    Start.<span id="time_invalid" class="time_invalid" style='color: red; font-size: 14px'>必填</span>
+                                </h5>
+                                <p class="card-text">
+{#                                    <input type='text' class="form-control" data-date-format="yyyy-mm-ddThh:ii:ss" id='datetimepicker'>#}
+                                    <input class="form-control" type="text" id="start_time" name="start_time" required>
+                                </p>
+
+                                <h5 class="card-subtitle mb-2 text-muted">
+                                    Duration.<span id="duration_invalid" class="duration_invalid"></span>
+                                </h5>
+                                <p class="card-text">
+                                    <input class="form-control" type="text" name="duration" onkeyup="duration_valid(this)" value="40" required>
+                                </p>
+
+                                <div class="float-right">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="reset" class="btn btn-light">Reset</button>
+                                    <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}

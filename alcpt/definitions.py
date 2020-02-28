@@ -17,11 +17,16 @@ class UserType(Enum):
 
 # Various types of questions
 class QuestionType(Enum):
-    QA = (1, '聽力／問答')
-    ShortConversation = (2, '聽力／簡短對話')
-    Grammar = (3, '閱讀／文法')
-    Phrase = (4, '閱讀／名詞片語')
-    ParagraphUnderstanding = (5, '閱讀／段落理解')
+    # QA = (1, '聽力／問答')
+    # ShortConversation = (2, '聽力／簡短對話')
+    # Grammar = (3, '閱讀／文法')
+    # Phrase = (4, '閱讀／名詞片語')
+    # ParagraphUnderstanding = (5, '閱讀／段落理解')
+    QA = (1, 'Listening／QA')
+    ShortConversation = (2, 'Listening／Conversation')
+    Grammar = (3, 'Reading／Grammar')
+    Phrase = (4, 'Reading／Phrase')
+    ParagraphUnderstanding = (5, 'Reading／Paragraph')
 
 
 # The amount of various questions in the moke exam
@@ -43,6 +48,6 @@ class ExamType(Enum):
 
 
 class Identity(Enum):
-    Visitor = (1, '訪客')
-    Student = (2, '學生')
-    Teacher = (3, '老師')
+    Visitor = (1, 'Visitor')
+    Student = (2, 'Student')
+    Teacher = (3, 'Teacher')

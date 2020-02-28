@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% load web_filters %}
 
@@ -60,184 +60,129 @@
 {% endblock %}
 
 {% block path %}
-    <a href="">考試管理員</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="{% url 'testpaper_list' %}">考卷列表</a>
-    <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="">檢閱考卷內容</a>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'testpaper_list' %}">TestPaper</a></li>
+    <li class="breadcrumb-item active" aria-current="page">TestPaper Content</li>
 {% endblock %}
 
 {% block content %}
-    <div class="question_type_btn">
-        <ul>
-            <li><a href="#" onclick="toggle_visibility('all')">全部</a></li>
-            <li><a href="#QA" onclick="toggle_visibility('QA')">聽力/問答</a></li>
-            <li><a href="#ShortConversation" onclick="toggle_visibility('ShortConversation')">聽力/簡短對話</a></li>
-            <li><a href="#Grammar" onclick="toggle_visibility('Grammar')">閱讀/文法</a></li>
-            <li><a href="#Phrase" onclick="toggle_visibility('Phrase')">閱讀/名詞片語</a></li>
-            <li><a href="#ParagraphUnderstanding" onclick="toggle_visibility('ParagraphUnderstanding')">閱讀/段落理解</a></li>
-        </ul>
+{#    <div class="question_type_btn">#}
+{#        <ul>#}
+{#            <li><a href="#" onclick="toggle_visibility('all')">全部</a></li>#}
+{#            <li><a href="#QA" onclick="toggle_visibility('QA')">聽力/問答</a></li>#}
+{#            <li><a href="#ShortConversation" onclick="toggle_visibility('ShortConversation')">聽力/簡短對話</a></li>#}
+{#            <li><a href="#Grammar" onclick="toggle_visibility('Grammar')">閱讀/文法</a></li>#}
+{#            <li><a href="#Phrase" onclick="toggle_visibility('Phrase')">閱讀/名詞片語</a></li>#}
+{#            <li><a href="#ParagraphUnderstanding" onclick="toggle_visibility('ParagraphUnderstanding')">閱讀/段落理解</a></li>#}
+{#        </ul>#}
+{#    </div>#}
 
-        <style>
-            .question_type_btn{
-                position: fixed;
-                width: 10.5%;
-                height: 65%;
+{#    <div class="table-responsive">#}
+{#        <table class="table table-hover">#}
+{#            <thead class="title">#}
+{#                <tr>#}
+{#                    <th class="col-md-1"></th>#}
+{#                    <th class="col-md-1">題號</th>#}
+{#                    <th class="col-md-8">題目</th>#}
+{#                    <th class="col-md-2">類型</th>#}
+{#                </tr>#}
+{#            </thead>#}
+{#            <tbody>#}
+{#            {% for question in questions %}#}
+{#                <tr id="mainData{{ forloop.counter }}" class="{{ question.q_type|question_type_transfer_to_original_data }}" onclick="toggle('{{ forloop.counter }}')">#}
+{#                    <td>#}
+{#                        <i id="iconRight{{ forloop.counter }}" class="fa fa-angle-right"></i>#}
+{#                        <i id="iconDown{{ forloop.counter }}" class="fa fa-angle-down" style="display: none"></i>#}
+{#                    </td>#}
+{##}
+{#                    <td style="vertical-align: middle">{{ forloop.counter }}</td>#}
+{##}
+{#                    {% if question.q_type|question_kind == 'listening' %}#}
+{#                        <td style="text-align: center;">#}
+{#                            <audio controls preload="none">#}
+{#                                <source src="{{ question.q_file }}" type="audio/mpeg">#}
+{#                                Your browser does not support the audio tag.#}
+{#                            </audio>#}
+{#                        </td>#}
+{##}
+{#                    {% elif question.q_type|question_kind == 'reading' %}#}
+{#                        <td style="text-align: left;">#}
+{#                            {{ question.q_content }}#}
+{#                        </td>#}
+{##}
+{#                    {% else %}#}
+{#                        <td style="text-align: center;">#}
+{#                            Unknown#}
+{#                        </td>#}
+{##}
+{#                    {% endif %}#}
+{##}
+{#                    <td style="text-align: center; vertical-align: middle">{{ question.q_type|readable_question_type }}</td>#}
+{#                </tr>#}
+{##}
+{#                <tr id="detailData{{ forloop.counter }}" style="display: none;">#}
+{#                    <td colspan="4" style="text-align: left; vertical-align: middle; padding-left: 145px;">#}
+{#                        <ol type="A">#}
+{#                            {% for choice in question.choice_set.all %}#}
+{#                                <li {% if choice.is_answer %}style="color: red"{% endif %}>{{ choice }}</li>#}
+{#                            {% endfor %}#}
+{#                        </ol>#}
+{#                    </td>#}
+{#                </tr>#}
+{#            </tbody>#}
+{#            {% endfor %}#}
+{#        </table>#}
+{#    </div>#}
 
-                border-right-style: solid;
-                border-right-width: 1px;
-                border-right-color: rgb(200, 200, 200);
-            }
-            .question_type_btn ul{
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
-            }
-            .question_type_btn li a{
-                color: black;
-                display: block;
-                text-align: left;
-                padding: 16px 30px;
-                text-decoration: none;
-            }
-            .question_type_btn li a:hover{
-                cursor: pointer;
-                background-color: rgb(250, 250, 250);
-                border-left-color: rgb(200, 200, 200);
-                border-left-style: solid;
-                border-left-width: 2px;
-            }
-            .question_type_btn li a:active{
-                color: rgb(100, 100, 100);
-                background-color: rgb(250, 250, 250);
-                border-left-color: rgb(200, 200, 200);
-                border-left-style: solid;
-                border-left-width: 3px;
-                outline: none;
-            }
-        </style>
-    </div>
+    <main class="testpaper-content">
+        <div id="sidebar">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-2 bg-secondary">
+                    <nav>
+                        <ul class="nav nav-stacked">
+                            <li><a href="#" onclick="toggle_visibility('all')">全部</a></li>
+                            <li><a href="#QA" onclick="toggle_visibility('QA')">聽力/問答</a></li>
+                            <li><a href="#ShortConversation" onclick="toggle_visibility('ShortConversation')">聽力/簡短對話</a></li>
+                            <li><a href="#Grammar" onclick="toggle_visibility('Grammar')">閱讀/文法</a></li>
+                            <li><a href="#Phrase" onclick="toggle_visibility('Phrase')">閱讀/名詞片語</a></li>
+                            <li><a href="#ParagraphUnderstanding" onclick="toggle_visibility('ParagraphUnderstanding')">閱讀/段落理解</a></li>
+                        </ul>
+                    </nav>
+                </div>
 
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead class="title">
-                <tr>
-                    <th class="col-md-1"></th>
-                    <th class="col-md-1">題號</th>
-                    <th class="col-md-8">題目</th>
-                    <th class="col-md-2">類型</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for question in questions %}
-                <tr id="mainData{{ forloop.counter }}" class="{{ question.q_type|question_type_transfer_to_original_data }}" onclick="toggle('{{ forloop.counter }}')">
-                    <td>
-                        <i id="iconRight{{ forloop.counter }}" class="fa fa-angle-right"></i>
-                        <i id="iconDown{{ forloop.counter }}" class="fa fa-angle-down" style="display: none"></i>
-                    </td>
-
-                    <td style="vertical-align: middle">{{ forloop.counter }}</td>
-
-                    {% if question.q_type|question_kind == 'listening' %}
-                        <td style="text-align: center;">
-                            <audio controls preload="none">
-                                <source src="{{ question.q_file }}" type="audio/mpeg">
-                                Your browser does not support the audio tag.
-                            </audio>
-                        </td>
-
-                    {% elif question.q_type|question_kind == 'reading' %}
-                        <td style="text-align: left;">
-                            {{ question.q_content }}
-                        </td>
-
-                    {% else %}
-                        <td style="text-align: center;">
-                            Unknown
-                        </td>
-
-                    {% endif %}
-
-                    <td style="text-align: center; vertical-align: middle">{{ question.q_type|readable_question_type }}</td>
-                </tr>
-
-                <tr id="detailData{{ forloop.counter }}" style="display: none;">
-                    <td colspan="4" style="text-align: left; vertical-align: middle; padding-left: 145px;">
-                        <ol type="A">
-                            {% for choice in question.choice_set.all %}
-                                <li {% if choice.is_answer %}style="color: red"{% endif %}>{{ choice }}</li>
-                            {% endfor %}
-                        </ol>
-                    </td>
-                </tr>
-            </tbody>
-            {% endfor %}
-        </table>
-
-        <style>
-            .table-responsive{
-                width: 85%;
-
-                position: relative;
-                left: 15%;
-            }
-            .table-responsive .table{
-                text-align: center;
-            }
-            .table-hover > tbody > tr > td{
-                vertical-align: middle;
-            }
-
-            .table-hover > tbody > tr:hover{
-                cursor: pointer;
-            }
-            .table-hover > tbody > tr:hover > td,
-            .table-hover > tbody > tr:hover > th {
-                background-color: #4CCABD;
-            }
-
-            .title{
-                font-size: 20px;
-            }
-
-            .title tr th{
-                text-align: center;
-            }
-
-            .table tbody{
-                font-size: 18px;
-            }
-
-            .table tbody td a{
-                color: #2C3232;
-            }
-        </style>
-
-        <div class="btn">
-            <button type="button" onclick="self.location=document.referrer;">確認</button>&nbsp;
+                <div class="col-lg-10 bg-light">
+{#                    {% block content %}#}
+{#                    {% endblock %}#}
+                </div>
+            </div>
         </div>
-
-        <style>
-            .btn{
-                position: relative;
-                left: 45%;
-            }
-            .btn button{
-                font-size: 25px;
-                padding: 10px;
-                padding-left: 15px;
-                padding-right: 15px;
-                color: #FFFEF6;
-                background-color: #4CCABD;
-                border: none;
-            }
-        </style>
     </div>
-
     <style>
-        .info{
-            overflow-x: scroll;
+        #sidebar .container .row{
+            height: 76vh;
+        }
+        #sidebar nav > ul{
+            display: inline;
+            font-size: 20px;
+            padding: 2px;
+        }
+        #sidebar nav > ul > li{
+            padding: 10px;
+        }
+        #sidebar nav > ul > li > a{
+            text-decoration: none;
+            color: white;
+        }
+        #sidebar nav > ul > li > a:hover{
+            background-color: rgb(108, 117, 125);
+            opacity: 0.1;
+        }
+        .add button{
+            border-radius: 24px;
+        }
+        .add button:hover{
+            box-shadow: 2px 4px 10px 0px rgb(44, 50, 50);
         }
     </style>
+    </main>
 {% endblock %}

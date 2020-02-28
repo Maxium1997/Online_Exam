@@ -23,12 +23,14 @@ from alcpt import registration, system, views, exam, question, viewer, testee, g
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    url(r'^$', views.index, name='Homepage'),
+    url(r'^proclamation$', views.index, name='Homepage'),
+    url(r'^$', views.about, name='about'),
 
     url(r'^report$', system.report, name='report'),
     url(r'^report/', include([
         url(r'^list$', registration.report_list, name='report_list'),
         url(r'^(?P<report_id>[0-9]+)/detail$', registration.report_detail, name='report_detail'),
+        url(r'^(?P<report_id>[0-9]+)/view$', system.view_report_detail, name='view_report_detail'),
         url(r'^list/(?P<responsibility>(SystemManager|TestManager|TBManager))', system.responsible_report_list, name='responsible_report_list'),
         url(r'^reply/(?P<report_id>[0-9]+)$', system.report_reply, name='report_reply'),
         url(r'^(?P<report_id>[0-9]+)/done$', system.report_done, name='report_done'),

@@ -100,20 +100,20 @@
                                 <h5 class="card-subtitle mb-2 text-muted">Unit.</h5>
                                 <p class="card-text">
                                     <select class="custom-select custom-select-sm" id='unit' name='unit' onchange="is_selected();" required>
-                                        <option value='' selected disabled hidden>選擇要新增單位</option>
-                                        <option value='department'> 科系 </option>
-                                        <option value='squadron'> 中隊 </option>
+                                        <option value='' selected disabled hidden>Choose the Unit</option>
+                                        <option value='department'>Department</option>
+                                        <option value='squadron'>Squadron</option>
                                     </select>
                                 </p>
 
                                 <h5 class="card-subtitle mb-2 text-muted">Unit Name.</h5>
                                 <p class="card-text">
-                                    <input class="form-control" type="text" id="unit_name" name="unit_name" onkeyup="unique_name({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="輸入要新增的單位名稱" required disabled>
+                                    <input class="form-control" type="text" id="unit_name" name="unit_name" onkeyup="unique_name({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="Enter the name of the unit..." required disabled>
                                 </p>
 
                                 <div class="float-right">
-                                    <button class="btn btn-primary" type="submit">送出</button>
-                                    <button class="btn btn-secondary" type="button" onclick="self.location=document.referrer;">取消</button>
+                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                    <button class="btn btn-secondary" type="button" onclick="self.location=document.referrer;">Cancel</button>
                                 </div>
                             </div>
                         </div>

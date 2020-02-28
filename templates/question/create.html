@@ -1,133 +1,6 @@
-{% extends 'base.html'%}
+{% extends 'new_base.html'%}
 
-{% block path %}
-    <a href="">題目操作員</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="">新增{% if kind == 'listening' %}聽力{% else %}閱讀{% endif %}試題（單一）</a>
-{% endblock %}
-
-{% block content %}
-    <div class="add_questions">
-        <form enctype="multipart/form-data" action="" method="post">
-            <div class="title"><h1>Add Questions.</h1></div>
-            {% csrf_token %}
-
-            <table>
-                {% if kind == 'listening' %}
-                    <tr>
-                        <td class="col-md-2">試題聽力音檔</td>
-                        <td><input type="file" name="question_file" id="question_file" accept="audio/mpeg" onchange="OpenButton('listening')" required></td>
-                    </tr>
-
-                    <tr>
-                        <td class="col-md-2">試題類型</td>
-                        <td>
-                            <select name="question_type" id="question_type_listening" onkeyup="OpenButton('listening')" required>
-                                <option value="" disabled selected>請選擇試題類型</option>
-                                <option value="1">問答</option>
-                                <option value="2">簡短對話</option>
-                            </select>
-                        </td>
-                    </tr>
-
-                {% elif kind == 'reading' %}
-                    <tr>
-                        <td class="col-md-2">試題題目</td>
-                        <td><textarea class="form-control" cols="100" rows="3" name="question_content" id="question_content" onkeyup="OpenButton('reading')" placeholder="請輸入試題題目" required></textarea></td>
-                    </tr>
-
-                    <tr>
-                        <td class="col-md-2">試題類型</td>
-                        <td>
-                            <select name="question_type" id="question_type_reading" onchange="OpenButton('reading')" required>
-                                <option value="" disabled selected>請選擇試題類型</option>
-                                <option value="3">文法</option>
-                                <option value="4">名詞片語</option>
-                                <option value="5">段落理解</option>
-                            </select>
-                        </td>
-                    </tr>
-
-                {% else %}
-                    <tr>
-                        <td colspan="2">Unknown</td>
-                    </tr>
-
-                {% endif %}
-
-                <tr>
-                    <td>試題難度</td>
-                    <td>
-                        <select name="question_difficulty">
-                            <option value="1" selected>簡單</option>
-                            <option value="2">中等</option>
-                            <option value="3">困難</option>
-                        </select>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>試題選項</td>
-                    <td>
-                        <input class="form-control" type="text" name="choice1" id="choice1" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                        <input class="form-control" type="text" name="choice2" id="choice2" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                        <input class="form-control" type="text" name="choice3" id="choice3" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                        <input class="form-control" type="text" name="choice4" id="choice4" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                    </td>
-                </tr>
-
-            </table>
-
-            <div class="btn">
-                <button type="submit" id="submit" onclick="return confirm('確認新增此試題？')">新增試題</button>
-                <button type="reset">重設</button>
-                <button type="button" onclick="window.location.href='{% url 'tboperator_question_list' %}'">取消</button>
-            </div>
-
-            <style>
-                .add_questions .title h1{
-                    width: 30%;
-                    font-size: 28px;
-                    color: #FFFEF6;
-                    background-color: #4CCABD;
-                    padding-top: 10px;
-                    padding-bottom: 10px;
-                    padding-right: 15px;
-                    padding-left: 45px;
-                    text-align: center;
-                }
-
-                .add_questions table{
-                    position: relative;
-                    left: 15%;
-
-                    width: 70%;
-
-                    font-size: 20px;
-                }
-                .add_questions table td{
-                    padding: 4px;
-                }
-                .add_questions form input{
-                    padding: 6px;
-                    margin: 2px;
-                }
-                .add_questions form textarea{
-                    font-size: 20px;
-                    width: 100%;
-                    height: 45%;
-                    padding: 10px;
-                }
-
-                .add_questions .btn{
-                    position: relative;
-                    top: 30px;
-                    left: 35%;
-                }
-            </style>
-        </form>
-    </div>
-    
+{% block scripts %}
     <script type="text/javascript">
         var questionFile = document.getElementById('question_file');
         var questionTypeListening = document.getElementById('question_type_listening');
@@ -168,7 +41,7 @@
                }
             }
         }
-        
+
         {#function Repeated() {#}
         {#    var choiceArr = [choice1, choice2, choice3, choice4];#}
         {#    var strArr = '';#}
@@ -188,4 +61,83 @@
         {##}
         {#}#}
     </script>
+{% endblock %}
+
+{% block path %}
+    <li class="breadcrumb-item active" aria-current="page">Create {% if kind == 'listening' %}Listening {% else %}Reading {% endif %}（Single）</li>
+{% endblock %}
+
+{% block content %}
+    <main class="question-create-form">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="card">
+                            <div class="card-header">Create Question.</div>
+                        </div>
+
+                        <div class="card-body">
+                            {% if kind == 'listening' %}
+                                <h5 class="card-subtitle mb-2 text-muted">
+                                    File.
+                                </h5>
+                                <p class="card-text">
+                                    <input type="file" name="question_file" id="question_file" accept="audio/mpeg" onchange="OpenButton('listening')" required>
+                                </p>
+
+                                <h5 class="card-subtitle mb-2 text-muted">
+                                    Type.
+                                </h5>
+                                <p class="card-text">
+                                    <select class="custom-select custom-select-sm" name="question_type" id="question_type_listening" onkeyup="OpenButton('listening')" required>
+                                    <option value="" disabled selected>Choose the question type</option>
+                                    <option value="1">QA</option>
+                                    <option value="2">ShortConversation</option>
+                                </select>
+                                </p>
+
+                            {% elif kind == 'reading' %}
+                                <h5 class="card-subtitle mb-2 text-muted">
+                                    Question Content.
+                                </h5>
+                                <p class="card-text">
+                                    <textarea class="form-control" cols="100" rows="3" name="question_content" id="question_content" onkeyup="OpenButton('reading')" placeholder="Enter the question content..." required></textarea>
+                                </p>
+                            {% endif %}
+
+                            <h5 class="card-subtitle mb-2 text-muted">
+                                Difficulty.
+                            </h5>
+                            <p class="card-text">
+                                <select class="custom-select custom-select-sm" name="question_difficulty">
+                                    <option value="1" selected>Easy</option>
+                                    <option value="2">Medium</option>
+                                    <option value="3">Hard</option>
+                                </select>
+                            </p>
+
+                            <h5 class="card-subtitle mb-2 text-muted">
+                                Question Option.
+                            </h5>
+                            <p class="card-text">
+                                <input class="form-control" type="text" name="choice1" id="choice1" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
+                                <input class="form-control" type="text" name="choice2" id="choice2" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
+                                <input class="form-control" type="text" name="choice3" id="choice3" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
+                                <input class="form-control" type="text" name="choice4" id="choice4" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
+                            </p>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="reset" class="btn btn-light">Reset</button>
+                                <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
 {% endblock %}

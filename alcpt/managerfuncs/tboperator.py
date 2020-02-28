@@ -7,18 +7,14 @@ from alcpt.utility import save_file
 
 
 # A Q objects(django.db.models.Q) is an object used to encapsulate a collection of keyword arguments.
-def query_questions(*, question_type: int, question_content: str, difficulty: int, state: int):
+def query_questions(*, question_type: int, difficulty: int, state: int, question_content: str):
     queries = Q()
     query_content = ""
     all_questions = Question.objects.exclude(state=1).exclude(state=3).exclude(state=5)     # tboperator doesn't need state = 1,("審核通過") 3("等待審核"), 5("被回報錯誤，已處理")
 
     if state:
         queries &= Q(state=state)
-        query_content += "state=" + str(state)
-
-    if difficulty:
-        queries &= Q(difficulty=difficulty)
-        query_content += "&difficulty=" + str(difficulty)
+        query_content += "&state=" + str(state)
 
     if question_content:
         query_content += "&question_content=" + str(question_content)
@@ -47,7 +43,7 @@ def query_questions(*, question_type: int, question_content: str, difficulty: in
         else:
             query1 = all_questions.exclude(q_type=1).exclude(q_type=2).filter(queries).filter(q_content__icontains=question_content)
             query2 = all_questions.exclude(q_type=1).exclude(q_type=2).filter(queries).filter(choice__c_content__icontains=question_content)
-            query3 = all_questions.exclude(q_type=3).exclude(q_type=4).exclude(q_type=5).filter(choice__c_content__icontains=question_content)
+            query3 = all_questions.exclude(q_type=3).exclude(q_type=4).exclude(q_type=5).filter(choice__c_content__icontains=question_content).filter(queries)
 
             questions = (query1 | query2 | query3).distinct().order_by('id')
     else:

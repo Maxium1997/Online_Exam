@@ -149,8 +149,8 @@
 
 
 {% block path %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'user_list' %}">使用者列表</a></li>
-    <li class="breadcrumb-item active" aria-current="page">新增使用者（單一）</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'user_list' %}">User List</a></li>
+    <li class="breadcrumb-item active" aria-current="page">User Create（Single）</li>
 {% endblock %}
 
 {% block content %}
@@ -166,7 +166,7 @@
                             <div class="card-header">Create User.</div>
                             <div class="card-body">
                                 <div class="form-group row">
-                                    <label for="reg_id" class="col-md-4 col-form-label text-md-right">Reg ID</label>
+                                    <label for="reg_id" class="col-md-4 col-form-label text-md-right">Reg ID.</label>
                                     <div class="col-md-6">
                                         <input class="form-control" type="text" id="reg_id" name="reg_id" placeholder="Register ID..." onkeyup="unique_ID({{ reg_ids }}, this)" required>
                                         <label class="unique_id" id="invalid_id" style="display: none"></label>
@@ -174,10 +174,10 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="password" class="col-md-4 col-form-label text-md-right">身份</label>
+                                    <label for="password" class="col-md-4 col-form-label text-md-right">Identity.</label>
                                     <div class="col-md-6">
                                         <select class="custom-select custom-select-sm" id="identity" name="identity" onchange="is_student()" required>
-                                            <option value="" disabled selected>請選擇身份</option>
+                                            <option value="" disabled selected>Choose Identity</option>
                                             {% for identity in identities %}
                                                 <option value="{{ identity.value.0 }}">{{ identity.value.1 }}</option>
                                             {% endfor %}
@@ -186,7 +186,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="verification" class="col-md-4 col-form-label text-md-right">權限</label>
+                                    <label for="verification" class="col-md-4 col-form-label text-md-right">Privilege.</label>
                                     <div class="col-md-6">
                                         <div class="container">
                                             <div class="row">
@@ -212,7 +212,7 @@
                                 <div class="dropdown-divider"></div>
 
                                 <div class="float-right align-bottom">
-                                    <a href="{% url 'user_multiCreate' %}">一次新增多個使用者？</a>
+                                    <a href="{% url 'user_multiCreate' %}">Multiple Creation？</a>
                                 </div>
                             </div>
                         </div>
@@ -231,10 +231,10 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">科系</label>
+                                <label for="password" class="col-md-4 col-form-label text-md-right">Department.</label>
                                 <div class="col-md-6">
                                     <select class="custom-select custom-select-sm" name="department" id="department" disabled>
-                                        <option value="" disabled selected>請選擇科系</option>
+                                        <option value="" disabled selected>Choose Department.</option>
                                         {% for department in departments %}
                                             <option value="{{ department.id }}">{{ department }}</option>
                                         {% endfor %}
@@ -243,10 +243,10 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="verification" class="col-md-4 col-form-label text-md-right">中隊</label>
+                                <label for="verification" class="col-md-4 col-form-label text-md-right">Squadron.</label>
                                 <div class="col-md-6">
                                     <select class="custom-select custom-select-sm" name="squadron" id="squadron" disabled>
-                                        <option value="" disabled selected>請選擇中隊單位</option>
+                                        <option value="" disabled selected>Choose Squadron.</option>
                                         {% for squadron in squadrons %}
                                             <option value="{{ squadron.id }}">{{ squadron }}</option>
                                         {% endfor %}
@@ -263,10 +263,10 @@
 
                             <div class="dropdown-divider"></div>
 
-                            <div class="col-md-12 offset-md-4 text-center">
-                                <button type="submit" id="submit" class="btn btn-primary">提交</button>
-                                <button type="reset" class="btn btn-light">重設</button>
-                                <button type="button" class="btn btn-secondary" onclick="history.back()">取消</button>
+                            <div class="col-md-12 text-right">
+                                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+                                <button type="reset" class="btn btn-light">Reset</button>
+                                <button type="button" class="btn btn-secondary" onclick="history.back()">Cancel</button>
                             </div>
                         </div>
                     </div>

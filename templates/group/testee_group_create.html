@@ -1,82 +1,36 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% block path %}
-    <a href="">考試管理員</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="">受測者群組創建</a>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'testee_group_list' %}">Testee Group List</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Testee Group Create</li>
+
 {% endblock %}
 
 {% block content %}
-<div class="testee_group_create">
-    <form method="post">
-        <div class="title"><h1>TesteeGroup Create.</h1></div>
-        {% csrf_token %}
+    <main class="testee-group-create">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="card">
+                            <div class="card-header">Testee Group Create.</div>
 
-        <table>
-            <tr>
-                <td class="col-md-2">受測者群組名稱</td>
-                <td class="col-md-5"><input type="text" name="group_name" onkeyup="data_unique({{ groups_names }}, this)" required></td>
-            </tr>
+                            <div class="card-body">
+                                <h5 class="card-subtitle mb-2 text-muted">Name.</h5>
+                                <p class="card-text">
+                                    <input class="form-control" type="text" name="group_name" onkeyup="data_unique({{ groups_names }}, this)" required>
 
-            <tr>
-                <td colspan="2" style="text-align: center; font-size: 18px; color: #c12e2a;"><label id="invalid" class="invalid"></label></td>
-            </tr>
-        </table>
-
-        <div class="btn">
-            <button type="submit" id="submit" onclick="return confirm('確認新增？')" disabled>新增</button>
-            <button type="button" onclick="self.location=document.referrer;">取消</button>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">Cancel</button>
+                                    </div>
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <style>
-            .testee_group_create .title h1{
-                width: 30%;
-                font-size: 28px;
-                color: #FFFEF6;
-                background-color: #4CCABD;
-                padding-top: 10px;
-                padding-bottom: 10px;
-                padding-right: 15px;
-                padding-left: 45px;
-                text-align: center;
-            }
-
-            .testee_group_create table{
-                position: relative;
-                left: 25%;
-
-                width: 50%;
-
-                font-size: 20px;
-            }
-            .testee_group_create table td{
-                padding: 4px;
-            }
-            .testee_group_create form input{
-                width: 100%;
-                padding: 6px;
-
-                border-style: solid;
-                border-width: 1px;
-                border-color: rgb(220, 220, 220);
-                border-radius: 6px;
-            }
-            .testee_group_create form textarea{
-                font-size: 20px;
-                width: 100%;
-                height: 45%;
-                padding: 10px;
-            }
-
-            .testee_group_create .btn{
-                position: relative;
-                top: 30px;
-                left: 45%;
-            }
-            .testee_group_create .btn #submit{
-                background-color: grey;
-            }
-        </style>
-    </form>
-</div>
+    </main>
 {% endblock %}

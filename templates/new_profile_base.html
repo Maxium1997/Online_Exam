@@ -63,11 +63,15 @@
                 <div class="col-lg-2 bg-secondary">
                     <nav>
                         <ul class="nav nav-stacked">
-                            <li><a id="profile" href="{% url 'profile' %}">基本資料</a></li>
-                            <li><a id="edit_profile" href="{% url 'profile_edit' %}">編輯個人檔案</a></li>
-                            <li><a id="email" href="{% url 'email_confirmation' %}">電子信箱</a></li>
-                            <li><a id="password_change" href="{% url 'password_change' %}">更改密碼</a></li>
-                            <li><a id="report" href="{% url 'report_list' %}">問題回報</a></li>
+                            <li><a id="profile" href="{% url 'profile' %}">Profile</a></li>
+                            <li><a id="edit_profile" href="{% url 'profile_edit' %}">Edit Profile</a></li>
+                            <li><a id="email" href="{% url 'email_confirmation' %}">Email</a></li>
+                            <li><a id="password_change" href="{% url 'password_change' %}">Password Change</a></li>
+                            {% if request.user|get_report_notification == 0 %}
+                                <li><a id="report" href="{% url 'report_list' %}">Report</a></li>
+                            {% else %}
+                                <li><a id="report" href="{% url 'report_list' %}">Report</a><label class="notification-badge">{{ request.user|get_report_notification }}</label></li>
+                            {% endif %}
                         </ul>
                     </nav>
                 </div>
@@ -104,6 +108,14 @@
         }
         .add button:hover{
             box-shadow: 2px 4px 10px 0px rgb(44, 50, 50);
+        }
+        .notification-badge{
+            width: 30px;
+            height: 30px;
+            background-color: red;
+            border-radius: 24px;
+            color: white;
+            text-align: center;
         }
     </style>
 

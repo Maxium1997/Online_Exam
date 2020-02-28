@@ -1,107 +1,111 @@
 {% extends 'new_base.html' %}
 
-{% block scripts %}
-    <script>
-        function openUnit(unit_kind) {
-            var i;
-            var x = document.getElementsByClassName("table-responsive");
-            for (i = 0; i < x.length; i++) {
-                x[i].style.display = "none";
-            }
-            document.getElementById(unit_kind).style.display = "block";
-        }
-    </script>
-{% endblock %}
-
 {% block path %}
-    <li class="breadcrumb-item active" aria-current="page">單位列表</li>
+    <li class="breadcrumb-item active" aria-current="page">Unit List</li>
 {% endblock %}
 
 {% block content %}
     <main class="user-list">
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="unit_list col-md-12">
-                    <h2>Unit List.</h2>
+            <ul class="nav nav-tabs" id="newTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="department-tab" data-toggle="tab" href="#department" role="tab" aria-controls="department" aria-selected="true">.Department</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="squadron-tab" data-toggle="tab" href="#squadron" role="tab" aria-controls="squadron" aria-selected="false">Squadron.</a>
+                </li>
+            </ul>
 
-                    <ul class="nav nav-pills">
-                        <li><a class="btn btn-light" data-toggle="pill" href="#department">Department</a></li>
-                        <li><a class="btn btn-light" data-toggle="pill" href="#squadron">Squadron</a></li>
-                    </ul>
+            <div class="tab-content" id="tabContent">
+                <div class="tab-pane fade show active" id="department" role="tabpanel" aria-labelledby="department-tab">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+                                <h2>Department List</h2>
 
-                    <div class="tab-content">
-                        <div id="department" class="table-responsive tab-pane in active">
-                            <h3>Department</h3>
-
-                            <table class="table table-hover">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>科系代號</th>
-                                        <th>科系名稱</th>
-                                        <th><i class="fa fa-users"></i></th>
-                                        <th class="text-center">
-                                            <div class="add">
-                                                <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'unit_create' %}'"><i class="fa fa-plus"></i></button>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% if departments %}
-                                        {% for department in departments %}
-                                            <tr style="cursor: pointer" onclick="window.location.href='{% url 'unit_member_list' 'department' department.name %}'">
-                                                <td>{{ department.id }}</td>
-                                                <td>{{ department.name }}</td>
-                                                <td>{{ department.student_set.all.count }}</td>
-                                                <td class="text-center">
-                                                    <a href="{% url 'unit_edit' 'department' department.name %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
-                                                </td>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Serial.</th>
+                                                <th>Name.</th>
+                                                <th><i class="fa fa-users"></i></th>
+                                                <th class="text-center">
+                                                    <div class="add">
+                                                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'unit_create' %}'"><i class="fa fa-plus"></i></button>
+                                                    </div>
+                                                </th>
                                             </tr>
-                                        {% endfor %}
-                                    {% else %}
-                                        <tr><td colspan="4">目前暫無資料</td></tr>
-                                    {% endif %}
-                                </tbody>
-                            </table>
-                        </div>
+                                        </thead>
 
-                        <div id="squadron" class="table-responsive tab-pane fade">
-                            <h3>Squadron</h3>
-
-                            <table class="table table-hover">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>科系代號</th>
-                                        <th>科系名稱</th>
-                                        <th><i class="fa fa-users"></i></th>
-                                        <th class="text-center">
-                                            <div class="add">
-                                                <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'unit_create' %}'"><i class="fa fa-plus"></i></button>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% if departments %}
-                                        {% for squadron in squadrons %}
-                                            <tr style="cursor: pointer" onclick="window.location.href='{% url 'unit_member_list' 'squadron' squadron.name %}'">
-                                                <td>{{ squadron.id }}</td>
-                                                <td>{{ squadron.name }}</td>
-                                                <td>{{ squadron.student_set.all.count }}</td>
-                                                <td class="text-center">
-                                                    <a href="{% url 'unit_edit' 'squadron' squadron.name %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% else %}
-                                        <tr><td colspan="4">目前暫無資料</td></tr>
-                                    {% endif %}
-                                </tbody>
-                            </table>
+                                        <tbody>
+                                            {% for department in departments %}
+                                                <tr style="cursor: pointer" onclick="window.location.href='{% url 'unit_member_list' 'department' department.name %}'">
+                                                    <td>{{ department.id }}</td>
+                                                    <td>{{ department.name }}</td>
+                                                    <td>{{ department.student_set.all.count }}</td>
+                                                    <td class="text-center">
+                                                        <a href="{% url 'unit_edit' 'department' department.name %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
+                                                    </td>
+                                                </tr>
+                                            {% empty %}
+                                                <tr>
+                                                    <td class="text-center" colspan="4">No Data.</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <div class="tab-pane fade" id="squadron" role="tabpanel" aria-labelledby="squadron-tab">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+                                <h2>Squadron List</h2>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <tr>
+                                                    <th>Serial.</th>
+                                                    <th>Name.</th>
+                                                    <th><i class="fa fa-users"></i></th>
+                                                    <th class="text-center">
+                                                        <div class="add">
+                                                            <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'unit_create' %}'"><i class="fa fa-plus"></i></button>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {% for squadron in squadrons %}
+                                                <tr style="cursor: pointer" onclick="window.location.href='{% url 'unit_member_list' 'squadron' squadron.name %}'">
+                                                    <td>{{ squadron.id }}</td>
+                                                    <td>{{ squadron.name }}</td>
+                                                    <td>{{ squadron.student_set.all.count }}</td>
+                                                    <td class="text-center">
+                                                        <a href="{% url 'unit_edit' 'squadron' squadron.name %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
+                                                    </td>
+                                                </tr>
+                                                {% empty %}
+                                                <tr>
+                                                    <td class="text-center" colspan="4">No Data.</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
     </main>
 

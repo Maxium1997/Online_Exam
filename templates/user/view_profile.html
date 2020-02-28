@@ -3,8 +3,8 @@
 {% load web_filters %}
 
 {% block path %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'user_list' %}">使用者列表</a></li>
-    <li class="breadcrumb-item active" aria-current="page">檢閱使用者資料</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'user_list' %}">User List</a></li>
+    <li class="breadcrumb-item active" aria-current="page">View Profile</li>
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@
                             <img class="card-img-top" src="..." alt="{{ viewed_user.name }}">
 
                             <div class="card-body">
-                                <p class="card-text">ALCPT Development.</p>
+                                <p class="card-text">{{ viewed_user.introduction }}</p>
                             </div>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                                     {% if viewed_user.name %}
                                         {{ viewed_user.name }}
                                     {% else %}
-                                        尚未設定
+                                        Unset
                                     {% endif %}
                                 </p>
 
@@ -50,16 +50,16 @@
                                     {% if viewed_user.email %}
                                         {{ viewed_user.email }}
                                     {% else %}
-                                        尚未設定
+                                        Unset
                                     {% endif %}
                                 </p>
 
                                 <h5 class="card-subtitle mb-2 text-muted">Gender.</h5>
                                 <p class="card-text">
-                                    {% if viewed_user.gender == 0 %}男
-                                    {% elif viewed_user.gender == 1 %}女
-                                    {% elif viewed_user.gender == 2 %}不想公開
-                                    {% else %}尚未設定
+                                    {% if viewed_user.gender == 0 %}Male
+                                    {% elif viewed_user.gender == 1 %}Female
+                                    {% elif viewed_user.gender == 2 %}Privacy
+                                    {% else %}Unset
                                     {% endif %}
                                 </p>
 
@@ -68,7 +68,7 @@
                                     {% if viewed_user.identity %}
                                         {{ viewed_user.identity|readableIdentity }}
                                     {% else %}
-                                        尚未設定
+                                        Unset
                                     {% endif %}
                                 </p>
 
@@ -133,7 +133,7 @@
                             </div>
 
                             <div class="card-footer text-right">
-                                <button onclick="history.back()" class="btn btn-primary">確認</button>
+                                <button onclick="history.back()" class="btn btn-primary">OK</button>
                             </div>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                             <img class="card-img-top" src="..." alt="{{ viewed_user.name }}">
 
                             <div class="card-body">
-                                <p class="card-text">胖呆企鵝愛哭哭。呵...</p>
+                                <p class="card-text">{{ viewed_user.introduction }}</p>
                             </div>
                         </div>
                     </div>
@@ -169,7 +169,7 @@
                             {% if viewed_user.name %}
                                 {{ viewed_user.name }}
                             {% else %}
-                                尚未設定
+                                Unset
                             {% endif %}
                         </p>
 
@@ -178,16 +178,16 @@
                             {% if viewed_user.email %}
                                 {{ viewed_user.email }}
                             {% else %}
-                                尚未設定
+                                Unset
                             {% endif %}
                         </p>
 
                         <h5 class="card-subtitle mb-2 text-muted">Gender.</h5>
                         <p class="card-text">
-                            {% if viewed_user.gender == 0 %}男
-                            {% elif viewed_user.gender == 1 %}女
-                            {% elif viewed_user.gender == 2 %}不想公開
-                            {% else %}尚未設定
+                            {% if viewed_user.gender == 0 %}Male
+                            {% elif viewed_user.gender == 1 %}Female
+                            {% elif viewed_user.gender == 2 %}Privacy
+                            {% else %}Unset
                             {% endif %}
                         </p>
 
@@ -196,7 +196,7 @@
                             {% if viewed_user.identity %}
                                 {{ viewed_user.identity|readableIdentity }}
                             {% else %}
-                                尚未設定
+                                Unset
                             {% endif %}
                         </p>
 
@@ -238,7 +238,7 @@
                         </p>
 
                         <div class="text-right">
-                            <button onclick="history.back()" class="btn btn-primary">確認</button>
+                            <button onclick="history.back()" class="btn btn-primary">OK</button>
                         </div>
                     </div>
                 </div>

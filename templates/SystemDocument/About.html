@@ -1,0 +1,342 @@
+{% load staticfiles %}
+{% load web_filters %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>線上英文考試系統</title>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/loginstyle.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/aboutstyle.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
+
+    <link rel="icon" href="Favicon.png">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <!--new-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    {% block stylesheets %}
+    {% endblock %}
+
+    {% block scripts %}
+    {% endblock %}
+
+</head>
+
+{% include 'header.html' %}
+
+<body>
+    <main class="about" role="main">
+        <div class="jumbotron">
+            <h1 class="display-2" style="font-weight: 400;">Welcome to ALCPT!</h1>
+            <p class="lead">This is a place where we try to build some interesting stuff about a web system for ALCPT. Hope you can improve your ability of English via this system.</p>
+            <hr class="my-4">
+            <p>If you have any suggestions, please leave us a message. Thank you for your using.</p>
+            <a class="btn btn-primary btn-lg" href="#" role="button" onclick="window.location.href='{% url 'Homepage' %}'">Learn more</a>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <!--For 109 year class.-->
+        <div class="developer-intro" id="developer109">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <h2>Developer 109.</h2>
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">Project Manager.</div>
+                                        <img src="{% static '/images/楊家齊.png' %}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <div class="card-title">楊家齊</div>
+                                                <p class="card-text">
+                                                    Some introduction to introduce themselves.
+                                                </p>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">Program Design.</div>
+                                        <img src="{% static '/images/蘇典煒.png' %}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <div class="card-title">蘇典煒</div>
+                                                <p class="card-text">
+                                                    Some introduction to introduce themselves.
+                                                </p>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">UI Design.</div>
+                                        <img src="{% static '/images/傅晴俞.png' %}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <div class="card-title">傅晴俞</div>
+                                                <p class="card-text">
+                                                    Some introduction to introduce themselves.
+                                                </p>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">Product Tester.</div>
+                                        <img src="{% static '/images/陳信綸.png' %}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <div class="card-title">陳信綸</div>
+                                                <p class="card-text">
+                                                    Some introduction to introduce themselves.
+                                                </p>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="featurette-divider">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--For 110 year class.-->
+        <div class="developer-intro" id="developer110">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <h2>Developer 110.</h2>
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">Project Manager.</div>
+                                        <img src="{% static '/images/胖呆.png' %}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <div class="card-title">胖呆</div>
+                                                <p class="card-text">
+                                                    Some introduction to introduce themselves.
+                                                </p>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">Program Design.</div>
+                                        <img src="{% static '/images/黃柏豪.jpg' %}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <div class="card-title">黃柏豪</div>
+                                                <p class="card-text">
+                                                    Some introduction to introduce themselves.
+                                                </p>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">UI Design.</div>
+                                        <img src="{% static '/images/賴昱婷.jpg' %}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <div class="card-title">賴昱婷</div>
+                                                <p class="card-text">
+                                                    Some introduction to introduce themselves.
+                                                </p>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">Product Tester.</div>
+                                        <img src="{% static '/images/黃子祐.jpg' %}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <div class="card-title">黃子祐</div>
+                                                <p class="card-text">
+                                                    Some introduction to introduce themselves.
+                                                </p>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="featurette-divider">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Introduce System Manager.-->
+        <div class="privilege-intro">
+            <div class="container">
+                <div class="row justify-content-center featurette">
+                    <div class="col-lg-7">
+                        <h2 class="featurette-heading">System Manager. <span class="text-muted">Controlling about system.</span></h2>
+
+                        <p class="lead">
+                            The main task of the system manager is to control some personal information of users on the system. Like personal information, student information, etc.
+                        </p>
+
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="">More</button>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <img class="img-responsive" src="{% static '/images/system.svg' %}" width="90%" height="90%" alt="Responsive image">
+                    </div>
+                </div>
+
+                <hr class="featurette-divider">
+            </div>
+        </div>
+
+        <!--Introduce Test Manager.-->
+        <div class="privilege-intro">
+            <div class="container">
+                <div class="row justify-content-center featurette">
+                    <div class="col-lg-5">
+                        <img class="img-responsive" src="{% static '/images/checklist.svg' %}" width="90%" height="90%" alt="Responsive image">
+                    </div>
+
+                    <div class="col-lg-7">
+                        <h2 class="featurette-heading">Test Manager. <span class="text-muted">Controlling about exam.</span></h2>
+
+                        <p class="lead">
+                            The main task of the test manager is to create and edit test papers, and to create groups of testees. Use these test papers to create mock tests to test specific groups of subjects.
+                        </p>
+
+                        <div class="text-right">
+                            <button type="button" class="btn btn-primary" onclick="">More</button>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="featurette-divider">
+            </div>
+        </div>
+
+        <!--Introduce TB Manager.-->
+        <div class="privilege-intro">
+            <div class="container">
+                <div class="row justify-content-center featurette">
+                    <div class="col-lg-7">
+                        <h2 class="featurette-heading">TB Manager. <span class="text-muted">Maintain and review questions</span></h2>
+
+                        <p class="lead">
+                            The main task of the TB manager is to review the questions submitted by the question operator and to maintain these questions.
+                        </p>
+
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="">More</button>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <img class="img-responsive" src="{% static '/images/file-check.svg' %}" width="90%" height="90%" alt="Responsive image">
+                    </div>
+                </div>
+
+                <hr class="featurette-divider">
+            </div>
+        </div>
+
+        <!--Introduce TB Operator.-->
+        <div class="privilege-intro">
+            <div class="container">
+                <div class="row justify-content-center featurette">
+                    <div class="col-lg-5">
+                        <img class="img-responsive" src="{% static '/images/file.svg' %}" width="90%" height="90%" alt="Responsive image">
+                    </div>
+
+                    <div class="col-lg-7">
+                        <h2 class="featurette-heading">TB Operator. <span class="text-muted">Create new questions.</span></h2>
+
+                        <p class="lead">
+                            The main job of the problem operator is to add new questions and submit them to the bank manager for review.
+                        </p>
+
+                        <div class="text-right">
+                            <button type="button" class="btn btn-primary" onclick="">More</button>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="featurette-divider">
+            </div>
+        </div>
+
+        <!--Introduce Viewer.-->
+        <div class="privilege-intro">
+            <div class="container">
+                <div class="row justify-content-center featurette">
+                    <div class="col-lg-7">
+                        <h2 class="featurette-heading">Viewer. <span class="text-muted">Watch the test status of users via this system</span></h2>
+
+                        <p class="lead">
+                            This permission is mainly designed for the chief or teacher to watch the testee's practice status through this system and evaluate whether there is a tendency to improve their English ability.
+                        </p>
+
+                        <div>
+                            <button type="button" class="btn btn-primary" onclick="">More</button>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <img class="img-responsive" src="{% static '/images/data-scientist.svg' %}" width="90%" height="90%" alt="Responsive image">
+                    </div>
+                </div>
+
+                <hr class="featurette-divider">
+            </div>
+        </div>
+
+        <!--Introduce Testee.-->
+        <div class="privilege-intro">
+            <div class="container">
+                <div class="row justify-content-center featurette">
+                    <div class="col-lg-5">
+                        <img class="img-responsive" src="{% static '/images/examinee.svg' %}" width="90%" height="90%" alt="Responsive image">
+                    </div>
+
+                    <div class="col-lg-7">
+                        <h2 class="featurette-heading">Testee. <span class="text-muted">Main users of this system</span></h2>
+
+                        <p class="lead">
+                            Users can practice listening and reading exercises in English through this system. There are also mock tests designed to be performed by administrators. Allows users to use these tests to improve their understanding of English test questions.
+                        </p>
+
+                        <div class="text-right">
+                            <button type="button" class="btn btn-primary" onclick="">More</button>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="featurette-divider">
+            </div>
+        </div>
+    </main>
+</body>
+
+{% include "footer.html" %}
+
+</html>
+

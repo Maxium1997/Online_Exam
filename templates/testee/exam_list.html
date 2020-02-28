@@ -1,210 +1,113 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% load web_filters %}
 
 {% block path %}
-    <a href="{% url 'testee_score_list' %}">受測者</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="">測驗記錄</a>
+    <li class="breadcrumb-item active" aria-current="page">Exam Record</li>
 {% endblock %}
 
 {% block content %}
-    <div class="button-tags">
-        <button id="prac" onclick="openList('practiceList')">練習</button>
-        <button id="exam" onclick="openList('examList')">測驗</button>
+    <main class="exam-record">
+        <div class="container">
+            <ul class="nav nav-tabs" id="newTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="practice-tab" data-toggle="tab" href="#practice" role="tab" aria-controls="practice" aria-selected="true">Practice.</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="exam-tab" data-toggle="tab" href="#exam" role="tab" aria-controls="exam" aria-selected="false">Exam.</a>
+                </li>
+            </ul>
 
-        <style>
-            .button-tags button{
-                border: none;
-                border-radius: 6px;
-                background-color: rgb(200, 200, 200);
-                color: rgb(100, 100, 100);
+            <div class="tab-content" id="tabContent">
+                <div class="tab-pane fade show active" id="practice" role="tabpanel" aria-labelledby="practice-tab">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+                                <h2>Practice Record List</h2>
 
-                font-size: 24px;
-                padding: 6px 12px;
-            }
-            #exam{
-                position: absolute;
-                left: 20%;
-                top: 1%;
-            }
-            #prac{
-                position: absolute;
-                left: 28%;
-                top: 1%;
-            }
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Name.</th>
+                                                <th>Type.</th>
+                                                <th>Other.</th>
+                                            </tr>
+                                        </thead>
 
-        </style>
-    </div>
+                                        <tbody>
+                                            {% for exam in practiceList %}
+                                                <tr>
+                                                    <td>{{ exam }}</td>
+                                                    <td>{{ exam.exam_type|readable_exam_type }}</td>
+                                                    <td>
+                                                        {% if not exam|is_finished:request.user %}
+                                                            <a href="{% url 'testee_start_exam' exam.id %}" class="btn btn-primary">Start.</a>
+                                                        {% else %}
+                                                            <button type="button" class="btn btn-success" disabled>Finished.</button>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% empty %}
+                                                <tr>
+                                                    <td class="text-center" colspan="3">No Data.</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="btn">
-        <button id="listening" type="button" onclick="window.location.href='{% url 'testee_practice_create' 'listening' %}'"><i class="fa fa-play-circle"></i></button>
-        <button id="reading" type="button" onclick="window.location.href='{% url 'testee_practice_create' 'reading' %}'"><i class="fa fa-eye"></i></button>
+                <div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="exam-tab">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+                                <h2>Exam Record List</h2>
 
-        <style>
-            .btn button{
-                width: 50px;
-                height: 50px;
-                background-color: #4CCABD;
-                border-radius: 24px;
-                text-align: center;
-                font-size: 20px;
-                color: #FFFEF6;
-                border: none;
-                box-shadow: 0px 3px 8px 0px #486260;
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Name.</th>
+                                                <th>Type.</th>
+                                                <th>Other.</th>
+                                            </tr>
+                                        </thead>
 
-                z-index: 9999;
-            }
-            .btn #listening i{
-                position: absolute;
-                left: 22%;
-                top: 24%;
-                font-size: 29px;
-            }
-            .btn #listening{
-                position: absolute;
-                left: 90%;
-            }
-            .btn #reading i{
-                position: absolute;
-                left: 20%;
-                top: 24%;
-                font-size: 29px;
-            }
-            .btn #reading{
-                position: absolute;
-                left: 95%;
-            }
-            .btn button:hover{
-                background-color: #2C3232;
-                color: #FFFEF6;
-                transition: all 0.3s ease;
-            }
-        </style>
-    </div>
-
-    <div id="examList" class="table-responsive" style="display: none">
-        <table class="table table-hover">
-            <caption style="font-size: 30px;">&nbsp;&nbsp;測驗記錄列表</caption>
-
-            <thead class="title">
-                <tr>
-                    <th class="col-md-2">測驗名稱</th>
-                    <th class="col-md-1">測驗類型</th>
-                    <th class="col-lg-1">備註</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for exam in examList %}
-                    <tr>
-                        <td style="text-align: center; vertical-align:middle;">{{ exam }}</td>
-                        <td style="vertical-align:middle;">{{ exam.exam_type|readable_exam_type }}</td>
-                        <td style="vertical-align:middle;">
-                            {% if not exam|is_finished:request.user %}
-                                <a href="{% url 'testee_start_exam' exam.id %}">開始測驗</a>
-                            {% else %}
-                                <label>已完成測驗</label>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <style>
-            .table-responsive .table{
-                text-align: center;
-            }
-
-            .table-hover > tbody > tr:hover > td,
-            .table-hover > tbody > tr:hover > th {
-                background-color: #4CCABD;
-            }
-
-            .title{
-                font-size: 20px;
-            }
-
-            .title tr th{
-                text-align: center;
-            }
-
-            .table tbody{
-                font-size: 18px;
-            }
-
-            .table tbody td a{
-                color: #002a80;
-            }
-
-        </style>
-    </div>
-
-    <div id="practiceList" class="table-responsive">
-        <table class="table table-hover">
-            <caption style="font-size: 30px;">&nbsp;&nbsp;測驗記錄列表</caption>
-
-            <thead class="title">
-                <tr>
-                    <th class="col-md-2">測驗名稱</th>
-                    <th class="col-md-1">測驗類型</th>
-                    <th class="col-lg-1">備註</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for exam in practiceList %}
-                    <tr>
-                        <td style="text-align: left; vertical-align:middle;">{{ exam }}</td>
-                        <td style="vertical-align:middle;">{{ exam.exam_type|readable_exam_type }}</td>
-                        <td style="vertical-align:middle;">
-                            {% if not exam|is_finished:request.user %}
-                                <a style="color: rgb(0, 51, 153)" href="{% url 'testee_start_exam' exam.id %}">開始測驗</a>
-                            {% else %}
-                                <label>已完成測驗</label>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <style>
-            .table-responsive .table{
-                text-align: center;
-            }
-
-            .table-hover > tbody > tr:hover > td,
-            .table-hover > tbody > tr:hover > th {
-                background-color: #4CCABD;
-            }
-
-            .title{
-                font-size: 20px;
-            }
-
-            .title tr th{
-                text-align: center;
-            }
-
-            .table tbody{
-                font-size: 18px;
-            }
-
-            .table tbody td a{
-                color: #2C3232;
-            }
-
-        </style>
-    </div>
-
-    <script type="application/javascript">
-    function openList(exam_kind) {
-        var i;
-        var x = document.getElementsByClassName("table-responsive");
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
+                                        <tbody>
+                                            {% for exam in examList %}
+                                                <tr>
+                                                    <td>{{ exam }}</td>
+                                                    <td>{{ exam.exam_type|readable_exam_type }}</td>
+                                                    <td class="text-center">
+                                                        {% if not exam|is_finished:request.user %}
+                                                            <a href="{% url 'testee_start_exam' exam.id %}" class="btn btn-primary">Start.</a>
+                                                        {% else %}
+                                                            <button type="button" class="btn btn-success" disabled>Finished.</button>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% empty %}
+                                                <tr>
+                                                    <td class="text-center" colspan="3">No Data.</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <style>
+        .exam-record .container #tabContent table > tbody > tr > td{
+            vertical-align: middle;
         }
-        document.getElementById(exam_kind).style.display = "block";
-    }
-    </script>
+    </style>
 {% endblock %}

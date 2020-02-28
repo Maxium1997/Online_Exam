@@ -21,4 +21,8 @@ def index(request):
     except EmptyPage:
         pros = paginator.page(paginator.num_pages)
 
-    return render(request, 'index.html', locals())
+    return render(request, 'proclamation.html', locals())
+
+
+def about(request):
+    return render(request, 'SystemDocument/About.html')

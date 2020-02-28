@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% block scripts %}
     <script>
         function searchFunction() {
             let input, filter, a, i, tr, td;
-            input = document.getElementById("search_course");
+            input = document.getElementById("search");
             filter = input.value.toUpperCase();
             tr = document.getElementById("group_members");
             td = tr.getElementsByTagName("td");
@@ -22,81 +22,64 @@
 {% endblock %}
 
 {% block path %}
-    <a href="">考試管理員</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="{% url 'testee_group_list' %}">受測者群組列表</a>
-    <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="">受測者群組（{{ group.name }}）</a>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'testee_group_list' %}">Testee Group List</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Testee Group Member List</li>
 {% endblock %}
 
 {% block content %}
-        <div class="search_bar">
-            <input class="form-control" type="text" id="search_course" onkeyup="searchFunction()" placeholder="Search...">
+    <main class="testee-group-member-list">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <h2>Testee Group Member List.</h2>
 
-            <style>
-                .search_bar{
-                    position: absolute;
-                    left: 50%;
-                    top: 2%;
+                    <div class="search_bar">
+                        <input class="form-control" type="text" id="search" onkeyup="searchFunction()" placeholder="Search...">
+                    </div>
 
-                    width: 45%;
-                }
-            </style>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="text-center">Account./StudentID.</th>
+                                    <th>Name.</th>
+                                    <th>Department.</th>
+                                    <th>Squadron.</th>
+                                    <th>Grade.</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="group-members">
+                                {% if group_members %}
+                                    {% for member in group_members %}
+                                        <tr>
+                                            {% if member.student %}
+                                                <td class="text-center">{{ member.student.stu_id }}</td>
+                                                <td>{{ member.name }}</td>
+                                                <td>{{ member.student.department }}</td>
+                                                <td>{{ member.student.squadron }}</td>
+                                                <td>{{ member.student.grade }}</td>
+                                            {% else %}
+                                                <td class="text-center">{{ member.reg_id }}</td>
+                                                <td>{{ member.name }}</td>
+                                                <td class="text-center" colspan="3">None</td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="" class="text-center">No Data.</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary" onclick="self.location=document.referrer;">OK</button>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <table class="table table-hover">
-            <caption style="font-size: 30px; padding-left: 5%">&nbsp;{{ group.name }}受測者名單</caption>
-            {% if group_members %}
-            <tbody id="group_members">
-                {% for member in group_members %}
-                    <tr onclick="window.location.href='{% url "view_profile" member.id %}'">
-                        {% if member.student %}
-                            <td>{{ member.student.stu_id }}  /  {{ member.name }}</td>
-                        {% else %}
-                            <td>{{ member.reg_id }}  /  {{ member.name }}</td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-            {% else %}
-            <tbody>
-                <tr>
-                    <td><h2>目前暫無資料</h2></td>
-                </tr>
-            </tbody>
-            {% endif %}
-
-            <style>
-                .table-hover > tbody > tr:hover > td,
-                .table-hover > tbody > tr:hover > th {
-                    background-color: #4CCABD;
-                }
-
-                .table tbody{
-                    font-size: 20px;
-                    text-align: left;
-                }
-
-                .table tbody td{
-                    vertical-align: middle;
-                    color: #2C3232;
-                }
-            </style>
-        </table>
-
-        <div class="btn">
-            <button type="button" onclick="window.location.href='{% url 'testee_group_list' %}'">返回列表</button>
-
-            <style>
-                .btn{
-                    position: relative;
-                    left: 45%;
-                }
-            </style>
-        </div>
-    <style>
-        .info{
-            overflow-x: scroll;
-        }
-    </style>
+    </main>
 {% endblock %}

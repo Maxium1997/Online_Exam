@@ -16,10 +16,14 @@
                                 SystemManager
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'user_list' %}">使用者列表</a>
-                                <a class="dropdown-item" href="{% url 'unit_list' %}">單位列表</a>
-                                <a class="dropdown-item" href="{% url 'report_category_list' %}">回報類別列表</a>
-                                <a class="dropdown-item" href="{% url 'responsible_report_list' 'SystemManager' %}">問題回報列表</a>
+                                <a class="dropdown-item" href="{% url 'user_list' %}">User List</a>
+                                <a class="dropdown-item" href="{% url 'unit_list' %}">Unit List</a>
+                                <a class="dropdown-item" href="{% url 'report_category_list' %}">ReportCategory List</a>
+                                {% if request.user|get_SystemManager_report_notification == 0 %}
+                                    <a class="dropdown-item" href="{% url 'responsible_report_list' 'SystemManager' %}">Report List</a>
+                                {% else %}
+                                    <a class="dropdown-item" href="{% url 'responsible_report_list' 'SystemManager' %}">Report List<label class="notification-badge">{{ request.user|get_SystemManager_report_notification }}</label></a>
+                                {% endif %}
                             </div>
                         </li>
                     {% endif %}
@@ -30,10 +34,14 @@
                                 TestManager
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'exam_list' %}">考試列表</a>
-                                <a class="dropdown-item" href="{% url 'testpaper_list' %}">考卷列表</a>
-                                <a class="dropdown-item" href="{% url 'testee_group_list' %}">受測者群組</a>
-                                <a class="dropdown-item" href="{% url 'responsible_report_list' 'TestManager' %}">問題回報列表</a>
+                                <a class="dropdown-item" href="{% url 'exam_list' %}">Exam List</a>
+                                <a class="dropdown-item" href="{% url 'testpaper_list' %}">TestPaper List</a>
+                                <a class="dropdown-item" href="{% url 'testee_group_list' %}">Testee Group List</a>
+                                {% if request.user|get_TestManager_report_notification == 0 %}
+                                    <a class="dropdown-item" href="{% url 'responsible_report_list' 'TestManager' %}">Report List</a>
+                                {% else %}
+                                    <a class="dropdown-item" href="{% url 'responsible_report_list' 'TestManager' %}">Report List<label class="notification-badge">{{ request.user|get_TestManager_report_notification }}</label></a>
+                                {% endif %}
                             </div>
                         </li>
                     {% endif %}
@@ -44,9 +52,13 @@
                                 TBManager
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'tbmanager_question_list' %}">題目列表</a>
-                                <a class="dropdown-item" href="{% url 'question_review' %}">審核試題</a>
-                                <a class="dropdown-item" href="{% url 'responsible_report_list' 'TBManager' %}">問題回報列表</a>
+                                <a class="dropdown-item" href="{% url 'tbmanager_question_list' %}">Question List</a>
+                                <a class="dropdown-item" href="{% url 'question_review' %}">Review</a>
+                                {% if request.user|get_TBManager_report_notification == 0 %}
+                                    <a class="dropdown-item" href="{% url 'responsible_report_list' 'TBManager' %}">Report List</a>
+                                {% else %}
+                                    <a class="dropdown-item" href="{% url 'responsible_report_list' 'TBManager' %}">Report List<label class="notification-badge">{{ request.user|get_TBManager_report_notification }}</label></a>
+                                {% endif %}
                             </div>
                         </li>
                     {% endif %}
@@ -57,9 +69,9 @@
                                 TBOperator
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'tboperator_question_list' %}">題目列表</a>
-                                <a class="dropdown-item" href="{% url 'question_create' 'listening' %}">新增聽力試題</a>
-                                <a class="dropdown-item" href="{% url 'question_create' 'reading' %}">新增閱讀試題</a>
+                                <a class="dropdown-item" href="{% url 'tboperator_question_list' %}">Question List</a>
+                                <a class="dropdown-item" href="{% url 'question_create' 'listening' %}">Create Listening</a>
+                                <a class="dropdown-item" href="{% url 'question_create' 'reading' %}">Create Reading</a>
                             </div>
                         </li>
                     {% endif %}
@@ -81,8 +93,8 @@
                                 Testee
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'testee_exam_list' %}">測驗紀錄</a>
-                                <a class="dropdown-item" href="{% url 'testee_score_list' %}">成績紀錄</a>
+                                <a class="dropdown-item" href="{% url 'testee_exam_list' %}">Exam Record</a>
+                                <a class="dropdown-item" href="{% url 'testee_score_list' %}">Score Record</a>
                                 <a class="dropdown-item" href="{% url 'testee_practice_create' 'listening' %}">聽力練習</a>
                                 <a class="dropdown-item" href="{% url 'testee_practice_create' 'reading' %}">閱讀練習</a>
                             </div>
@@ -90,20 +102,88 @@
                     {% endif %}
 
                     {% if user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user"></i>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'profile' %}">{{ request.user }}</a>
-                                <a class="dropdown-item" href="{% url 'report' %}">問題回報</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn" data-toggle="modal" data-target="#ModalCenter">
+                            <i class="fa fa-user"></i>
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header text-center">
+                                        <h5 class="modal-title" id="ModalLongTitle">{{ request.user.reg_id }}</h5>
+                                    </div>
+
+                                    <div id="modal-menu">
+                                        <button onclick="window.location.href='{% url 'profile' %}'">User Profile</button>
+                                        <div class="dropdown-divider custom"></div>
+                                        <button onclick="window.location.href='{% url 'profile_edit' %}'">Profile Update</button>
+                                        <div class="dropdown-divider custom"></div>
+                                        <button onclick="window.location.href='{% url 'email_confirmation' %}'">Email</button>
+                                        <div class="dropdown-divider custom"></div>
+                                        <button onclick="window.location.href='{% url 'password_change' %}'">Password Change</button>
+                                        <div class="dropdown-divider custom"></div>
+                                        <button onclick="window.location.href='{% url 'report' %}'">Report</button>
+                                        <div class="dropdown-divider custom"></div>
+                                        <button onclick="window.location.href='{% url 'about' %}'">About</button>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <a class="btn btn-light" href="{% url 'logout' %}" onclick="return confirm('Sure to logout?')">Logout</a>
+                                        <a class="btn btn-secondary" style="color: white" data-dismiss="modal">Cancel</a>
+                                    </div>
+                                </div>
                             </div>
-                        </li>
+                        </div>
+
+                        <style>
+                            .modal{
+                                outline: none;
+                            }
+                            .modal a{
+                                outline: none;
+                                text-decoration: none;
+                            }
+                            .modal #modal-menu button{
+                                width: 100%;
+
+                                text-align: center;
+                                padding: 14px;
+                                color: #2C3232;
+                                background-color: #fff;
+
+                                border: none;
+                                outline: none;
+                            }
+                            .modal #modal-menu button:active{
+                                width: 100%;
+
+                                padding: 10px;
+                                color: #2C3232;
+                                background-color: rgb(200, 200, 200);
+
+                                border-bottom-style: solid;
+                                border-bottom-width: 1px;
+                                border-bottom-color: rgb(250, 250, 250);
+
+                                outline: none;
+                            }
+                            .modal #modal-menu button::-moz-focus-inner,
+                                [type="button"]::-moz-focus-inner,
+                                [type="reset"]::-moz-focus-inner,
+                                [type="submit"]::-moz-focus-inner {
+                                  padding: 0;
+                                  border-style: none;
+                            }
+                            .modal .custom{
+                                margin: 0px;
+                            }
+                        </style>
+
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                            <a class="nav-link" href="{% url 'login' %}">Login.</a>
                         </li>
                     {% endif %}
                 </ul>

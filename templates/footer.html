@@ -1,7 +1,3 @@
-<div class="hint-info">
-
-</div>
-
 <footer class="footer">
     <div class="prompt_container">
         {% if messages %}
@@ -32,7 +28,7 @@
         {% endif %}
     </div>
 
-    <div id="footer-info">ALCPT © 2019 IM.NDUCOM. Version 3.1</div>
+    <div id="footer-info">ALCPT © 2019 IM, Management College, NDU. Version 13.2 <a href="{% url 'about' %}">About.</a></div>
 </footer>
 
 <style>
@@ -49,6 +45,9 @@
     }
     .footer #footer-info{
         background-color: rgb(44, 50, 50);
+    }
+    .footer #footer-info a{
+        text-decoration: none;
     }
 
     .prompt_container #prompt{
@@ -70,7 +69,7 @@
 </style>
 
 <script type="text/javascript">
-    var timer = window.setInterval(disappear, 3000); // display 3 seconds , then disappear
+    var timer = window.setInterval(disappear, 4000); // display 3 seconds , then disappear
     function disappear() {
         document.getElementById('prompt').style.height = "0";
         document.getElementById('prompt').style.transition = "0.1s";

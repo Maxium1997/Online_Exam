@@ -10,11 +10,11 @@ from alcpt.utility import save_file
 def query_questions(*, question_type: int, difficulty: int, state: int, question_content: str):
     queries = Q()
     query_content = ""
-    all_questions = Question.objects.exclude(state=6)       # tbmanager doesn't need state = 6 ("暫存")
+    all_questions = Question.objects.exclude(state=6).exclude(state=2).exclude(state=3)       # tbmanager doesn't need state = 6 ("暫存")
 
     if state:
         queries &= Q(state=state)
-        query_content += "state=" + str(state)
+        query_content += "&state=" + str(state)
 
     if difficulty:
         queries &= Q(difficulty=difficulty)
@@ -47,7 +47,7 @@ def query_questions(*, question_type: int, difficulty: int, state: int, question
         else:
             query1 = all_questions.exclude(q_type=1).exclude(q_type=2).filter(queries).filter(q_content__icontains=question_content)
             query2 = all_questions.exclude(q_type=1).exclude(q_type=2).filter(queries).filter(choice__c_content__icontains=question_content)
-            query3 = all_questions.exclude(q_type=3).exclude(q_type=4).exclude(q_type=5).filter(choice__c_content__icontains=question_content)
+            query3 = all_questions.exclude(q_type=3).exclude(q_type=4).exclude(q_type=5).filter(choice__c_content__icontains=question_content).filter(queries)
 
             questions = (query1 | query2 | query3).distinct().order_by('id')
     else:

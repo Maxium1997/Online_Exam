@@ -3,8 +3,8 @@
 {% load web_filters %}
 
 {% block path %}
-    <li class="breadcrumb-item" aria-current="page">問題回報列表</li>
-    <li class="breadcrumb-item active" aria-current="page">回覆中...</li>
+    <li class="breadcrumb-item" aria-current="page">Report List</li>
+    <li class="breadcrumb-item active" aria-current="page">Replying...</li>
 {% endblock %}
 
 {% block content %}
@@ -17,7 +17,7 @@
                             <div class="card-header">{{ replying_report.category }}#{{ replying_report.id }}</div>
 
                             <div class="card-body">
-                                <h5>補充說明</h5>
+                                <h5>Supplement Note</h5>
                                 <div class="dropdown-divider"></div>
                                 <p>{{ replying_report.supplement_note }}</p>
                             </div>
@@ -26,10 +26,10 @@
                                 <footer class="blockquote-footer">
                                     <cite title="Source Title">{{ replying_report.created_by }} in {{ replying_report.created_time }}<br></cite>
                                     {% if replying_report.state == 2 %}
-                                        <label class="btn btn-danger float-right">處理中</label>
+                                        <label class="btn btn-danger float-right">Processing</label>
                                     {% elif replying_report.state == 3 %}
                                         <cite title="Source Title">Resolved by {{ replying_report.resolved_by }} in {{ replying_report.resolved_time }}</cite>
-                                        <label class="btn btn-success float-right">已解決</label>
+                                        <label class="btn btn-success float-right">Solved</label>
                                     {% endif %}
                                 </footer>
                             </div>
@@ -51,7 +51,7 @@
                                             {% endif %}
                                         {% endfor %}
                                     {% else %}
-                                        尚無留言
+                                        No message...
                                     {% endif %}
                                 </div>
                             </div>
@@ -61,11 +61,14 @@
                                     {% csrf_token %}
                                     <textarea class="form-control" name="reply" rows="4" placeholder="Reply..." {% if replying_report.state == 3 %}disabled{% endif %}></textarea>
 
-                                    {% if replying_report.state != 3 %}
-                                        <button type="button" class="btn btn-success float-right" onclick="window.location.href='{% url 'report_done' replying_report.id %}'">解決</button>
-                                    {% endif %}
-                                    <button type="button" class="btn btn-secondary float-right" onclick="self.location=document.referrer;">取消</button>
-                                    <button type="submit" class="btn btn-primary float-right" {% if replying_report.state == 3 %}disabled{% endif %}>送出</button>
+                                    <div class="text-right">
+                                        <button type="submit" class="btn btn-primary" {% if replying_report.state == 3 %}disabled{% endif %}>Submit</button>
+                                        <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">Cancel</button>
+                                        {% if replying_report.state != 3 %}
+                                            <button type="button" class="btn btn-success" onclick="window.location.href='{% url 'report_done' replying_report.id %}'">Close</button>
+                                        {% endif %}
+                                    </div>
+
                                 </form>
                             </div>
                         </div>

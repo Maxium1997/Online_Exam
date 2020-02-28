@@ -3,7 +3,7 @@ from django import template
 from django.core.exceptions import ObjectDoesNotExist
 
 from alcpt.definitions import UserType, QuestionType, ExamType
-from alcpt.models import User, Student, Question, ReportCategory, Exam
+from alcpt.models import User, Student, Question, ReportCategory, Exam, Report
 from alcpt.utility import set_query_parameter
 from alcpt.exceptions import IllegalArgumentError, ObjectNotFoundError
 
@@ -109,9 +109,9 @@ def is_student(user: User):
 def readableIdentity(identity: int):
     IDENTITY = (
         (0, ''),
-        (1, '訪客'),
-        (2, '學生'),
-        (3, '老師'),
+        (1, 'Visitor'),
+        (2, 'Student'),
+        (3, 'Teacher'),
     )
     return IDENTITY[identity][1]
 
@@ -141,12 +141,12 @@ def check_correct(option: str, question: Question):
 def readable_state(state: int):
     STATE = (
         (0, ''),
-        (1, '審核通過'),
-        (2, '審核未通過'),
-        (3, '等待審核'),
-        (4, '被回報錯誤'),
-        (5, '被回報錯誤，已處理'),
-        (6, '暫存'),
+        (1, 'pass'),
+        (2, 'reject'),
+        (3, 'pending'),
+        (4, 'reported'),
+        (5, 'handle'),
+        (6, 'saved'),
     )
     return STATE[state][1]
 
@@ -154,10 +154,10 @@ def readable_state(state: int):
 @register.filter(name='readable_report_state')
 def readable_report_state(state: int):
     STATE = (
-        (0, '暫存'),
-        (1, '待處理'),
-        (2, '處理中'),
-        (3, '已解決'),
+        (0, 'saved'),
+        (1, 'pending'),
+        (2, 'processing'),
+        (3, 'solved'),
     )
     return STATE[state][1]
 
@@ -200,17 +200,6 @@ def is_finished(exam: Exam, user: User):
         return False
 
 
-@register.filter(name='readable_report_state')
-def readable_report_state(state: int):
-    STATE = (
-        (0, '暫存'),
-        (1, '待處理'),
-        (2, '處理中'),
-        (3, '已解決'),
-    )
-    return STATE[state][1]
-
-
 @register.filter(name='belongs_to')
 def belongs_to(category: ReportCategory, privilege: UserType):
     return category.responsibility & privilege.value[0] > 0
@@ -233,31 +222,31 @@ def readable_question_query_content(question_query_content: str):
         if 'state' in item:
             STATE = (
                 (0, ''),
-                (1, '審核通過'),
-                (2, '審核未通過'),
-                (3, '等待審核'),
-                (4, '被回報錯誤'),
-                (5, '被回報錯誤，已處理'),
-                (6, '暫存'),
+                (1, 'Pass'),
+                (2, 'Reject'),
+                (3, 'Pending'),
+                (4, 'Reported'),
+                (5, 'Handle'),
+                (6, 'saved'),
             )
-            readable_query_content += '狀態="' + STATE[int(item[1])][1] + '"+'
+            readable_query_content += '"state="' + STATE[int(item[1])][1] + '"'
 
         elif 'difficulty' in item:
-            readable_query_content += '難度="' + item[1] + '"+'
+            readable_query_content += '+"difficulty="' + item[1] + '"'
 
         elif 'question_content' in item:
-            readable_query_content += '試題內容="' + item[1] + '"+'
+            readable_query_content += '+"question_content="' + item[1] + '"'
 
         elif 'question_type' in item:
             TYPE = (
                 (0, ''),
-                (1, '聽力／問答'),
-                (2, '聽力／簡短對話'),
-                (3, '閱讀／文法'),
-                (4, '閱讀／名詞片語'),
-                (5, '閱讀／段落理解')
+                (1, 'Listening/QA'),
+                (2, 'Listening/Conversation'),
+                (3, 'Reading/Grammar'),
+                (4, 'Reading/Phrase'),
+                (5, 'Reading/Paragraph')
             )
-            readable_query_content += '類型="' + TYPE[int(item[1])][1] + '"'
+            readable_query_content += '+"type="' + TYPE[int(item[1])][1] + '"'
 
     return readable_query_content
 
@@ -269,16 +258,16 @@ def readable_user_query_content(user_query_content: str):
 
     for item in user_query:
         if 'department' in item:
-            readable_user_query_content += '科系="' + item[1] + '"+'
+            readable_user_query_content += 'department="' + item[1]
 
         elif 'grade' in item:
-            readable_user_query_content += '年班="' + item[1] + '"+'
+            readable_user_query_content += '+grade="' + item[1]
 
         elif 'squadron' in item:
-            readable_user_query_content += '中隊="' + item[1] + '"+'
+            readable_user_query_content += '+squadron="' + item[1]
 
         elif 'name' in item:
-            readable_user_query_content += '學號/姓名="' + item[1] + '"'
+            readable_user_query_content += '+stuID/Name="' + item[1]
 
     return readable_user_query_content
 
@@ -294,3 +283,74 @@ def question_type_transfer_to_original_data(q_type: int):
         (5, 'ParagraphUnderstanding'),
     )
     return QUESTION_TYPE[q_type][1]
+
+
+@register.filter(name='get_report_notification')
+def get_report_notification(user: User):
+    report_quantity = Report.objects.filter(created_by=user)
+    unread = 0
+
+    for report in report_quantity:
+        if report.user_notification:
+            unread += 1
+        else:
+            pass
+
+    return unread
+
+
+@register.filter(name='get_SystemManager_report_notification')
+def get_SystemManager_report_notification(user: User):
+    categories = []
+
+    for category in ReportCategory.objects.all():
+        if (category.responsibility & 32) > 0:
+            categories.append(category)
+
+    unread = 0
+    for category in categories:
+        for report in category.report_set.all():
+            if report.staff_notification:
+                unread += 1
+            else:
+                pass
+
+    return unread
+
+
+@register.filter(name='get_TestManager_report_notification')
+def get_TestManager_report_notification(user: User):
+    categories = []
+
+    for category in ReportCategory.objects.all():
+        if (category.responsibility & 16) > 0:
+            categories.append(category)
+
+    unread = 0
+    for category in categories:
+        for report in category.report_set.all():
+            if report.staff_notification:
+                unread += 1
+            else:
+                pass
+
+    return unread
+
+
+@register.filter(name='get_TBManager_report_notification')
+def get_TBManager_report_notification(user: User):
+    categories = []
+
+    for category in ReportCategory.objects.all():
+        if (category.responsibility & 8) > 0:
+            categories.append(category)
+
+    unread = 0
+    for category in categories:
+        for report in category.report_set.all():
+            if report.staff_notification:
+                unread += 1
+            else:
+                pass
+
+    return unread

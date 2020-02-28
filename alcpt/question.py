@@ -19,11 +19,12 @@ from .managerfuncs import tbmanager, tboperator
 def manager_index(request):
     question_types = [_ for _ in QuestionType]
 
-    state_choices = [(1, '審核通過'),
-                     (2, '審核未通過'),
-                     (3, '等待審核'),
-                     (4, '被回報錯誤'),
-                     (5, '被回報錯誤，已處理')]
+    state_choices = [(1, 'Pass'),
+                     (4, 'Reported'),
+                     (5, 'Handle')]
+    states = []
+    for x in state_choices:
+        states.append(x[0])
 
     difficulty_choices = [(1, '1'),
                           (2, '2'),
@@ -31,11 +32,8 @@ def manager_index(request):
                           (4, '4')]
 
     keywords = {
-        'question_content': request.GET.get('question_content',)
+        'question_content': request.GET.get('question_content'),
     }
-    if keywords['question_content'] and any(char in punctuation for char in keywords['question_content']):
-        keywords['question_content'] = None
-        messages.warning(request, "Name cannot contains any special character.")
 
     for keyword in ['question_type', 'difficulty', 'state']:
         try:
@@ -43,8 +41,19 @@ def manager_index(request):
         except (KeyError, TypeError, ValueError):
             keywords[keyword] = None
 
+    if keywords['question_content'] and any(char in punctuation for char in keywords['question_content']):
+        keywords['question_content'] = None
+        messages.warning(request, "Name cannot contains any special character.")
+        questions = Question.objects.exclude(state=6)
+
+    elif keywords['state'] and int(keywords['state']) not in states:
+        hi = keywords['state']
+        messages.warning(request, "Can not search by this state.")
+        questions = Question.objects.exclude(state=6)
+
+        # 使用搜尋功能，系統會至後端資料庫filter出符合條件的題目。所以，頁面會有重新載入的效果。
+        # 若是使用Javascript，因是使用cache檔案，所以不會有進入後端抓資料一樣的問題。
     query_content, questions = tbmanager.query_questions(**keywords)
-    resultNum = len(questions)
 
     page = request.GET.get('page', 1)
     paginator = Paginator(questions, 20)  # the second parameter is used to display how many items. Now is display 10
@@ -56,6 +65,8 @@ def manager_index(request):
     except EmptyPage:
         questionList = paginator.page(paginator.num_pages)
 
+    # query_content = keywords['question_content'] + str(keywords['question_type']) + str(keywords['difficulty']) + str(keywords['state'])
+
     return render(request, 'question/question_list.html', locals())
 
 
@@ -63,9 +74,9 @@ def manager_index(request):
 @require_http_methods(["GET"])
 def review(request):
     # 過濾掉狀態為"暫存"、"審核通過"、"被回報錯誤，已處理"
-    reviewed_questions = Question.objects.exclude(state=0).exclude(state=1).exclude(state=2).exclude(state=5)
+    reviewed_questions = Question.objects.filter(state=3)
     page = request.GET.get('page', 1)
-    paginator = Paginator(reviewed_questions, 8)  # the second parameter is used to display how many items. Now is 10
+    paginator = Paginator(reviewed_questions, 10)  # the second parameter is used to display how many items. Now is 10
 
     try:
         questionList = paginator.page(page)
@@ -154,9 +165,9 @@ def operator_index(request):
         question_types.append(q)
 
     state_choices = [
-        (6, '暫存'),
-        (2, '審核未通過'),
-        (4, '被回報錯誤')]
+        (6, 'Saved'),
+        (2, 'Reject'),
+        (4, 'Reported')]
 
     difficulty_choices = [(1, '1'),
                           (2, '2'),

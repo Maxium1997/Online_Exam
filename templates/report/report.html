@@ -17,10 +17,10 @@
                                 {% csrf_token %}
 
                                 <div class="form-group row">
-                                    <label for="p_title" class="col-md-4 col-form-label text-md-right">回報類別</label>
+                                    <label for="p_title" class="col-md-4 col-form-label text-md-right">Report Category.</label>
                                     <div class="col-md-6">
                                         <select class="custom-select custom-select-sm" name="category" required>
-                                            <option value="" disabled selected>請選擇發生問題</option>
+                                            <option value="" disabled selected>What is your problem？</option>
                                             {% for category in categories %}
                                                 <option value="{{ category.id }}">{{ category }}</option>
                                             {% endfor %}
@@ -29,21 +29,21 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="p_text" class="col-md-4 col-form-label text-md-right">補充說明</label>
+                                    <label for="p_text" class="col-md-4 col-form-label text-md-right">Supplement Note.</label>
                                     <div class="col-md-6">
-                                        <textarea class="form-control" name="supplement_note" cols="100" rows="8" placeholder="補充說明..." required></textarea>
+                                        <textarea class="form-control" name="supplement_note" cols="100" rows="8" placeholder="Describe your situation what happened..." required></textarea>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary" onclick="return confirm('確認新增？')">
-                                        新增
+                                        Submit
                                     </button>
                                     <button type="reset" class="btn btn-light">
-                                        重設
+                                        Reset
                                     </button>
-                                    <button type="button" class="btn btn-secondary" onclick="history.back()">
-                                        取消
+                                    <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">
+                                        Cancel
                                     </button>
                                 </div>
                             </form>

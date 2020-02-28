@@ -64,8 +64,8 @@
 {% endblock %}
 
 {% block path %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'report_category_list' %}">回報類別列表</a></li>
-    <li class="breadcrumb-item active" aria-current="page">新增回報類別</li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'report_category_list' %}">ReportCategory List</a></li>
+    <li class="breadcrumb-item active" aria-current="page">ReportCategory Create</li>
 {% endblock %}
 
 {% block content %}
@@ -81,7 +81,7 @@
                                 {% csrf_token %}
 
                                 <div class="form-group row">
-                                    <label for="p_title" class="col-md-4 col-form-label text-md-right">回報類別名稱</label>
+                                    <label for="p_title" class="col-md-4 col-form-label text-md-right">ReportCategory Name.</label>
                                     <div class="col-md-6">
                                         <input class="form-control" type="text" name="category_name" onkeyup="unique_name({{ categories_names }}, this)" placeholder="ReportCategory Name..." required>
                                         <label id="name_invalid" class="name_invalid"></label>
@@ -89,7 +89,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="p_title" class="col-md-4 col-form-label text-md-right">權限設置</label>
+                                    <label for="p_title" class="col-md-4 col-form-label text-md-right">Privilege.</label>
                                     <div class="col-md-6">
                                         <div class="container">
                                             <div class="row">
@@ -99,7 +99,7 @@
                                                             <i class="fa fa-gears align-middle"></i>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            <li class="dropdown-header">設置權限</li>
+                                                            <li class="dropdown-header">Privilege Setting</li>
                                                             {% for privilege in privileges %}
                                                                 <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_not_empty()" {% if privilege == privilege.SystemManager %} checked {% endif %}>{{ privilege.value.1 }}</li>
                                                             {% endfor %}
@@ -114,13 +114,13 @@
 
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" id="submit" class="btn btn-primary" onclick="return confirm('確認新增？')">
-                                        新增
+                                        Submit
                                     </button>
                                     <button type="reset" class="btn btn-light">
-                                        重設
+                                        Reset
                                     </button>
                                     <button type="button" class="btn btn-secondary" onclick="history.back()">
-                                        取消
+                                        Cancel
                                     </button>
                                 </div>
                             </form>

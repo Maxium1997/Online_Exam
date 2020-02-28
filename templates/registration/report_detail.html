@@ -3,9 +3,9 @@
 {% load web_filters %}
 
 {% block path %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'profile' %}">個人資料</a></li>
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'report_list' %}">問題回報</a></li>
-    <li class="breadcrumb-item active" aria-current="page">回報單號#{{ viewed_report.id }}</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'profile' %}">Profile</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'report_list' %}">Report</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Report Number#{{ viewed_report.id }}</li>
 {% endblock %}
 
 {% block content %}
@@ -18,7 +18,7 @@
                             <div class="card-header">{{ viewed_report.category }}#{{ viewed_report.id }}</div>
 
                             <div class="card-body">
-                                <h5>補充說明</h5>
+                                <h5>Supplement Note.</h5>
                                 <div class="dropdown-divider"></div>
                                 <p>{{ viewed_report.supplement_note }}</p>
                             </div>
@@ -27,10 +27,10 @@
                                 <footer class="blockquote-footer">
                                     <cite title="Source Title">{{ viewed_report.created_by }} in {{ viewed_report.created_time }}<br></cite>
                                     {% if viewed_report.state == 2 %}
-                                        <label class="btn btn-danger float-right">處理中</label>
+                                        <label class="btn btn-danger float-right">Processing</label>
                                     {% elif viewed_report.state == 3 %}
                                         <cite title="Source Title">Resolved by {{ viewed_report.resolved_by }} in {{ viewed_report.resolved_time }}</cite>
-                                        <label class="btn btn-success float-right">已解決</label>
+                                        <label class="btn btn-success float-right">Solved</label>
                                     {% endif %}
                                 </footer>
                             </div>
@@ -39,7 +39,7 @@
 
                     <div class="col-lg-7">
                         <div class="card" style="height: 700px">
-                            <div class="card-header">回覆</div>
+                            <div class="card-header">Reply</div>
 
                             <div id="reply-content" class="card-body">
                                 <div class="reply-content" data-spy="scroll" data-target="#navbar-example2" data-offset="0">
@@ -57,13 +57,13 @@
                                 </div>
                             </div>
 
-                            <div class="card-footer">
+                            <div class="card-footer text-right">
                                 <form action="" method="post">
                                     {% csrf_token %}
                                     <textarea class="form-control" name="reply" rows="4" placeholder="Reply..." {% if viewed_report.state == 3 %}disabled{% endif %}></textarea>
 
-                                    <button type="button" class="btn btn-secondary float-right" onclick="self.location=document.referrer;">取消</button>
-                                    <button type="submit" class="btn btn-primary float-right" {% if viewed_report.state == 3 %}disabled{% endif %}>送出</button>
+                                    <button type="submit" class="btn btn-primary" {% if viewed_report.state == 3 %}disabled{% endif %}>Submit</button>
+                                    <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">Cancel</button>
                                 </form>
                             </div>
                         </div>

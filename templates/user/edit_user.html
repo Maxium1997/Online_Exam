@@ -58,11 +58,11 @@
             // Checkout whether privilege isn't null.
             else if (system.checked === false && testM.checked === false && tbM.checked === false &&
                 tbO.checked === false && viewer.checked === false && testee.checked === false) {
-                privilegeInvalid.innerHTML = "<span style='color: red; font-size: 14px'>最少選一個權限</span>";
+                privilegeInvalid.innerHTML = "<span style='color: red; font-size: 14px'>最好設置一個權限</span>";
                 validPrivilege = false;
             }
             else {
-                privilegeInvalid.innerHTML = '<i class="fa fa-check"></i>';
+                privilegeInvalid.innerHTML = '';
                 validPrivilege = true;
             }
             data_valid();
@@ -88,7 +88,7 @@
                     validRegId = false;
                 }
                 else {
-                    invalid_id.innerHTML = '<i class="fa fa-check"></i>';
+                    invalid_id.innerHTML = '';
                     validRegId = true;
                 }
             }
@@ -109,7 +109,7 @@
             }
             else {
                 validName = true;
-                name_invalid.innerHTML = '<i class="fa fa-check"></i>';
+                name_invalid.innerHTML = '';
             }
             data_valid();
         }
@@ -128,7 +128,7 @@
             }
             else {
                 validEmail = true;
-                email_invalid.innerHTML = '<i class="fa fa-check"></i>';
+                email_invalid.innerHTML = '';
             }
             data_valid();
         }
@@ -147,7 +147,7 @@
             }
             else {
                 validGender = true;
-                gender_invalid.innerHTML = '<i class="fa fa-check"></i>';
+                gender_invalid.innerHTML = '';
             }
             data_valid();
         }
@@ -164,7 +164,7 @@
             }
             else {
                 validIdentity = true;
-                document.getElementById('identity_invalid').innerHTML = '<i class="fa fa-check"></i>';
+                document.getElementById('identity_invalid').innerHTML = '';
             }
             data_valid();
         }
@@ -189,7 +189,7 @@
                     validStuId = false;
                 }
                 else {
-                    invalid_id.innerHTML = '<i class="fa fa-check"></i>';
+                    invalid_id.innerHTML = '';
                     validStuId = true;
                 }
             }
@@ -210,7 +210,7 @@
             }
             else {
                 validGrade = true;
-                grade_invalid.innerHTML = '<i class="fa fa-check"></i>';
+                grade_invalid.innerHTML = '';
             }
             data_valid();
         }
@@ -229,7 +229,7 @@
             }
             else {
                 validDepartment = true;
-               department_invalid.innerHTML = '<i class="fa fa-check"></i>';
+               department_invalid.innerHTML = '';
             }
             data_valid();
         }
@@ -248,7 +248,7 @@
             }
             else {
                 validSquadron = true;
-                squadron_invalid.innerHTML = '<i class="fa fa-check"></i>';
+                squadron_invalid.innerHTML = '';
             }
             data_valid();
         }
@@ -282,8 +282,8 @@
 {% endblock %}
 
 {% block path %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'user_list' %}">使用者列表</a></li>
-    <li class="breadcrumb-item active" aria-current="page">編輯使用者</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'user_list' %}">User List</a></li>
+    <li class="breadcrumb-item active" aria-current="page">User Edit</li>
 {% endblock %}
 
 {% block content %}
@@ -303,7 +303,7 @@
                                 <img class="card-img-top" src="..." alt="{{ edited_user.name }}">
 
                                 <div class="card-body">
-                                    <p class="card-text">ALCPT Development.</p>
+                                    <p class="card-text">{{ edited_user.introduction }}</p>
                                 </div>
                             </div>
                         </div>
@@ -341,10 +341,10 @@
                                     </h5>
                                     <p class="card-text">
                                         <select class="custom-select custom-select-sm" name="gender" id="gender" onchange="gender_valid('{{ edited_user.gender }}', document.getElementById('gender'))" required>
-                                            <option value="" disabled selected>請選擇性別</option>
-                                            <option value="0" {% if edited_user.gender == 0 %}selected{% endif %}>男</option>
-                                            <option value="1" {% if edited_user.gender == 1 %}selected{% endif %}>女</option>
-                                            <option value="2" {% if edited_user.gender == 2 %}selected{% endif %}>不想公開</option>
+                                            <option value="" disabled selected>Choose Gender.</option>
+                                            <option value="0" {% if edited_user.gender == 0 %}selected{% endif %}>Male</option>
+                                            <option value="1" {% if edited_user.gender == 1 %}selected{% endif %}>Female</option>
+                                            <option value="2" {% if edited_user.gender == 2 %}selected{% endif %}>Privacy</option>
                                         </select>
                                     </p>
 
@@ -353,7 +353,7 @@
                                     </h5>
                                     <p class="card-text">
                                         <select class="custom-select custom-select-sm" name="identity" id="identity" onchange="identity_valid('{{ edited_user.identity }}', document.getElementById('identity'))" required>
-                                            <option value="" disabled selected>請選擇身份</option>
+                                            <option value="" disabled selected>Choose Identity.</option>
                                             {% for identity in identities %}
                                                 <option value="{{ identity.value.0 }}" {% if edited_user.identity == identity.value.0 %}selected{% endif %}>{{ identity.value.1 }}</option>
                                             {% endfor %}
@@ -372,7 +372,7 @@
                                                         <i class="fa fa-gears"></i>
                                                     </button>
                                                         <ul class="dropdown-menu">
-                                                            <li class="dropdown-header">設置權限</li>
+                                                            <li class="dropdown-header">Privilege.</li>
                                                             {% for privilege in privileges %}
                                                                 <li data-value="{{ privilege.value.0 }}"><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>{{ privilege.value.1 }}</li>
                                                             {% endfor %}
@@ -420,7 +420,7 @@
                                     </h5>
                                     <p class="card-text">
                                         <select class="custom-select custom-select-sm" name="department" id="department" onchange="department_valid('{{ edited_user.student.department.id }}', document.getElementById('department'))" required>
-                                            <option value="" disabled selected>請選擇科系</option>
+                                            <option value="" disabled selected>Choose Department.</option>
                                             {% for department in departments %}
                                                 <option value="{{ department.id }}" {% if department == edited_user.student.department %}selected{% endif %}>{{ department }}</option>
                                             {% endfor %}
@@ -432,7 +432,7 @@
                                     </h5>
                                     <p class="card-text">
                                         <select class="custom-select custom-select-sm" name="squadron" id="squadron" onchange="squadron_valid('{{ edited_user.student.squadron.id }}', document.getElementById('squadron'))" required>
-                                            <option value="" disabled selected>請選擇中隊單位</option>
+                                            <option value="" disabled selected>Choose Squadron.</option>
                                             {% for squadron in squadrons %}
                                                 <option value="{{ squadron.id }}" {% if squadron == edited_user.student.squadron %}selected{% endif %}>{{ squadron }}</option>
                                             {% endfor %}
@@ -448,8 +448,8 @@
                                 </div>
 
                                 <div class="card-footer text-right">
-                                    <button type="submit" class="btn btn-primary" id="submit">提交</button>
-                                    <button type="button" class="btn btn-secondary" onclick="history.back()">取消</button>
+                                    <button type="submit" class="btn btn-primary" id="submit">Update</button>
+                                    <button type="button" class="btn btn-secondary" onclick="history.back()">Cancel</button>
                                 </div>
                             </div>
                         </div>
@@ -465,7 +465,7 @@
                                 <img class="card-img-top" src="..." alt="{{ edited_user.name }}">
 
                                 <div class="card-body">
-                                    <p class="card-text">ALCPT Development.</p>
+                                    <p class="card-text">{{ eidted_user.introduction }}</p>
                                 </div>
                             </div>
                         </div>
@@ -503,10 +503,10 @@
                                     </h5>
                                     <p class="card-text">
                                         <select class="custom-select custom-select-sm" name="gender" id="gender" onchange="gender_valid('{{ edited_user.gender }}', document.getElementById('gender'))" required>
-                                            <option value="" disabled selected>請選擇性別</option>
-                                            <option value="0" {% if edited_user.gender == 0 %}selected{% endif %}>男</option>
-                                            <option value="1" {% if edited_user.gender == 1 %}selected{% endif %}>女</option>
-                                            <option value="2" {% if edited_user.gender == 2 %}selected{% endif %}>不想公開</option>
+                                            <option value="" disabled selected>Choose Gender.</option>
+                                            <option value="0" {% if edited_user.gender == 0 %}selected{% endif %}>Male</option>
+                                            <option value="1" {% if edited_user.gender == 1 %}selected{% endif %}>Female</option>
+                                            <option value="2" {% if edited_user.gender == 2 %}selected{% endif %}>Privacy</option>
                                         </select>
                                     </p>
 
@@ -515,7 +515,7 @@
                                     </h5>
                                     <p class="card-text">
                                         <select class="custom-select custom-select-sm" name="identity" id="identity" onchange="identity_valid('{{ edited_user.identity }}', document.getElementById('identity'))" required>
-                                            <option value="" disabled selected>請選擇身份</option>
+                                            <option value="" disabled selected>Choose Identity.</option>
                                             {% for identity in identities %}
                                                 <option value="{{ identity.value.0 }}" {% if edited_user.identity == identity.value.0 %}selected{% endif %}>{{ identity.value.1 }}</option>
                                             {% endfor %}
@@ -534,7 +534,7 @@
                                                         <i class="fa fa-gears"></i>
                                                     </button>
                                                         <ul class="dropdown-menu">
-                                                            <li class="dropdown-header">設置權限</li>
+                                                            <li class="dropdown-header">Privilege.</li>
                                                             {% for privilege in privileges %}
                                                                 <li data-value="{{ privilege.value.0 }}"><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>{{ privilege.value.1 }}</li>
                                                             {% endfor %}
@@ -561,8 +561,8 @@
                                     </p>
 
                                     <div class="text-right">
-                                        <button type="submit" id="submit" class="btn btn-primary">提交</button>
-                                        <button type="button" onclick="history.back()" class="btn btn-secondary">取消</button>
+                                        <button type="submit" id="submit" class="btn btn-primary">Update</button>
+                                        <button type="button" onclick="history.back()" class="btn btn-secondary">Cancel</button>
                                     </div>
                                 </div>
                             </div>

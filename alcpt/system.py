@@ -623,6 +623,25 @@ def report_reply(request, report_id):
         return render(request, 'report/reply.html', locals())
 
 
+@permission_check(UserType.SystemManager)
+def view_report_detail(request, report_id):
+    try:
+        viewed_report = Report.objects.get(id=report_id)
+        if viewed_report.created_by == request.user:
+            pass
+        elif request.user.has_perm(UserType.SystemManager):
+            pass
+        else:
+            messages.warning(request, 'You have no permission')
+            return redirect('Homepage')
+    except ObjectDoesNotExist:
+        messages.error(request, "Report doesn't exist, report id: {}".format(report_id))
+        return redirect('report_list')
+
+    replies = viewed_report.reply_set.all().order_by('created_time')
+    return render(request, 'report/report_detail.html', locals())
+
+
 @login_required
 def report_done(request, report_id):
     if request.user.has_perm(UserType.SystemManager):
@@ -663,6 +682,7 @@ def report_done(request, report_id):
 
 
 # 系統管理員檢視使用者個人基本資料
+@permission_check(UserType.SystemManager)
 def view_profile(request, reg_id):
     try:
         viewed_user = User.objects.get(reg_id=reg_id)
