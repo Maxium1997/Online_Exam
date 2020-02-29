@@ -10,30 +10,33 @@
     <main class="report-category-list">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-12 table-responsive">
+                <div class="col-lg-12 table-responsive-md">
                     <h2>ReportCategory List.</h2>
-                    <table class="table table-hover">
+                    <table class="table table-hover table-bordered table-striped table-mc-light-blue">
                         <thead class="thead-light">
                             <tr>
-                                <th>Category ID.</th>
-                                <th>Name.</th>
+                                <th class="text-center">Category ID.</th>
+                                <th class="text-center">Name.</th>
                                 <th class="text-center">Responsibility.</th>
-                                <th>Number.</th>
+                                <th class="text-center">Number.</th>
                                 <th>
-                                    <div class="add">
-                                        <button class="btn btn-secondary" type="button" onclick="window.location.href='{% url 'report_category_create' %}'"><i class="fa fa-plus"></i></button>
+                                    <div class="add text-center">
+                                        <button class="btn btn-secondary " type="button" onclick="window.location.href='{% url 'report_category_create' %}'"><i class="fa fa-plus"></i></button>
                                     </div>
                                 </th>
                             </tr>
                         </thead>
 
                         <tbody>
+                            <div class="add-secret">
+                                <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'testee_group_create' %}'"><i class="fa fa-plus"></i></button>
+                            </div>
                             {% if report_categories %}
                                 {% for category in report_categories %}
                                     <tr style="cursor: pointer" onclick="window.location.href='{% url 'report_category_detail' category.id %}'">
-                                        <td class="align-middle">{{ category.id }}</td>
-                                        <td class="align-middle">{{ category.name }}</td>
-                                        <td class="text-center align-middle">
+                                        <td class="text-center" data-title="Category ID" >{{ category.id }}</td>
+                                        <td class="text-center" data-title="Name">{{ category.name }}</td>
+                                        <td class="text-center" data-title="Respo" class="text-center">
                                             {% if category|responsible_unit:privileges.SystemManager %}
                                                 <span class="badge alert-danger">{{ privileges.SystemManager.value.1 }}</span>
                                             {% endif %}
@@ -53,8 +56,8 @@
                                                 <span class="badge alert-dark">{{ privileges.Testee.value.1 }}</span>
                                             {% endif %}
                                         </td>
-                                        <td class="align-middle" >{{ category.report_set.all.count }}</td>
-                                        <td class="align-middle" >
+                                        <td class="text-center" data-title="Number">{{ category.report_set.all.count }}</td>
+                                        <td class="text-center" >
                                             <a href="{% url 'report_category_edit' category.id %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>&nbsp;
                                         </td>
                                     </tr>

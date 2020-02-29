@@ -11,14 +11,14 @@
     <main class="index">
         <div class="container">
             <div class="table-responsive-md">
-                <table class="table table-hover">
+                <table class="table table-bordered table-striped table-hover table-mc-light-blue">
                     <thead class="thead-light">
                         <tr>
                             {% if request.user|has_perm:'SystemManager' %}
-                                <th>Title.</th>
+                                <th class="text-center">Title.</th>
                                 <th class="text-center">Content.</th>
-                                <th>Announcer.</th>
-                                <th>Release Time.</th>
+                                <th class="text-center">Announcer.</th>
+                                <th class="text-center">Release Time.</th>
                                 <th scope="col">
                                     {% if request.user|has_perm:'SystemManager' %}
                                         <div class="add">
@@ -27,28 +27,33 @@
                                     {% endif %}
                                 </th>
                             {% else %}
-                                <th>Title.</th>
+                                <th class="text-center">Title.</th>
                                 <th class="text-center">Content.</th>
-                                <th>Announcer.</th>
-                                <th>Release Time.</th>
+                                <th class="text-center">Announcer.</th>
+                                <th class="text-center">Release Time.</th>
                             {% endif %}
                         </tr>
                     </thead>
 
                     <tbody>
+                        {% if request.user|has_perm:'SystemManager' %}
+                            <div class="add-secret">
+                                <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'proclamation_create' %}'"><i class="fa fa-plus"></i></button>
+                            </div>
+                        {% endif %}
                         {% for pro in pros %}
                             <tr style="cursor: pointer" data-toggle="modal" data-target="#pro_{{ pro.id }}">
-                                <td>{{ pro.title }}</td>
+                                <td class="text-center" data-title='Title'>{{ pro.title }}</td>
 
                                 {% if request.user|has_perm:'SystemManager' %}
-                                    <td>{{ pro.text|safe|summary:32 }}</td>
+                                    <td class="text-center" data-title="Content">{{ pro.text|safe|summary:32 }}</td>
                                 {% else %}
-                                    <td>{{ pro.text|safe|summary:35 }}</td>
+                                    <td data-title="Content : ">{{ pro.text|safe|summary:35 }}</td>
                                 {% endif %}
 
-                                <td>{{ pro.created_by.name}}</td>
+                                <td class="text-center" data-title="Announcer">{{ pro.created_by.name}}</td>
 
-                                <td>{{ pro.created_time|date:'H:i, Y/m/d' }}</td>
+                                <td class="text-center" data-title="Release Time">{{ pro.created_time|date:'H:i, Y/m/d' }}</td>
 
                                 {% if request.user|has_perm:'SystemManager' %}
                                     <td>

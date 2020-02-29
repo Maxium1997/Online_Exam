@@ -53,14 +53,14 @@
 
             <div class="row">
                 <!--資料區塊-->
-                <div class="col-md-12 table-responsive">
+                <div class="col-md-12 table-responsive-md">
                     <h2>User List.</h2><h3>（共 {{ users.count }} 條結果）</h3>
-                    <table class="table table-hover">
+                    <table class="table table-bordered table-striped table-hover table-mc-light-blue">
                         <thead class="thead-light">
                             <tr>
-                                <th>Account.</th>
-                                <th>Name.</th>
-                                <th>Identity.</th>
+                                <th class="text-center">Account.</th>
+                                <th class="text-center">Name.</th>
+                                <th class="text-center">Identity.</th>
                                 <th class="text-center">Privilege.</th>
                                 <th class="text-center">Last Login.</th>
                                 <th>
@@ -72,14 +72,17 @@
                         </thead>
 
                         <tbody>
+                            <div class="add-secret">
+                                <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'testee_group_create' %}'"><i class="fa fa-plus"></i></button>
+                            </div>
                             {% if userList %}
                                 {% for user in userList %}
                                     <tr class="align-center" style="cursor: pointer" onclick="window.location.href='{% url "view_profile" user.reg_id %}'">
-                                        <td>{{ user.reg_id }}</td>
+                                        <td class="text-center" data-title="Account">{{ user.reg_id }}</td>
 
-                                        <td>{{ user.name }}</td>
+                                        <td class="text-center" data-title="Name">{{ user.name }}</td>
 
-                                        <td>
+                                        <td class="text-center" data-title="Identity">
                                             {% if user.identity %}
                                                 {{ user.identity|readableIdentity }}
                                             {% else %}
@@ -87,7 +90,7 @@
                                             {% endif %}
                                         </td>
 
-                                        <td>
+                                        <td data-title="Privilege : ">
                                             {% if user|has_perms:privileges.SystemManager %}
                                                 <span class="badge alert-danger">{{ privileges.SystemManager.value.1 }}</span>
                                             {% endif %}
@@ -108,7 +111,7 @@
                                             {% endif %}
                                         </td>
 
-                                        <td>{{ user.last_login|date:'H:i, Y/m/d' }}</td>
+                                        <td data-title="Last Login :">{{ user.last_login|date:'H:i, Y/m/d' }}</td>
 
                                         <td>
                                             <a href="{% url 'user_edit' user.reg_id %}"><i class="fa fa-pencil-square-o"></i></a>
@@ -117,7 +120,7 @@
                                 {% endfor %}
                             {% else %}
                                 <tr>
-                                    <td class="text-center" colspan="6">
+                                    <td class="text-center" colspan="8">
                                         {% if query_content and not users %}
                                             找不到符合的條件「{{ query_content|readable_user_query_content }}」的使用者。
                                         {% endif %}
