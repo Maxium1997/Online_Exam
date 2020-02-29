@@ -3,7 +3,7 @@
 {% load web_filters %}
 
 {% block path %}
-    <li class="breadcrumb-item active" aria-current="page">個人資料</li>
+    <li class="breadcrumb-item active" aria-current="page">Profile</li>
 {% endblock %}
 
 {% block content %}
@@ -28,7 +28,7 @@
                         <div class="card-body">
                             <p class="card-text">
                                 {% if user.introduction %}
-                                    {{ user.introduction }}
+                                    {{ user.introduction|linebreaksbr }}
                                 {% else %}
                                     尚未設定
                                 {% endif %}
@@ -107,18 +107,18 @@
                         </div>
 
                         <div class="card-footer text-muted">
-                            <p>Last login - {{ user.last_login }}</p>
-                            <p>Create time - {{ user.created_time }}</p>
-                            <p>
+                            <span style="font-size: 12px">Last login - {{ user.last_login }}<br></span>
+                            <span style="font-size: 12px">Create time - {{ user.created_time }}<br></span>
+                            <span style="font-size: 12px">
                                 Status -
                                 {% if user.is_active %}
-                                    <span>active</span>
+                                    active
                                 {% elif user.is_staff %}
-                                    <span>staff</span>
+                                    staff
                                 {% elif user.is_superuser %}
-                                    <span>superuser</span>
+                                    superuser
                                 {% endif %}
-                            </p>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -144,7 +144,7 @@
                         </div>
 
                         <div class="card-footer text-right">
-                            <button onclick="history.back()" class="btn btn-primary">確認</button>
+                            <button onclick="self.location=document.referrer;" class="btn btn-primary">確認</button>
                         </div>
                     </div>
                 </div>
@@ -241,21 +241,21 @@
                 </div>
 
                 <div class="card-footer text-muted">
-                    <p>Last login - {{ user.last_login }}</p>
-                    <p>Create time - {{ user.created_time }}</p>
-                    <p>
+                    <span style="font-size: 12px">Last login - {{ user.last_login }}<br></span>
+                    <span style="font-size: 12px">Create time - {{ user.created_time }}<br></span>
+                    <span style="font-size: 12px">
                         Status -
                         {% if user.is_active %}
-                            <span>active</span>
+                            active
                         {% elif user.is_staff %}
-                            <span>staff</span>
+                            staff
                         {% elif user.is_superuser %}
-                            <span>superuser</span>
+                            superuser
                         {% endif %}
-                    </p>
+                    </span>
 
                     <div class="text-right">
-                        <button onclick="history.back()" class="btn btn-primary">確認</button>
+                        <button onclick="self.location=document.referrer;" class="btn btn-primary">確認</button>
                     </div>
                 </div>
             </div>

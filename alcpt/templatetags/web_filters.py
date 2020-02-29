@@ -354,3 +354,8 @@ def get_TBManager_report_notification(user: User):
                 pass
 
     return unread
+
+
+@register.filter(name='isAlpha')
+def isAlpha(text: str):
+    return all(ord(c) < 128 for c in text)

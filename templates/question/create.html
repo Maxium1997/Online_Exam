@@ -41,25 +41,6 @@
                }
             }
         }
-
-        {#function Repeated() {#}
-        {#    var choiceArr = [choice1, choice2, choice3, choice4];#}
-        {#    var strArr = '';#}
-        {##}
-        {#    for(var i = 0; i < sortArr.length-1; i++){#}
-        {#        if (sortArr[i].value === sortArr[i+1].value) {#}
-        {#            if(sortArr[i].value !== ''){#}
-        {#                repeat.innerHTML = '試題選項不能重複';#}
-        {#                break;#}
-        {#            }#}
-        {#            else {#}
-        {#                repeat.innerHTML = '';#}
-        {#            }#}
-        {#        }#}
-        {#    }#}
-        {#    repeat.innerHTML = strArr;#}
-        {##}
-        {#}#}
     </script>
 {% endblock %}
 
@@ -76,64 +57,72 @@
                         {% csrf_token %}
 
                         <div class="card">
-                            <div class="card-header">Create Question.</div>
-                        </div>
+                            <div class="card-header">Create {% if kind == 'listening' %}Listening{% else %}Reading{% endif %} Question.</div>
 
-                        <div class="card-body">
-                            {% if kind == 'listening' %}
+                            <div class="card-body">
+                                {% if kind == 'listening' %}
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        File.
+                                    </h5>
+                                    <p class="card-text">
+                                        <input type="file" name="question_file" id="question_file" accept="audio/mpeg" onchange="OpenButton('listening')" required>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Type.
+                                    </h5>
+                                    <p class="card-text">
+                                        <select class="custom-select custom-select-sm" name="question_type" id="question_type_listening" onkeyup="OpenButton('listening')" required>
+                                        <option value="" disabled selected>Choose the question type</option>
+                                        <option value="1">QA</option>
+                                        <option value="2">ShortConversation</option>
+                                    </select>
+                                    </p>
+
+                                {% elif kind == 'reading' %}
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Question Content.
+                                    </h5>
+                                    <p class="card-text">
+                                        <textarea class="form-control" cols="100" rows="3" name="question_content" id="question_content" onkeyup="OpenButton('reading')" placeholder="Enter the question content..." required></textarea>
+                                    </p>
+                                {% endif %}
+
                                 <h5 class="card-subtitle mb-2 text-muted">
-                                    File.
+                                    Difficulty.
                                 </h5>
                                 <p class="card-text">
-                                    <input type="file" name="question_file" id="question_file" accept="audio/mpeg" onchange="OpenButton('listening')" required>
+                                    <select class="custom-select custom-select-sm" name="question_difficulty">
+                                        <option value="1" selected>Easy</option>
+                                        <option value="2">Medium</option>
+                                        <option value="3">Hard</option>
+                                    </select>
                                 </p>
 
                                 <h5 class="card-subtitle mb-2 text-muted">
-                                    Type.
+                                    Question Option.
                                 </h5>
                                 <p class="card-text">
-                                    <select class="custom-select custom-select-sm" name="question_type" id="question_type_listening" onkeyup="OpenButton('listening')" required>
-                                    <option value="" disabled selected>Choose the question type</option>
-                                    <option value="1">QA</option>
-                                    <option value="2">ShortConversation</option>
-                                </select>
+                                    <input class="form-control" type="text" name="choice1" id="choice1" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
+                                    <input class="form-control" type="text" name="choice2" id="choice2" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
+                                    <input class="form-control" type="text" name="choice3" id="choice3" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
+                                    <input class="form-control" type="text" name="choice4" id="choice4" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
                                 </p>
 
-                            {% elif kind == 'reading' %}
-                                <h5 class="card-subtitle mb-2 text-muted">
-                                    Question Content.
-                                </h5>
-                                <p class="card-text">
-                                    <textarea class="form-control" cols="100" rows="3" name="question_content" id="question_content" onkeyup="OpenButton('reading')" placeholder="Enter the question content..." required></textarea>
-                                </p>
-                            {% endif %}
-
-                            <h5 class="card-subtitle mb-2 text-muted">
-                                Difficulty.
-                            </h5>
-                            <p class="card-text">
-                                <select class="custom-select custom-select-sm" name="question_difficulty">
-                                    <option value="1" selected>Easy</option>
-                                    <option value="2">Medium</option>
-                                    <option value="3">Hard</option>
-                                </select>
-                            </p>
-
-                            <h5 class="card-subtitle mb-2 text-muted">
-                                Question Option.
-                            </h5>
-                            <p class="card-text">
-                                <input class="form-control" type="text" name="choice1" id="choice1" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                                <input class="form-control" type="text" name="choice2" id="choice2" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                                <input class="form-control" type="text" name="choice3" id="choice3" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                                <input class="form-control" type="text" name="choice4" id="choice4" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                            </p>
-
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button type="reset" class="btn btn-light">Reset</button>
-                                <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">Cancel</button>
+                                {% if kind == 'reading' %}
+                                <div class="text-right">
+                                    <a href="{% url 'question_multiCreate' %}">Multiple Creation?</a>
+                                </div>
+                                {% endif %}
                             </div>
+
+                            <footer class="card-footer text-right">
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="reset" class="btn btn-light">Reset</button>
+                                    <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">Cancel</button>
+                                </div>
+                            </footer>
                         </div>
                     </form>
                 </div>

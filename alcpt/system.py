@@ -330,7 +330,7 @@ def proclamation_delete(request, proclamation_id):
     except ObjectDoesNotExist:
         messages.error(request, "Proclamation doesn't exist, proclamation id: {}".format(proclamation_id))
 
-    return redirect('/')
+    return redirect('/proclamation')
 
 
 # 編輯公告

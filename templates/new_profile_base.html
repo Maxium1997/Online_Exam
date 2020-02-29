@@ -82,6 +82,8 @@
                 </div>
             </div>
         </div>
+
+        <h5 class="featurette-divider"></h5>
     </div>
     <style>
         #sidebar .container .row{
@@ -117,13 +119,20 @@
             color: white;
             text-align: center;
         }
+        .featurette-divider {
+          margin: 5rem 0; /* Space out the Bootstrap <hr> more */
+        }
     </style>
 
     <!--分頁-->
     <div id="pagination">
         <div class="container-fluid">
-            {% block pagination %}
-            {% endblock %}
+            <div class="row justify-content-center">
+                <div class="col-xs-12">
+                    {% block pagination %}
+                    {% endblock %}
+                </div>
+            </div>
         </div>
     </div>
 

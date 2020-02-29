@@ -3,8 +3,8 @@
 {% load web_filters %}
 
 {% block path %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'profile' %}">個人資料</a></li>
-    <li class="breadcrumb-item active" aria-current="page">編輯個人資料</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'profile' %}">Profile</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Update Profile</li>
 {% endblock %}
 
 {% block content %}
@@ -175,7 +175,7 @@
 
                                 <div class="card-footer text-right">
                                     <button type="submit" class="btn btn-primary" id="submit">提交</button>
-                                    <button type="button" class="btn btn-secondary" onclick="history.back()">取消</button>
+                                    <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">取消</button>
                                 </div>
                             </div>
                         </div>
@@ -288,7 +288,7 @@
 
                                     <div class="text-right">
                                         <button type="submit" id="submit" class="btn btn-primary">提交</button>
-                                        <button type="button" onclick="history.back()" class="btn btn-secondary">取消</button>
+                                        <button type="button" onclick="self.location=document.referrer;" class="btn btn-secondary">取消</button>
                                     </div>
                                 </div>
                             </div>

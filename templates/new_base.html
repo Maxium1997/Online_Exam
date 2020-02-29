@@ -66,6 +66,8 @@
     <div id="main-block">
         {% block content %}
         {% endblock %}
+
+        <div class="space"></div>
     </div>
     <style>
         #main-block{
@@ -85,6 +87,9 @@
             color: white;
             text-align: center;
         }
+        .space{
+            margin-bottom: 1rem;
+        }
     </style>
 
     <!--分頁-->
@@ -96,9 +101,8 @@
                     {% endblock %}
                 </div>
             </div>
-
-            <hr class="featurette-divider">
         </div>
+        <h5 class="featurette-divider"></h5>
     </div>
     <style>
         .featurette-divider {

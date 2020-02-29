@@ -302,7 +302,7 @@ def question_create(request, kind):
 def question_multiCreate(request):
     if request.method == "POST":
         if request.FILES.get('users_file', ):
-            wb = xlrd.open_workbook(filename=None, file_contents=request.FILES['users_file'].read())
+            wb = xlrd.open_workbook(filename=None, file_contents=request.FILES['questions_file'].read())
             table = wb.sheets()[0]
             all_questions = []
 
