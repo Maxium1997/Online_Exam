@@ -385,18 +385,18 @@
                                 </div>
 
                                 <div class="card-footer text-muted">
-                                    <p>Last login - {{ edited_user.last_login }}</p>
-                                    <p>Create time - {{ edited_user.created_time }}</p>
-                                    <p>
+                                    <span style="font-size: 12px">Last login - {{ user.last_login }}<br></span>
+                                    <span style="font-size: 12px">Create time - {{ user.created_time }}<br></span>
+                                    <span style="font-size: 12px">
                                         Status -
-                                        {% if edited_user.is_active %}
-                                            <span>active</span>
-                                        {% elif edited_user.is_staff %}
-                                            <span>staff</span>
-                                        {% elif edited_user.is_superuser %}
-                                            <span>superuser</span>
+                                        {% if user.is_active %}
+                                            active
+                                        {% elif user.is_staff %}
+                                            staff
+                                        {% elif user.is_superuser %}
+                                            superuser
                                         {% endif %}
-                                    </p>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -547,18 +547,18 @@
                                 </div>
 
                                 <div class="card-footer text-muted">
-                                    <p>Last login - {{ edited_user.last_login }}</p>
-                                    <p>Create time - {{ edited_user.created_time }}</p>
-                                    <p>
+                                    <span style="font-size: 12px">Last login - {{ user.last_login }}<br></span>
+                                    <span style="font-size: 12px">Create time - {{ user.created_time }}<br></span>
+                                    <span style="font-size: 12px">
                                         Status -
-                                        {% if edited_user.is_active %}
-                                            <span>active</span>
-                                        {% elif edited_user.is_staff %}
-                                            <span>staff</span>
-                                        {% elif edited_user.is_superuser %}
-                                            <span>superuser</span>
+                                        {% if user.is_active %}
+                                            active
+                                        {% elif user.is_staff %}
+                                            staff
+                                        {% elif user.is_superuser %}
+                                            superuser
                                         {% endif %}
-                                    </p>
+                                    </span>
 
                                     <div class="text-right">
                                         <button type="submit" id="submit" class="btn btn-primary">Update</button>

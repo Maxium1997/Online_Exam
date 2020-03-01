@@ -125,7 +125,7 @@
                                                         {{ question.q_content|summary:90 }}
                                                     </div>
                                                     <div id="full_Q_content{{ forloop.counter }}" style="display: none">
-                                                        {{ question.q_content }}
+                                                        {{ question.q_content|linebreaksbr }}
                                                     </div>
                                                 {% endif %}
                                             </td>
@@ -169,7 +169,7 @@
                                                     {% else %}
                                                         <a href='{% url 'question_submit' question.id %}' class="btn btn-success" id="submit" onclick="return confirm('Sure to submit?')">Submit</a>
                                                     {% endif %}
-                                                    <button class="btn btn-warning" id="edit" type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'">Edit</button>
+                                                    <button class="btn btn-warning" id="edit" type="button" onclick="window.location.href='{% url 'operator_edit' question.id %}'">Edit</button>
                                                     <a href="{% url 'question_delete' question.id %}" class="btn btn-danger" id="delete" onclick="return confirm('Sure to delete?')">Delete</a>
                                                 {% endif %}
                                             </td>
@@ -199,6 +199,7 @@
                                                       <li>Issued:{{ question.issued_freq }}</li>
                                                       <li>Difficulty:{{ question.difficulty }}</li>
                                                       <li>Creater:{{ question.created_by.name }}</li>
+                                                      <li>Last:{{ question.last_updated_by.name }}</li>
                                                   </ul>
                                             </td>
                                         </tr>

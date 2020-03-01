@@ -370,7 +370,7 @@ def operator_edit(request, question_id):
             choice = Choice.objects.get(id=request.POST.get('answer_choice'))
             choice.is_answer = 1
             choice.save()
-            question.state = 0
+            question.state = 6
             question.save()
 
             messages.success(request, 'Successful Update.')

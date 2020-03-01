@@ -73,10 +73,10 @@
                                     </h5>
                                     <p class="card-text">
                                         <select class="custom-select custom-select-sm" name="question_type" id="question_type_listening" onkeyup="OpenButton('listening')" required>
-                                        <option value="" disabled selected>Choose the question type</option>
-                                        <option value="1">QA</option>
-                                        <option value="2">ShortConversation</option>
-                                    </select>
+                                            <option value="" disabled selected>Choose the question type</option>
+                                            <option value="1">QA</option>
+                                            <option value="2">ShortConversation</option>
+                                        </select>
                                     </p>
 
                                 {% elif kind == 'reading' %}
@@ -84,7 +84,19 @@
                                         Question Content.
                                     </h5>
                                     <p class="card-text">
-                                        <textarea class="form-control" cols="100" rows="3" name="question_content" id="question_content" onkeyup="OpenButton('reading')" placeholder="Enter the question content..." required></textarea>
+                                        <textarea class="form-control" cols="100" rows="10" name="question_content" id="question_content" onkeyup="OpenButton('reading')" placeholder="Enter the question content..." required></textarea>
+                                    </p>
+
+                                    <h5 class="card-subtitle mb-2 text-muted">
+                                        Type.
+                                    </h5>
+                                    <p class="card-text">
+                                        <select class="custom-select custom-select-sm" name="question_type" id="question_type_listening" onkeyup="OpenButton('listening')" required>
+                                            <option value="" disabled selected>Choose the question type</option>
+                                            <option value="3">Grammar</option>
+                                            <option value="4">Phrase</option>
+                                            <option value="5">ParagraphUnderstanding</option>
+                                        </select>
                                     </p>
                                 {% endif %}
 

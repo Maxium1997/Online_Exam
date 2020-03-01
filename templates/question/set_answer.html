@@ -1,87 +1,58 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% load web_filters %}
 
 {% block path %}
-    <a href="">題目操作員</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="">新增{% if kind == 'listening' %}聽力{% else %}閱讀{% endif %}試題（單一）</a>
-    <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="">設定答案</a>
+    <li class="breadcrumb-item" aria-current="page">Create {% if kind == 'listening' %}Listening {% else %}Reading {% endif %}（Single）</li>
+    <li class="breadcrumb-item active" aria-current="page">Set Answer</li>
 {% endblock %}
 
 {% block content %}
-    <div class="set_answer">
-        <form ENCTYPE="multipart/form-data" action="{% url 'question_create' kind %}" method="post">
-            <div class="title"><h1>Set Answer.</h1></div>
-            {% csrf_token %}
-            <table>
-                <tr onclick="toggle()">
-                    <td class="col-md-2">題目</td>
-                    <td class="col-md-10">
-                        {% if reading_question %}
-                            <button type="button" onclick="window.alert('{{ reading_question.q_content }}')">{{ reading_question.q_content|summary:200 }}</button>
-                        {% elif listening_question %}
-                            <audio controls preload="none">
-                                <source src="{{ listening_question.q_file }}" type="audio/mpeg">
-                                Your browser does not support the audio tag.
-                            </audio>
-                        {% endif %}
-                    </td>
-                </tr>
+    <main class="set-answer-form">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <form method="post">
+                        {% csrf_token %}
 
-                <tr>
-                    <td class="col-md-2">選項</td>
-                    <td class="col-md-10">
-                        <ol type="A">
-                            <li><input type="radio" name="is_answer" id="is_answer" value="{{ option1.id }}">{{ option1 }}</li>
-                            <li><input type="radio" name="is_answer" id="is_answer" value="{{ option2.id }}">{{ option2 }}</li>
-                            <li><input type="radio" name="is_answer" id="is_answer" value="{{ option3.id }}">{{ option3 }}</li>
-                            <li><input type="radio" name="is_answer" id="is_answer" value="{{ option4.id }}">{{ option4 }}</li>
-                        </ol>
-                    </td>
-                </tr>
-            </table>
+                        <div class="card">
+                            <div class="card-header">Set Answer</div>
 
-            <div class="btn">
-                <input type="submit" id="submit" value="送出">
+                            <div class="card-body">
+                                <h5 class="card-subtitle mb-2 text-muted">
+                                    Question Content.
+                                </h5>
+                                <p class="card-text">
+                                    {% if reading_question %}
+                                        {{ reading_question.q_content|linebreaksbr }}
+                                    {% elif listening_question %}
+                                        <audio controls preload="none">
+                                            <source src="{{ listening_question.q_file }}" type="audio/mpeg">
+                                            Your browser does not support the audio tag.
+                                        </audio>
+                                    {% endif %}
+                                </p>
+
+                                <h5 class="card-subtitle mb-2 text-muted">
+                                    Set Answer.
+                                </h5>
+                                <p class="card-text">
+                                    <ol type="A">
+                                        <li><input type="radio" name="is_answer" id="is_answer" value="{{ option1.id }}">{{ option1 }}</li>
+                                        <li><input type="radio" name="is_answer" id="is_answer" value="{{ option2.id }}">{{ option2 }}</li>
+                                        <li><input type="radio" name="is_answer" id="is_answer" value="{{ option3.id }}">{{ option3 }}</li>
+                                        <li><input type="radio" name="is_answer" id="is_answer" value="{{ option4.id }}">{{ option4 }}</li>
+                                    </ol>
+                                </p>
+
+                                <div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-        </form>
-
-        <style>
-            .set_answer .title h1{
-                width: 30%;
-                font-size: 28px;
-                color: #FFFEF6;
-                background-color: #4CCABD;
-                padding-top: 10px;
-                padding-bottom: 10px;
-                padding-right: 15px;
-                padding-left: 45px;
-                text-align: center;
-            }
-            .set_answer table{
-                position: relative;
-                left: 10%;
-
-                width: 80%;
-
-                font-size: 20px;
-            }
-            .set_answer table td{
-                padding: 4px;
-            }
-            .set_answer form input{
-                width: 100%;
-                padding: 6px;
-            }
-
-            .set_answer .btn{
-                position: relative;
-                top: 30px;
-                left: 38%;
-            }
-        </style>
-    </div>
+        </div>
+    </main>
 {% endblock %}

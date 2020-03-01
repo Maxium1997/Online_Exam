@@ -12,7 +12,7 @@ from django.db import IntegrityError
 from alcpt.managerfuncs import testmanager
 from alcpt.decorators import permission_check
 from alcpt.definitions import UserType, QuestionType, QuestionTypeCounts, ExamType
-from alcpt.models import Exam, TestPaper, Group, Question, TesteeList
+from alcpt.models import Exam, TestPaper, Group, Question, TesteeList, Proclamation
 from alcpt.exceptions import *
 
 
@@ -58,13 +58,23 @@ def exam_create(request):
             testpaper.is_used = True
             testpaper.save()
 
+            # add the testee into the exam.
             testee_list = TesteeList.objects.create(created_by=exam)
             testee_list.created_by = exam
             for testee in selected_group.user_set.all():
                 testee_list.testees.add(testee)
             testee_list.save()
 
-            messages.success(request, "exam: {} create successfully.".format(exam_name))
+            # create proclamation to notice all user the exam start time.
+            pro_content = "Exam name: " + exam.name + "<br>" + \
+                          "Start Time: " + exam.start_time + "<br>" + \
+                          "Duration: " + exam.duration
+            proclamation = Proclamation.objects.create(title=exam.name,
+                                                       text=pro_content,
+                                                       is_public=True,
+                                                       created_by=request.user)
+
+            messages.success(request, "Create successfully.")
         except IntegrityError:
             raise IntegrityError("Duplicate entry '%s' for key 'name'".format(exam_name))
 
@@ -137,6 +147,13 @@ def testpaper_create(request):
 def testpaper_edit(request, testpaper_id):
     try:
         testpaper = TestPaper.objects.get(id=testpaper_id)
+
+        if testpaper.valid:
+            messages.warning(request, "This test paper has validated, can not edit again.")
+            return redirect('testpaper_list')
+        else:
+            pass
+
     except ObjectDoesNotExist:
         messages.error(request, 'Testpaper does not exist, testpaper id: {}'.format(testpaper_id))
         return redirect('testpaper_list')

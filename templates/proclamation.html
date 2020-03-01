@@ -56,7 +56,7 @@
                                 {% if request.user|has_perm:'SystemManager' %}
                                     <td>
                                         <a href="{% url 'proclamation_edit' pro.id %}"><i class="fa fa-pencil-square-o"></i></a>
-                                        <a href="{% url 'proclamation_delete' pro.id %}" onclick="return confirm('確認刪除此公告？')"><i class="fa fa-trash-o"></i></a>
+                                        <a href="{% url 'proclamation_delete' pro.id %}" onclick="return confirm('Sure to delete?')"><i class="fa fa-trash-o"></i></a>
                                     </td>
                                 {% endif %}
 
