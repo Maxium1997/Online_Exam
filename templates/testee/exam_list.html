@@ -25,22 +25,22 @@
                             <div class="col-md-12">
                                 <h2>Practice Record List</h2>
 
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
+                                <div class="table-responsive-md">
+                                    <table class="table table-hover table-bordered table-striped table-mc-light-blue">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th>Name.</th>
-                                                <th>Type.</th>
-                                                <th>Other.</th>
+                                                <th class="text-center">Name.</th>
+                                                <th class="text-center">Type.</th>
+                                                <th class="text-center">Other.</th>
                                             </tr>
                                         </thead>
 
                                         <tbody>
                                             {% for exam in practiceList %}
                                                 <tr>
-                                                    <td>{{ exam }}</td>
-                                                    <td>{{ exam.exam_type|readable_exam_type }}</td>
-                                                    <td>
+                                                    <td class="text-center" data-title="Name">{{ exam }}</td>
+                                                    <td class="text-center" data-title="Type">{{ exam.exam_type|readable_exam_type }}</td>
+                                                    <td class="text-center" data-title="Other">
                                                         {% if not exam|is_finished:request.user %}
                                                             <a href="{% url 'testee_start_exam' exam.id %}" class="btn btn-primary">Start.</a>
                                                         {% else %}
@@ -67,8 +67,8 @@
                             <div class="col-md-12">
                                 <h2>Exam Record List</h2>
 
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
+                                <div class="table-responsive-md">
+                                    <table class="table table-hover table-striped table-bordered table-mc-light-blue">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>Name.</th>

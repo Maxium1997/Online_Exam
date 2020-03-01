@@ -30,11 +30,11 @@
                                 <div class="col-md-12">
                                     <h2>Score Record List</h2>
 
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
+                                    <div class="table-responsive-md">
+                                        <table class="table table-hover table-bordered table-striped table-mc-light-blue">
                                             <thead class="thead-light">
                                                 <tr>
-                                                    <th>Name.</th>
+                                                    <th class="text-center">Name.</th>
                                                     <th class="text-center">Type.</th>
                                                     <th class="text-center">Finish Time.</th>
                                                 </tr>
@@ -43,13 +43,13 @@
                                             <tbody>
                                                 {% for answersheet in answer_sheets %}
                                                     <tr style="cursor: pointer" onclick="window.location.href='{% url 'view_answersheet_content' answersheet.id %}'">
-                                                        <td>{{ answersheet.exam }}</td>
+                                                        <td class="text-center" data-title="Name">{{ answersheet.exam }}</td>
                                                         {% if answersheet.score  < 60 %}
-                                                            <td class="text-center" style="color: #c12e2a">{{ answersheet.score }}</td>
+                                                            <td class="text-center" data-title="Type" style="color: #c12e2a">{{ answersheet.score }}</td>
                                                         {% else %}
-                                                            <td class="text-center">{{ answersheet.score }}</td>
+                                                            <td class="text-center" data-title="Type">{{ answersheet.score }}</td>
                                                         {% endif %}
-                                                        <td class="text-center">{{ answersheet.finish_time|date:'Y年m月d日, H時m分' }}</td>
+                                                        <td class="text-center" data-title="Finish Time">{{ answersheet.finish_time|date:'Y年m月d日, H時m分' }}</td>
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>

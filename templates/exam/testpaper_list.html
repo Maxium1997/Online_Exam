@@ -8,17 +8,17 @@
     <main class="testpaper-list">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-12 table-responsive">
+                <div class="col-lg-12 table-responsive-md">
                     <h2>TestPaper List.</h2>
 
-                    <table class="table table-hover">
+                    <table class="table table-hover table-bordered table-striped table-mc-light-blue">
                         <thead class="thead-light">
                             <tr>
-                                <th>Testpaper Name.</th>
-                                <th>Valid.</th>
-                                <th>Used.</th>
-                                <th>Last Update.</th>
-                                <th>Creater.</th>
+                                <th class="text-center">Testpaper Name.</th>
+                                <th class="text-center">Valid.</th>
+                                <th class="text-center">Used.</th>
+                                <th class="text-center">Last Update.</th>
+                                <th class="text-center">Creator.</th>
                                 <th>
                                     <div class="add">
                                         <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'testpaper_create' %}'"><i class="fa fa-plus"></i></button>
@@ -28,15 +28,18 @@
                         </thead>
 
                         <tbody>
+                            <div class="add-secret">
+                                <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'testee_group_create' %}'"><i class="fa fa-plus"></i></button>
+                            </div>
                             {% if testpapers %}
                                 {% for testpaper in testpaperList %}
                                     <tr style="cursor: pointer" onclick="window.location.href=('{% url 'view_testpaper_content' testpaper.id %}')">
-                                        <td>{{ testpaper.name }}</td>
-                                        <td>{{ testpaper.valid }}</td>
-                                        <td>{{ testpaper.is_used }}</td>
-                                        <td>{{ testpaper.update_time|date:'H:i, Y/m/d' }}</td>
-                                        <td>{{ testpaper.created_by.name }}</td>
-                                        <td>
+                                        <td class="text-center" data-title="Name">{{ testpaper.name }}</td>
+                                        <td class="text-center" data-title="Valid">{{ testpaper.valid }}</td>
+                                        <td class="text-center" data-title="Used">{{ testpaper.is_used }}</td>
+                                        <td class="text-center" data-title="Last Update">{{ testpaper.update_time|date:'H:i, Y/m/d' }}</td>
+                                        <td class="text-center" data-title="Creator">{{ testpaper.created_by.name }}</td>
+                                        <td class="text-center">
                                             {% if testpaper.is_testpaper %}
                                                 <a href="{% url 'testpaper_edit' testpaper.id %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
                                                 <a href="{% url 'testpaper_delete' testpaper.id %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
