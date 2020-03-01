@@ -19,13 +19,15 @@
                     invalid_id.style.display = 'block';
                     passRegId = false;
                     break;
-                }
-                else if (input.value === ""){
+                } else if (input.value === ""){
                     invalid_id.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
                     invalid_id.style.display = 'block';
                     passRegId = false;
-                }
-                else {
+                } else if (input.value.length <= 8){
+                    invalid_id.innerHTML = "<span style='color: red; font-size: 14px'>ID長度太短</span>";
+                    invalid_id.style.display = 'block';
+                    passRegId = false;
+                } else {
                     invalid_id.innerHTML = '';
                     invalid_id.style.display = 'none';
                     passRegId = true;
@@ -46,6 +48,10 @@
                     break;
                 } else if (input.value === ""){
                     invalid_stu_id.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
+                    invalid_stu_id.style.display = 'block';
+                    passStuID = false;
+                } else if (input.value.length <= 8){
+                    invalid_stu_id.innerHTML = "<span style='color: red; font-size: 14px'>ID長度太短</span>";
                     invalid_stu_id.style.display = 'block';
                     passStuID = false;
                 } else {
@@ -96,18 +102,6 @@
                 passIdentity = true;
             }
             else {
-                {#if (identity.value === ''){#}
-                {#    passIdentity = false;#}
-                {#} else{#}
-                {#    passIdentity = true;}#}
-                {##}
-                {#stuID.value = '';#}
-                {#department.value = '';#}
-                {#squadron.value = '';#}
-                {#grade.value = '';#}
-                {##}
-                {#document.getElementById('invalid_stu_id').innerHTML = '';#}
-
                 stuID.disabled = true;
                 stuID.value = '';
                 department.disabled = true;
@@ -264,7 +258,7 @@
                             <div class="dropdown-divider"></div>
 
                             <div class="col-md-12 text-right">
-                                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" id="submit" class="btn btn-primary" disabled>Submit</button>
                                 <button type="reset" class="btn btn-light">Reset</button>
                                 <button type="button" class="btn btn-secondary" onclick="history.back()">Cancel</button>
                             </div>

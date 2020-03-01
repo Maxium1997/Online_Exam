@@ -19,16 +19,12 @@
             var iconDown = document.getElementById(iconDownIndex);
 
             if (data.style.display === "none"){
-                {#mainData.style.fontWeight = 600;#}
-                {#mainData.style.backgroundColor = "rgb(220, 220, 220, 0.5)";#}
                 data.style.display = "table-row";
                 iconRight.style.display = "none";
                 iconDown.style.display = "block";
                 summary_Q_content.style.display = 'none';
                 full_Q_content.style.display = 'block';
             } else {
-                {#mainData.style.fontWeight = "normal";#}
-                {#mainData.style.backgroundColor = "rgb(220, 220, 220, 0)";#}
                 data.style.display = "none";
                 iconRight.style.display = "block";
                 iconDown.style.display = "none";

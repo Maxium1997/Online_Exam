@@ -46,7 +46,25 @@
             <p class="lead">This is a place where we try to build some interesting stuff about a web system for ALCPT. Hope you can improve your ability of English via this system.</p>
             <hr class="my-4">
             <p>If you have any suggestions, please leave us a message. Thank you for your using.</p>
-            <a class="btn btn-primary btn-lg" href="#" role="button" onclick="window.location.href='{% url 'Homepage' %}'">Learn more</a>
+            <a class="btn btn-primary btn-lg" href="#" role="button" onclick="window.location.href='{% url 'Homepage' %}'">Start</a>
+            <a class="btn btn-secondary btn-lg" href="{% url 'download_system_pdf' %}" data-toggle="tooltip" data-placement="top" title="Download System PDF">Download for Operation</a>
+        </div>
+
+        <hr class="featurette-divider">
+
+
+        <div class="system-concept-introduction">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <h1>A free practice platform for Military Academy Student.</h1>
+                    <h4 class="text-muted text-center" style="font-weight: 400">
+                        ALCPT is short for American Language Course Placement Test.<br>
+
+                        ALCPT distinguishes multiple user permissions, and students can focus on their own permissions to practice.<br>
+                        The system will also generate some simple statistical graphs to make it easier for users to understand their practice status.
+                    </h4>
+                </div>
+            </div>
         </div>
 
         <hr class="featurette-divider">
@@ -196,7 +214,7 @@
                         </p>
 
                         <div>
-                            <button type="button" class="btn btn-primary" onclick="">More</button>
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'about_SystemManager' %}'">More</button>
                         </div>
                     </div>
 
@@ -225,7 +243,7 @@
                         </p>
 
                         <div class="text-right">
-                            <button type="button" class="btn btn-primary" onclick="">More</button>
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'about_TestManager' %}'">More</button>
                         </div>
                     </div>
                 </div>
@@ -246,7 +264,7 @@
                         </p>
 
                         <div>
-                            <button type="button" class="btn btn-primary" onclick="">More</button>
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'about_TBManager' %}'">More</button>
                         </div>
                     </div>
 
@@ -275,7 +293,7 @@
                         </p>
 
                         <div class="text-right">
-                            <button type="button" class="btn btn-primary" onclick="">More</button>
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'about_TBOperator' %}'">More</button>
                         </div>
                     </div>
                 </div>
@@ -296,7 +314,7 @@
                         </p>
 
                         <div>
-                            <button type="button" class="btn btn-primary" onclick="">More</button>
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'about_Viewer' %}'">More</button>
                         </div>
                     </div>
 
@@ -325,7 +343,7 @@
                         </p>
 
                         <div class="text-right">
-                            <button type="button" class="btn btn-primary" onclick="">More</button>
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'about_Testee' %}'">More</button>
                         </div>
                     </div>
                 </div>
@@ -333,9 +351,20 @@
                 <hr class="featurette-divider">
             </div>
         </div>
+
+        <div class="contact-us">
+            <div class="container">
+                <div class="row">
+                    <h3 class="text-muted">
+                        Contact Us.
+                    </h3>
+                </div>
+
+                <hr class="featurette-divider">
+            </div>
+        </div>
     </main>
 </body>
-
 {% include "footer.html" %}
 
 </html>

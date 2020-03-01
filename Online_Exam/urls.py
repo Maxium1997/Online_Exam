@@ -25,6 +25,18 @@ urlpatterns = [
 
     url(r'^proclamation$', views.index, name='Homepage'),
     url(r'^$', views.about, name='about'),
+    url(r'^/', include([
+        url(r'^download_system_pdf$', views.downloadSystemPDF, name='download_system_pdf'),
+    ])),
+
+    url(r'^about/', include([
+        url(r'^SystemManager', views.about_SystemManager, name='about_SystemManager'),
+        url(r'^TestManager', views.about_TestManager, name='about_TestManager'),
+        url(r'^TBManager', views.about_TBManager, name='about_TBManager'),
+        url(r'^TBOperator', views.about_TBOperator, name='about_TBOperator'),
+        url(r'^Viewer', views.about_Viewer, name='about_Viewer'),
+        url(r'^Testee', views.about_Testee, name='about_Testee'),
+    ])),
 
     url(r'^report$', system.report, name='report'),
     url(r'^report/', include([
