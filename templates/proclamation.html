@@ -14,7 +14,7 @@
                                 <th class="text-center">Content.</th>
                                 <th class="text-center">Announcer.</th>
                                 <th class="text-center">Release Time.</th>
-                                <th scope="col">
+                                <th class="text-center">
                                     {% if request.user|has_perm:'SystemManager' %}
                                         <div class="add">
                                             <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'proclamation_create' %}'"><i class="fa fa-plus"></i></button>

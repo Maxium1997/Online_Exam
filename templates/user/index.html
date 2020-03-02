@@ -78,11 +78,11 @@
                             {% if userList %}
                                 {% for user in userList %}
                                     <tr class="align-center" style="cursor: pointer" onclick="window.location.href='{% url "view_profile" user.reg_id %}'">
-                                        <td class="text-center" data-title="Account">{{ user.reg_id }}</td>
+                                        <td class="text-center" data-title="Account：、">{{ user.reg_id }}</td>
 
-                                        <td class="text-center" data-title="Name">{{ user.name }}</td>
+                                        <td class="text-center" data-title="Name：">{{ user.name }}</td>
 
-                                        <td class="text-center" data-title="Identity">
+                                        <td class="text-center" data-title="Identity：">
                                             {% if user.identity %}
                                                 {{ user.identity|readableIdentity }}
                                             {% else %}
@@ -90,7 +90,7 @@
                                             {% endif %}
                                         </td>
 
-                                        <td data-title="Privilege : ">
+                                        <td data-title="Privilege：">
                                             {% if user|has_perms:privileges.SystemManager %}
                                                 <span class="badge alert-danger">{{ privileges.SystemManager.value.1 }}</span>
                                             {% endif %}
@@ -111,7 +111,7 @@
                                             {% endif %}
                                         </td>
 
-                                        <td data-title="Last Login :">
+                                        <td data-title="Last Login：">
                                             {% if user.last_login %}
                                                 {{ user.last_login|date:'H:i, Y/m/d' }}
                                             {% else %}

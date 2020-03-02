@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import make_password
 from alcpt.models import User, Department, Squadron, Student
 from alcpt.definitions import UserType
 from alcpt.exceptions import IllegalArgumentError
+from alcpt.utility import save_file
 
 
 # A Q objects(django.db.models.Q) is an object used to encapsulate a collection of keyword arguments.
@@ -55,3 +56,12 @@ def create_users(reg_ids: list, privilege: int):
                                    password=make_password(reg_id)) for reg_id in reg_ids])
 
     return User.objects.filter(queries)
+
+
+def update_user(user: User, name: str, gender: int, introduction: str, photo):
+    # user = user
+    # user.objects.update(name=name, gender=gender, introduction=introduction)
+    # user.photo = save_file(file=photo, path='photo_{}'.format(user.reg_id))
+    # user.save()
+
+    return photo

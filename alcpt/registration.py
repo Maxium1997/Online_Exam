@@ -16,6 +16,7 @@ from alcpt.definitions import UserType, Identity
 from alcpt.forms import CaptchaForm
 from alcpt.models import User, Student, Department, Squadron, Report, Reply
 from alcpt.email_verification import email_verified
+from alcpt.managerfuncs import systemmanager
 
 # Create your views here.
 
@@ -87,37 +88,26 @@ def edit_profile(request):
     user = request.user
 
     if request.method == 'POST':
-        user.name = request.POST.get('name')
-        user.gender = int(request.POST.get('gender'))
-        user.introduction = request.POST.get('introduction')
-        user.save()
+        name = request.POST.get('name')
+        gender = int(request.POST.get('gender'))
+        introduction = request.POST.get('introduction')
+        photo = request.FILES.get('photo_file')
 
-        # email = request.POST.get('email',)
-        # if not re.match("[^@]+@[^@]+\.[^@]+", email):
-        #     messages.warning(request, "email doesn't match regular expression.")
-        #     departments = Department.objects.all()
-        #     squadrons = Squadron.objects.all()
-        #     return render(request, 'registration/edit_profile.html', locals())
-        # else:
-        #     if email == user.email:
-        #         pass
-        #     else:
-        #         user.email = email
-        #         user.email_is_verified = False
-        #         messages.warning(request, 'Your have to verify email again.')
-        #         user.save()
+        # user = systemmanager.update_user(user=user, name=name, gender=gender, introduction=introduction, photo=photo)
+        messages.success(request, "{}".format(photo))
+        return redirect('profile_edit')
 
-        try:
-            student = user.student
-            student.grade = int(request.POST.get('grade',))
-            student.department = Department.objects.get(id=int(request.POST.get('department',)))
-            student.squadron = Squadron.objects.get(id=int(request.POST.get('squadron',)))
-            student.save()
-        except ObjectDoesNotExist:
-            pass
-
-        messages.success(request, 'Saved profile successfully.')
-        return redirect('profile')
+        # try:
+        #     student = user.student
+        #     student.grade = int(request.POST.get('grade',))
+        #     student.department = Department.objects.get(id=int(request.POST.get('department',)))
+        #     student.squadron = Squadron.objects.get(id=int(request.POST.get('squadron',)))
+        #     student.save()
+        # except ObjectDoesNotExist:
+        #     pass
+        #
+        # messages.success(request, 'Saved profile successfully.')
+        # return redirect('profile')
 
     else:
         privileges = UserType.__members__
