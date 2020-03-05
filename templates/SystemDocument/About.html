@@ -71,12 +71,26 @@
         <div class="system-concept-introduction">
             <div class="container">
                 <div class="row justify-content-center">
-                    <h1>Inherit</h1>
-                    <h4 class="text-muted text-center" style="font-weight: 400">
-                        This project team undertook the project of 108 senior students and added and modified the functions of the original project system to make this system more perfect.
-                    </h4>
-                    <div class="">
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'about_developer' %}'">Learn More</button>
+                    <div class="col-md-6">
+                        <div class="leaderboard">
+                            <div class="card">
+                                <div class="card-header">Board - Most Practice</div>
+
+                                <div class="card-body">
+                                    {% for user in testees %}
+                                        <p>{{ forloop.counter }}. {{ user }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="leaderboard">
+                            <div class="card">
+                                <div class="card-header">Board - High Score</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -4,7 +4,7 @@ from django.http import FileResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .definitions import UserType
-from .models import Proclamation
+from .models import Proclamation, User, AnswerSheet, Exam
 
 # Create your views here.
 
@@ -26,7 +26,9 @@ def index(request):
 
 
 def about(request):
-    return render(request, 'SystemDocument/About.html')
+    testees = [testee.answersheet_set.count for testee in User.objects.all()]
+
+    return render(request, 'SystemDocument/About.html', locals())
 
 
 def downloadSystemPDF(request):

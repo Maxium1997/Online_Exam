@@ -63,7 +63,7 @@
                                                     <h5 class="modal-title" id="ModalLongTitle">Tips</h5>
                                                 </div>
 
-                                                <div class="modal-body">
+                                                <div class="modal-body" style="font-size: 20px">
                                                     <ul>
                                                         <li>
                                                             <p style="color: red">
@@ -107,6 +107,7 @@
                                             {% else %}
                                                 <div id="summary_Q_content{{ forloop.counter }}">
                                                     {{ answer.question.q_content|summary:125 }}
+                                                </div>
                                                 <div id="full_Q_content{{ forloop.counter }}" style="display: none">
                                                     {{ answer.question.q_content|linebreaksbr }}
                                                 </div>
