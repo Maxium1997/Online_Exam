@@ -46,13 +46,18 @@
                                     {% if replies %}
                                         {% for reply in replies %}
                                             {% if reply.created_by == viewed_report.created_by %}
-                                                <div class="text-right">：{{ reply.created_by }}<br>{{ reply.content }}<footer class="blockquote-footer"><cite title="Source Title">{{ reply.created_time|date:"H:i, Y/m/d" }}</cite></footer></div>
+                                                <div class="text-right">
+                                                    ：{{ reply.created_by }}<br>{{ reply.content }}<footer class="blockquote-footer"><cite title="Source Title">{{ reply.created_time|date:"H:i, Y/m/d" }}</cite></footer>
+                                                </div>
                                             {% else %}
-                                                <div>{{ reply.created_by }}：<br>{{ reply.content }}<footer class="blockquote-footer"><cite title="Source Title">{{ reply.created_time|date:"H:i, Y/m/d" }}</cite></footer></div>
+                                                <div class="">
+                                                    {{ reply.created_by }}：<br>{{ reply.content }}<footer class="blockquote-footer"><cite title="Source Title">{{ reply.created_time|date:"H:i, Y/m/d" }}</cite></footer>
+                                                </div>
                                             {% endif %}
+                                            <hr>
                                         {% endfor %}
                                     {% else %}
-                                        尚無留言
+                                        No message...
                                     {% endif %}
                                 </div>
                             </div>
@@ -62,7 +67,7 @@
                                     {% csrf_token %}
                                     <textarea class="form-control" name="reply" rows="4" placeholder="Reply..." {% if viewed_report.state == 3 %}disabled{% endif %}></textarea>
 
-                                    <button type="submit" class="btn btn-primary" {% if viewed_report.state == 3 %}disabled{% endif %}>Submit</button>
+                                    <button type="submit" class="btn btn-primary" {% if viewed_report.state == 3 %}disabled{% endif %}>Comment</button>
                                     <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">Cancel</button>
                                 </form>
                             </div>

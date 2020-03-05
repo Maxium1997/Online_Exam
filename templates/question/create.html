@@ -53,7 +53,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <form method="post">
+                    <form enctype="multipart/form-data" method="post">
                         {% csrf_token %}
 
                         <div class="card">
@@ -84,7 +84,7 @@
                                         Question Content.
                                     </h5>
                                     <p class="card-text">
-                                        <textarea class="form-control" cols="100" rows="10" name="question_content" id="question_content" onkeyup="OpenButton('reading')" placeholder="Enter the question content..." required></textarea>
+                                        <textarea class="form-control" cols="100" rows="5" name="question_content" id="question_content" onkeyup="OpenButton('reading')" placeholder="Enter the question content..." required></textarea>
                                     </p>
 
                                     <h5 class="card-subtitle mb-2 text-muted">

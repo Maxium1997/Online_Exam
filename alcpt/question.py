@@ -231,7 +231,7 @@ def question_create(request, kind):
                 return redirect('tboperator_question_list')
             else:
                 try:
-                    q_file = request.FILES.get('question_file',)
+                    q_file = request.FILES.get('question_file')
                 except:
                     messages.error(request, 'Missing file field "question_file"')
 

@@ -9,8 +9,8 @@
 {% block content %}
     <style>
         #profile{
-            background-color: rgb(108, 117, 125);
-            opacity: 0.1;
+            color: rgb(150, 150, 150);
+            opacity: 0.3;
         }
     </style>
 
@@ -23,14 +23,14 @@
                             User Photo.
                         </div>
 
-                        <img class="card-img-top" src="..." alt="{{ user.name }}">
+                        <img class="card-img-top" src="{{ user.photo }}" alt="{{ user.name }}">
 
                         <div class="card-body">
                             <p class="card-text">
                                 {% if user.introduction %}
                                     {{ user.introduction|linebreaksbr }}
                                 {% else %}
-                                    尚未設定
+                                    Unset
                                 {% endif %}
                             </p>
                         </div>
@@ -52,7 +52,7 @@
                                 {% if user.name %}
                                     {{ user.name }}
                                 {% else %}
-                                    尚未設定
+                                    Unset
                                 {% endif %}
                             </p>
 
@@ -61,16 +61,16 @@
                                 {% if user.email %}
                                     {{ user.email }}
                                 {% else %}
-                                    尚未設定
+                                    Unset
                                 {% endif %}
                             </p>
 
                             <h5 class="card-subtitle mb-2 text-muted">Gender.</h5>
                             <p class="card-text">
-                                {% if user.gender == 0 %}男
-                                {% elif user.gender == 1 %}女
-                                {% elif user.gender == 2 %}不想公開
-                                {% else %}尚未設定
+                                {% if user.gender == 1 %}Male
+                                {% elif user.gender == 2 %}Female
+                                {% elif user.gender == 3 %}Privacy
+                                {% else %}Unset
                                 {% endif %}
                             </p>
 
@@ -79,7 +79,7 @@
                                 {% if user.identity %}
                                     {{ user.identity|readableIdentity }}
                                 {% else %}
-                                    尚未設定
+                                    Unset
                                 {% endif %}
                             </p>
 
@@ -144,7 +144,7 @@
                         </div>
 
                         <div class="card-footer text-right">
-                            <button onclick="self.location=document.referrer;" class="btn btn-primary">確認</button>
+                            <button onclick="self.location=document.referrer;" class="btn btn-primary">OK</button>
                         </div>
                     </div>
                 </div>
@@ -157,14 +157,14 @@
                             User Photo.
                         </div>
 
-                        <img class="card-img-top" src="..." alt="{{ user.name }}">
+                        <img class="card-img-top" src="{{ user.photo }}" alt="{{ user.name }}">
 
                         <div class="card-body">
                             <p class="card-text">
                                 {% if user.introduction %}
                                     {{ user.introduction }}
                                 {% else %}
-                                    尚未設定
+                                    Unset
                                 {% endif %}
                             </p>
                         </div>
@@ -186,7 +186,7 @@
                         {% if user.name %}
                             {{ user.name }}
                         {% else %}
-                            尚未設定
+                            Unset
                         {% endif %}
                     </p>
 
@@ -195,16 +195,16 @@
                         {% if user.email %}
                             {{ user.email }}
                         {% else %}
-                            尚未設定
+                            Unset
                         {% endif %}
                     </p>
 
                     <h5 class="card-subtitle mb-2 text-muted">Gender.</h5>
                     <p class="card-text">
-                        {% if user.gender == 0 %}男
-                        {% elif user.gender == 1 %}女
-                        {% elif user.gender == 2 %}不想公開
-                        {% else %}尚未設定
+                        {% if user.gender == 1 %}Male
+                        {% elif user.gender == 2 %}Female
+                        {% elif user.gender == 3 %}Privacy
+                        {% else %}Unset
                         {% endif %}
                     </p>
 
@@ -213,7 +213,7 @@
                         {% if user.identity %}
                             {{ user.identity|readableIdentity }}
                         {% else %}
-                            尚未設定
+                            Unset
                         {% endif %}
                     </p>
 
@@ -255,7 +255,7 @@
                     </span>
 
                     <div class="text-right">
-                        <button onclick="self.location=document.referrer;" class="btn btn-primary">確認</button>
+                        <button onclick="self.location=document.referrer;" class="btn btn-primary">OK</button>
                     </div>
                 </div>
             </div>

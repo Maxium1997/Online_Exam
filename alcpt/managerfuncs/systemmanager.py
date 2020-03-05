@@ -59,9 +59,14 @@ def create_users(reg_ids: list, privilege: int):
 
 
 def update_user(user: User, name: str, gender: int, introduction: str, photo):
-    # user = user
-    # user.objects.update(name=name, gender=gender, introduction=introduction)
-    # user.photo = save_file(file=photo, path='photo_{}'.format(user.reg_id))
-    # user.save()
+    user = user
+    user.name = name
+    user.gender = gender
+    user.introduction = introduction
 
-    return photo
+    if photo:
+        user.photo = save_file(file=photo, path='photo_{}'.format(user.reg_id))
+
+    user.save()
+
+    return user

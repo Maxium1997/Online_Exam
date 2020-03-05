@@ -37,6 +37,10 @@ def downloadSystemPDF(request):
     return response
 
 
+def about_developer(request):
+    return render(request, 'SystemDocument/developer.html')
+
+
 def about_SystemManager(request):
     return render(request, 'SystemDocument/About_SystemManager.html')
 

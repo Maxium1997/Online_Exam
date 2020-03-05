@@ -36,6 +36,7 @@ urlpatterns = [
         url(r'^TBOperator', views.about_TBOperator, name='about_TBOperator'),
         url(r'^Viewer', views.about_Viewer, name='about_Viewer'),
         url(r'^Testee', views.about_Testee, name='about_Testee'),
+        url(r'^developer', views.about_developer, name='about_developer'),
     ])),
 
     url(r'^report$', system.report, name='report'),
@@ -48,7 +49,15 @@ urlpatterns = [
         url(r'^(?P<report_id>[0-9]+)/done$', system.report_done, name='report_done'),
     ])),
 
+    url(r'^proclamation/', include([
+        url(r'^create$', system.proclamation_create, name='proclamation_create'),
+        url(r'^(?P<proclamation_id>[0-9]+)/detail$', system.proclamation_detail, name='proclamation_detail'),
+        url(r'^(?P<proclamation_id>[0-9]+)/delete$', system.proclamation_delete, name='proclamation_delete'),
+        url(r'^(?P<proclamation_id>[0-9]+)/edit$', system.proclamation_edit, name='proclamation_edit'),
+    ])),
+
     url(r'^email_verification$', registration.verification, name='email_verification'),
+    url(r'^email_verification_done/(?P<encode_email>[\w\=\!\@\#\$\%\^\&\*\(\)\s]+)', registration.verify_done, name='verify_done'),
 
     url(r'^captcha/', include('captcha.urls')),
 
@@ -59,8 +68,8 @@ urlpatterns = [
         url(r'^edit$', registration.edit_profile, name='profile_edit'),
         url(r'^password/change$', registration.change_password, name='password_change'),
         url(r'^password/forget$', registration.forget_password, name='password_forget'),
-        url(r'^password/reset$', registration.reset_password, name='password_reset'),
-        url(r'^email$', registration.email_confirmation, name='email_confirmation'),
+        url(r'^password/reset/(?P<encode_reg_id>[\w\=\!\@\#\$\%\^\&\*\(\)\s]+)', registration.reset_password, name='password_reset'),
+        url(r'^email$', registration.email, name='email'),
     ])),
 
     # 系統管理員部分
@@ -76,13 +85,6 @@ urlpatterns = [
             url(r'^(?P<unit_kind>(squadron|department))/(?P<unit_name>[\w]+)$', system.unit_member_list, name='unit_member_list'),
             # url(r'^check_unit_name$', system.check_unit_name, name='check_unit_name'),
             url(r'^(?P<unit_kind>(squadron|department))/(?P<unit_name>[\w]+)/edit$', system.unit_edit, name='unit_edit'),
-        ])),
-
-        url(r'^proclamation/', include([
-            url(r'^create$', system.proclamation_create, name='proclamation_create'),
-            url(r'^(?P<proclamation_id>[0-9]+)/detail$', system.proclamation_detail, name='proclamation_detail'),
-            url(r'^(?P<proclamation_id>[0-9]+)/delete$', system.proclamation_delete, name='proclamation_delete'),
-            url(r'^(?P<proclamation_id>[0-9]+)/edit$', system.proclamation_edit, name='proclamation_edit'),
         ])),
 
         url(r'^report_category/', include([

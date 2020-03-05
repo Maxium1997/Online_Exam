@@ -37,44 +37,6 @@
 {% endblock %}
 
 {% block content %}
-{#    <div class="table-responsive">#}
-{#        <form action="" method="post">#}
-{#            {% csrf_token %}#}
-{#            <table class="table table-hover">#}
-{#                <caption style="font-size: 30px; padding-left: 5%">全體受測者名單</caption>#}
-{#                <div class="function-btn">#}
-{#                    <button type="button" onclick="selAll();">全選</button>#}
-{#                    <button type="button" onclick="unselAll();">全取消</button>#}
-{#                    <button type="button" onclick="usel();">反向選取</button>#}
-{#                </div>#}
-{##}
-{#                <tr>#}
-{#                    <th class="col-md-1"></th>#}
-{#                    <th class="col-md-2">姓名</th>#}
-{#                    <th class="col-md-2">科系</th>#}
-{#                    <th class="col-md-2">中隊</th>#}
-{#                    <th class="col-md-2">年班</th>#}
-{#                </tr>#}
-{##}
-{#                {% for testee in testees %}#}
-{#                    <tr class="data-row" onclick="selectRow(this)">#}
-{#                        <td><input type="checkbox" name="testee" value="{{ testee.id }}" {% if testee in group_members %}checked{% endif %}></td>#}
-{#                        <td>{{ testee.name }}</td>#}
-{#                        <td>{{ testee.student.department }}</td>#}
-{#                        <td>{{ testee.student.squadron }}</td>#}
-{#                        <td>{{ testee.student.grade }}</td>#}
-{#                    </tr>#}
-{#                {% endfor %}#}
-{#            </table>#}
-{##}
-{#            <div class="btn">#}
-{#                <button type="submit" class="submit" id="submit" onclick="return confirm('確認變更群組？')" disabled>變更群組</button>#}
-{#                <button type="reset">取消</button>#}
-{#                <button type="button" onclick="self.location=document.referrer;">返回</button>#}
-{#            </div>#}
-{#        </form>#}
-{#    </div>#}
-
     <main class="testee-group-edit-form">
         <div class="container">
             <div class="row">
@@ -117,10 +79,10 @@
                     <div class="card">
                         <div class="card-header">Hot Key</div>
 
-                        <div class="card-body text-center">
-                            <button class="btn btn-primary" type="button" onclick="selAll();">全選</button>
-                            <button class="btn btn-primary" type="button" onclick="unselAll();">全取消</button>
-                            <button class="btn btn-primary" type="button" onclick="usel();">反向選取</button>
+                        <div class="card-body">
+                            <button class="btn btn-primary" type="button" onclick="selAll();">Select All</button>
+                            <button class="btn btn-danger" type="button" onclick="unselAll();">Cancel All</button>
+                            <button class="btn btn-warning" type="button" onclick="usel();">Reverse</button>
                         </div>
                     </div>
                 </div>

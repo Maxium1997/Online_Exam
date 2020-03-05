@@ -10,10 +10,10 @@
             var dataIndex = 'detailData'+index;
             var data = document.getElementById(dataIndex);
             var iconRightIndex = 'iconRight'+index;
-            var summaryIndex = 'summary_Q_content'+index;
-            var summary_Q_content = document.getElementById(summaryIndex);
-            var fullIndex = 'full_Q_content'+index;
-            var full_Q_content = document.getElementById(fullIndex);
+            {#var summaryIndex = 'summary_Q_content'+index;#}
+            {#var summary_Q_content = document.getElementById(summaryIndex);#}
+            {#var fullIndex = 'full_Q_content'+index;#}
+            {#var full_Q_content = document.getElementById(fullIndex);#}
             var iconRight = document.getElementById(iconRightIndex);
             var iconDownIndex = 'iconDown'+index;
             var iconDown = document.getElementById(iconDownIndex);
@@ -22,14 +22,14 @@
                 data.style.display = "table-row";
                 iconRight.style.display = "none";
                 iconDown.style.display = "block";
-                summary_Q_content.style.display = 'none';
-                full_Q_content.style.display = 'block';
+                {#summary_Q_content.style.display = 'none';#}
+                {#full_Q_content.style.display = 'block';#}
             } else {
                 data.style.display = "none";
                 iconRight.style.display = "block";
                 iconDown.style.display = "none";
-                summary_Q_content.style.display = 'block';
-                full_Q_content.style.display = 'none';
+                {#summary_Q_content.style.display = 'block';#}
+                {#full_Q_content.style.display = 'none';#}
             }
         }
     </script>
@@ -41,62 +41,6 @@
 {% endblock %}
 
 {% block content %}
-{#    <div class="table-responsive">#}
-{#        <table class="table table-hover">#}
-{#            <thead class="title">#}
-{#                <tr>#}
-{#                    <th class="col-md-1">題序</th>#}
-{#                    <th class="col-md-6">題目</th>#}
-{#                    <th class="col-md-2">選項</th>#}
-{#                </tr>#}
-{#            </thead>#}
-{#            <tbody>#}
-{#                {% for answer in answersheet.answer_set.all %}#}
-{#                    <tr>#}
-{#                        <td style="text-align: center; vertical-align:middle;">{{ forloop.counter }}</td>#}
-{#                    {% if answer.question.q_type|question_kind == 'listening' %}#}
-{#                        <td style="vertical-align:middle; text-align: left">#}
-{#                            {% if answer.selected == -1 %}#}
-{#                                <span style="color: red">此題未作答</span>#}
-{#                            {% endif %}#}
-{#                            <audio controls preload="none">#}
-{#                                <source src="{{ answer.question.q_file }}" type="audio/mpeg">#}
-{#                                Your browser does not support the audio tag.#}
-{#                            </audio>#}
-{#                        </td>#}
-{#                    {% elif answer.question.q_type|question_kind == 'reading' %}#}
-{#                        <td style="vertical-align:middle; text-align: left">#}
-{#                            {% if answer.selected == -1 %}#}
-{#                                <span style="color: red">此題未作答</span>#}
-{#                            {% endif %}#}
-{#                            {{ answer.question }}#}
-{#                        </td>#}
-{#                    {% else %}#}
-{#                        <td style="vertical-align:middle;">Unknown</td>#}
-{#                    {% endif %}#}
-{#                        <td style="vertical-align:middle; text-align: left">#}
-{#                            {% for option in answer.question.choice_set.all %}#}
-{#                                {% if answer.selected == forloop.counter and option.is_answer %}#}
-{#                                    <span style="color: green"><li>{{ option }}</li></span>#}
-{#                                {% elif answer.selected == forloop.counter %}#}
-{#                                    <span style="color: red"><li>{{ option }}</li></span>#}
-{#                                {% elif option.is_answer %}#}
-{#                                    <span style="color: green"><li>{{ option }}</li></span>#}
-{#                                {% else %}#}
-{#                                    <li>{{ option }}</li>#}
-{#                                {% endif %}#}
-{#                            {% endfor %}#}
-{#                        </td>#}
-{#                    </tr>#}
-{#                {% endfor %}#}
-{#            </tbody>#}
-{#        </table>#}
-{##}
-{#        <div class="btn">#}
-{#            <button type="button" onclick="self.location=document.referrer;">確認</button>#}
-{#        </div>#}
-{#    </div>#}
-
     <main class="testee-score-list">
         <div class="container">
             <div class="row justify-content-center">
@@ -107,7 +51,46 @@
                                 <tr>
                                     <th scope="col">Serial.</th>
                                     <th scope="col">Content.</th>
-                                    <th scope="col"><i class="fa fa-question-circle"></i></th>
+                                    <th scope="col" class="text-center">
+                                        <button type="button" class="btn" data-toggle="modal" data-target="#promptContent">
+                                            <i class="fa fa-question-circle"></i>
+                                        </button>
+                                    </th>
+                                    <div class="modal fade" id="promptContent" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header text-center">
+                                                    <h5 class="modal-title" id="ModalLongTitle">Tips</h5>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <ul>
+                                                        <li>
+                                                            <p style="color: red">
+                                                                Red color means your selected the wrong answer on the exam.
+                                                            </p>
+                                                        </li>
+                                                        <li>
+                                                            <p style="color: green">
+                                                                Green color means the sentence is correct but you miss it.
+                                                            </p>
+                                                        </li>
+                                                        <li>
+                                                            <p>
+                                                                If your answer is correct, then it will display only one color in all choices.
+                                                            </p>
+                                                        </li>
+                                                    </ul>
+
+
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </tr>
                             </thead>
 
@@ -124,7 +107,6 @@
                                             {% else %}
                                                 <div id="summary_Q_content{{ forloop.counter }}">
                                                     {{ answer.question.q_content|summary:125 }}
-{#                                                    {{ answer.question.q_content|linebreaksbr }}#}
                                                 <div id="full_Q_content{{ forloop.counter }}" style="display: none">
                                                     {{ answer.question.q_content|linebreaksbr }}
                                                 </div>

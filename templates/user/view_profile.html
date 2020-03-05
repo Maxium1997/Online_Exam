@@ -18,7 +18,7 @@
                                 User Photo.
                             </div>
 
-                            <img class="card-img-top" src="..." alt="{{ viewed_user.name }}">
+                            <img class="card-img-top" src="{{ viewed_user.photo }}" alt="{{ viewed_user.name }}">
 
                             <div class="card-body">
                                 <p class="card-text">{{ viewed_user.introduction|linebreaksbr }}</p>
@@ -56,11 +56,12 @@
 
                                 <h5 class="card-subtitle mb-2 text-muted">Gender.</h5>
                                 <p class="card-text">
-                                    {% if viewed_user.gender == 0 %}Male
-                                    {% elif viewed_user.gender == 1 %}Female
-                                    {% elif viewed_user.gender == 2 %}Privacy
+                                    {% if viewed_user.gender == 1 %}Male
+                                    {% elif viewed_user.gender == 2 %}Female
+                                    {% elif viewed_user.gender == 3 %}Privacy
                                     {% else %}Unset
                                     {% endif %}
+{#                                    {{ viewed_user.gender }}#}
                                 </p>
 
                                 <h5 class="card-subtitle mb-2 text-muted">Identity.</h5>
@@ -146,7 +147,7 @@
                                 User Photo.
                             </div>
 
-                            <img class="card-img-top" src="..." alt="{{ viewed_user.name }}">
+                            <img class="card-img-top" src="{{ viewed_user.photo }}" alt="{{ viewed_user.name }}">
 
                             <div class="card-body">
                                 <p class="card-text">{{ viewed_user.introduction|linebreaksbr }}</p>
@@ -184,9 +185,9 @@
 
                         <h5 class="card-subtitle mb-2 text-muted">Gender.</h5>
                         <p class="card-text">
-                            {% if viewed_user.gender == 0 %}Male
-                            {% elif viewed_user.gender == 1 %}Female
-                            {% elif viewed_user.gender == 2 %}Privacy
+                            {% if viewed_user.gender == 1 %}Male
+                            {% elif viewed_user.gender == 2 %}Female
+                            {% elif viewed_user.gender == 3 %}Privacy
                             {% else %}Unset
                             {% endif %}
                         </p>

@@ -161,7 +161,7 @@
 
                                                 {% elif request.user|has_perm:"TBOperator" %}
                                                     {% if question.state == 2 %}
-                                                        <a href='' class="btn btn-success" id="submit" disabled>Submit</a>
+                                                        <button class="btn btn-success" id="submit" disabled>Submit</button>
                                                     {% else %}
                                                         <a href='{% url 'question_submit' question.id %}' class="btn btn-success" id="submit" onclick="return confirm('Sure to submit?')">Submit</a>
                                                     {% endif %}

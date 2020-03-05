@@ -1,75 +1,159 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% load web_filters %}
 
 {% block scripts %}
     <script>
-        function selectRow(row){
-            var firstInput = row.getElementsByTagName('input')[0];
-            firstInput.checked = !firstInput.checked;
+        function question_detail(index) {
+            var detailIndex = 'question_detail'+index;
+            var question_detail = document.getElementById(detailIndex);
+            var summaryIndex = 'summary'+index;
+            var summary_q_content = document.getElementById(summaryIndex);
+            var fullIndex = 'full'+index;
+            var full_q_content = document.getElementById(fullIndex);
+
+            if (question_detail.style.display === 'none'){
+                question_detail.style.display = 'table-row';
+                summary_q_content.style.display = 'none';
+                full_q_content.style.display = 'table-row';
+            }else{
+                question_detail.style.display = 'none';
+                summary_q_content.style.display = 'table-row';
+                full_q_content.style.display = 'none';
+            }
         }
     </script>
 {% endblock %}
 
 {% block path %}
-    <a href="">考試管理員</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="{% url 'testpaper_list' %}">考卷列表</a>
-    <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="{% url 'testpaper_edit' testpaper.id %}">編輯考卷</a> /
-    <a href="">人工選題</a>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'testpaper_list' %}">TestPaper List</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'testpaper_edit' testpaper.id %}">TestPaper Edit</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Manual Pick</li>
 {% endblock %}
 
 {% block content %}
-    <div>
-        <form action="{% url 'manual_pick' testpaper.id question_type.value.0 %}" method="post">
-            {% csrf_token %}
-            <table>
-                <tr>
-                    <th></th>
-                    <th>編號</th>
-                    <th>題目</th>
-                    <th>選項</th>
-                    <th>難度</th>
-                </tr>
-                {% for question in all_questions %}
-                    <tr class="data-row" onclick="selectRow(this)">
-                        <td><input type="checkbox" name="question" value="{{ question.id }}" {% if question in selected_questions %}checked{% endif %}></td>
+{#    <div>#}
+{#        <form action="{% url 'manual_pick' testpaper.id question_type.value.0 %}" method="post">#}
+{#            {% csrf_token %}#}
+{#            <table>#}
+{#                <tr>#}
+{#                    <th></th>#}
+{#                    <th>編號</th>#}
+{#                    <th>題目</th>#}
+{#                    <th>選項</th>#}
+{#                    <th>難度</th>#}
+{#                </tr>#}
+{#                {% for question in all_questions %}#}
+{#                    <tr class="data-row" onclick="selectRow(this)">#}
+{#                        <td><input type="checkbox" name="question" value="{{ question.id }}" {% if question in selected_questions %}checked{% endif %}></td>#}
+{##}
+{#                        <td>{{ question.id }}</td>#}
+{##}
+{#                        <td>#}
+{#                            {% if question.q_file %}#}
+{#                                <audio controls preload="none">#}
+{#                                    <source src="{{ question.q_file }}" type="audio/mpeg">#}
+{#                                    Your browser does not support the audio tag.#}
+{#                                </audio>#}
+{#                            {% else %}#}
+{#                                {{ question.q_content }}#}
+{#                            {% endif %}#}
+{#                        </td>#}
+{##}
+{#                        <td>#}
+{#                            <ol type="A">#}
+{#                                {% for option in question.choice_set.all %}#}
+{#                                    <li>{{ option }}</li>#}
+{#                                {% endfor %}#}
+{#                            </ol>#}
+{#                        </td>#}
+{#                        <td>{{ question.difficulty|readable_question_difficulty }}</td>#}
+{#                    </tr>#}
+{#                {% endfor %}#}
+{#            </table>#}
+{##}
+{#            <div class="btn">#}
+{#                <button type="submit">確認</button>#}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
 
-                        <td>{{ question.id }}</td>
+    <main class="manual-pick">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <form action="{% url 'manual_pick' testpaper.id question_type.value.0 %}" method="post">
+                        {% csrf_token %}
+                        <h2>Manual Pick({{ question_type.value.1 }})</h2>
 
-                        <td>
-                            {% if question.q_file %}
-                                <audio controls preload="none">
-                                    <source src="{{ question.q_file }}" type="audio/mpeg">
-                                    Your browser does not support the audio tag.
-                                </audio>
-                            {% else %}
-                                {{ question.q_content }}
-                            {% endif %}
-                        </td>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th></th>
+                                        <th>#</th>
+                                        <th>Content.</th>
+                                        <th>difficulty.</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
 
-                        <td>
-                            <ol type="A">
-                                {% for option in question.choice_set.all %}
-                                    <li>{{ option }}</li>
-                                {% endfor %}
-                            </ol>
-                        </td>
-                        <td>{{ question.difficulty|readable_question_difficulty }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
+                                <tbody>
+                                    {% for question in all_questions %}
+                                        <tr>
+                                            <td><input type="checkbox" name="question" value="{{ question.id }}" {% if question in selected_questions %}checked{% endif %}></td>
 
-            <div class="btn">
-                <button type="submit">確認</button>
+                                            <td>{{ question.id }}</td>
+
+                                            <td>
+                                                {% if question.q_file %}
+                                                    <audio controls preload="none">
+                                                        <source src="{{ question.q_file }}" type="audio/mpeg">
+                                                        Your browser does not support the audio tag.
+                                                    </audio>
+                                                {% else %}
+                                                    <span id="summary{{ question.id }}">
+                                                        {{ question.q_content|summary:115 }}
+                                                    </span>
+                                                    <span id="full{{ question.id }}" style="display: none">
+                                                        {{ question.q_content|linebreaksbr }}
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+
+                                            <td>{{ question.difficulty|readable_question_difficulty }}</td>
+
+                                            <td>
+                                                <i class="fa fa-angle-down" onclick="question_detail('{{ question.id }}')" style="cursor: pointer"></i>
+                                            </td>
+                                        </tr>
+                                        <tr id="question_detail{{ question.id }}" style="display: none">
+                                            <td colspan="2"></td>
+
+                                            <td colspan="3">
+                                                <ol type="A">
+                                                    {% for option in question.choice_set.all %}
+                                                        {% if option.is_answer %}
+                                                            <li style="color: red">{{ option }}</li>
+                                                        {% else %}
+                                                            <li>{{ option }}</li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </ol>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">OK</button>
+                            <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">Cancel</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
-    </div>
-
-    <style>
-        .info{
-            overflow-x: scroll;
-        }
-    </style>
+        </div>
+    </main>
 {% endblock %}

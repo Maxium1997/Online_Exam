@@ -36,8 +36,6 @@
         }
 
         function toggle_visibility(type){
-            var all_types = new Array('QA','ShortConversation', 'Grammar', 'Phrase', 'ParagraphUnderstanding');
-
             if (type === 'all'){
                 for (var i = 0; i < all_types.length; i++){
                 var tmp = document.getElementsByClassName(all_types[i]);
@@ -64,7 +62,7 @@
 {% endblock %}
 
 {% block path %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'testpaper_list' %}">TestPaper</a></li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'testpaper_list' %}">TestPaper List</a></li>
     <li class="breadcrumb-item active" aria-current="page">TestPaper Content</li>
 {% endblock %}
 
@@ -76,12 +74,12 @@
                 <div class="col-lg-3 bg-secondary">
                     <nav>
                         <ul class="nav nav-stacked">
-                            <li><a href="#" onclick="toggle_visibility('all')">All</a></li>
-                            <li><a href="#QA" onclick="toggle_visibility('QA')">Listening/QA</a></li>
-                            <li><a href="#ShortConversation" onclick="toggle_visibility('ShortConversation')">Listening/ShortConversation</a></li>
-                            <li><a href="#Grammar" onclick="toggle_visibility('Grammar')">Reading/Grammar</a></li>
-                            <li><a href="#Phrase" onclick="toggle_visibility('Phrase')">Reading/Phrase</a></li>
-                            <li><a href="#ParagraphUnderstanding" onclick="toggle_visibility('ParagraphUnderstanding')">Reading/paragraph</a></li>
+                            <li><a id="all" href="#" onclick="toggle_visibility('all')">All</a></li>
+                            <li><a id="QA" href="#QA" onclick="toggle_visibility('QA')">Listening/QA</a></li>
+                            <li><a id="ShortConversation" href="#ShortConversation" onclick="toggle_visibility('ShortConversation')">Listening/ShortConversation</a></li>
+                            <li><a id="Grammar" href="#Grammar" onclick="toggle_visibility('Grammar')">Reading/Grammar</a></li>
+                            <li><a id="Phrase" href="#Phrase" onclick="toggle_visibility('Phrase')">Reading/Phrase</a></li>
+                            <li><a id="ParagraphUnderstanding" href="#ParagraphUnderstanding" onclick="toggle_visibility('ParagraphUnderstanding')">Reading/paragraph</a></li>
                         </ul>
                     </nav>
                 </div>

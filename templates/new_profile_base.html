@@ -60,20 +60,16 @@
     <div id="sidebar">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-2 bg-secondary">
-                    <nav>
-                        <ul class="nav nav-stacked">
-                            <li><a id="profile" href="{% url 'profile' %}">Profile</a></li>
-                            <li><a id="edit_profile" href="{% url 'profile_edit' %}">Edit Profile</a></li>
-                            <li><a id="email" href="{% url 'email_confirmation' %}">Email</a></li>
-                            <li><a id="password_change" href="{% url 'password_change' %}">Password Change</a></li>
-                            {% if request.user|get_report_notification == 0 %}
-                                <li><a id="report" href="{% url 'report_list' %}">Report</a></li>
-                            {% else %}
-                                <li><a id="report" href="{% url 'report_list' %}">Report</a><label class="notification-badge">{{ request.user|get_report_notification }}</label></li>
-                            {% endif %}
-                        </ul>
-                    </nav>
+                <div class="col-lg-2" id="sidebar-content">
+                    <button id="profile" onclick="window.location.href='{% url 'profile' %}'">Profile</button>
+                    <button id="edit_profile" onclick="window.location.href='{% url 'profile_edit' %}'">Edit Profile</button>
+                    <button id="email" onclick="window.location.href='{% url 'email' %}'">Email</button>
+                    <button id="password_change" onclick="window.location.href='{% url 'password_change' %}'">Password Change</button>
+                    {% if request.user|get_report_notification == 0 %}
+                        <button id="report" onclick="window.location.href='{% url 'report_list' %}'">Report</button>
+                    {% else %}
+                        <button id="report" onclick="window.location.href='{% url 'report_list' %}'">Report<label class="notification-badge">{{ request.user|get_report_notification }}</label></button>
+                    {% endif %}
                 </div>
 
                 <div class="col-lg-10 bg-light">
@@ -89,21 +85,18 @@
         #sidebar .container .row{
             height: 76vh;
         }
-        #sidebar nav > ul{
-            display: inline;
-            font-size: 20px;
-            padding: 2px;
+        #sidebar .container .row #sidebar-content{
+            background-color: rgb(134, 142, 150);
         }
-        #sidebar nav > ul > li{
-            padding: 10px;
-        }
-        #sidebar nav > ul > li > a{
-            text-decoration: none;
-            color: white;
-        }
-        #sidebar nav > ul > li > a:hover{
-            background-color: rgb(108, 117, 125);
-            opacity: 0.1;
+        #sidebar .container .row #sidebar-content button{
+            background-color: rgb(134, 142, 150);
+            width: 100%;
+            padding: 16px;
+
+            font-size: 24px;
+            color: rgb(255, 255, 255);
+
+            border: none;
         }
         .add button{
             border-radius: 24px;
@@ -112,8 +105,9 @@
             box-shadow: 2px 4px 10px 0px rgb(44, 50, 50);
         }
         .notification-badge{
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
+            font-size: 16px;
             background-color: red;
             border-radius: 24px;
             color: white;

@@ -1,4 +1,4 @@
-{% extends 'new_base.html' %}
+ {% extends 'new_base.html' %}
 
 {% load web_filters %}
 
@@ -37,18 +37,23 @@
                     </div>
 
                     <div class="col-lg-7">
-                        <div class="card" style="height: 700px">
-                            <div class="card-header">回覆</div>
+                        <div class="card" style="height: 70vh">
+                            <div class="card-header">Reply</div>
 
                             <div id="reply-content" class="card-body">
                                 <div class="reply-content" data-spy="scroll" data-target="#navbar-example2" data-offset="0">
                                     {% if replies %}
                                         {% for reply in replies %}
                                             {% if reply.created_by == replying_report.created_by %}
-                                                <div>{{ reply.created_by }}：<br>{{ reply.content }}<footer class="blockquote-footer"><cite title="Source Title">{{ reply.created_time|date:"H:i, Y/m/d" }}</cite></footer></div>
+                                                <div class="message-box">
+                                                    {{ reply.created_by }}：<br>{{ reply.content }}<footer class="blockquote-footer"><cite title="Source Title">{{ reply.created_time|date:"H:i, Y/m/d" }}</cite></footer>
+                                                </div>
                                             {% else %}
-                                                <div class="text-right">：{{ reply.created_by }}<br>{{ reply.content }}<footer class="blockquote-footer"><cite title="Source Title">{{ reply.created_time|date:"H:i, Y/m/d" }}</cite></footer></div>
+                                                <div class="message-box text-right">
+                                                    ：{{ reply.created_by }}<br>{{ reply.content }}<footer class="blockquote-footer"><cite title="Source Title">{{ reply.created_time|date:"H:i, Y/m/d" }}</cite></footer>
+                                                </div>
                                             {% endif %}
+                                            <hr>
                                         {% endfor %}
                                     {% else %}
                                         No message...

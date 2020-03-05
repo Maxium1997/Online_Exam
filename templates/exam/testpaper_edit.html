@@ -15,44 +15,6 @@
 {% endblock %}
 
 {% block content %}
-{#    <div class="testpaper">#}
-{#        <div class="title"><h1>Testpaper Edit.</h1></div>#}
-{##}
-{#        <form action="{% url 'testpaper_edit' testpaper.id %}" method="post">#}
-{#            {% csrf_token %}#}
-{#            <table>#}
-{#                <tr>#}
-{#                    <td style="font-size: 24px; text-align: right">考卷名稱</td>#}
-{#                    <td colspan="4">#}
-{#                        <input type="text" name="testpaper_name" value="{{ testpaper.name }}">#}
-{#                    </td>#}
-{#                </tr>#}
-{##}
-{#                {% for question_type, question_type_count, selected_question_type_num in testpaper_data %}#}
-{#                    <td>#}
-{#                        <div class="card" style="width: 18rem;">#}
-{#                            <div class="card-body">#}
-{#                                <h4 class="card-title">{{ question_type.value.1 }}</h4>#}
-{#                                <p class="card-context">共 {{ question_type_count }} 題，已選擇 {{ selected_question_type_num }} 題</p>#}
-{##}
-{#                                <a class="card-link" href="{% url 'manual_pick' testpaper.id question_type.value.0 %}" class="card-link" >手動選擇</a>#}
-{#                                {% if selected_question_type_num == question_type_count %}#}
-{#                                    <label>自動選擇</label>#}
-{#                                {% else %}#}
-{#                                    <a class="card-link" href="{% url 'auto_pick' testpaper.id question_type.value.0 %}" class="card-link" >自動選擇</a>#}
-{#                                {% endif %}#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </td>#}
-{#                {% endfor %}#}
-{#            </table>#}
-{##}
-{#            <div class="btn">#}
-{#                <button type="submit">確認</button>#}
-{#            </div>#}
-{#        </form>#}
-{#    </div>#}
-
     <main class="testpaper-edit-form">
         <div class="container">
             <div class="row justify-content-center">
@@ -80,9 +42,9 @@
                                             </div>
                                             <div>
                                                 {% if selected_question_type_num == question_type_count %}
-                                                    <button class="btn btn-danger" disabled>Auto.</button>
+                                                    <button class="btn btn-danger" disabled>Automatic</button>
                                                 {% else %}
-                                                    <a class="btn btn-primary" href="{% url 'auto_pick' testpaper.id question_type.value.0 %}" class="card-link" >Automatic</a>
+                                                    <a class="btn btn-warning" href="{% url 'auto_pick' testpaper.id question_type.value.0 %}" class="card-link" >Automatic</a>
                                                 {% endif %}
                                             </div>
                                         </div>

@@ -10,8 +10,8 @@
 {% block content %}
     <style>
         #report{
-            background-color: rgb(108, 117, 125);
-            opacity: 0.1;
+            color: rgb(150, 150, 150);
+            opacity: 0.3;
         }
     </style>
 
@@ -23,10 +23,10 @@
                     <table class="table table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th class="text-center">回報單號</th>
-                                <th>類別名稱</th>
-                                <th>內容</th>
-                                <th>狀態</th>
+                                <th class="text-center">Serial.</th>
+                                <th>Category.</th>
+                                <th>Content.</th>
+                                <th>State.</th>
                                 <th>
                                     <div class="add text-right">
                                         <button class="btn btn-secondary" type="button" onclick="window.location.href='{% url 'report' %}'"><i class="fa fa-plus"></i></button>
@@ -49,7 +49,7 @@
                                 {% else %}
                                     <tr>
                                         <td colspan="5">
-                                            目前暫無資料
+                                            No Data.
                                         </td>
                                     </tr>
                                 {% endif %}

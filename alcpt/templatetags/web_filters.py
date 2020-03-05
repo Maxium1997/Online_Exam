@@ -41,9 +41,9 @@ def readable_question_type(question_type: int):
 def readable_question_difficulty(difficulty: int):
     DIFFICULTY = (
         (0, ''),
-        (1, '簡單'),
-        (2, '中等'),
-        (3, '困難'),
+        (1, 'Easy'),
+        (2, 'Medium'),
+        (3, 'Hard'),
     )
 
     return DIFFICULTY[difficulty][1]

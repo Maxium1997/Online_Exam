@@ -3,18 +3,20 @@
 {% block scripts %}
     <script>
         function searchFunction() {
-            let input, filter, a, i, tr, td;
-            input = document.getElementById("search");
-            filter = input.value.toUpperCase();
-            tr = document.getElementById("group_members");
-            td = tr.getElementsByTagName("td");
-            for (i = 0; i < td.length; i++) {
-                a = td[i];
-                if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                    td[i].style.display = "";
-                }
-                else {
-                    td[i].style.display = "none";
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("table");
+        tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
                 }
             }
         }
@@ -34,14 +36,14 @@
                     <h2>Testee Group Member List.</h2>
 
                     <div class="search_bar">
-                        <input class="form-control" type="text" id="search" onkeyup="searchFunction()" placeholder="Search...">
+                        <input class="form-control" type="text" id="search" onkeyup="searchFunction()" placeholder="Search by ID...">
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-hover" id="table">
                             <thead class="thead-light">
                                 <tr>
-                                    <th class="text-center">Account./StudentID.</th>
+                                    <th>Account./StudentID.</th>
                                     <th>Name.</th>
                                     <th>Department.</th>
                                     <th>Squadron.</th>
@@ -54,21 +56,21 @@
                                     {% for member in group_members %}
                                         <tr>
                                             {% if member.student %}
-                                                <td class="text-center">{{ member.student.stu_id }}</td>
+                                                <td>{{ member.student.stu_id }}</td>
                                                 <td>{{ member.name }}</td>
                                                 <td>{{ member.student.department }}</td>
                                                 <td>{{ member.student.squadron }}</td>
                                                 <td>{{ member.student.grade }}</td>
                                             {% else %}
-                                                <td class="text-center">{{ member.reg_id }}</td>
+                                                <td>{{ member.reg_id }}</td>
                                                 <td>{{ member.name }}</td>
-                                                <td class="text-center" colspan="3">None</td>
+                                                <td colspan="3">None</td>
                                             {% endif %}
                                         </tr>
                                     {% endfor %}
                                 {% else %}
                                     <tr>
-                                        <td colspan="" class="text-center">No Data.</td>
+                                        <td colspan="5" class="text-center">No Data.</td>
                                     </tr>
                                 {% endif %}
                             </tbody>
@@ -82,4 +84,10 @@
             </div>
         </div>
     </main>
+    <style>
+        .testee-group-member-list .table-responsive table > thead > tr > th,
+        .testee-group-member-list .table-responsive table > tbody > tr > td{
+            text-align: center;
+        }
+    </style>
 {% endblock %}
