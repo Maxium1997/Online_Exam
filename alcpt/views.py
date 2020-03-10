@@ -22,7 +22,7 @@ def index(request):
     except EmptyPage:
         pros = paginator.page(paginator.num_pages)
 
-    return render(request, 'proclamation.html', locals())
+    return render(request, 'proclamation/proclamation.html', locals())
 
 
 def about(request):
@@ -63,6 +63,14 @@ def about_Viewer(request):
 
 def about_Testee(request):
     return render(request, 'SystemDocument/about/About_Testee.html')
+
+
+def OM_System(request):
+    return render(request, 'SystemDocument/OperationManual/OM_System.html')
+
+
+def OM_User(request):
+    return render(request, 'SystemDocument/OperationManual/OM_User.html')
 
 
 def OM_SystemManager(request):

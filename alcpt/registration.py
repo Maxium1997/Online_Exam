@@ -176,7 +176,7 @@ def verification(request):
     user.email_is_verified = False
     user.save()
     email_verified(request.POST.get('verified_email'))
-    messages.success(request, "Has sent the verification email, please check out.")
+    messages.success(request, "Verification email has been sent, please check out.")
     return redirect('email')
 
 
@@ -201,7 +201,7 @@ def forget_password(request):
 
         if User.objects.filter(reg_id=reg_id, email=email):
             reset_password_mail(reg_id, email)
-            messages.success(request, "Has sent a reset link, please check your email.")
+            messages.success(request, "Reset link has been sent, please check your email.")
             return redirect('login')
         else:
             messages.error(request, "User does not exist. Try again.")

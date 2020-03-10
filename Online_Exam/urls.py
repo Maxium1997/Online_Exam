@@ -41,6 +41,8 @@ urlpatterns = [
     ])),
 
     re_path(r'operation_manual/', include([
+        re_path(r'^System', views.OM_System, name='OM_System'),
+        re_path(r'^User', views.OM_User, name='OM_User'),
         re_path(r'^SystemManager', views.OM_SystemManager, name='OM_SystemManager'),
         re_path(r'^TestManager', views.OM_TestManager, name='OM_TestManager'),
         re_path(r'^TBManager', views.OM_TBManager, name='OM_TBManager'),

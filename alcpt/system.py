@@ -307,14 +307,14 @@ def proclamation_create(request):
         messages.success(request, "Create Successfully.")
         return redirect('Homepage')
     else:
-        return render(request, 'proclamation_create.html', locals())
+        return render(request, 'proclamation/proclamation_create.html', locals())
 
 
 # 公告內容
 def proclamation_detail(request, proclamation_id):
     try:
         proclamation = Proclamation.objects.get(id=proclamation_id)
-        return render(request, 'proclamation_detail.html', locals())
+        return render(request, 'proclamation/proclamation_detail.html', locals())
     except ObjectDoesNotExist:
         messages.error(request, 'Proclamation doesn\'t exist, proclamation id: {}'.format(proclamation_id))
         return redirect('Homepage')
@@ -349,7 +349,7 @@ def proclamation_edit(request, proclamation_id):
         messages.success(request, 'Update Successfully. proclamation title: {}'.format(proclamation.title))
         return redirect('/')
     else:
-        return render(request, 'proclamation_edit.html', locals())
+        return render(request, 'proclamation/proclamation_edit.html', locals())
 
 
 # 新增單位（學系、中隊）
