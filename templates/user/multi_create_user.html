@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% load web_filters %}
 
@@ -12,6 +12,8 @@
             var usersFile = document.getElementById('users_file');
 
             if(kind === 'reg_ids'){
+                regIDs.disabled = false;
+                usersFile.disabled = true;
                 if(regIDs.value !== ''){
                     usersFile.value = '';
                     usersFile.disabled = true;
@@ -23,6 +25,8 @@
             }
 
             if(kind === 'file') {
+                regIDs.disabled = true;
+                usersFile.disabled = false;
                 if(usersFile.value !== ''){
                     regIDs.value = '';
                     regIDs.disabled = true;
@@ -32,10 +36,10 @@
                     passID = false;
                 }
             }
-            AllValid();
+            is_valid();
         }
 
-        function PrivilegeNotEmpty(){
+        function privilege_not_empty() {
             var privilegeInvalid = document.getElementById('privilege_invalid');
             var system = document.getElementById('32');
             var testM = document.getElementById('16');
@@ -46,127 +50,91 @@
 
             if (system.checked === false && testM.checked === false && tbM.checked === false &&
                 tbO.checked === false && viewer.checked === false && testee.checked === false) {
-                privilegeInvalid.innerHTML = '最少選一個權限';
+                privilegeInvalid.innerHTML = "<span style='color: red; font-size: 14px'>Choose one privilege at least</span>";
+                privilegeInvalid.style.display = 'block';
                 passPrivilege = false;
             } else {
                 privilegeInvalid.innerHTML = '';
+                privilegeInvalid.style.display = 'none';
                 passPrivilege = true;
             }
-            AllValid();
+            is_valid();
         }
         
-        function AllValid() {
+        function is_valid() {
             var submit = document.getElementById('submit');
 
             if(passID === true && passPrivilege === true){
                 submit.disabled = false;
-                submit.style.backgroundColor = '#4CCABD';
             } else{
                 submit.disabled = true;
-                submit.style.backgroundColor = 'grey';
             }
         }
     </script>
 {% endblock %}
 
 {% block path %}
-    <a href="">系統管理員</a>
-    <a class="fa fa-angle-double-right fa-lg box"></a>
-    <a href="">使用者列表</a>
-    <a class="fa fa-angle-right fa-lg box"></a>
-    <a href="">新增使用者（多重）</a>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'user_list' %}">User List</a></li>
+    <li class="breadcrumb-item active" aria-current="page">User Create（Multiple）</li>
 {% endblock %}
 
 {% block content %}
-    <div class="multi_create">
-        <form method="post" enctype="multipart/form-data">
-            <div class="title"><h1>Multi-Create User.</h1></div>
-            {% csrf_token %}
-            <table>
-                <tr>
-                    <td class="col-md-1">帳號清單</td>
-                    <td class="col-md-2">
-                        <textarea class="form-control" id="reg_ids" name="reg_ids" rows="5" onkeyup="IDValid('reg_ids')" placeholder="帳號1, 帳號2, ..."></textarea>
-                        <small>學號即為帳號，僅限英文、數字，請用全形頓號區隔。<strong>預設密碼為學號。</strong></small>
-                    </td>
-                </tr>
+    <main class="multi-create-user-form">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
 
-                <tr>
-                    <td class="col-md-1">選擇檔案</td>
-                    <td class="col-md-2"><input type="file" id="users_file" name="users_file" accept=".xls, .xlsx" onchange="IDValid('file')"></td>
-                </tr>
+                        <div class="card">
+                            <div class="card-header">Multiple Create User.</div>
 
-                <tr>
-                    <td class="col-md-1">權限</td>
-                    <td class="col-md-2">
-                        {% for privilege in privileges.values %}
-                            <input type="checkbox" id="{{ privilege.value.0 }}" name="privilege_{{ forloop.counter0 }}" onclick="PrivilegeNotEmpty()" {% if privilege == privileges.Testee %} checked {% endif %}>{{ privilege.value.1 }}&nbsp;
-                        {% endfor %}
-                        <label id="privilege_invalid" class="privilege_invalid"></label>
-                    </td>
-                </tr>
-            </table>
+                            <div class="card-body">
+                                <h5 class="subtitle mb-2 text-muted">Account List.</h5>
+                                <textarea class="form-control" id="reg_ids" name="reg_ids" rows="5" onkeyup="IDValid('reg_ids')" placeholder="account1, account2, ..."></textarea>
+                                <small>Only accept numbers and letters, and please distinguish by comma.<strong>User default password is the same with account.</strong></small>
 
-            <div class="btn">
-                <button type="submit" id="submit" style="background-color: grey" onclick="return confirm('確認新增？')" disabled>新增使用者</button>
-                <button type="reset" onclick="return confirm('確認重設？')">重設</button>
-                <button type="button" onclick="self.location=document.referrer;">取消</button>
+                                <h5 class="subtitle mb-2 text-muted">Upload File.</h5>
+                                <input type="file" id="users_file" name="users_file" accept=".xls, .xlsx" onchange="IDValid('file')">
+
+                                <h5 class="subtitle mb-2 text-muted">Privilege.<span id="privilege_invalid" class="privilege_invalid"></span></h5>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="button-group">
+                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="fa fa-gears"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li>Privilege Setting.</li>
+                                                    {% for privilege in privileges.values %}
+                                                        <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onchange="privilege_not_empty()" {% if privilege == privilege.Testee %} checked {% endif %}>&nbsp;{{ privilege.value.1 }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="dropdown-divider"></div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary" disabled>Submit</button>
+                                    <button type="reset" class="btn btn-light">Reset</button>
+                                    <button type="button" class="btn btn-secondary" onclick="history.go(-1)">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-        </form>
-
-        <style>
-            .multi_create .title h1{
-                    width: 30%;
-                    font-size: 28px;
-                    color: #FFFEF6;
-                    background-color: #4CCABD;
-                    padding-top: 10px;
-                    padding-bottom: 10px;
-                    padding-right: 15px;
-                    padding-left: 45px;
-                    text-align: center;
-                }
-
-            .multi_create table{
-                position: relative;
-                left: 15%;
-
-                width: 70%;
-
-                font-size: 20px;
-            }
-            .multi_create table td{
-                padding: 4px;
-            }
-            .multi_create form textarea{
-                    font-size: 20px;
-                    width: 100%;
-                    height: 45%;
-                    padding: 10px;
-                }
-            .multi_create form input{
-                padding: 6px;
-            }
-
-            .multi_create .btn{
-                position: relative;
-                top: 10px;
-                left: 35%;
-            }
-            .multi_create .btn button{
-                font-size: 25px;
-                padding: 10px;
-                padding-left: 15px;
-                padding-right: 15px;
-                color: #FFFEF6;
-                background-color: #4CCABD;
-                border: none;
-            }
-            .privilege_invalid {
-                color: red;
-            }
-        </style>
-
-    </div>
+        </div>
+    </main>
+    <style>
+        .multi-create-user-form .container .card .card-body .button-group ul{
+            padding-left: 20px;
+        }
+    </style>
 {% endblock %}

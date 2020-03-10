@@ -1,8 +1,39 @@
 {% extends 'new_base.html' %}
 
+{% block scripts %}
+    <script type="text/javascript">
+        function unique_name(unit_kind, departments, squadrons, mode, input_unit){
+            var kind = unit_kind;
+            var arr = squadrons;
+            var invalid = document.getElementById("invalid");
+            var submit = document.getElementById("submit");
+
+            if(kind === 'department'){
+                arr = departments;
+            }
+
+            for(var i = 0; i < arr.length; i++) {
+                if (input_unit.value === ''){
+                    invalid.innerHTML = "<span style='color: red; font-size: 14px'>Require</span>";
+                    submit.disabled = true;
+                }
+                else if (input_unit.value === arr[i]) {
+                    invalid.innerHTML = "<span style='color: red; font-size: 14px'>Name has existed</span>";
+                    submit.disabled = true;
+                    break;
+                }
+                else {
+                    invalid.innerHTML = "";
+                    submit.disabled = false;
+                }
+            }
+        }
+    </script>
+{% endblock %}
+
 {% block path %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'unit_list' %}">單位列表</a></li>
-    <li class="breadcrumb-item active" aria-current="page">修改單位名稱</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'unit_list' %}">Unit List</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Unit</li>
 {% endblock %}
 
 {% block content %}
@@ -18,12 +49,12 @@
                             <div class="card-body">
                                 <h5 class="card-subtitle mb-2 text-muted">Unit Name.</h5>
                                 <p class="card-text">
-                                    <input class="form-control" type="text" name="name" value="{{ edited_unit.name }}" required>
+                                    <input class="form-control" type="text" name="name" value="{{ edited_unit.name }}" onkeyup="unique_name({{ unit_kind }}, {{ department_names }}, {{ squadron_names }}, document.getElementById('name').value, this)" required>
                                 </p>
 
                                 <div class="float-right">
-                                    <button type="submit" class="btn btn-primary">更改</button>
-                                    <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">取消</button>
+                                    <button type="submit" class="btn btn-primary" disabled>Update</button>
+                                    <button type="button" class="btn btn-secondary" onclick="self.location=document.referrer;">Cancel</button>
                                 </div>
                             </div>
                         </div>

@@ -40,6 +40,15 @@ urlpatterns = [
         re_path(r'^developer', views.about_developer, name='about_developer'),
     ])),
 
+    re_path(r'operation_manual/', include([
+        re_path(r'^SystemManager', views.OM_SystemManager, name='OM_SystemManager'),
+        re_path(r'^TestManager', views.OM_TestManager, name='OM_TestManager'),
+        re_path(r'^TBManager', views.OM_TBManager, name='OM_TBManager'),
+        re_path(r'^TBOperator', views.OM_TBOperator, name='OM_TBOperator'),
+        re_path(r'^Viewer', views.OM_Viewer, name='OM_Viewer'),
+        re_path(r'^Testee', views.OM_Testee, name='OM_Testee'),
+    ])),
+
     re_path(r'^report$', system.report, name='report'),
     re_path(r'^report/', include([
         re_path(r'^list$', registration.report_list, name='report_list'),

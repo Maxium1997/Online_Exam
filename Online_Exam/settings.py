@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'Online_Exam.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-# 更換成 mysql
+# mysql
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -89,7 +89,6 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
 
 CAPTCHA_NOISE_FUNCTIONS = (
     'captcha.helpers.noise_null',   # 沒有樣式

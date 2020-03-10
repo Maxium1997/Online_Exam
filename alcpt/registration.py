@@ -59,7 +59,7 @@ def login(request):
 
     else:
         captcha = CaptchaForm()
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return redirect('/')
 
         else:
