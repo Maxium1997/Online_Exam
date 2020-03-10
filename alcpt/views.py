@@ -22,7 +22,7 @@ def index(request):
     except EmptyPage:
         pros = paginator.page(paginator.num_pages)
 
-    return render(request, 'proclamation.html', locals())
+    return render(request, 'proclamation/proclamation.html', locals())
 
 
 def about(request):
@@ -40,28 +40,60 @@ def downloadSystemPDF(request):
 
 
 def about_developer(request):
-    return render(request, 'SystemDocument/developer.html')
+    return render(request, 'SystemDocument/about/developer.html')
 
 
 def about_SystemManager(request):
-    return render(request, 'SystemDocument/About_SystemManager.html')
+    return render(request, 'SystemDocument/about/About_SystemManager.html')
 
 
 def about_TestManager(request):
-    return render(request, 'SystemDocument/About_TestManager.html')
+    return render(request, 'SystemDocument/about/About_TestManager.html')
 
 
 def about_TBManager(request):
-    return render(request, 'SystemDocument/About_TBManager.html')
+    return render(request, 'SystemDocument/about/About_TBManager.html')
 
 
 def about_TBOperator(request):
-    return render(request, 'SystemDocument/About_TBOperator.html')
+    return render(request, 'SystemDocument/about/About_TBOperator.html')
 
 
 def about_Viewer(request):
-    return render(request, 'SystemDocument/About_Viewer.html')
+    return render(request, 'SystemDocument/about/About_Viewer.html')
 
 
 def about_Testee(request):
-    return render(request, 'SystemDocument/About_Testee.html')
+    return render(request, 'SystemDocument/about/About_Testee.html')
+
+
+def OM_System(request):
+    return render(request, 'SystemDocument/OperationManual/OM_System.html')
+
+
+def OM_User(request):
+    return render(request, 'SystemDocument/OperationManual/OM_User.html')
+
+
+def OM_SystemManager(request):
+    return render(request, 'SystemDocument/OperationManual/OM_SystemManager.html')
+
+
+def OM_TestManager(request):
+    return render(request, 'SystemDocument/OperationManual/OM_TestManager.html')
+
+
+def OM_TBManager(request):
+    return render(request, 'SystemDocument/OperationManual/OM_TBManager.html')
+
+
+def OM_TBOperator(request):
+    return render(request, 'SystemDocument/OperationManual/OM_TBOperator.html')
+
+
+def OM_Viewer(request):
+    return render(request, 'SystemDocument/OperationManual/OM_Viewer.html')
+
+
+def OM_Testee(request):
+    return render(request, 'SystemDocument/OperationManual/OM_Testee.html')

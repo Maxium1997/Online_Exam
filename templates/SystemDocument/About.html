@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 {% load web_filters %}
 <!doctype html>
 <html lang="en">
@@ -33,6 +33,18 @@
     {% endblock %}
 
     {% block scripts %}
+        <script type="text/javascript">
+            function dropdown_toggle(kind) {
+                var dropdownKind = "dropdown-menu-" + kind;
+                var dropdown_menu = document.getElementById(dropdownKind);
+
+                if (dropdown_menu.style.display === "none"){
+                    dropdown_menu.style.display = "block";
+                }else{
+                    dropdown_menu.style.display = "none";
+                }
+            }
+        </script>
     {% endblock %}
 
 </head>
@@ -42,12 +54,101 @@
 <body>
     <main class="about" role="main">
         <div class="jumbotron">
-            <h1 class="display-2" style="font-weight: 400;">Welcome to ALCPT!</h1>
+            <h1 class="display-2" style="font-weight: 400;">Welcome to ALCPT線上練習平台</h1>
             <p class="lead">This is a place where we try to build some interesting stuff about a web system for ALCPT. Hope you can improve your ability of English via this system.</p>
             <hr class="my-4">
             <p>If you have any suggestions, please leave us a message. Thank you for your using.</p>
-            <a class="btn btn-primary btn-lg" href="#" role="button" onclick="window.location.href='{% url 'Homepage' %}'">Start</a>
-            <a class="btn btn-secondary btn-lg" href="{% url 'download_system_pdf' %}" data-toggle="tooltip" data-placement="top" title="Download System PDF">Download for Operation</a>
+            <a class="btn btn-primary" href="#" role="button" onclick="window.location.href='{% url 'Homepage' %}'">Start</a>
+            <a class="btn btn-secondary" href="{% url 'download_system_pdf' %}" data-toggle="tooltip" data-placement="top" title="Download System PDF">Download for Operation</a>
+            <a class="btn btn-light" data-toggle="modal" data-target="#ModalOperationManual">Operation Manual</a>
+
+            <div class="modal fade" id="ModalOperationManual" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+                            <h5 class="modal-title" id="ModalLongTitle">Operation Manual</h5>
+                        </div>
+                        <div id="modal-menu">
+                            <button onclick="window.location.href='{% url 'OM_System' %}'">System</button>
+
+                            <div class="dropdown-divider custom"></div>
+
+                            <button onclick="window.location.href='{% url 'OM_User' %}'">User</button>
+
+                            <div class="dropdown-divider custom"></div>
+
+                            <button id="dropdown-sm" onclick="dropdown_toggle('sm')">System Manager</button>
+                            <div id="dropdown-menu-sm" style="display: none">
+                                <ul>
+                                    <li><a href="#">User List</a></li>
+                                    <li><a href="#">Unit List</a></li>
+                                    <li><a href="#">ReportCategory List</a></li>
+                                    <li><a href="#">Report List</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="dropdown-divider custom"></div>
+
+                            <button id="dropdown-tm" onclick="dropdown_toggle('tm')">Test Manager</button>
+                            <div id="dropdown-menu-tm" style="display: none">
+                                <ul>
+                                    <li><a href="#">Exam List</a></li>
+                                    <li><a href="#">TestPaper List</a></li>
+                                    <li><a href="#">TesteeGroup List</a></li>
+                                    <li><a href="#">Report List</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="dropdown-divider custom"></div>
+
+                            <button id="dropdown-tbm" onclick="dropdown_toggle('tbm')">TB Manager</button>
+                            <div id="dropdown-menu-tbm" style="display: none">
+                                <ul>
+                                    <li><a href="#">Question List</a></li>
+                                    <li><a href="#">Review</a></li>
+                                    <li><a href="#">Report List</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="dropdown-divider custom"></div>
+
+                            <button id="dropdown-tbo" onclick="dropdown_toggle('tbo')">TB Operator</button>
+                            <div id="dropdown-menu-tbo" style="display: none">
+                                <ul>
+                                    <li><a href="#">Question List</a></li>
+                                    <li><a href="#">Creating Listening</a></li>
+                                    <li><a href="#">Creating Reading</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="dropdown-divider custom"></div>
+
+                            <button id="dropdown-viewer" onclick="dropdown_toggle('viewer')">Viewer</button>
+                            <div id="dropdown-menu-viewer" style="display: none">
+                                <ul>
+                                    <li><a href="#">Exam Score List</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="dropdown-divider custom"></div>
+
+                            <button id="dropdown-testee" onclick="dropdown_toggle('testee')">Testee</button>
+                            <div id="dropdown-menu-testee" style="display: none">
+                                <ul>
+                                    <li><a href="#">Exam Record</a></li>
+                                    <li><a href="#">Score Record</a></li>
+                                    <li><a href="#">Listening Practice</a></li>
+                                    <li><a href="#">Reading Practice</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <a class="btn btn-secondary" style="color: white" data-dismiss="modal">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <hr class="featurette-divider">
@@ -101,8 +202,8 @@
         <!--Introduce System Manager.-->
         <div class="privilege-intro">
             <div class="container">
-                <div class="row justify-content-center featurette">
-                    <div class="col-lg-7">
+                <div class="row justify-content-center">
+                    <div class="col-md-5">
                         <h2 class="featurette-heading">System Manager. <span class="text-muted">Controlling about system.</span></h2>
 
                         <p class="lead">
@@ -114,7 +215,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-5">
+                    <div class="col-md-3">
                         <img class="img-responsive" src="{% static '/images/system.svg' %}" width="90%" height="90%" alt="Responsive image">
                     </div>
                 </div>
@@ -126,12 +227,12 @@
         <!--Introduce Test Manager.-->
         <div class="privilege-intro">
             <div class="container">
-                <div class="row justify-content-center featurette">
-                    <div class="col-lg-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-3">
                         <img class="img-responsive" src="{% static '/images/checklist.svg' %}" width="90%" height="90%" alt="Responsive image">
                     </div>
 
-                    <div class="col-lg-7">
+                    <div class="col-md-5">
                         <h2 class="featurette-heading">Test Manager. <span class="text-muted">Controlling about exam.</span></h2>
 
                         <p class="lead">
@@ -151,8 +252,8 @@
         <!--Introduce TB Manager.-->
         <div class="privilege-intro">
             <div class="container">
-                <div class="row justify-content-center featurette">
-                    <div class="col-lg-7">
+                <div class="row justify-content-center">
+                    <div class="col-md-5">
                         <h2 class="featurette-heading">TB Manager. <span class="text-muted">Maintain and review questions</span></h2>
 
                         <p class="lead">
@@ -164,7 +265,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-5">
+                    <div class="col-md-3">
                         <img class="img-responsive" src="{% static '/images/file-check.svg' %}" width="90%" height="90%" alt="Responsive image">
                     </div>
                 </div>
@@ -176,12 +277,12 @@
         <!--Introduce TB Operator.-->
         <div class="privilege-intro">
             <div class="container">
-                <div class="row justify-content-center featurette">
-                    <div class="col-lg-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-3">
                         <img class="img-responsive" src="{% static '/images/file.svg' %}" width="90%" height="90%" alt="Responsive image">
                     </div>
 
-                    <div class="col-lg-7">
+                    <div class="col-md-5">
                         <h2 class="featurette-heading">TB Operator. <span class="text-muted">Create new questions.</span></h2>
 
                         <p class="lead">
@@ -201,8 +302,8 @@
         <!--Introduce Viewer.-->
         <div class="privilege-intro">
             <div class="container">
-                <div class="row justify-content-center featurette">
-                    <div class="col-lg-7">
+                <div class="row justify-content-center">
+                    <div class="col-md-5">
                         <h2 class="featurette-heading">Viewer. <span class="text-muted">Watch the test status of users via this system</span></h2>
 
                         <p class="lead">
@@ -214,7 +315,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-5">
+                    <div class="col-md-3">
                         <img class="img-responsive" src="{% static '/images/data-scientist.svg' %}" width="90%" height="90%" alt="Responsive image">
                     </div>
                 </div>
@@ -226,12 +327,12 @@
         <!--Introduce Testee.-->
         <div class="privilege-intro">
             <div class="container">
-                <div class="row justify-content-center featurette">
-                    <div class="col-lg-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-3">
                         <img class="img-responsive" src="{% static '/images/examinee.svg' %}" width="90%" height="90%" alt="Responsive image">
                     </div>
 
-                    <div class="col-lg-7">
+                    <div class="col-md-5">
                         <h2 class="featurette-heading">Testee. <span class="text-muted">Main users of this system</span></h2>
 
                         <p class="lead">

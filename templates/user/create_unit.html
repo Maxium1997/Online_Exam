@@ -13,20 +13,17 @@
 
             for(var i = 0; i < arr.length; i++) {
                 if (input_unit.value === ''){
-                    invalid.innerHTML = "<span style='color: red'>必填</span>";
+                    invalid.innerHTML = "<span style='color: red; font-size: 14px'>Require</span>";
                     submit.disabled = true;
-                    submit.style.backgroundColor = 'grey';
                 }
                 else if (input_unit.value === arr[i]) {
-                    invalid.innerHTML = "<span style='color: red'>名稱已存在</span>";
+                    invalid.innerHTML = "<span style='color: red; font-size: 14px'>Name has existed</span>";
                     submit.disabled = true;
-                    submit.style.backgroundColor = 'grey';
                     break;
                 }
                 else {
-                    invalid.innerHTML = '<i class="fa fa-check"></i>';
+                    invalid.innerHTML = "";
                     submit.disabled = false;
-                    submit.style.backgroundColor = '#4CCABD';
                 }
             }
         }
@@ -45,48 +42,11 @@
 {% endblock %}
 
 {% block path %}
-    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'unit_list' %}">單位列表</a></li>
-    <li class="breadcrumb-item active" aria-current="page">新增單位</li>
+    <li class="breadcrumb-item" aria-current="page"><a href="{% url 'unit_list' %}">Unit List</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create Unit</li>
 {% endblock %}
 
 {% block content %}
-{#    <div class="create_unit">#}
-{#        <div class="title"><h1>Unit Create.</h1></div>#}
-{#        <form action="{% url 'unit_create' %}" method="post" autocomplete="off">#}
-{#            {% csrf_token %}#}
-{##}
-{#            <table>#}
-{#                <tr>#}
-{#                    <td class="col-md-2" style="text-align: center">單位</td>#}
-{#                    <td class="col-md-5">#}
-{#                        <select id='unit' name='unit' onchange="is_selected();" required>#}
-{#                            <option value='' selected disabled hidden>選擇要新增單位</option>#}
-{#                            <option value='department'> 科系 </option>#}
-{#                            <option value='squadron'> 中隊 </option>#}
-{#                        </select>#}
-{#                    </td>#}
-{#                </tr>#}
-{##}
-{#                <tr>#}
-{#                    <td class="col-md-2" style="text-align: center">單位名稱</td>#}
-{#                    <td class="col-md-5"><input type="text" id="unit_name" name="unit_name" onkeyup="unique_name({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="輸入要新增的單位名稱" required disabled></td>#}
-{#                </tr>#}
-{##}
-{#                <tr>#}
-{#                    <td colspan="2" style="text-align: center">#}
-{#                        <span id="invalid" class="result">&nbsp;請先選擇單位，再填寫名稱</span>#}
-{#                    </td>#}
-{#                </tr>#}
-{#            </table>#}
-{##}
-{#            <div class="btn">#}
-{#                <button type="submit" id="submit" disabled>新增</button>#}
-{#                <button type="reset">重設</button>#}
-{#                <button type="button" onclick="self.location=document.referrer;">取消</button>&nbsp;#}
-{#            </div>#}
-{#        </form>#}
-{#    </div>#}
-
     <main class="unit-create-form">
         <div class="container">
             <div class="row justify-content-center">
@@ -106,13 +66,13 @@
                                     </select>
                                 </p>
 
-                                <h5 class="card-subtitle mb-2 text-muted">Unit Name.</h5>
+                                <h5 class="card-subtitle mb-2 text-muted">Unit Name.<label id="invalid"></label></h5>
                                 <p class="card-text">
                                     <input class="form-control" type="text" id="unit_name" name="unit_name" onkeyup="unique_name({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="Enter the name of the unit..." required disabled>
                                 </p>
 
                                 <div class="float-right">
-                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                    <button class="btn btn-primary" type="submit" id="submit" disabled>Submit</button>
                                     <button class="btn btn-secondary" type="button" onclick="self.location=document.referrer;">Cancel</button>
                                 </div>
                             </div>
