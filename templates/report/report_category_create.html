@@ -69,7 +69,7 @@
 {% endblock %}
 
 {% block content %}
-    <main class="report-category-create">
+    <main class="report-category-create-form">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
@@ -119,7 +119,7 @@
                                     <button type="reset" class="btn btn-light">
                                         Reset
                                     </button>
-                                    <button type="button" class="btn btn-secondary" onclick="history.back()">
+                                    <button type="button" class="btn btn-secondary" onclick="history.go(-1)">
                                         Cancel
                                     </button>
                                 </div>
@@ -130,4 +130,9 @@
             </div>
         </div>
     </main>
+    <style>
+        .report-category-create-form .container .card .card-body .button-group ul{
+            padding-left: 10px;
+        }
+    </style>
 {% endblock %}

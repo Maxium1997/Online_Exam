@@ -15,12 +15,12 @@
                             <li>
                                 權限區分為：
                                 <ul>
-                                    <li>SystemManager：系統管理員</li>
-                                    <li>TestManager：考試管理員</li>
-                                    <li>TBManager：題庫管理員</li>
-                                    <li>TBOperator：題庫操作員</li>
-                                    <li>Viewer：成績檢閱者</li>
-                                    <li>Testee：受測者</li>
+                                    <li><a href="{% url 'OM_SystemManager' %}">SystemManager</a>：系統管理員</li>
+                                    <li><a href="{% url 'OM_TestManager' %}">TestManager</a>：考試管理員</li>
+                                    <li><a href="{% url 'OM_TBManager'%}">TBManager</a>：題庫管理員</li>
+                                    <li><a href="{% url 'OM_TBOperator'%}">TBOperator</a>：題庫操作員</li>
+                                    <li><a href="{% url 'OM_Viewer'%}">Viewer</a>：成績檢閱者</li>
+                                    <li><a href="{% url 'OM_Testee'%}">Testee</a>：受測者</li>
                                 </ul>
                             </li>
                             <img src="{% static '/images/om/om-user01.png' %}" width="80%" height="80%">

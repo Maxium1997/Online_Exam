@@ -57,7 +57,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="text-left">
-                        <h5><a class="" data-toggle="modal" data-target="#ModalOperationManual">ALCPT 線上練習平台 使用手冊<i class="fa fa-plus-circle"></i></a></h5>
+                        <h5><a class="" data-toggle="modal" data-target="#ModalOperationManual">ALCPT線上練習平台 使用手冊&nbsp;<i class="fa fa-plus-circle"></i></a></h5>
                         <div class="modal fade" id="ModalOperationManual" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -69,74 +69,35 @@
 
                                         <div class="dropdown-divider custom"></div>
 
+                                        <button onclick="window.location.href='{% url 'OM_Report' %}'">Report</button>
+
+                                        <div class="dropdown-divider custom"></div>
+
                                         <button onclick="window.location.href='{% url 'OM_User' %}'">User</button>
 
                                         <div class="dropdown-divider custom"></div>
 
-                                        <button id="dropdown-sm" onclick="dropdown_toggle('sm')">System Manager</button>
-                                        <div id="dropdown-menu-sm" style="display: none">
-                                            <ul>
-                                                <li><a href="#">User List</a></li>
-                                                <li><a href="#">Unit List</a></li>
-                                                <li><a href="#">ReportCategory List</a></li>
-                                                <li><a href="#">Report List</a></li>
-                                            </ul>
-                                        </div>
+                                        <button onclick="window.location.href='{% url 'OM_SystemManager' %}'">System Manager</button>
 
                                         <div class="dropdown-divider custom"></div>
 
-                                        <button id="dropdown-tm" onclick="dropdown_toggle('tm')">Test Manager</button>
-                                        <div id="dropdown-menu-tm" style="display: none">
-                                            <ul>
-                                                <li><a href="#">Exam List</a></li>
-                                                <li><a href="#">TestPaper List</a></li>
-                                                <li><a href="#">TesteeGroup List</a></li>
-                                                <li><a href="#">Report List</a></li>
-                                            </ul>
-                                        </div>
+                                        <button onclick="window.location.href='{% url 'OM_TestManager' %}'">Test Manager</button>
 
                                         <div class="dropdown-divider custom"></div>
 
-                                        <button id="dropdown-tbm" onclick="dropdown_toggle('tbm')">TB Manager</button>
-                                        <div id="dropdown-menu-tbm" style="display: none">
-                                            <ul>
-                                                <li><a href="#">Question List</a></li>
-                                                <li><a href="#">Review</a></li>
-                                                <li><a href="#">Report List</a></li>
-                                            </ul>
-                                        </div>
+                                        <button onclick="window.location.href='{% url 'OM_TBManager' %}'">TB Manager</button>
 
                                         <div class="dropdown-divider custom"></div>
 
-                                        <button id="dropdown-tbo" onclick="dropdown_toggle('tbo')">TB Operator</button>
-                                        <div id="dropdown-menu-tbo" style="display: none">
-                                            <ul>
-                                                <li><a href="#">Question List</a></li>
-                                                <li><a href="#">Creating Listening</a></li>
-                                                <li><a href="#">Creating Reading</a></li>
-                                            </ul>
-                                        </div>
+                                        <button onclick="window.location.href='{% url 'OM_TBOperator' %}'">TB Operator</button>
 
                                         <div class="dropdown-divider custom"></div>
 
-                                        <button id="dropdown-viewer" onclick="dropdown_toggle('viewer')">Viewer</button>
-                                        <div id="dropdown-menu-viewer" style="display: none">
-                                            <ul>
-                                                <li><a href="#">Exam Score List</a></li>
-                                            </ul>
-                                        </div>
+                                        <button onclick="window.location.href='{% url 'OM_Viewer' %}'">Viewer</button>
 
                                         <div class="dropdown-divider custom"></div>
 
-                                        <button id="dropdown-testee" onclick="dropdown_toggle('testee')">Testee</button>
-                                        <div id="dropdown-menu-testee" style="display: none">
-                                            <ul>
-                                                <li><a href="#">Exam Record</a></li>
-                                                <li><a href="#">Score Record</a></li>
-                                                <li><a href="#">Listening Practice</a></li>
-                                                <li><a href="#">Reading Practice</a></li>
-                                            </ul>
-                                        </div>
+                                        <button onclick="window.location.href='{% url 'OM_Testee' %}'">Testee</button>
                                     </div>
 
                                     <div class="modal-footer">

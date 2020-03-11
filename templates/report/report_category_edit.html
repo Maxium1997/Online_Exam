@@ -161,7 +161,7 @@
                                     <button type="submit" id="submit" class="btn btn-primary">
                                         Update
                                     </button>
-                                    <button type="button" class="btn btn-secondary" onclick="history.back()">
+                                    <button type="button" class="btn btn-secondary" onclick="history.go(-1)">
                                         Cancel
                                     </button>
                                 </div>
@@ -172,4 +172,9 @@
             </div>
         </div>
     </main>
+    <style>
+        .report-category-edit-form .container .card .card-body .button-group ul{
+            padding-left: 10px;
+        }
+    </style>
 {% endblock %}

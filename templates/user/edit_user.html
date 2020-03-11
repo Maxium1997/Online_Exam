@@ -562,7 +562,7 @@
 
                                     <div class="text-right">
                                         <button type="submit" id="submit" class="btn btn-primary">Update</button>
-                                        <button type="button" onclick="history.back()" class="btn btn-secondary">Cancel</button>
+                                        <button type="button" onclick="history.go(-1)" class="btn btn-secondary">Cancel</button>
                                     </div>
                                 </div>
                             </div>
@@ -572,4 +572,9 @@
             </div>
         </form>
     </main>
+    <style>
+        .edit-user-form .container .card .card-body .button-group ul{
+            padding-left: 10px;
+        }
+    </style>
 {% endblock %}

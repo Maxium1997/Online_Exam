@@ -41,14 +41,15 @@ urlpatterns = [
     ])),
 
     re_path(r'operation_manual/', include([
-        re_path(r'^System', views.OM_System, name='OM_System'),
-        re_path(r'^User', views.OM_User, name='OM_User'),
-        re_path(r'^SystemManager', views.OM_SystemManager, name='OM_SystemManager'),
-        re_path(r'^TestManager', views.OM_TestManager, name='OM_TestManager'),
-        re_path(r'^TBManager', views.OM_TBManager, name='OM_TBManager'),
-        re_path(r'^TBOperator', views.OM_TBOperator, name='OM_TBOperator'),
-        re_path(r'^Viewer', views.OM_Viewer, name='OM_Viewer'),
-        re_path(r'^Testee', views.OM_Testee, name='OM_Testee'),
+        re_path(r'^System$', views.OM_System, name='OM_System'),
+        re_path(r'^Report$', views.OM_Report, name='OM_Report'),
+        re_path(r'^User$', views.OM_User, name='OM_User'),
+        re_path(r'^SystemManager$', views.OM_SystemManager, name='OM_SystemManager'),
+        re_path(r'^TestManager$', views.OM_TestManager, name='OM_TestManager'),
+        re_path(r'^TBManager$', views.OM_TBManager, name='OM_TBManager'),
+        re_path(r'^TBOperator$', views.OM_TBOperator, name='OM_TBOperator'),
+        re_path(r'^Viewer$', views.OM_Viewer, name='OM_Viewer'),
+        re_path(r'^Testee$', views.OM_Testee, name='OM_Testee'),
     ])),
 
     re_path(r'^report$', system.report, name='report'),
