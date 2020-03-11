@@ -160,6 +160,7 @@ class Exam(models.Model):
     created_by = models.ForeignKey('User', on_delete=models.PROTECT, related_name='exam_created')
     finish_time = models.DateTimeField(blank=True, null=True)
     is_public = models.BooleanField(default=False)
+    testeeList = models.ManyToManyField('User')
 
     class Meta:
         ordering = ('-created_time',)
@@ -279,11 +280,6 @@ class Group(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class TesteeList(models.Model):
-    created_by = models.ForeignKey('Exam', on_delete=models.PROTECT)
-    testees = models.ManyToManyField('User', blank=True)
 
 
 # 公告

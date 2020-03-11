@@ -23,7 +23,7 @@
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-md-12">
-                                <h2>Practice Record List</h2>
+                                <h2>Practice Record List.</h2>
 
                                 <div class="table-responsive-md">
                                     <table class="table table-hover table-bordered table-striped table-mc-light-blue">
@@ -65,23 +65,27 @@
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-md-12">
-                                <h2>Exam Record List</h2>
+                                <h2>Exam Record List.</h2>
 
                                 <div class="table-responsive-md">
                                     <table class="table table-hover table-striped table-bordered table-mc-light-blue">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th>Name.</th>
-                                                <th>Type.</th>
-                                                <th>Other.</th>
+                                                <th class="text-center">Name.</th>
+                                                <th class="text-center">Type.</th>
+                                                <th class="text-center">Start Time.</th>
+                                                <th class="text-center">Duration.</th>
+                                                <th class="text-center">Other.</th>
                                             </tr>
                                         </thead>
 
                                         <tbody>
                                             {% for exam in examList %}
                                                 <tr>
-                                                    <td>{{ exam }}</td>
-                                                    <td>{{ exam.exam_type|readable_exam_type }}</td>
+                                                    <td class="text-center">{{ exam }}</td>
+                                                    <td class="text-center">{{ exam.exam_type|readable_exam_type }}</td>
+                                                    <td class="text-center">{{ exam.start_time|date:'Y年m月d日, h時i分' }}</td>
+                                                    <td class="text-center">{{ exam.duration }} min.</td>
                                                     <td class="text-center">
                                                         {% if not exam|is_finished:request.user %}
                                                             <a href="{% url 'testee_start_exam' exam.id %}" class="btn btn-primary">Start.</a>
@@ -92,7 +96,7 @@
                                                 </tr>
                                             {% empty %}
                                                 <tr>
-                                                    <td class="text-center" colspan="3">No Data.</td>
+                                                    <td class="text-center" colspan="5">No Data.</td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>

@@ -42,13 +42,13 @@
 
                                 {% if request.user|has_perm:'SystemManager' %}
                                     {% if pro.title|isAlpha %}
-                                        <td class="text-center" data-title="Content">{{ pro.text|safe|summary:60 }}</td>
+                                        <td class="text-center" data-title="Content">{{ pro.text|safe|summary:50 }}</td>
                                     {% else %}
                                         <td class="text-center" data-title="Content">{{ pro.text|safe|summary:25 }}</td>
                                     {% endif %}
                                 {% else %}
                                     {% if pro.title|isAlpha %}
-                                        <td class="text-center" data-title="Content">{{ pro.text|safe|summary:63 }}</td>
+                                        <td class="text-center" data-title="Content">{{ pro.text|safe|summary:53 }}</td>
                                     {% else %}
                                         <td class="text-center" data-title="Content">{{ pro.text|safe|summary:28 }}</td>
                                     {% endif %}
@@ -56,7 +56,7 @@
 
                                 <td class="text-center" data-title="Announcer">{{ pro.created_by.name}}</td>
 
-                                <td class="text-center" data-title="Release Time">{{ pro.created_time|date:'H:i, Y/m/d' }}</td>
+                                <td class="text-center" data-title="Release Time">{{ pro.created_time|date:'Y年m月d日H時i分' }}</td>
 
                                 {% if request.user|has_perm:'SystemManager' %}
                                     <td>

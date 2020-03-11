@@ -39,6 +39,7 @@
                                         <td class="text-center" data-title="Finish">{{ exam.finish_time|date:'H:i, Y/m/d' }}</td>
                                         <td class="text-center" data-title="Duration">{{ exam.duration }} min</td>
                                         <td class="text-center" data-title="Creator">{{ exam.created_by.name }}</td>
+                                        <td><i class="fa fa-pencil-square-o"></i></td>
                                     </tr>
                                 {% endfor %}
                             {% else %}

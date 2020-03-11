@@ -19,22 +19,13 @@ from .managerfuncs import viewer, practicemanager, testmanager
 @permission_check(UserType.Testee)
 def exam_list(request):
     examList = []
-    exams = Exam.objects.exclude(is_public=False)
+    exams = Exam.objects.filter(testeeList=request.user)
     for exam in exams:
-        try:
-            if request.user.student in exam.group.member.all():
-                examList.append(exam)
-            else:
-                pass
-        except:
-            pass
+        examList.append(exam)
 
     practiceList = []
-    practices = Exam.objects.filter(created_by=request.user)
+    practices = Exam.objects.filter(is_public=False).filter(created_by=request.user)
     for practice in practices:
-        if practice in examList:
-            pass
-        else:
             practiceList.append(practice)
 
     return render(request, 'testee/exam_list.html', locals())

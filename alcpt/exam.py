@@ -12,7 +12,7 @@ from django.db import IntegrityError
 from alcpt.managerfuncs import testmanager
 from alcpt.decorators import permission_check
 from alcpt.definitions import UserType, QuestionType, QuestionTypeCounts, ExamType
-from alcpt.models import Exam, TestPaper, Group, Question, TesteeList, Proclamation
+from alcpt.models import Exam, TestPaper, Group, Question, Proclamation
 from alcpt.exceptions import *
 
 
@@ -37,10 +37,14 @@ def exam_list(request):
 @permission_check(UserType.TestManager)
 def exam_create(request):
     if request.method == 'POST':
-        start_time = request.POST.get('start_time',)
-        duration = request.POST.get('duration',)
-        started_time = datetime.strptime(str(start_time)+".000Z", '%Y-%m-%dT%H:%M:%S.%fZ')
-        finish_time = datetime.strptime(str(start_time)+".000Z", '%Y-%m-%dT%H:%M:%S.%fZ') + timedelta(minutes=int(duration))
+        date = request.POST.get('start_time_date')
+        hour = request.POST.get('start_time_hour')
+        minute = request.POST.get('start_time_minute')
+        start_time = date + " " + hour + ":" + minute
+        duration = request.POST.get('duration')
+        started_time = datetime.strptime(str(start_time), '%Y-%m-%d %H:%M')
+        finish_time = datetime.strptime(str(start_time), '%Y-%m-%d %H:%M') + timedelta(minutes=int(duration))
+
         testpaper = TestPaper.objects.get(id=int(request.POST.get('selected_testpaper',)))
         selected_group = Group.objects.get(id=int(request.POST.get('selected_group')))
 
@@ -59,16 +63,14 @@ def exam_create(request):
             testpaper.save()
 
             # add the testee into the exam.
-            testee_list = TesteeList.objects.create(created_by=exam)
-            testee_list.created_by = exam
-            for testee in selected_group.user_set.all():
-                testee_list.testees.add(testee)
-            testee_list.save()
+            for testee in selected_group.member.all():
+                exam.testeeList.add(testee)
+            exam.save()
 
             # create proclamation to notice all user the exam start time.
-            pro_content = "Exam name: " + exam.name + "<br>" + \
-                          "Start Time: " + exam.start_time + "<br>" + \
-                          "Duration: " + exam.duration
+            pro_content = "Exam name: " + exam.name + "\n" + \
+                          "Start Time: " + exam.start_time + "\n" + \
+                          "Duration: " + exam.duration + " min"
             proclamation = Proclamation.objects.create(title=exam.name,
                                                        text=pro_content,
                                                        is_public=True,
@@ -83,6 +85,26 @@ def exam_create(request):
         exam_names = [_.name for _ in Exam.objects.all()]
         testpapers = TestPaper.objects.filter(is_testpaper=True, valid=True)
         groups = Group.objects.all()
+
+        dateList = []
+        now_date = datetime.now().strftime('%Y-%m-%d')
+        dateList.append(now_date)
+        for i in range(20):
+            now_date = datetime.strptime(now_date, '%Y-%m-%d')
+            now_date = now_date + timedelta(days=1)
+            now_date = now_date.strftime('%Y-%m-%d')
+            dateList.append(now_date)
+
+        hourList = []
+        for i in range(24):
+            hourList.append(i)
+
+        minuteList = [0]
+        for i in range(1, 60):
+            if i % 5 == 0:
+                minuteList.append(i)
+
+
         return render(request, 'exam/exam_create.html', locals())
 
 

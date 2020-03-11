@@ -17,23 +17,23 @@
                         <table class="table table-hover">
                             <thead class="thead-light">
                                 <tr>
-                                    <th class="">Name.</th>
-                                    <th class="">Average.</th>
-                                    <th class=""><i class="fa fa-users"></i></th>
-                                    <th class="">Start.</th>
-                                    <th class="">Finish.</th>
-                                    <th class="">Duration.</th>
+                                    <th class="text-center">Name.</th>
+                                    <th class="text-center">Average.</th>
+                                    <th class="text-center"><i class="fa fa-users"></i></th>
+                                    <th class="text-center">Start.</th>
+                                    <th class="text-center">Finish.</th>
+                                    <th class="text-center">Duration.(min)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for exam in exams %}
                                     <tr>
-                                        <td>{{ exam.name }}</td>
-                                        <td>{{ exam.average_score }}</td>
-                                        <td>{{ exam.testee_list.set.all.count }}</td>
-                                        <td>{{ exam.start_time|date:"H:i, Y/m/d" }}</td>
-                                        <td>{{ exam.finish_time|date:"H:i, Y/m/d" }}</td>
-                                        <td>{{ exam.duration }}</td>
+                                        <td class="text-center">{{ exam.name }}</td>
+                                        <td class="text-center">{{ exam.average_score }}</td>
+                                        <td class="text-center">{{ exam.testeeList.count }}</td>
+                                        <td class="text-center">{{ exam.start_time|date:"Y年m月d日, H時i分" }}</td>
+                                        <td class="text-center">{{ exam.finish_time|date:"Y年m月d日, H時i分" }}</td>
+                                        <td class="text-center">{{ exam.duration }}</td>
                                     </tr>
                                 {% empty %}
                                     <tr>
