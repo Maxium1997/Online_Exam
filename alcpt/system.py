@@ -571,7 +571,7 @@ def report(request):
 
         messages.success(request, 'Thanks for your advise, we will help you to solve your problem as soon as possible.')
 
-        return redirect('Homepage')
+        return redirect('report_list')
     else:
         categories = ReportCategory.objects.all()
         return render(request, 'report/report.html', locals())

@@ -27,7 +27,7 @@
                     <img src="{% static '/images/om/om-sm02.png' %}" width="60%">
                     <p>
                         <ul>
-                            <li>表格內主要顯示使用者的「帳號」、「姓名」、「身份」、「權限」、「最近登入時間」。</li>
+                            <li>表格內主要顯示使用者的「Account.」、「Name.」、「Identity.」、「Privilege.」、「Last Login.」。</li>
                             <li>
                                 身份區分為：
                                 <ul>
@@ -47,7 +47,7 @@
                                     <li><a href="{% url 'OM_Testee'%}">Testee</a>：受測者</li>
                                 </ul>
                             </li>
-                            <li>「搜尋」功能列：可進行「學號/姓名」、「科系」、「中隊」、「年班」的條件式搜尋。</li>
+                            <li>「搜尋」功能列：可進行「Account./Name.」、「Department.」、「Squadron.」、「Grade.」的條件式搜尋。</li>
                             <li>「新增使用者」：可進行使用者的新增。</li>
                         </ul>
                     </p>
@@ -66,8 +66,8 @@
                     <p>
                         <ul>
                             <li>此圖以身份為「Student」的使用者為例，若身份為非「Student」之使用者，則不會有右邊學生基本資料可進行編輯。</li>
-                            <li>系統管理員可編輯使用者的「帳號」、「姓名」、「Email」、「性別」、「身份」、「權限」。</li>
-                            <li>若該使用者擁有「Student」，即可編輯「學號」、「科系」、「中隊」、「年班」。</li>
+                            <li>系統管理員可編輯使用者的「Register ID.」、「Name.」、「Email.」、「Gender.」、「Identity.」、「Privilege.」。</li>
+                            <li>若該使用者擁有「Student」，即可編輯「Student ID.」、「Department.」、「Squadron.」、「Grade.」。</li>
                         </ul>
                     </p>
 
@@ -75,8 +75,8 @@
                     <img src="{% static '/images/om/om-sm03.png' %}" width="70%">
                     <p>
                         <ul>
-                            <li>左方表格進行使用者基本資料的填寫。需輸入「帳號」、選擇「身份」及權限設置。</li>
-                            <li>若「身份」選擇<code>Student</code>，則右邊的表格需填寫學生相關資料。需輸入「學號」，其餘「科系」、「中隊」、「年班」，可選擇填寫或不填寫。</li>
+                            <li>左方表格進行使用者基本資料的填寫。需輸入「Reg ID.」、選擇「Identity.」及權限設置。</li>
+                            <li>若「身份」選擇<code>Student</code>，則右邊的表格需填寫學生相關資料。需輸入「Student ID.」，其餘「Department.」、「Squadron.」、「Grade.」，可選擇填寫或不填寫。</li>
                             <li>欲一次性新增多個使用者可點擊「<code>Multiple Creation？</code>」的連結。</li>
                         </ul>
                     </p>
@@ -186,6 +186,7 @@
                     <p>
                         <ul>
                             <li>更改所要編輯的問題類別名稱及所負責的單位後即可提交更改。</li>
+                            <li>無論在「新增問題類別」或是「編輯問題類別」，除<a href="{% url 'OM_SystemManager' %}">系統管理員</a>、<a href="{% url 'OM_TestManager' %}">考試管理員</a>、<a href="{% url 'OM_TBManager' %}">題庫管理員</a>外其餘權限皆不得設置為問題類別的負責單位。</li>
                             <li style="color: red">若無必要性，不建議做更改。</li>
                         </ul>
                     </p>
@@ -205,16 +206,4 @@
             </div>
         </div>
     </main>
-    <style>
-        .mark{
-            background-color: rgb(248, 248, 248);
-
-            border-left-style: solid;
-            border-left-width: 4px;
-            border-left-color: rgb(200, 200, 200);
-            opacity: 0.6;
-
-            padding-left: 10px;
-        }
-    </style>
 {% endblock %}

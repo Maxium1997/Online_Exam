@@ -27,11 +27,11 @@
                             <tbody>
                                 {% if reports %}
                                     {% for report in reports %}
-                                        <tr {% if report.staff_notification %}class="table-active"{% endif %} onclick="window.location.href='{% url 'report_reply' report.id %}'" style="cursor: pointer">
+                                        <tr {% if report.staff_notification %}style="opacity: 1" {% endif %} onclick="window.location.href='{% url 'report_reply' report.id %}'">
                                             <td class="text-center" data-title="Category">{{ report.category }}</td>
                                             <td class="text-center" data-title="Content">{{ report.supplement_note|safe|summary:51 }}</td>
                                             <td class="text-center" data-title="State">{{ report.state|readable_report_state }}</td>
-                                            <td class="text-center" data-title="Time">{{ report.created_time|date:"H:i, m/d/Y" }}</td>
+                                            <td class="text-center" data-title="Time">{{ report.created_time|date:"Y年m月d日, h時i分" }}</td>
                                         </tr>
                                     {% endfor %}
                                 {% else %}
@@ -47,7 +47,11 @@
 
     <style>
         .responsible-report-list .container{
-            height: 70%;
+            height: 70vh;
+        }
+        .responsible-report-list .container table > tbody > tr{
+            cursor: pointer;
+            opacity: 0.6;
         }
     </style>
 {% endblock %}

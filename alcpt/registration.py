@@ -213,7 +213,7 @@ def forget_password(request):
 # 取得個人所回報的所有問題
 @login_required
 def report_list(request):
-    reports = Report.objects.filter(created_by=request.user)
+    reports = Report.objects.filter(created_by=request.user).order_by('-created_time')
     return render(request, 'registration/report_list.html', locals())
 
 
