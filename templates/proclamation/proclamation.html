@@ -42,13 +42,13 @@
 
                                 {% if request.user|has_perm:'SystemManager' %}
                                     {% if pro.title|isAlpha %}
-                                        <td class="text-center" data-title="Content">{{ pro.text|safe|summary:50 }}</td>
+                                        <td class="text-center" data-title="Content">{{ pro.text|safe|summary:45 }}</td>
                                     {% else %}
                                         <td class="text-center" data-title="Content">{{ pro.text|safe|summary:25 }}</td>
                                     {% endif %}
                                 {% else %}
                                     {% if pro.title|isAlpha %}
-                                        <td class="text-center" data-title="Content">{{ pro.text|safe|summary:53 }}</td>
+                                        <td class="text-center" data-title="Content">{{ pro.text|safe|summary:48 }}</td>
                                     {% else %}
                                         <td class="text-center" data-title="Content">{{ pro.text|safe|summary:28 }}</td>
                                     {% endif %}

@@ -36,13 +36,14 @@
         }
 
         function toggle_visibility(type){
+            var all_types = ['QA', 'ShortConversation', 'Grammar', 'Phrase', 'ParagraphUnderstanding'];
             if (type === 'all'){
                 for (var i = 0; i < all_types.length; i++){
-                var tmp = document.getElementsByClassName(all_types[i]);
-                for (var j = 0; j < tmp.length; j++){
-                    tmp[j].style.display = 'table-row';
+                    var tmp = document.getElementsByClassName(all_types[i]);
+                    for (var j = 0; j < tmp.length; j++){
+                        tmp[j].style.display = 'table-row';
+                    }
                 }
-            }
             } else{
                 var show_type = document.getElementsByClassName(type);
 
@@ -146,13 +147,14 @@
                                     </tr>
                                 {% empty %}
                                     <tr>
-                                        <td>No Data.</td>
+                                        <td colspan="4">No Data.</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
-                    </div>
 
+                        <button type="button" class="btn btn-primary float-right" onclick="window.location.href='{% url 'testpaper_list' %}'">OK</button>
+                    </div>
                 </div>
             </div>
         </div>

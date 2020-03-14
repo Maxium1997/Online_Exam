@@ -45,7 +45,7 @@ def group_create(request):
         group.save()
 
         messages.success(request, 'Group create successfully.')
-        return redirect('testee_group_list')
+        return redirect('testee_group_edit', group_id=group.id)
 
     else:
         groups_names = [_.name for _ in Group.objects.all()]
