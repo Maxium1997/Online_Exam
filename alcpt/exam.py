@@ -97,12 +97,12 @@ def exam_create(request):
 
         hourList = []
         for i in range(24):
-            hourList.append(i)
+            hourList.append(str(i))
 
         minuteList = [0]
         for i in range(1, 60):
             if i % 5 == 0:
-                minuteList.append(i)
+                minuteList.append(str(i))
 
         return render(request, 'exam/exam_create.html', locals())
 
@@ -118,7 +118,83 @@ def exam_content(request, exam_id):
 
 @permission_check(UserType.TestManager)
 def exam_edit(request, exam_id):
-    return render(request, 'exam/exam_edit.html', locals())
+    try:
+        exam = Exam.objects.get(id=exam_id)
+
+        if exam.start_time < datetime.now():
+            messages.error(request, "Exam has started, cannot be edited.")
+            return redirect('exam_list')
+
+        else:
+            exam.testpaper.is_used = False
+            if request.method == 'POST':
+                try:
+                    exam_name = request.POST.get('exam_name')
+                    exam.name = exam_name
+
+                except:
+                    messages.error(request, "This name has existed.")
+                    return redirect('exam_list')
+
+                date = request.POST.get('start_time_date')
+                hour = request.POST.get('start_time_hour')
+                minute = request.POST.get('start_time_minute')
+                start_time = date + " " + hour + ":" + minute
+                duration = request.POST.get('duration')
+                started_time = datetime.strptime(str(start_time), '%Y-%m-%d %H:%M')
+                finish_time = datetime.strptime(str(start_time), '%Y-%m-%d %H:%M') + timedelta(minutes=int(duration))
+
+                exam.start_time = start_time
+                exam.duration = duration
+                exam.finish_time = finish_time
+
+                testpaper = TestPaper.objects.get(id=int(request.POST.get('selected_testpaper')))
+                testpaper.is_used = True
+                testpaper.save()
+                exam.testpaper = testpaper
+
+                if request.POST.get('selected_group'):
+                    selected_group = Group.objects.get(id=int(request.POST.get('selected_group')))
+                    exam.testeeList.clear()
+                    for testee in selected_group.member.all():
+                        exam.testeeList.add(testee)
+
+                exam.save()
+
+                messages.success(request, "Successfully updated exam - {}".format(exam.name))
+                return redirect('exam_list')
+
+            else:
+                testpapers = TestPaper.objects.filter(is_testpaper=True, valid=True)
+                groups = Group.objects.all()
+
+                original_date = exam.start_time.strftime('%Y-%m-%d')
+                original_hour = exam.start_time.strftime('%H')
+                original_minute = exam.start_time.strftime('%M')
+
+                dateList = []
+                now_date = datetime.now().strftime('%Y-%m-%d')
+                dateList.append(now_date)
+                for i in range(20):
+                    now_date = datetime.strptime(now_date, '%Y-%m-%d')
+                    now_date = now_date + timedelta(days=1)
+                    now_date = now_date.strftime('%Y-%m-%d')
+                    dateList.append(now_date)
+
+                hourList = []
+                for i in range(24):
+                    hourList.append(str(i))
+
+                minuteList = [0]
+                for i in range(1, 60):
+                    if i % 5 == 0:
+                        minuteList.append(str(i))
+
+                return render(request, 'exam/exam_edit.html', locals())
+
+    except ObjectDoesNotExist:
+        messages.error(request, "Exam does not exist, exam id - {}".format(exam_id))
+        return redirect('exam_list')
 
 
 @permission_check(UserType.TestManager)

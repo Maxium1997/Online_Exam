@@ -105,17 +105,6 @@
             {#document.getElementById('time_invalid').innerHTML = validName + ','+validTime + validDuration + validTestpaper + validGroup;#}
         {#}#}
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js" defer></script>
-    <script src="/static/scripts/datetimepicker.min.js?{{ request.static_file_version }}" defer></script>
-    <script src="/static/scripts/exam.js?{{ request.static_file_version }}" defer></script>
-    <script>
-        $(function() {
-            $('#start-time').datetimepicker({
-                format: 'yyyy-mm-ddThh:ii:ss',
-                minDate: 0,
-            });
-        });
-    </script>
 {% endblock %}
 
 
@@ -181,18 +170,18 @@
                                     Date:
                                     <select name="start_time_date" required>
                                         {% for date in dateList %}
-                                            <option>{{ date }}</option>
+                                            <option value="{{ date }}">{{ date }}</option>
                                         {% endfor %}
                                     </select>
                                     Time:
                                     <select name="start_time_hour" required>
                                         {% for hour in hourList %}
-                                            <option>{{ hour }}</option>
+                                            <option value="{{ hour }}">{{ hour }}</option>
                                         {% endfor %}
                                     </select>
                                     <select name="start_time_minute" required>
                                         {% for minute in minuteList %}
-                                            <option>{{ minute }}</option>
+                                            <option value="{{ minute }}">{{ minute }}</option>
                                         {% endfor %}
                                     </select>
                                 </p>
