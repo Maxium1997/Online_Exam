@@ -76,9 +76,9 @@ def exam_create(request):
                                                        is_public=True,
                                                        created_by=request.user)
 
-            messages.success(request, "Successfully created a new exam - %s.".format(exam.name))
+            messages.success(request, "Successfully created a new exam - {}.".format(exam.name))
         except IntegrityError:
-            raise IntegrityError("Duplicate entry '%s' for key 'name'".format(exam_name))
+            raise IntegrityError("Duplicate entry '{}' for key 'name'".format(exam_name))
 
         return redirect('exam_list')
     else:
@@ -112,7 +112,7 @@ def exam_content(request, exam_id):
     try:
         exam = Exam.objects.get(id=exam_id)
     except ObjectDoesNotExist:
-        messages.error(request, "Exam does not exist, exam id - %s".format(exam_id))
+        messages.error(request, "Exam does not exist, exam id - {}".format(exam_id))
     return render(request, 'exam/exam_content.html', locals())
 
 
@@ -225,7 +225,7 @@ def testpaper_content(request, testpaper_id):
     try:
         testpaper = TestPaper.objects.get(id=testpaper_id)
     except ObjectDoesNotExist:
-        messages.error(request, 'Test paper does not exist, test paper id: %s'.format(testpaper_id))
+        messages.error(request, 'Test paper does not exist, test paper id: {}'.format(testpaper_id))
         return redirect('testpaper_list')
 
     questions = testpaper.question_list.all().order_by('q_type')
@@ -240,7 +240,7 @@ def testpaper_create(request):
 
         try:
             testpaper = testmanager.create_testpaper(name=testpaper_name, created_by=request.user, is_testpaper=1)
-            messages.success(request, 'Successfully created test paper - %s'.format(testpaper.name))
+            messages.success(request, 'Successfully created test paper - {}'.format(testpaper.name))
             return redirect('testpaper_edit', testpaper_id=testpaper.id)
             
         except:
@@ -253,7 +253,6 @@ def testpaper_create(request):
         return render(request, 'exam/testpaper_create.html', locals())
 
 
-# 編輯考卷（未完成）
 @permission_check(UserType.TestManager)
 def testpaper_edit(request, testpaper_id):
     try:
@@ -266,7 +265,7 @@ def testpaper_edit(request, testpaper_id):
             pass
 
     except ObjectDoesNotExist:
-        messages.error(request, 'Test paper does not exist, test paper id: %s'.format(testpaper_id))
+        messages.error(request, 'Test paper does not exist, test paper id: {}'.format(testpaper_id))
         return redirect('testpaper_list')
 
     if request.method == "POST":
@@ -298,30 +297,28 @@ def testpaper_edit(request, testpaper_id):
         return render(request, 'exam/testpaper_edit.html', locals())
 
 
-# 刪除考卷
 @permission_check(UserType.TestManager)
 def testpaper_delete(request, testpaper_id):
     try:
         testpaper = TestPaper.objects.get(id=testpaper_id)
         if testpaper.is_testpaper and testpaper.valid:
-            messages.warning(request, 'Failed deleted test paper - %s.'.format(testpaper.id))
+            messages.warning(request, 'Failed deleted test paper - {}.'.format(testpaper.id))
         else:
-            messages.success(request, 'Successfully deleted test paper - %s.'.format(testpaper.id))
+            messages.success(request, 'Successfully deleted test paper - {}.'.format(testpaper.id))
             testpaper.delete()
         return redirect('testpaper_list')
 
     except ObjectDoesNotExist:
-        messages.error(request, 'Test paper does not exist, test paper id - %s'.format(testpaper_id))
+        messages.error(request, 'Test paper does not exist, test paper id - {}'.format(testpaper_id))
         return redirect('testpaper_list')
 
 
-# 人工選題（已完成）
 @permission_check(UserType.TestManager)
 def manual_pick(request, testpaper_id, question_type):
     try:
         testpaper = TestPaper.objects.get(id=testpaper_id)
     except ObjectDoesNotExist:
-        messages.error(request, 'Test paper does not exist, test paper id - %s'.format(testpaper_id))
+        messages.error(request, 'Test paper does not exist, test paper id - {}'.format(testpaper_id))
 
     if request.method == "POST":
         selected_question_ids = request.POST.getlist('question')
@@ -352,13 +349,12 @@ def manual_pick(request, testpaper_id, question_type):
         return render(request, 'exam/manual_pick.html', locals())
 
 
-# 自動選題（已完成）
 @permission_check(UserType.TestManager)
 def auto_pick(request, testpaper_id, question_type):
     try:
         testpaper = TestPaper.objects.get(id=testpaper_id)
     except ObjectDoesNotExist:
-        messages.error(request, 'Test paper does not exist, test paper id - %s'.format(testpaper_id))
+        messages.error(request, 'Test paper does not exist, test paper id - {}'.format(testpaper_id))
 
     if testmanager.quantity_confirmation(testpaper=testpaper):
         messages.warning(request, 'This type had reached limit amount.')
