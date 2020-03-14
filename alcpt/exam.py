@@ -108,6 +108,20 @@ def exam_create(request):
 
 
 @permission_check(UserType.TestManager)
+def exam_content(request, exam_id):
+    try:
+        exam = Exam.objects.get(id=exam_id)
+    except ObjectDoesNotExist:
+        messages.error(request, "Exam does not exist, exam id - %s".format(exam_id))
+    return render(request, 'exam/exam_content.html', locals())
+
+
+@permission_check(UserType.TestManager)
+def exam_edit(request, exam_id):
+    return render(request, 'exam/exam_edit.html', locals())
+
+
+@permission_check(UserType.TestManager)
 @require_http_methods(["GET"])
 def testpaper_list(request):
     testpaper_name = request.GET.get('testpaper_name')

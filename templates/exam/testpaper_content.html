@@ -4,6 +4,8 @@
 
 {% block scripts %}
     <script>
+        var clickNum = 1;
+
         function toggle(index){
             var mainDataIndex = 'mainData'+index;
             var mainData = document.getElementById(mainDataIndex);
@@ -36,6 +38,7 @@
         }
 
         function toggle_visibility(type){
+            clickNum += 1;
             var all_types = ['QA', 'ShortConversation', 'Grammar', 'Phrase', 'ParagraphUnderstanding'];
             if (type === 'all'){
                 for (var i = 0; i < all_types.length; i++){
@@ -58,6 +61,10 @@
                     show_type[i].style.display = 'table-row';
                 }
             }
+        }
+
+        function back() {
+            history.go(-clickNum);
         }
     </script>
 {% endblock %}
@@ -123,7 +130,6 @@
                                                 <div id="full_Q_content{{ forloop.counter }}" style="display: none">
                                                     {{ question.q_content|linebreaksbr }}
                                                 </div>
-{#                                                {{ question.q_content|summary:70 }}#}
                                             </td>
 
                                         {% else %}
@@ -153,7 +159,7 @@
                             </tbody>
                         </table>
 
-                        <button type="button" class="btn btn-primary float-right" onclick="window.location.href='{% url 'testpaper_list' %}'">OK</button>
+                        <button type="button" class="btn btn-primary float-right" onclick="back()">OK</button>
                     </div>
                 </div>
             </div>

@@ -33,7 +33,7 @@
                             </div>
                             {% if exams %}
                                 {% for exam in examList %}
-                                    <tr>
+                                    <tr style="cursor: pointer" onclick="window.location.href='{% url 'exam_content' exam.id %}'">
                                         <td class="text-center" data-title="Exam Name">{{ exam.name }}</td>
                                         <td class="text-center" data-title="Start">{{ exam.start_time|date:'H:i, Y/m/d' }}</td>
                                         <td class="text-center" data-title="Finish">{{ exam.finish_time|date:'H:i, Y/m/d' }}</td>

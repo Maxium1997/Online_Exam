@@ -114,6 +114,8 @@ urlpatterns = [
     re_path(r'^exam$', exam.exam_list, name='exam_list'),
     re_path(r'^exam/', include([
         re_path(r'^create$', exam.exam_create, name='exam_create'),
+        re_path(r'^(?P<exam_id>[0-9]+)/content$', exam.exam_content, name='exam_content'),
+        re_path(r'^(?P<exam_id>[0-9]+)/edit$', exam.exam_edit, name='exam_edit'),
 
         re_path(r'^testpaper/', include([
             re_path(r'^list$', exam.testpaper_list, name='testpaper_list'),
