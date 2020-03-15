@@ -83,7 +83,7 @@
                             <li>
                                 表格內主要顯示使用者的「Testpaper Name.」、「Valid.」、「Used.」、「Last Update.」、「Creator.」。
                                 <ul>
-                                    <li>Valid.：代表該考卷的合法性，若該考卷的<a href="">試題類型</a>皆達到該類型的上限量，會顯示True，否則顯示False。</li>
+                                    <li>Valid.：代表該考卷的合法性，若該考卷的<a href="{% url 'OM_TBManager' %}">試題類型</a>皆達到該類型的上限量，會顯示True，否則顯示False。</li>
                                     <li style="color: red">若該試卷「Valid.」已為True，則無法點擊「編輯試卷」進行編輯。</li>
                                     <li>Used.：代表該考卷是否已被測驗使用，若已使用會顯示True，否則顯示False。</li>
                                     <li>Last Update.：顯示該考卷的最後更新時間。</li>
