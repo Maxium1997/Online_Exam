@@ -9,27 +9,27 @@
                 <div class="col-md-12 text-left">
                     <h1>系統管理員說明</h1>
                     <p>
-                        主要負責控制本系統中屬於類別類的相關資料
-                    </p>
-                    <p>
-                        <img src="{% static '/images/om/om-sm01.png' %}" width="50%">
                         <ul>
-                            <li>User List：使用者列表</li>
-                            <li>Unit List：單位列表</li>
-                            <li>ReportCategory List：問題類別列表</li>
-                            <li>Report List：問題列表</li>
+                            <li>主要負責控制本系統中屬於類別類的相關資料</li>
+                            <img src="{% static '/images/om/sm/om-sm01.png' %}" width="50%">
+                            <ul>
+                                <li>User List：使用者列表</li>
+                                <li>Unit List：單位列表</li>
+                                <li>ReportCategory List：問題類別列表</li>
+                                <li>Report List：問題列表</li>
+                            </ul>
                         </ul>
                     </p>
 
                     <hr>
 
                     <h3>User List：使用者列表</h3>
-                    <img src="{% static '/images/om/om-sm02.png' %}" width="60%">
+                    <img src="{% static '/images/om/sm/om-sm02.png' %}" width="60%">
                     <p>
                         <ul>
                             <li>表格內主要顯示使用者的「Account.」、「Name.」、「Identity.」、「Privilege.」、「Last Login.」。</li>
                             <li>
-                                身份區分為：
+                                身份<code>Identity</code>區分為：
                                 <ul>
                                     <li>Visitor：訪客／一般使用者</li>
                                     <li>Student：學生</li>
@@ -37,7 +37,7 @@
                                 </ul>
                             </li>
                             <li>
-                                權限區分為：
+                                權限<code>Privilege</code>區分為：
                                 <ul>
                                     <li><a href="{% url 'OM_SystemManager' %}">SystemManager</a>：系統管理員</li>
                                     <li><a href="{% url 'OM_TestManager' %}">TestManager</a>：考試管理員</li>
@@ -53,8 +53,8 @@
                     </p>
 
                     <h4>檢視使用者個人資料</h4>
-                    <img src="{% static '/images/om/om-sm09.png' %}" width="45%">
-                    <img src="{% static '/images/om/om-sm08.png' %}" width="45%">
+                    <img src="{% static '/images/om/sm/om-sm09.png' %}" width="45%">
+                    <img src="{% static '/images/om/sm/om-sm08.png' %}" width="45%">
                     <p>
                         <ul>
                             <li>若該使用者為「Student」，才會顯示右邊學生基本資料。</li>
@@ -62,7 +62,7 @@
                     </p>
 
                     <h4>編輯使用者個人資料</h4>
-                    <img src="{% static '/images/om/om-sm10.png' %}" width="45%">
+                    <img src="{% static '/images/om/sm/om-sm10.png' %}" width="45%">
                     <p>
                         <ul>
                             <li>此圖以身份為「Student」的使用者為例，若身份為非「Student」之使用者，則不會有右邊學生基本資料可進行編輯。</li>
@@ -72,7 +72,7 @@
                     </p>
 
                     <h4>新增使用者</h4>
-                    <img src="{% static '/images/om/om-sm03.png' %}" width="70%">
+                    <img src="{% static '/images/om/sm/om-sm03.png' %}" width="70%">
                     <p>
                         <ul>
                             <li>左方表格進行使用者基本資料的填寫。需輸入「Reg ID.」、選擇「Identity.」及權限設置。</li>
@@ -82,7 +82,7 @@
                     </p>
 
                     <h4>多重新增使用者</h4>
-                    <img src="{% static '/images/om/om-sm04.png' %}" width="60%">
+                    <img src="{% static '/images/om/sm/om-sm04.png' %}" width="60%">
                     <p>
                         <ul>
                             <li>輸入多個帳號同時建立使用者。</li>
@@ -105,7 +105,7 @@
                     <hr>
 
                     <h3>Unit List：單位列表</h3>
-                    <img src="{% static '/images/om/om-sm05.png' %}" width="60%">
+                    <img src="{% static '/images/om/sm/om-sm05.png' %}" width="60%">
                     <p>
                         <ul>
                             <li>「標籤」：可進行「科系列表」與「中隊列表」的切換。</li>
@@ -114,21 +114,21 @@
                         </ul>
                     </p>
                     <h4>檢視單位人員</h4>
-                    <img src="{% static '/images/om/om-sm11.png' %}" width="40%">
+                    <img src="{% static '/images/om/sm/om-sm11.png' %}" width="40%">
                     <p>
                         <ul>
                             <li>點選該欄位可檢視該欄位人員個人資料。</li>
                         </ul>
                     </p>
                     <h4>新增單位</h4>
-                    <img src="{% static '/images/om/om-sm06.png' %}" width="40%">
+                    <img src="{% static '/images/om/sm/om-sm06.png' %}" width="40%">
                     <p>
                         <ul>
                             <li>需先選擇所要新增的項目（科系、中隊），之後才能進行單位名稱的命名。</li>
                         </ul>
                     </p>
                     <h4>編輯單位</h4>
-                    <img src="{% static '/images/om/om-sm07.png' %}" width="40%">
+                    <img src="{% static '/images/om/sm/om-sm07.png' %}" width="40%">
                     <p>
                         <ul>
                             <li>僅能對該單位的名稱進行編輯。</li>
@@ -138,7 +138,7 @@
                     <hr>
 
                     <h3>ReportCategory List：問題類別列表</h3>
-                    <img src="{% static '/images/om/om-sm12.png' %}" width="60%">
+                    <img src="{% static '/images/om/sm/om-sm12.png' %}" width="60%">
                     <p>
                         <ul>
                             <li>「問題類別列表」主要用於歸類被使用者回報的問題種類。</li>
@@ -148,7 +148,7 @@
                         </ul>
                     </p>
                     <h4>檢視該類別的問題回報</h4>
-                    <img src="{% static '/images/om/om-sm13.png' %}" width="60%">
+                    <img src="{% static '/images/om/sm/om-sm13.png' %}" width="60%">
                     <p>
                         <ul>
                             <li><code>Content.</code>顯示使用者問題回報的概略內容。</li>
@@ -162,7 +162,7 @@
                         </ul>
                     </p>
                     <h4>檢視問題回報</h4>
-                    <img src="{% static '/images/om/om-sm14.png' %}" width="60%">
+                    <img src="{% static '/images/om/sm/om-sm14.png' %}" width="60%">
                     <p>
                         <ul>
                             <li>左邊區塊右下角會顯示該回報的狀態。
@@ -175,14 +175,14 @@
                         </ul>
                     </p>
                     <h4>新增問題類別</h4>
-                    <img src="{% static '/images/om/om-sm15.png' %}" width="40%">
+                    <img src="{% static '/images/om/sm/om-sm15.png' %}" width="40%">
                     <p>
                         <ul>
                             <li>輸入所要創建的問題類別名稱及設置所負責的單位後即可提交建立。</li>
                         </ul>
                     </p>
                     <h4>編輯問題類別</h4>
-                    <img src="{% static '/images/om/om-sm16.png' %}" width="40%">
+                    <img src="{% static '/images/om/sm/om-sm16.png' %}" width="40%">
                     <p>
                         <ul>
                             <li>更改所要編輯的問題類別名稱及所負責的單位後即可提交更改。</li>
@@ -196,10 +196,9 @@
                     <h3>Report List：問題列表</h3>
                     <p>
                         <ul>
-                            <li>請參閱<a href="{% url 'OM_Report' %}">問題回報</a></li>
+                            <li>請參閱<a href="{% url 'OM_Report' %}">問題回報</a>。</li>
                         </ul>
                     </p>
-
 
                     <hr class="featurette-divider">
                 </div>

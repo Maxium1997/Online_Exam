@@ -191,12 +191,12 @@
                                             </td>
                                             <td colspan="2" style="text-align: left; font-size: 14px">
                                                 <ul style="font-size: 14px; list-style: none">
-                                                      <li>Update:{{ question.update_time|date:'H:i, Y/m/d' }}</li>
-                                                      <li>Issued:{{ question.issued_freq }}</li>
-                                                      <li>Difficulty:{{ question.difficulty }}</li>
-                                                      <li>Creater:{{ question.created_by.name }}</li>
-                                                      <li>Last:{{ question.last_updated_by.name }}</li>
-                                                  </ul>
+                                                    <li>Update:{{ question.update_time|date:'H:i, Y/m/d' }}</li>
+                                                    <li>Issued:{{ question.issued_freq }}</li>
+                                                    <li>Difficulty:{{ question.difficulty }}</li>
+                                                    <li>Creator:{{ question.created_by.name }}</li>
+                                                    <li>Last Update:{{ question.last_updated_by.name }}</li>
+                                                </ul>
                                             </td>
                                         </tr>
                                     {% endfor %}
