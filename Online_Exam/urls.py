@@ -28,6 +28,7 @@ urlpatterns = [
     re_path(r'^$', views.about, name='about'),
     re_path(r'^/', include([
         re_path(r'^download_system_pdf$', views.downloadSystemPDF, name='download_system_pdf'),
+        re_path(r'^download_OM_pdf$', views.downloadOperationManual, name='download_OM_pdf'),
     ])),
 
     re_path(r'^about/', include([

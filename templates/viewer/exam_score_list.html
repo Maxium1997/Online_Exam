@@ -20,14 +20,14 @@
                                     <th class="text-center">Name.</th>
                                     <th class="text-center">Average.</th>
                                     <th class="text-center"><i class="fa fa-users"></i></th>
-                                    <th class="text-center">Start.</th>
-                                    <th class="text-center">Finish.</th>
+                                    <th class="text-center">Start Time.</th>
+                                    <th class="text-center">Finish Time.</th>
                                     <th class="text-center">Duration.(min)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for exam in exams %}
-                                    <tr>
+                                    <tr style="cursor: pointer" onclick="window.location.href='{% url 'exam_score_detail' exam.id %}'">
                                         <td class="text-center">{{ exam.name }}</td>
                                         <td class="text-center">{{ exam.average_score }}</td>
                                         <td class="text-center">{{ exam.testeeList.count }}</td>

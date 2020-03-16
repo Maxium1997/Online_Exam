@@ -39,6 +39,14 @@ def downloadSystemPDF(request):
     return response
 
 
+def downloadOperationManual(request):
+    file = open('./static/document/ALCPT-Operation-Manual.pdf', 'rb')  # path have to start from root
+    response = FileResponse(file)
+    response['Content-Type'] = 'application/octet-stream'
+    response['Content-Disposition'] = 'attachment;filename="ALCPT-Operation-Manual.pdf"'
+    return response
+
+
 def about_developer(request):
     return render(request, 'SystemDocument/about/developer.html')
 
