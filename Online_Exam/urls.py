@@ -157,7 +157,10 @@ urlpatterns = [
 
     # 成績檢閱者
     re_path(r'^viewer$', viewer.index, name='exam_score_list'),
-    re_path(r'^viewer/(?P<exam_id>[0-9]+)/detail$', viewer.exam_score_detail, name='exam_score_detail'),
+    re_path(r'^viewer/', include([
+        re_path(r'^(?P<exam_id>[0-9]+)/detail$', viewer.exam_score_detail, name='exam_score_detail'),
+        re_path(r'^(?P<exam_id>[0-9]+)/detail/(?P<reg_id>[a-zA-Z0-9]+)/info$', viewer.view_testee_info, name='view_testee_info'),
+    ])),
 
     # 受測者部分
     re_path(r'^testee$', testee.score_list, name='testee_score_list'),  # 受測者主頁（顯示自我成績）

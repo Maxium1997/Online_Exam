@@ -57,3 +57,23 @@ def exam_score_detail(request, exam_id):
     except ObjectDoesNotExist:
         messages.error(request, 'Exam does not exist, exam id - {}'.format(exam_id))
         return redirect('exam_score_list')
+
+
+@permission_check(UserType.Viewer)
+def view_testee_info(request, exam_id, reg_id):
+    try:
+        exam = Exam.objects.get(id=exam_id)
+        try:
+            viewed_testee = User.objects.get(reg_id=reg_id)
+
+            answer_sheets = AnswerSheet.objects.filter(user=viewed_testee)
+
+            return render(request, 'viewer/view_testee_info.html', locals())
+
+        except ObjectDoesNotExist:
+            messages.error(request, "User does not exist, user register id - {}".format(reg_id))
+            return redirect('exam_score_detail', exam_id=exam.id)
+
+    except ObjectDoesNotExist:
+        messages.error(request, "Exam does not exist, exam id - {}".format(exam_id))
+        return redirect('exam_score_list')

@@ -19,7 +19,7 @@ from .managerfuncs import viewer, practicemanager, testmanager
 @permission_check(UserType.Testee)
 def exam_list(request):
     examList = []
-    exams = Exam.objects.filter(testeeList=request.user)
+    exams = Exam.objects.filter(is_public=True).filter(testeeList=request.user)
     for exam in exams:
         examList.append(exam)
 

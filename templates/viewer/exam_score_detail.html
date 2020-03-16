@@ -42,7 +42,11 @@
                                                 {{ answer_sheet.score }}
                                             {% endif %}
                                         </td>
-                                        <td class="text-right"><a href="">&rightarrow;</a></td>
+                                        <td class="text-right">
+                                            {% if testee.student %}
+                                                <a href="{% url 'view_testee_info' exam.id testee.reg_id %}">&rightarrow;</a>
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
