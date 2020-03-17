@@ -11,7 +11,7 @@
 
 {% block content %}
     <main class="view-exam-score-detail">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <h2>{{ exam.name }}.</h2>
@@ -91,11 +91,11 @@
         </div>
     </main>
     <style>
-        .view-exam-score-detail .container-fluid .row .col-md-6 table > tbody > tr > td > a{
+        .view-exam-score-detail .container .row .col-md-6 table > tbody > tr > td > a{
             text-decoration: none;
             visibility: hidden;
         }
-        .view-exam-score-detail .container-fluid .row .col-md-6 table > tbody > tr:hover > td > a{
+        .view-exam-score-detail .container .row .col-md-6 table > tbody > tr:hover > td > a{
             visibility: visible;
         }
     </style>

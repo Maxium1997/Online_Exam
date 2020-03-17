@@ -52,6 +52,7 @@ def create_users(reg_ids: list, privilege: int):
 
     # bulk_create an object manager method which takes as input an array of objects created using the class constructor
     User.objects.bulk_create([User(reg_id=reg_id,
+                                   identity=2,
                                    privilege=privilege,
                                    password=make_password(reg_id)) for reg_id in reg_ids])
 

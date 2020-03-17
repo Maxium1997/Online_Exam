@@ -26,7 +26,32 @@ def index(request):
 
 
 def about(request):
-    testees = [testee.answersheet_set.count for testee in User.objects.all()]
+    users = list(User.objects.all())
+
+    # To search top 5 the most practices testees
+    answer_sheet_nums = [testee.answersheet_set.count() for testee in users]
+    answer_sheetData = zip(users, answer_sheet_nums)
+    answer_sheetData = list(answer_sheetData)
+    sorted_Data = sorted(answer_sheetData, key=lambda x: x[1], reverse=True)[:5]
+
+    # To search top 5 the highest average score testees
+    total_scores = []
+    for testee in users:
+        tmp = 0
+        if testee.answersheet_set.all() is None:
+            total_scores.append(0)
+            break
+        else:
+            for answer_sheet in testee.answersheet_set.all():
+                if answer_sheet.score is None:
+                    pass
+                else:
+                    tmp += answer_sheet.score
+            total_scores.append(tmp)
+
+    average_scoreData = zip(users, total_scores)
+    average_scoreData = list(average_scoreData)
+    average_score_sortedData = sorted(average_scoreData, key=lambda x: x[1], reverse=True)[:5]
 
     return render(request, 'SystemDocument/About.html', locals())
 

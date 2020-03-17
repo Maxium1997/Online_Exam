@@ -136,6 +136,7 @@
 
         <div class="system-concept-introduction">
             <div class="container">
+                <h2 style="color: red">＃Top 5</h2>
                 <div class="row justify-content-center">
                     <div class="col-md-6">
                         <div class="leaderboard">
@@ -143,9 +144,17 @@
                                 <div class="card-header">Board - Most Practice</div>
 
                                 <div class="card-body">
-                                    {% for user in testees %}
-                                        <p>{{ forloop.counter }}. {{ user }}</p>
-                                    {% endfor %}
+                                    <table width="100%">
+                                        <tbody>
+                                            {% for user, answersheet_num in sorted_Data %}
+                                                <tr>
+                                                    <td class="text-center">{{ forloop.counter }}</td>
+                                                    <td class="text-left">{{ user }}</td>
+                                                    <td class="text-center">{{ answersheet_num }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -155,6 +164,20 @@
                         <div class="leaderboard">
                             <div class="card">
                                 <div class="card-header">Board - High Score</div>
+
+                                <div class="card-body">
+                                    <table width="100%">
+                                        <tbody>
+                                            {% for user, answersheet_num in average_score_sortedData %}
+                                                <tr>
+                                                    <td class="text-center">{{ forloop.counter }}</td>
+                                                    <td class="text-left">{{ user }}</td>
+                                                    <td class="text-center">{{ answersheet_num }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
