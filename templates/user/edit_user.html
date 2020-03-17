@@ -374,7 +374,7 @@
                                                         <ul class="dropdown-menu">
                                                             <li class="dropdown-header">Privilege Setting.</li>
                                                             {% for privilege in privileges %}
-                                                                <li data-value="{{ privilege.value.0 }}"><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>{{ privilege.value.1 }}</li>
+                                                                <li data-value="{{ privilege.value.0 }}"><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>&nbsp;{{ privilege.value.1 }}</li>
                                                             {% endfor %}
                                                         </ul>
                                                     </div>
@@ -536,7 +536,7 @@
                                                         <ul class="dropdown-menu">
                                                             <li class="dropdown-header">Privilege Setting.</li>
                                                             {% for privilege in privileges %}
-                                                                <li data-value="{{ privilege.value.0 }}"><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>{{ privilege.value.1 }}</li>
+                                                                <li data-value="{{ privilege.value.0 }}"><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>&nbsp;{{ privilege.value.1 }}</li>
                                                             {% endfor %}
                                                         </ul>
                                                     </div>

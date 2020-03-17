@@ -197,6 +197,20 @@ def exam_edit(request, exam_id):
 
 
 @permission_check(UserType.TestManager)
+def exam_delete(request, exam_id):
+    try:
+        exam = Exam.objects.get(id=exam_id)
+        exam.testeeList.clear()
+        exam.delete()
+        messages.success(request, "Successfully deleted, exam id - {}".format(exam_id))
+        return redirect('exam_list')
+
+    except ObjectDoesNotExist:
+        messages.error(request, "Exam does not exist, exam id - {}".format(exam_id))
+        return redirect('exam_list')
+
+
+@permission_check(UserType.TestManager)
 @require_http_methods(["GET"])
 def testpaper_list(request):
     testpaper_name = request.GET.get('testpaper_name')

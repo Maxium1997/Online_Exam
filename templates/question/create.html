@@ -64,6 +64,7 @@
                                     </h5>
                                     <p class="card-text">
                                         <input type="file" name="question_file" id="question_file" accept="audio/mpeg" onchange="OpenButton('listening')" required>
+                                        <span style="color: red">*僅供選取「mpeg」類型檔案</span>
                                     </p>
 
                                     <h5 class="card-subtitle mb-2 text-muted">
@@ -113,10 +114,10 @@
                                     Question Option.
                                 </h5>
                                 <p class="card-text">
-                                    <input class="form-control" type="text" name="choice1" id="choice1" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                                    <input class="form-control" type="text" name="choice2" id="choice2" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                                    <input class="form-control" type="text" name="choice3" id="choice3" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
-                                    <input class="form-control" type="text" name="choice4" id="choice4" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required>
+                                <p>Ａ.<input class="form-control" type="text" name="choice1" id="choice1" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required></p>
+                                <p>Ｂ.<input class="form-control" type="text" name="choice2" id="choice2" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required></p>
+                                <p>Ｃ.<input class="form-control" type="text" name="choice3" id="choice3" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required></p>
+                                <p>Ｄ.<input class="form-control" type="text" name="choice4" id="choice4" onkeyup="OpenButton('{{ kind }}')" placeholder="Enter Choice content..." required></p>
                                 </p>
 
                                 {% if kind == 'reading' %}
