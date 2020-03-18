@@ -4,9 +4,10 @@ import base64
 from email.mime.text import MIMEText
 from smtplib import SMTP, SMTPAuthenticationError, SMTPException
 from alcpt.models import User
+from alcpt.proclamation import *
 
 
-def email_verified(verified_email):
+def email_verified(verified_user, verified_email, request_user):
     # strSmtp = "smtp.gmail.com:587"
     # 主機
     strAccount = "mis.alcpt.109@gmail.com"      # 備援信箱：tryitnotareal1997@gmail.com
@@ -18,8 +19,22 @@ def email_verified(verified_email):
     base64_bytes = base64.b64encode(email_bytes)
     base64_email = base64_bytes.decode('ascii')
 
-    # content = "Dear ALCPT User: Your email verification code is " + str(verification_code)
-    content = "http://127.0.0.1:8000/email_verification_done/" + base64_email
+    content = "Hey, " + verified_user.reg_id + "！\n\n" + \
+              "Welcome to use ALCPT Online-Practice Platform. You had modified your email.\n" + \
+              "Please click on the following URL to complete the email verification process: \n\n" + \
+              "http://127.0.0.1:8000/email_verification_done/" + base64_email + "\n\n" + \
+              "This is an automatic notification mail from the system. Please did not reply directly.\n" + \
+              "Thank you for your cooperation."
+
+    proclamation_content = "Please check out your email to complete the email verification.\n\n" + \
+                           "Thank you for your cooperation."
+    Proclamation.objects.create(title="Email Verification",
+                                text=proclamation_content,
+                                is_read=False,
+                                is_public=False,
+                                created_by=request_user,
+                                recipient=verified_user)
+
     msg = MIMEText(content)
     msg["Subject"] = "ALCPT Email Verification"
     # 郵件標題

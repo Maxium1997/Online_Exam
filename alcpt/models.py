@@ -289,10 +289,12 @@ class Group(models.Model):
 # created_by: user of creating the proclamation
 class Proclamation(models.Model):
     title = models.TextField(max_length=255)
-    text = models.TextField(max_length=512)
+    text = models.TextField()
+    is_read = models.BooleanField(default=True)
     is_public = models.BooleanField(default=False)
+    recipient = models.ForeignKey('User', on_delete=models.CASCADE, null=True)
     created_time = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey('User', on_delete=models.PROTECT, related_name='proclamation_created')
+    created_by = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, related_name='announcer')
 
     class Meta:
         ordering = ('-created_time',)

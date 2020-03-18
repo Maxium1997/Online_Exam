@@ -102,12 +102,62 @@
                     {% endif %}
 
                     {% if user.is_authenticated %}
-                        <!-- Button trigger modal -->
+                        <!-- Button trigger modal for personal notification center -->
+                        <button type="button" class="btn" data-toggle="modal" data-target="#NotificationCenter">
+                            <i class="fa fa-bell"></i>
+                            {% if request.user.proclamation_set.all|unread_count != 0 %}
+                                <label class="notification-custom"><sup>{{ request.user.proclamation_set.all|unread_count }}</sup></label>
+                            {% endif %}
+                        </button>
+
+                        <!-- Modal for notification center -->
+                        <form id="notificationForm" name="notificationForm" action="{% url 'proclamation_toggle' action='delete' %}" method="post">
+                            {% csrf_token %}
+                            <div class="modal fade" id="NotificationCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header text-center">
+                                            <h5 class="modal-title" id="ModalLongTitle">Notification Center</h5>
+                                        </div>
+
+                                        <div id="modal-menu">
+                                            <table class="table table-hover">
+                                                <tbody>
+                                                    {% for proclamation in request.user.proclamation_set.all %}
+                                                        <tr class="text-left" style="{% if forloop.counter != request.user.proclamation_set.count %}border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: rgb(200, 200, 200);{% endif %} {% if not proclamation.is_read %}background-color: rgb(220,220,220);{% endif %}">
+                                                            <td class="align-middle"><input type="checkbox" name="proclamation" value="{{ proclamation.id }}"></td>
+                                                            <td class="align-middle">
+                                                                <h5>{{ proclamation.title }}</h5>
+                                                                <p>
+                                                                    {{ proclamation.text|linebreaksbr }}<br>
+                                                                    <span class="text-muted float-right">-by {{ proclamation.created_by }} in {{ proclamation.created_time }}</span>
+                                                                </p>
+                                                            </td>
+                                                            <td class="align-middle" style="cursor: pointer;" onclick="window.location.href='{% url 'proclamation_detail' proclamation.id %}'"><i class="fa fa-angle-right"></i></td>
+                                                        </tr>
+                                                    {% empty %}
+                                                        <tr>
+                                                            <td><h3 class="text-center" style="font-weight: 200">No notification.</h3></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-light">Delete</button>
+                                            <a class="btn btn-secondary" style="color: white" data-dismiss="modal">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- Button trigger modal for user functions menu -->
                         <button type="button" class="btn" data-toggle="modal" data-target="#ModalCenter">
                             <i class="fa fa-user"></i>
                         </button>
 
-                        <!-- Modal -->
+                        <!-- Modal for functions menu -->
                         <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -183,6 +233,15 @@
                         }
                         .modal .custom{
                             margin: 0px;
+                        }
+
+                        .notification-custom{
+                            width: 15px;
+                            height: 15px;
+                            background-color: red;
+                            border-radius: 24px;
+                            color: white;
+                            text-align: center;
                         }
                     </style>
                 </ul>

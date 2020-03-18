@@ -19,12 +19,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, re_path
 
-from alcpt import registration, system, views, exam, question, viewer, testee, group
+from alcpt import registration, system, views, exam, question, viewer, testee, group, proclamation
 
 urlpatterns = [
     re_path(r'^admin/', admin.site.urls),
 
-    re_path(r'^proclamation$', views.index, name='Homepage'),
     re_path(r'^$', views.about, name='about'),
     re_path(r'^/', include([
         re_path(r'^download_system_pdf$', views.downloadSystemPDF, name='download_system_pdf'),
@@ -63,12 +62,16 @@ urlpatterns = [
         re_path(r'^(?P<report_id>[0-9]+)/done$', system.report_done, name='report_done'),
     ])),
 
+    re_path(r'^proclamation$', views.index, name='Homepage'),
     re_path(r'^proclamation/', include([
-        re_path(r'^create$', system.proclamation_create, name='proclamation_create'),
-        re_path(r'^(?P<proclamation_id>[0-9]+)/detail$', system.proclamation_detail, name='proclamation_detail'),
-        re_path(r'^(?P<proclamation_id>[0-9]+)/delete$', system.proclamation_delete, name='proclamation_delete'),
-        re_path(r'^(?P<proclamation_id>[0-9]+)/edit$', system.proclamation_edit, name='proclamation_edit'),
+        re_path(r'^create$', proclamation.create, name='proclamation_create'),
+        re_path(r'^(?P<proclamation_id>[0-9]+)/detail$', proclamation.detail, name='proclamation_detail'),
+        re_path(r'^(?P<proclamation_id>[0-9]+)/delete$', proclamation.delete, name='proclamation_delete'),
+        re_path(r'^(?P<proclamation_id>[0-9]+)/edit$', proclamation.edit, name='proclamation_edit'),
+        re_path(r'^(?P<action>(read|delete))/toggle$', proclamation.toggle, name='proclamation_toggle'),
     ])),
+
+    re_path(r'^notification$', proclamation.index, name='notification_center'),
 
     re_path(r'^email_verification$', registration.verification, name='email_verification'),
     re_path(r'^email_verification_done/(?P<encode_email>[\w\=\!\@\#\$\%\^\&\*\(\)\s]+)', registration.verify_done, name='verify_done'),
@@ -117,6 +120,7 @@ urlpatterns = [
         re_path(r'^create$', exam.exam_create, name='exam_create'),
         re_path(r'^(?P<exam_id>[0-9]+)/content$', exam.exam_content, name='exam_content'),
         re_path(r'^(?P<exam_id>[0-9]+)/edit$', exam.exam_edit, name='exam_edit'),
+        re_path(r'^(?P<exam_id>[0-9]+)/delete$', exam.exam_delete, name='exam_delete'),
 
         re_path(r'^testpaper/', include([
             re_path(r'^list$', exam.testpaper_list, name='testpaper_list'),

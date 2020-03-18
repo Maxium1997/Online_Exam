@@ -1,6 +1,3 @@
-import re
-import datetime
-import templates
 import base64
 
 from django.shortcuts import render, redirect
@@ -15,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from Online_Exam.settings import LOGIN_REDIRECT_URL, LOGOUT_REDIRECT_URL
 from alcpt.definitions import UserType, Identity
 from alcpt.forms import CaptchaForm
-from alcpt.models import User, Student, Department, Squadron, Report, Reply
+from alcpt.models import User, Department, Squadron, Report, Reply
 from alcpt.email_verification import email_verified, reset_password_mail
 from alcpt.managerfuncs import systemmanager
 
@@ -175,7 +172,7 @@ def verification(request):
     user.email = request.POST.get('verified_email')
     user.email_is_verified = False
     user.save()
-    email_verified(request.POST.get('verified_email'))
+    email_verified(user, request.POST.get('verified_email'), request.user)
     messages.success(request, "Verification email has been sent, please check out.")
     return redirect('email')
 

@@ -296,62 +296,6 @@ def unit(request):
     return render(request, 'user/unit_list.html', locals())
 
 
-# 新增公告
-@permission_check(UserType.SystemManager)
-def proclamation_create(request):
-    if request.method == 'POST':
-        title = request.POST.get('p_title')
-        text = request.POST.get('p_text')
-        Proclamation.objects.create(title=title, text=text, is_public=True, created_by=request.user)
-
-        messages.success(request, "Create Successfully.")
-        return redirect('Homepage')
-    else:
-        return render(request, 'proclamation/proclamation_create.html', locals())
-
-
-# 公告內容
-def proclamation_detail(request, proclamation_id):
-    try:
-        proclamation = Proclamation.objects.get(id=proclamation_id)
-        return render(request, 'proclamation/proclamation_detail.html', locals())
-    except ObjectDoesNotExist:
-        messages.error(request, 'Proclamation doesn\'t exist, proclamation id: {}'.format(proclamation_id))
-        return redirect('Homepage')
-
-
-# 刪除公告
-@permission_check(UserType.SystemManager)
-def proclamation_delete(request, proclamation_id):
-    try:
-        proclamation = Proclamation.objects.get(id=proclamation_id)
-        proclamation.delete()
-        messages.success(request, "Delete Successfully.")
-    except ObjectDoesNotExist:
-        messages.error(request, "Proclamation doesn't exist, proclamation id: {}".format(proclamation_id))
-
-    return redirect('/proclamation')
-
-
-# 編輯公告
-@permission_check(UserType.SystemManager)
-def proclamation_edit(request, proclamation_id):
-    try:
-        proclamation = Proclamation.objects.get(id=proclamation_id)
-    except ObjectDoesNotExist:
-        messages.error(request, 'Proclamation doesn\'t exist, proclamation id: {}'.format(proclamation_id))
-        return redirect('/')
-
-    if request.method == 'POST':
-        proclamation.title = request.POST.get('p_title')
-        proclamation.text = request.POST.get('p_text')
-        proclamation.save()
-        messages.success(request, 'Update Successfully. proclamation title: {}'.format(proclamation.title))
-        return redirect('/')
-    else:
-        return render(request, 'proclamation/proclamation_edit.html', locals())
-
-
 # 新增單位（學系、中隊）
 @permission_check(UserType.SystemManager)
 @require_http_methods(["GET", "POST"])

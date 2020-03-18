@@ -359,3 +359,8 @@ def get_TBManager_report_notification(user: User):
 @register.filter(name='isAlpha')
 def isAlpha(text: str):
     return all(ord(c) < 128 for c in text)
+
+
+@register.filter(name='unread_count')
+def unread_count(proclamations):
+    return proclamations.filter(is_read=False).count()

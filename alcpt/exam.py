@@ -10,8 +10,9 @@ from django.db import IntegrityError
 
 from alcpt.managerfuncs import testmanager
 from alcpt.decorators import permission_check
+from alcpt.proclamation import notify
 from alcpt.definitions import UserType, QuestionType, QuestionTypeCounts, ExamType
-from alcpt.models import Exam, TestPaper, Group, Question, Proclamation
+from alcpt.models import User, Exam, TestPaper, Group, Question, Proclamation
 from alcpt.exceptions import *
 
 
@@ -44,10 +45,10 @@ def exam_create(request):
         started_time = datetime.strptime(str(start_time), '%Y-%m-%d %H:%M')
         finish_time = datetime.strptime(str(start_time), '%Y-%m-%d %H:%M') + timedelta(minutes=int(duration))
 
-        testpaper = TestPaper.objects.get(id=int(request.POST.get('selected_testpaper',)))
+        testpaper = TestPaper.objects.get(id=int(request.POST.get('selected_testpaper')))
         selected_group = Group.objects.get(id=int(request.POST.get('selected_group')))
 
-        exam_name = request.POST.get('exam_name',)
+        exam_name = request.POST.get('exam_name')
         try:
             exam = Exam.objects.create(name=exam_name,
                                        exam_type=ExamType.Exam.value[0],
@@ -66,14 +67,17 @@ def exam_create(request):
                 exam.testeeList.add(testee)
             exam.save()
 
-            # create proclamation to notice all user the exam start time.
-            pro_content = "Exam name: " + exam.name + "\n" + \
-                          "Start Time: " + exam.start_time + "\n" + \
-                          "Duration: " + exam.duration + " min"
-            proclamation = Proclamation.objects.create(title=exam.name,
-                                                       text=pro_content,
-                                                       is_public=True,
-                                                       created_by=request.user)
+            # create proclamation to notice all testees the exam start time.
+            proclamation_content = "You will start " + exam.name + "\n" + \
+                                   "Star Time: " + start_time + "\n" + \
+                                   "Duration: " + duration + "minutes.\n" + \
+                                   "Please notice the time, do not forget it."
+            notify(title=exam.name,
+                   text=proclamation_content,
+                   is_read=False,
+                   is_public=False,
+                   announcer=request.user,
+                   users=list(User.objects.filter(exam__testeeList__exam=exam).distinct()))
 
             messages.success(request, "Successfully created a new exam - {}.".format(exam.name))
         except IntegrityError:
@@ -200,6 +204,16 @@ def exam_edit(request, exam_id):
 def exam_delete(request, exam_id):
     try:
         exam = Exam.objects.get(id=exam_id)
+
+        proclamation_title = "Cancel " + exam.name + "."
+        proclamation_content = exam.name + " had been canceled. Thank you for your cooperation."
+        notify(title=proclamation_title,
+               text=proclamation_content,
+               is_read=False,
+               is_public=False,
+               announcer=request.user,
+               users=list(User.objects.filter(exam__testeeList__exam=exam).distinct()))
+
         exam.testeeList.clear()
         exam.delete()
         messages.success(request, "Successfully deleted, exam id - {}".format(exam_id))
@@ -249,13 +263,13 @@ def testpaper_content(request, testpaper_id):
 @permission_check(UserType.TestManager)
 def testpaper_create(request):
     if request.method == 'POST':
-        testpaper_name = request.POST.get('testpaper_name',)
+        testpaper_name = request.POST.get('testpaper_name')
 
         try:
             testpaper = testmanager.create_testpaper(name=testpaper_name, created_by=request.user, is_testpaper=1)
             messages.success(request, 'Successfully created test paper - {}'.format(testpaper.name))
             return redirect('testpaper_edit', testpaper_id=testpaper.id)
-            
+
         except:
             messages.error(request, "This name had existed.")
             testpaper_names = [_.name for _ in TestPaper.objects.all()]
