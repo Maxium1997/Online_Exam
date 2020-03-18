@@ -90,6 +90,20 @@ def group_edit(request, group_id):
 
 
 @permission_check(UserType.TestManager)
+def group_delete(request, group_id):
+    try:
+        group = Group.objects.get(id=group_id)
+        group.member.clear()
+        group.delete()
+        messages.success(request, "Successfully deleted.")
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    except ObjectDoesNotExist:
+        messages.error(request, "Group does not exist, group id - {}".format(group_id))
+        return redirect(request.META.get('HTTP_REFERER'))
+
+
+@permission_check(UserType.TestManager)
 def group_content(request, group_id):
     try:
         group = Group.objects.get(id=group_id)

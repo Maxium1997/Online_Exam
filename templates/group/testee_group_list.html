@@ -35,11 +35,12 @@
                                     <tr style="cursor: pointer" onclick="window.location.href='{% url 'testee_group_member_list' group.id %}'">
                                         <td class="text-center" data-title="Name">{{ group.name }}</td>
                                         <td class="text-center" data-title="People">{{ group.member.count }}</td>
-                                        <td class="text-center" data-title="Created Time">{{ group.created_time|date:'H:i, Y/m/d' }}</td>
-                                        <td class="text-center" data-title="Last Update">{{ group.update_time|date:'H:i, Y/m/d' }}</td>
+                                        <td class="text-center" data-title="Created Time">{{ group.created_time|date:'Y/m/d, H:i' }}</td>
+                                        <td class="text-center" data-title="Last Update">{{ group.update_time|date:'Y/m/d, H:i' }}</td>
                                         <td class="text-center" data-title="Creator">{{ group.created_by.name }}</td>
                                         <td class="text-center">
                                             <a href="{% url 'testee_group_edit' group.id %}"><i class="fa fa-pencil-square-o fa-fw mb-2"></i></a>
+                                            <a href="{% url 'testee_group_delete' group.id %}" onclick="return confirm('Sure to delete？')"><i class="fa fa-trash fa-fw mb-2"></i></a>
                                         </td>
                                     </tr>
                                 {% endfor %}

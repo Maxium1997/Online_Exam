@@ -29,7 +29,7 @@
 
                         <div class="card-footer text-muted">
                             <h5 class="subtitle mb-2 text-muted">Last Login.</h5>
-                            <p>{{ viewed_testee.last_login|date:'Y年m月d日, H時i分' }}</p>
+                            <p>{{ viewed_testee.last_login|date:'Y/m/d, H:i' }}</p>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                                     {% for answer_sheet in answer_sheets %}
                                         <tr>
                                             <td class="text-center">{{ answer_sheet.exam }}</td>
-                                            <td class="text-center">{{ answer_sheet.finish_time|date:'Y年m月d日, H時i分' }}</td>
+                                            <td class="text-center">{{ answer_sheet.finish_time|date:'Y/m/d, H:i' }}</td>
                                             <td class="text-center">{{ answer_sheet.score }}</td>
                                         </tr>
                                     {% empty %}

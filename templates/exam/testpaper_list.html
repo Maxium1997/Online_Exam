@@ -37,7 +37,7 @@
                                         <td class="text-center" data-title="Name">{{ testpaper.name }}</td>
                                         <td class="text-center" data-title="Valid">{{ testpaper.valid }}</td>
                                         <td class="text-center" data-title="Used">{{ testpaper.is_used }}</td>
-                                        <td class="text-center" data-title="Last Update">{{ testpaper.update_time|date:'H:i, Y/m/d' }}</td>
+                                        <td class="text-center" data-title="Last Update">{{ testpaper.update_time|date:'Y/m/d, H:i' }}</td>
                                         <td class="text-center" data-title="Creator">{{ testpaper.created_by.name }}</td>
                                         <td class="text-center">
                                             {% if testpaper.is_testpaper %}

@@ -8,7 +8,7 @@ body{
     background-color: #f5f8fa;
     background-size: 100%,auto;
     background-repeat: no-repeat;
-    opacity: 0.7%;
+    /*opacity: 0.7%;*/
 }
 
 .navbar-laravel

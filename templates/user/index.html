@@ -113,7 +113,7 @@
 
                                         <td data-title="Last Login：">
                                             {% if user.last_login %}
-                                                {{ user.last_login|date:'H:i, Y/m/d' }}
+                                                {{ user.last_login|date:'Y/m/d, H:i' }}
                                             {% else %}
                                                 Not logged in
                                             {% endif %}

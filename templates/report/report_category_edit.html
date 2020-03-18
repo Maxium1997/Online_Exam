@@ -147,9 +147,9 @@
                                                             <li class="dropdown-header">Privilege Setting</li>
                                                             {% for privilege in privileges %}
                                                                 {% if forloop.counter <= 3 %}
-                                                                    <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_change()" {% if category|belongs_to:privilege %} checked {% endif %}>{{ privilege.value.1 }}</li>
+                                                                    <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_change()" {% if category|belongs_to:privilege %} checked {% endif %}>&nbsp;&nbsp;{{ privilege.value.1 }}</li>
                                                                 {% else %}
-                                                                    <li><strike><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="this.checked=!this.checked;">{{ privilege.value.1 }}</strike></li>
+                                                                    <li><strike><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="this.checked=!this.checked;">&nbsp;&nbsp;{{ privilege.value.1 }}</strike></li>
                                                                 {% endif %}
                                                             {% endfor %}
                                                         </ul>

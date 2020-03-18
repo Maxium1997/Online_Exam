@@ -134,9 +134,9 @@ urlpatterns = [
         re_path(r'^testee_group$', group.group_list, name='testee_group_list'),
         re_path(r'^testee_group/', include([
             url(r'^create$', group.group_create, name='testee_group_create'),
-            re_path(r'^edit/(?P<group_id>[0-9]+)$', group.group_edit, name='testee_group_edit'),
-            # url(r'delete/(?P<group_id>[0-9]+)$', group.group_delete, name='testee_group_delete'),
-            re_path(r'^content/(?P<group_id>[0-9]+)$', group.group_content, name='testee_group_member_list'),
+            re_path(r'^(?P<group_id>[0-9]+)/edit$', group.group_edit, name='testee_group_edit'),
+            re_path(r'^(?P<group_id>[0-9]+)/delete$', group.group_delete, name='testee_group_delete'),
+            re_path(r'^(?P<group_id>[0-9]+)/content$', group.group_content, name='testee_group_member_list'),
         ])),
     ])),
 
