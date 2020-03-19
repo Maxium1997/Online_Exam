@@ -2,32 +2,6 @@
 
 {% block scripts %}
     <script type="text/javascript">
-        function unique_name(departments, squadrons, mode, input_unit){
-            var arr = squadrons;
-            var invalid = document.getElementById("invalid");
-            var submit = document.getElementById("submit");
-
-            if(mode === 'department'){
-                arr = departments;
-            }
-
-            for(var i = 0; i < arr.length; i++) {
-                if (input_unit.value === ''){
-                    invalid.innerHTML = "<span style='color: red; font-size: 14px'>Require</span>";
-                    submit.disabled = true;
-                }
-                else if (input_unit.value === arr[i]) {
-                    invalid.innerHTML = "<span style='color: red; font-size: 14px'>Name has existed</span>";
-                    submit.disabled = true;
-                    break;
-                }
-                else {
-                    invalid.innerHTML = "";
-                    submit.disabled = false;
-                }
-            }
-        }
-
         function is_selected() {
             var unitName = document.getElementById("unit_name");
             var unit = document.getElementById("unit");
@@ -36,6 +10,20 @@
                 unitName.disabled = false;
             } else {
                 unitName.disabled =  true;
+            }
+        }
+
+        function valid_name(input_unit){
+            var invalid = document.getElementById("invalid");
+            var submit = document.getElementById("submit");
+
+            if (input_unit.value === ''){
+                invalid.innerHTML = "<span style='color: red; font-size: 14px'>Require</span>";
+                submit.disabled = true;
+            }
+            else {
+                invalid.innerHTML = "";
+                submit.disabled = false;
             }
         }
     </script>
@@ -68,7 +56,7 @@
 
                                 <h5 class="card-subtitle mb-2 text-muted">Unit Name.<label id="invalid"></label></h5>
                                 <p class="card-text">
-                                    <input class="form-control" type="text" id="unit_name" name="unit_name" onkeyup="unique_name({{ department_names }}, {{ squadron_names }}, document.getElementById('unit').value, this)" placeholder="Enter the name of the unit..." required disabled>
+                                    <input class="form-control" type="text" id="unit_name" name="unit_name" onkeyup="valid_name(this)" placeholder="Enter the name of the unit..." required disabled>
                                 </p>
 
                                 <div class="float-right">

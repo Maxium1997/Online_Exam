@@ -260,9 +260,6 @@ def user_edit(request, reg_id):
                     except ObjectDoesNotExist:
                         pass
 
-                    # reg_ids = [_.reg_id for _ in User.objects.all().exclude(reg_id=reg_id)]
-                    # stu_ids = [_.stu_id for _ in Student.objects.all().exclude(stu_id=edited_user.reg_id)]
-
                     return render(request, 'user/edit_user.html', locals())
 
         except ObjectDoesNotExist:
@@ -302,18 +299,19 @@ def unit(request):
 def create_unit(request):
     name = request.POST.get('unit_name')
 
-    department_names = [d.name for d in Department.objects.all()]
-    squadron_names = [s.name for s in Squadron.objects.all()]
-
     if request.method == 'POST':
-        if request.POST.get('unit') == 'department':
-            Department.objects.create(name=name)
+        try:
+            if request.POST.get('unit') == 'department':
+                Department.objects.create(name=name)
 
-        elif request.POST.get('unit') == 'squadron':
-            Squadron.objects.create(name=name)
+            elif request.POST.get('unit') == 'squadron':
+                Squadron.objects.create(name=name)
 
-        else:
-            messages.error(request, 'Choose the unit which you want to create.')
+            else:
+                messages.error(request, 'Choose the unit which you want to create.')
+                return redirect('unit_create')
+        except IntegrityError:
+            messages.error(request, "This name had been used.")
             return redirect('unit_create')
 
         messages.success(request, 'Success insert new unit: {}.'.format(name))
@@ -321,13 +319,6 @@ def create_unit(request):
         return redirect('unit_list')
 
     else:
-        departments = Department.objects.all()
-        squadrons = Squadron.objects.all()
-        dep_list, squa_list = '', ''
-        for d in departments:
-            dep_list += d.name
-        for s in squadrons:
-            squa_list += s.name
         return render(request, 'user/create_unit.html', locals())
 
 
