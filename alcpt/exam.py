@@ -69,7 +69,7 @@ def exam_create(request):
 
             # create proclamation to notice all testees the exam start time.
             proclamation_content = "You will start " + exam.name + "\n" + \
-                                   "Star Time: " + start_time + "\n" + \
+                                   "Start Time: " + start_time + "\n" + \
                                    "Duration: " + duration + "minutes.\n" + \
                                    "Please notice the time, do not forget it."
             notify(title=exam.name,
@@ -80,8 +80,8 @@ def exam_create(request):
                    users=list(User.objects.filter(exam__testeeList__exam=exam).distinct()))
 
             messages.success(request, "Successfully created a new exam - {}.".format(exam.name))
-        except IntegrityError:
-            raise IntegrityError("Duplicate entry '{}' for key 'name'".format(exam_name))
+        except:
+            messages.error(request, "Failed created, exam name had been used - {}".format(exam_name))
 
         return redirect('exam_list')
     else:
@@ -129,7 +129,7 @@ def exam_edit(request, exam_id):
             return redirect('exam_list')
 
         else:
-            exam.testpaper.is_used = False
+            TestPaper.objects.filter(exam=exam).update(is_used=False)
             if request.method == 'POST':
                 try:
                     exam_name = request.POST.get('exam_name')
@@ -152,8 +152,7 @@ def exam_edit(request, exam_id):
                 exam.finish_time = finish_time
 
                 testpaper = TestPaper.objects.get(id=int(request.POST.get('selected_testpaper')))
-                testpaper.is_used = True
-                testpaper.save()
+                TestPaper.objects.filter(id=int(request.POST.get('selected_testpaper'))).update(is_used=True)
                 exam.testpaper = testpaper
 
                 if request.POST.get('selected_group'):
@@ -204,6 +203,9 @@ def exam_edit(request, exam_id):
 def exam_delete(request, exam_id):
     try:
         exam = Exam.objects.get(id=exam_id)
+        if datetime.now() > exam.start_time:
+            messages.error(request, "Failed deleted, this Exam had started.")
+            return redirect('exam_list')
 
         proclamation_title = "Cancel " + exam.name + "."
         proclamation_content = exam.name + " had been canceled. Thank you for your cooperation."
@@ -296,6 +298,9 @@ def testpaper_edit(request, testpaper_id):
                 testpaper.name = request.POST.get('testpaper_name')
                 if testmanager.quantity_confirmation(testpaper):
                     testpaper.valid = True
+                    for question in testpaper.question_list.all():
+                        updateNum = question.issued_freq + 1
+                        Question.objects.filter(id=question.id).update(issued_freq=updateNum)
                 testpaper.save()
                 messages.success(request, "Successfully edited.")
 

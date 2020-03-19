@@ -57,8 +57,6 @@ def group_edit(request, group_id):
     try:
         group = Group.objects.get(id=group_id)
         group_members = group.member.all()
-        # students = Student.objects.all()
-        # change to testees not by student
         testees = []
         for user in User.objects.all().filter(name__contains=''):
             if user.has_perm(UserType.Testee):
@@ -82,6 +80,8 @@ def group_edit(request, group_id):
         for member in group.member.all():               # check those who were unselected, and remove from the group
             if member not in selected_testee_list:
                 group.member.remove(member)
+
+        group.save()
 
         messages.success(request, 'Update group member successfully.')
         return redirect('testee_group_list')

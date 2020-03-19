@@ -61,7 +61,6 @@
                                     {% elif viewed_user.gender == 3 %}Privacy
                                     {% else %}Unset
                                     {% endif %}
-{#                                    {{ viewed_user.gender }}#}
                                 </p>
 
                                 <h5 class="card-subtitle mb-2 text-muted">Identity.</h5>
@@ -97,9 +96,9 @@
                             </div>
 
                             <div class="card-footer text-muted">
-                                <p>Last login - {{ viewed_user.last_login }}</p>
-                                <p>Create time - {{ viewed_user.created_time }}</p>
-                                <p>
+                                <p style="font-size: 12px">Last login - {{ viewed_user.last_login }}</p>
+                                <p style="font-size: 12px">Create time - {{ viewed_user.created_time }}</p>
+                                <p style="font-size: 12px">
                                     Status -
                                     {% if viewed_user.is_active %}
                                         <span>active</span>
@@ -225,9 +224,9 @@
                     </div>
 
                     <div class="card-footer text-muted">
-                        <p>Last login - {{ viewed_user.last_login }}</p>
-                        <p>Create time - {{ viewed_user.created_time }}</p>
-                        <p>
+                        <p style="font-size: 12px">Last login - {{ viewed_user.last_login }}</p>
+                        <p style="font-size: 12px">Create time - {{ viewed_user.created_time }}</p>
+                        <p style="font-size: 12px">
                             Status -
                             {% if viewed_user.is_active %}
                                 <span>active</span>

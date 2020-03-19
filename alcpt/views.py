@@ -4,7 +4,7 @@ from django.http import FileResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .definitions import UserType
-from .models import Proclamation, User, AnswerSheet, Exam
+from .models import Proclamation, User
 
 # Create your views here.
 
