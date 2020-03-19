@@ -18,12 +18,12 @@
 
         // Get original privilege
         window.onload = function() {
-            var system = document.getElementById('32');
-            var testM = document.getElementById('16');
-            var tbM = document.getElementById('8');
-            var tbO = document.getElementById('4');
-            var viewer = document.getElementById('2');
-            var testee = document.getElementById('1');
+            var system = document.getElementById('SystemManager');
+            var testM = document.getElementById('TestManager');
+            var tbM = document.getElementById('TBManager');
+            var tbO = document.getElementById('TBOperator');
+            var viewer = document.getElementById('Viewer');
+            var testee = document.getElementById('Testee');
 
             if(system.checked === true) originSystem = true;
             if(testM.checked === true) originTestM = true;
@@ -36,12 +36,12 @@
         // Checkout whether privilege change and privilege can't be empty.
         function privilege_change() {
             var privilegeInvalid = document.getElementById('privilege_invalid');
-            var system = document.getElementById('32');
-            var testM = document.getElementById('16');
-            var tbM = document.getElementById('8');
-            var tbO = document.getElementById('4');
-            var viewer = document.getElementById('2');
-            var testee = document.getElementById('1');
+            var system = document.getElementById('SystemManager');
+            var testM = document.getElementById('TestManager');
+            var tbM = document.getElementById('TBManager');
+            var tbO = document.getElementById('TBOperator');
+            var viewer = document.getElementById('Viewer');
+            var testee = document.getElementById('Testee');
 
             {# Checkout wether privilege is changed. #}
             if (system.checked === originSystem && testM.checked === originTestM && tbM.checked === originTBM &&
@@ -52,7 +52,7 @@
             {# Checkout wether privilege isn't null. #}
             else if (system.checked === false && testM.checked === false && tbM.checked === false &&
                 tbO.checked === false && viewer.checked === false && testee.checked === false) {
-                privilegeInvalid.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
+                privilegeInvalid.innerHTML = "<span style='color: red; font-size: 14px'>Choose one privilege at least.</span>";
                 passPrivilege = false;
             }
             else {
@@ -64,17 +64,11 @@
         }
 
         // Checkout whether name change and name can't be empty.
-        function name_change(origin, names ,input) {
+        function name_change(origin, input) {
             var invalid = document.getElementById('name_invalid');
-            var arr = names;
 
-            for(var i = 0; i < arr.length; i++) {
-                if (input.value === arr[i]) {
-                    invalid.innerHTML = "<span style='color: red; font-size: 14px'>名稱已存在</span>";
-                    passName = false;
-                    break;}
-                else if (input.value === ""){
-                    invalid.innerHTML = "<span style='color: red; font-size: 14px'>必填</span>";
+                if (input.value === ""){
+                    invalid.innerHTML = "<span style='color: red; font-size: 14px'>Required</span>";
                     passName = false;}
                 else if (origin === input.value) {
                     invalid.innerHTML = "";
@@ -84,7 +78,6 @@
                     changeName = true;
                     passName = true;
                 }
-            }
             data_valid();
         }
 
@@ -128,7 +121,7 @@
                                 <div class="form-group row">
                                     <label for="p_title" class="col-md-4 col-form-label text-md-right">ReportCategory Name.</label>
                                     <div class="col-md-6">
-                                        <input class="form-control" type="text" name="category_name" value="{{ category }}" onkeyup="name_change('{{ category }}', {{ categories_names }}, this)" placeholder="ReportCategory Name..." required>
+                                        <input class="form-control" type="text" name="category_name" value="{{ category }}" onkeyup="name_change('{{ category }}', this)" placeholder="ReportCategory Name..." required>
                                         <label id="name_invalid" class="name_invalid"></label>
                                     </div>
                                 </div>
@@ -147,9 +140,9 @@
                                                             <li class="dropdown-header">Privilege Setting</li>
                                                             {% for privilege in privileges %}
                                                                 {% if forloop.counter <= 3 %}
-                                                                    <li><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_change()" {% if category|belongs_to:privilege %} checked {% endif %}>&nbsp;&nbsp;{{ privilege.value.1 }}</li>
+                                                                    <li><input type="checkbox" id="{{ privilege.value.1 }}" name="{{ privilege }}" onclick="privilege_change()" {% if category|belongs_to:privilege %} checked {% endif %}>&nbsp;&nbsp;{{ privilege.value.1 }}</li>
                                                                 {% else %}
-                                                                    <li><strike><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="this.checked=!this.checked;">&nbsp;&nbsp;{{ privilege.value.1 }}</strike></li>
+                                                                    <li><strike><input type="checkbox" id="{{ privilege.value.1 }}" name="{{ privilege }}" onclick="this.checked=!this.checked;">&nbsp;&nbsp;{{ privilege.value.1 }}</strike></li>
                                                                 {% endif %}
                                                             {% endfor %}
                                                         </ul>

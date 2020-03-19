@@ -400,10 +400,10 @@ def report_category_create(request):
                                                          responsibility=responsibility_value)
             new_category.save()
         except IntegrityError:
-            messages.error(request, "Existed category name: {}".format(category_name))
+            messages.error(request, "Existed category name - {}".format(category_name))
             return redirect('report_category_list')
 
-        messages.success(request, 'Create report category "{}" successful.'.format(new_category))
+        messages.success(request, 'Successfully created report category - {}.'.format(new_category))
 
         return redirect('report_category_list')
     else:
