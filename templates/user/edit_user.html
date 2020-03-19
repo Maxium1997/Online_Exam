@@ -24,12 +24,12 @@
 
         // Get original privilege
         window.onload = function() {
-            var system = document.getElementById('32');
-            var testM = document.getElementById('16');
-            var tbM = document.getElementById('8');
-            var tbO = document.getElementById('4');
-            var viewer = document.getElementById('2');
-            var testee = document.getElementById('1');
+            var system = document.getElementById('SystemManager');
+            var testM = document.getElementById('TestManager');
+            var tbM = document.getElementById('TBManager');
+            var tbO = document.getElementById('TBOperator');
+            var viewer = document.getElementById('Viewer');
+            var testee = document.getElementById('Testee');
 
             if(system.checked === true) originSystem = true;
             if(testM.checked === true) originTestM = true;
@@ -42,12 +42,12 @@
         // Checkout whether privilege change and privilege can't be empty.
         function privilege_valid() {
             var privilegeInvalid = document.getElementById('privilege_invalid');
-            var system = document.getElementById('32');
-            var testM = document.getElementById('16');
-            var tbM = document.getElementById('8');
-            var tbO = document.getElementById('4');
-            var viewer = document.getElementById('2');
-            var testee = document.getElementById('1');
+            var system = document.getElementById('SystemManager');
+            var testM = document.getElementById('TestManager');
+            var tbM = document.getElementById('TBManager');
+            var tbO = document.getElementById('TBOperator');
+            var viewer = document.getElementById('Viewer');
+            var testee = document.getElementById('Testee');
 
             // Checkout whether privilege is changed.
             if (system.checked === originSystem && testM.checked === originTestM && tbM.checked === originTBM &&
@@ -58,7 +58,7 @@
             // Checkout whether privilege isn't null.
             else if (system.checked === false && testM.checked === false && tbM.checked === false &&
                 tbO.checked === false && viewer.checked === false && testee.checked === false) {
-                privilegeInvalid.innerHTML = "<span style='color: red; font-size: 14px'>Select one privilege at least</span>";
+                privilegeInvalid.innerHTML = "<span style='color: red; font-size: 14px'>Choose one privilege at least.</span>";
                 validPrivilege = false;
             }
             else {
@@ -69,28 +69,21 @@
         }
 
         // Checkout whether name change and name can't be empty.
-        function reg_id_valid(origin, reg_ids ,input) {
-            var arr = reg_ids;
+        function reg_id_valid(origin,input) {
             var invalid_id = document.getElementById('reg_id_invalid');
 
-            for(var i = 0; i < arr.length; i++) {
-                if (input.value === arr[i]) {
-                    invalid_id.innerHTML = "<span style='color: red'>ID has existed</span>";
-                    validRegId = false;
-                    break;
-                }
-                else if (input.value === ""){
-                    invalid_id.innerHTML = "<span style='color: red; font-size: 14px'>Required</span>";
-                    validRegId = false;
-                }
-                else if (origin === input.value) {
-                    invalid_id.innerHTML = '';
-                    validRegId = false;
-                }
-                else {
-                    invalid_id.innerHTML = '';
-                    validRegId = true;
-                }
+            if (input.value === ""){
+                invalid_id.innerHTML = "<span style='color: red; font-size: 14px'>Required</span>";
+                validRegId = false;
+            } else if (input.value.length < 8){
+                invalid_id.innerHTML = "<span style='color: red; font-size: 14px'>ID is too short.</span>";
+                validRegId = false;
+            } else if (origin === input.value) {
+                invalid_id.innerHTML = '';
+                validRegId = false;
+            } else {
+                invalid_id.innerHTML = '';
+                validRegId = true;
             }
             data_valid();
         }
@@ -102,12 +95,10 @@
             if (origin === input.value) {
                 validName = false;
                 name_invalid.innerHTML = '';
-            }
-            else if(input.value === ''){
+            } else if(input.value === ''){
                 validName = false;
                 name_invalid.innerHTML = "<span style='color: red; font-size: 14px'>Required</span>";
-            }
-            else {
+            } else {
                 validName = true;
                 name_invalid.innerHTML = '';
             }
@@ -121,12 +112,10 @@
             if (origin === input.value) {
                 validEmail = false;
                 email_invalid.innerHTML = '';
-            }
-            else if(input.value === ''){
+            } else if(input.value === ''){
                 validEmail = false;
                 email_invalid.innerHTML = "<span style='color: red; font-size: 14px'>Required</span>";
-            }
-            else {
+            } else {
                 validEmail = true;
                 email_invalid.innerHTML = '';
             }
@@ -140,12 +129,10 @@
             if (origin === input.value) {
                 validGender = false;
                 gender_invalid.innerHTML = '';
-            }
-            else if(input.value === ''){
+            } else if(input.value === ''){
                 validGender = false;
                 gender_invalid.innerHTML = "<span style='color: red; font-size: 14px'>Required</span>";
-            }
-            else {
+            } else {
                 validGender = true;
                 gender_invalid.innerHTML = '';
             }
@@ -157,12 +144,10 @@
             if (origin === input.value) {
                 validIdentity = false;
                 document.getElementById('identity_invalid').innerHTML = '';
-            }
-            else if(input.value === ''){
+            } else if(input.value === ''){
                 validIdentity = false;
                 document.getElementById('identity_invalid').innerHTML = "<span style='color: red; font-size: 14px'>Required</span>";
-            }
-            else {
+            } else {
                 validIdentity = true;
                 document.getElementById('identity_invalid').innerHTML = '';
             }
@@ -174,25 +159,16 @@
             var arr = stu_ids;
             var invalid_id = document.getElementById('stu_id_invalid');
 
-            for(var i = 0; i < arr.length; i++) {
-                if (input.value === arr[i]) {
-                    invalid_id.innerHTML = "<span style='color: red; font-size: 14px'>ID has existed</span>";
-                    validStuId = false;
-                    break;
-                }
-                else if (input.value === ""){
+                if (input.value === ""){
                     invalid_id.innerHTML = "<span style='color: red; font-size: 14px'>Required</span>";
                     validStuId = false;
-                }
-                else if (origin === input.value) {
+                } else if (origin === input.value) {
                     invalid_id.innerHTML = '';
                     validStuId = false;
-                }
-                else {
+                } else {
                     invalid_id.innerHTML = '';
                     validStuId = true;
                 }
-            }
             data_valid();
         }
 
@@ -203,12 +179,10 @@
             if (origin === input.value) {
                 validGrade = false;
                 grade_invalid.innerHTML = '';
-            }
-            else if(input.value === ''){
+            } else if(input.value === ''){
                 validGrade = false;
                 grade_invalid.innerHTML = "<span style='color: red; font-size: 14px'>Required</span>";
-            }
-            else {
+            } else {
                 validGrade = true;
                 grade_invalid.innerHTML = '';
             }
@@ -222,12 +196,10 @@
             if (origin === input.value) {
                 validDepartment = false;
                 department_invalid.innerHTML = '';
-            }
-            else if(input.value === ''){
+            } else if(input.value === ''){
                 validDepartment = false;
                 department_invalid.innerHTML = "<span style='color: red; font-size: 14px'>Required</span>";
-            }
-            else {
+            } else {
                 validDepartment = true;
                department_invalid.innerHTML = '';
             }
@@ -241,12 +213,10 @@
             if (origin === input.value) {
                 validSquadron = false;
                 squadron_invalid.innerHTML = '';
-            }
-            else if(input.value === ''){
+            } else if(input.value === ''){
                 validSquadron = false;
                 squadron_invalid.innerHTML = "<span style='color: red; font-size: 14px'>Required</span>";
-            }
-            else {
+            } else {
                 validSquadron = true;
                 squadron_invalid.innerHTML = '';
             }
@@ -266,16 +236,13 @@
                     submit.disabled = true;
                 }
             }
-            else if(identity.value === '1' || identity.value === '3'){
-                if (validRegId===true || validName===true || validEmail===true || validGender===true || validIdentity===true ||
-                    validPrivilege===true ){
+            else {
+                if (validRegId === true || validName === true || validEmail === true || validGender === true || validIdentity === true ||
+                    validPrivilege === true) {
                     submit.disabled = false;
-                } else{
+                } else {
                     submit.disabled = true;
                 }
-            }
-            else{
-                submit.disabled = true;
             }
         }
     </script>
@@ -319,7 +286,7 @@
                                         Register ID.<label id="reg_id_invalid" class="reg_id_invalid"></label>
                                     </h5>
                                     <p>
-                                        <input class="form-control" type="text" name="reg_id" id="reg_id" value="{{ edited_user.reg_id }}" onkeyup="reg_id_valid('{{ edited_user.reg_id }}' , {{ reg_ids }}, this)" required>
+                                        <input class="form-control" type="text" name="reg_id" id="reg_id" value="{{ edited_user.reg_id }}" onkeyup="reg_id_valid('{{ edited_user.reg_id }}', this)" required>
                                     </p>
 
                                     <h5 class="card-subtitle mb-2 text-muted">
@@ -374,7 +341,7 @@
                                                         <ul class="dropdown-menu">
                                                             <li class="dropdown-header">Privilege Setting.</li>
                                                             {% for privilege in privileges %}
-                                                                <li data-value="{{ privilege.value.0 }}"><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>&nbsp;{{ privilege.value.1 }}</li>
+                                                                <li data-value="{{ privilege.value.0 }}"><input type="checkbox" id="{{ privilege.value.1 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>&nbsp;{{ privilege.value.1 }}</li>
                                                             {% endfor %}
                                                         </ul>
                                                     </div>
@@ -419,7 +386,7 @@
                                         Department.<label id="department_invalid" class="department_invalid"></label>
                                     </h5>
                                     <p class="card-text">
-                                        <select class="custom-select custom-select-sm" name="department" id="department" onchange="department_valid('{{ edited_user.student.department.id }}', document.getElementById('department'))" required>
+                                        <select class="custom-select custom-select-sm" name="department" id="department" onchange="department_valid('{{ edited_user.student.department.id }}', document.getElementById('department'))">
                                             <option value="" disabled selected>Choose Department.</option>
                                             {% for department in departments %}
                                                 <option value="{{ department.id }}" {% if department == edited_user.student.department %}selected{% endif %}>{{ department }}</option>
@@ -431,7 +398,7 @@
                                         Squadron.<label id="squadron_invalid" class="squadron_invalid"></label>
                                     </h5>
                                     <p class="card-text">
-                                        <select class="custom-select custom-select-sm" name="squadron" id="squadron" onchange="squadron_valid('{{ edited_user.student.squadron.id }}', document.getElementById('squadron'))" required>
+                                        <select class="custom-select custom-select-sm" name="squadron" id="squadron" onchange="squadron_valid('{{ edited_user.student.squadron.id }}', document.getElementById('squadron'))">
                                             <option value="" disabled selected>Choose Squadron.</option>
                                             {% for squadron in squadrons %}
                                                 <option value="{{ squadron.id }}" {% if squadron == edited_user.student.squadron %}selected{% endif %}>{{ squadron }}</option>
@@ -448,7 +415,7 @@
                                 </div>
 
                                 <div class="card-footer text-right">
-                                    <button type="submit" class="btn btn-primary" id="submit">Update</button>
+                                    <button type="submit" class="btn btn-primary" id="submit" disabled>Update</button>
                                     <button type="button" class="btn btn-secondary" onclick="history.back()">Cancel</button>
                                 </div>
                             </div>
@@ -481,7 +448,7 @@
                                         Register ID.<label id="reg_id_invalid" class="reg_id_invalid"></label>
                                     </h5>
                                     <p>
-                                        <input class="form-control" type="text" name="reg_id" id="reg_id" value="{{ edited_user.reg_id }}" onkeyup="reg_id_valid('{{ edited_user.reg_id }}' , {{ reg_ids }}, this)" required>
+                                        <input class="form-control" type="text" name="reg_id" id="reg_id" value="{{ edited_user.reg_id }}" onkeyup="reg_id_valid('{{ edited_user.reg_id }}', this)" required>
                                     </p>
 
                                     <h5 class="card-subtitle mb-2 text-muted">
@@ -536,7 +503,7 @@
                                                         <ul class="dropdown-menu">
                                                             <li class="dropdown-header">Privilege Setting.</li>
                                                             {% for privilege in privileges %}
-                                                                <li data-value="{{ privilege.value.0 }}"><input type="checkbox" id="{{ privilege.value.0 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>&nbsp;{{ privilege.value.1 }}</li>
+                                                                <li data-value="{{ privilege.value.0 }}"><input type="checkbox" id="{{ privilege.value.1 }}" name="{{ privilege }}" onclick="privilege_valid()" {% if edited_user|has_permission:privilege %} checked {% endif %}>&nbsp;{{ privilege.value.1 }}</li>
                                                             {% endfor %}
                                                         </ul>
                                                     </div>
@@ -561,7 +528,7 @@
                                     </span>
 
                                     <div class="text-right">
-                                        <button type="submit" id="submit" class="btn btn-primary">Update</button>
+                                        <button type="submit" id="submit" class="btn btn-primary" disabled>Update</button>
                                         <button type="button" onclick="history.go(-1)" class="btn btn-secondary">Cancel</button>
                                     </div>
                                 </div>

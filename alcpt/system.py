@@ -97,11 +97,11 @@ def user_create(request):
 
                     new_user.save()
                     new_user_stu.save()
-                    messages.success(request, 'Create User and Student successfully.')
+                    messages.success(request, 'Successfully Created - User, Student')
                     return redirect('user_list')
 
                 else:
-                    messages.warning(request, 'Please input the student basic information.')
+                    messages.warning(request, 'Please input the student ID.')
                     privileges = UserType.__members__
                     identities = Identity.__members__.values()
                     departments = Department.objects.all()
@@ -112,7 +112,7 @@ def user_create(request):
                 new_user = User.objects.create_user(reg_id=reg_id, privilege=privilege_value, password=reg_id)
                 new_user.identity = identity
                 new_user.save()
-                messages.success(request, 'Create User successfully.')
+                messages.success(request, 'Successfully Created - User')
 
                 if request.POST.get('stu_id'):
                     messages.warning(request, 'You are not student.')
@@ -120,7 +120,7 @@ def user_create(request):
                 return redirect('user_list')
 
         except IntegrityError:
-            messages.error(request, "Existed user, register ID: {}".format(reg_id))
+            messages.error(request, "Existed user, register ID - {}".format(reg_id))
             privileges = UserType.__members__
             identities = Identity.__members__.values()
             departments = Department.objects.all()
@@ -128,8 +128,6 @@ def user_create(request):
             return render(request, 'user/create_user.html', locals())
 
     else:
-        reg_ids = [_.reg_id for _ in User.objects.all()]
-        stu_ids = [_.stu_id for _ in Student.objects.all()]
         privileges = UserType.__members__.values()
         identities = Identity.__members__.values()
         departments = Department.objects.all()
@@ -180,7 +178,7 @@ def user_multiCreate(request):
         if privilege_value & UserType.Testee.value[0]:
             Student.objects.bulk_create([Student(stu_id=new_user.reg_id, user=new_user) for new_user in new_users])
 
-        messages.success(request, 'Create user "{}" successful.'.format(len(new_users)))
+        messages.success(request, 'Successfully Created users - {}'.format(len(new_users)))
 
         return redirect('user_list')
 
@@ -216,8 +214,10 @@ def user_edit(request, reg_id):
                 try:
                     edited_student = edited_user.student
                     edited_student.grade = request.POST.get('grade')
-                    edited_student.department = Department.objects.get(id=request.POST.get('department'))
-                    edited_student.squadron = Squadron.objects.get(id=request.POST.get('squadron'))
+                    if request.POST.get('department'):
+                        edited_student.department = Department.objects.get(id=request.POST.get('department'))
+                    if request.POST.get('squadron'):
+                        edited_student.squadron = Squadron.objects.get(id=request.POST.get('squadron'))
                     edited_student.save()
                     try:
                         edited_user.reg_id = request.POST.get('reg_id')
@@ -225,7 +225,7 @@ def user_edit(request, reg_id):
                         edited_user.save()
                         edited_student.save()
 
-                        messages.success(request, "User update successfully.")
+                        messages.success(request, "Successfully updated user.")
                         return redirect('user_list')
 
                     except IntegrityError:
@@ -248,7 +248,7 @@ def user_edit(request, reg_id):
                     if edited_user.student:
                         Student.objects.get(user=edited_user).delete()
 
-                    messages.success(request, "User update successfully.")
+                    messages.success(request, "Successfully updated user.")
                     return redirect('user_list')
 
                 except IntegrityError:
@@ -260,13 +260,13 @@ def user_edit(request, reg_id):
                     except ObjectDoesNotExist:
                         pass
 
-                    reg_ids = [_.reg_id for _ in User.objects.all().exclude(reg_id=reg_id)]
-                    stu_ids = [_.stu_id for _ in Student.objects.all().exclude(stu_id=edited_user.reg_id)]
+                    # reg_ids = [_.reg_id for _ in User.objects.all().exclude(reg_id=reg_id)]
+                    # stu_ids = [_.stu_id for _ in Student.objects.all().exclude(stu_id=edited_user.reg_id)]
 
                     return render(request, 'user/edit_user.html', locals())
 
         except ObjectDoesNotExist:
-            messages.error(request, "User doesn't exist, user register id: {}".format(reg_id))
+            messages.error(request, "User doesn't exist, user register id - {}".format(reg_id))
             return redirect('user_list')
     else:
         try:
@@ -283,7 +283,7 @@ def user_edit(request, reg_id):
             return render(request, 'user/edit_user.html', locals())
 
         except ObjectDoesNotExist:
-            messages.error(request, "User doesn't exist, user register id: {}".format(reg_id))
+            messages.error(request, "User doesn't exist, user register id - {}".format(reg_id))
             return redirect('user_list')
 
 
