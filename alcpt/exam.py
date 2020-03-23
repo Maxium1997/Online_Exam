@@ -13,6 +13,7 @@ from alcpt.decorators import permission_check
 from alcpt.proclamation import notify
 from alcpt.definitions import UserType, QuestionType, QuestionTypeCounts, ExamType
 from alcpt.models import User, Exam, TestPaper, Group, Question, Proclamation
+from alcpt.email import notification_mail
 from alcpt.exceptions import *
 
 
@@ -62,15 +63,24 @@ def exam_create(request):
             testpaper.is_used = True
             testpaper.save()
 
+            notification_mail_content = "You will start " + exam.name + "\n" + \
+                                        "Start Time: " + start_time + "\n" + \
+                                        "Duration: " + duration + " minutes.\n" + \
+                                        "Please notice the time, do not forget it.\n\n" + \
+                                        "This is an automatic notification mail from system, " \
+                                        "please do not reply directly.\n" + \
+                                        "Thanks for your cooperation, hope you get good grades."
             # add the testee into the exam.
             for testee in selected_group.member.all():
                 exam.testeeList.add(testee)
             exam.save()
 
+            notification_mail(list(selected_group.member.all()), notification_mail_content)
+
             # create proclamation to notice all testees the exam start time.
             proclamation_content = "You will start " + exam.name + "\n" + \
                                    "Start Time: " + start_time + "\n" + \
-                                   "Duration: " + duration + "minutes.\n" + \
+                                   "Duration: " + duration + " minutes.\n" + \
                                    "Please notice the time, do not forget it."
             notify(title=exam.name,
                    text=proclamation_content,

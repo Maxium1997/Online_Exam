@@ -94,3 +94,28 @@ def reset_password_mail(reg_id, email):
     except:
         hint = "郵件發送產生錯誤"
     server.quit()
+
+
+def notification_mail(recipients: list, content: str):
+    strAccount = "mis.alcpt.109@gmail.com"  # 備援信箱：tryitnotareal1997@gmail.com
+    strPassword = "eji6z;6284vm,6"
+
+    for recipient in recipients:
+        msg = MIMEText(content)
+        msg["Subject"] = "ALCPT Notification"
+        mail_to = recipient.email
+
+        server = SMTP("smtp.gmail.com:587")
+        server.ehlo()
+        server.starttls()
+
+        try:
+            server.login(strAccount, strPassword)
+            server.sendmail(strAccount, mail_to, msg.as_string())
+            hint = "郵件已發送"
+        except SMTPAuthenticationError:
+            hint = "無法登入"
+        except:
+            hint = "郵件發送產生錯誤"
+
+    server.quit()

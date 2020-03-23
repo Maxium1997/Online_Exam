@@ -13,7 +13,7 @@ from Online_Exam.settings import LOGIN_REDIRECT_URL, LOGOUT_REDIRECT_URL
 from alcpt.definitions import UserType, Identity
 from alcpt.forms import CaptchaForm
 from alcpt.models import User, Department, Squadron, Report, Reply
-from alcpt.email_verification import email_verified, reset_password_mail
+from alcpt.email import email_verified, reset_password_mail
 from alcpt.managerfuncs import systemmanager
 
 # Create your views here.
