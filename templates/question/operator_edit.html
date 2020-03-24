@@ -6,62 +6,6 @@
 {% endblock %}
 
 {% block content %}
-{#    <div class="edit_question">#}
-{#        <form enctype="multipart/form-data" action="" method="post">#}
-{#            <div class="title"><h1>Edit Questions.</h1></div>#}
-{#            {% csrf_token %}#}
-{#            <table>#}
-{#                <tr>#}
-{#                    <td style="font-size: 20px">題目</td>#}
-{#                    <td>#}
-{#                        {% if question.q_file %}#}
-{#                            <audio controls preload="none">#}
-{#                                <source src="{{ question.q_file }}" type="audio/mpeg">#}
-{#                                Your browser does not support the audio tag.#}
-{#                            </audio>#}
-{#                        {% else %}#}
-{#                            <textarea class="form-control" name="q_content" cols="55" rows="4" onkeyup="ChangeJudgementButton('{{ question_q_content }}', this)">{{ question.q_content }}</textarea>#}
-{#                        {% endif %}#}
-{#                    </td>#}
-{#                </tr>#}
-{##}
-{#                <tr>#}
-{#                    <td class="col-md-2" style="font-size: 20px">選擇題目類型</td>#}
-{#                    <td class="col-md-5">#}
-{#                        <select name="question_type" id="question_type" onchange="ChangeJudgementButton('{{ question_type }}', this)" required>#}
-{#                            <option value="" disabled selected>請選擇題目類型</option>#}
-{#                            {% if question.q_content %}#}
-{#                                <option value="3" {% if question.q_type == 3 %}selected{% endif %}>文法</option>#}
-{#                                <option value="4" {% if question.q_type == 4 %}selected{% endif %}>名詞片語</option>#}
-{#                                <option value="5" {% if question.q_type == 5 %}selected{% endif %}>段落理解</option>#}
-{#                            {% elif question.q_file %}#}
-{#                                <option value="1" {% if question.q_type == 1 %}selected{% endif %}>問答</option>#}
-{#                                <option value="2" {% if question.q_type == 2 %}selected{% endif %}>簡短對話</option>#}
-{#                            {% endif %}#}
-{#                        </select>#}
-{#                    </td>#}
-{#                </tr>#}
-{##}
-{#                {% for choice in question.choice_set.all %}#}
-{#                <tr>#}
-{#                    {% if forloop.counter == 1 %}#}
-{#                        <td class="col-md-2" style="font-size: 20px">設定答案</td>#}
-{#                    {% else %}#}
-{#                        <td class="col-md-2"></td>#}
-{#                    {% endif %}#}
-{#                    <td class="col-md-5"><input type="radio" name="answer_choice" {% if choice.is_answer %}checked{% endif %}>{{ choice }}</td>#}
-{#                </tr>#}
-{#                {% endfor %}#}
-{#            </table>#}
-{##}
-{#            <div class="btn">#}
-{#                <button type="submit" id="submit">確認更改</button>#}
-{#                <button type="button" onclick="self.location=document.referrer;">取消</button>#}
-{#            </div>#}
-{#        </form>#}
-{#    </div>#}
-
-
     <main class="operator-question-edit">
         <div class="container">
             <div class="row justify-content-center">
@@ -79,7 +23,7 @@
                                 <p class="card-text">
                                     {% if question.q_file %}
                                         <audio controls preload="none">
-                                            <source src="{{ question.q_file }}" type="audio/mpeg">
+                                            <source src="{{ question.q_file.url }}" type="audio/mpeg">
                                             Your browser does not support the audio tag.
                                         </audio>
                                     {% else %}

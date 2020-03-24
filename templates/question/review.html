@@ -19,16 +19,12 @@
             var iconDown = document.getElementById(iconDownIndex);
 
             if (data.style.display === "none"){
-                {#mainData.style.fontWeight = 600;#}
-                {#mainData.style.backgroundColor = "rgb(220, 220, 220, 0.5)";#}
                 data.style.display = "table-row";
                 iconRight.style.display = "none";
                 iconDown.style.display = "block";
                 summary_Q_content.style.display = 'none';
                 full_Q_content.style.display = 'block';
             } else {
-                {#mainData.style.fontWeight = "normal";#}
-                {#mainData.style.backgroundColor = "rgb(220, 220, 220, 0)";#}
                 data.style.display = "none";
                 iconRight.style.display = "block";
                 iconDown.style.display = "none";
@@ -44,100 +40,12 @@
 {% endblock %}
 
 {% block content%}
-    <!-- 表格的部分 -->
-{#    <div class="table-responsive-md">#}
-{#        <table class="table table-hover table-bordered table-striped table-mc-light-blue">#}
-{#        {% if reviewed_questions %}#}
-{#            <caption style="font-size: 30px;">&nbsp;&nbsp;題目列表（共{% if query_content %}{{ questions.count }}{% elif reviewed_questions %}{{ reviewed_questions.count }}{% else %} 0 {% endif %}條結果）</caption>#}
-{#            <thead class="title">#}
-{#                <tr>#}
-{#                    <th class="col-md-1"></th>#}
-{#                    <th class="col-md-1">編號</th>#}
-{#                    <th class="col-md-6">題目</th>#}
-{#                    <th class="col-md-2">類型</th>#}
-{#                    <th class="col-md-2">審核</th>#}
-{#                </tr>#}
-{#            </thead>#}
-{#            <tbody>#}
-{#                {% for question in questionList %}#}
-{#                    <tr id="mainData{{ forloop.counter }}" onclick="toggle('{{ forloop.counter }}')">#}
-{#                        <td>#}
-{#                            <i id="iconRight{{ forloop.counter }}" class="fa fa-angle-right" style="padding-left: 0px"></i>#}
-{#                            <i id="iconDown{{ forloop.counter }}" class="fa fa-angle-down" style="display: none; padding-left: 0px"></i>#}
-{#                        </td>#}
-{##}
-{#                        <td style="vertical-align: middle">#}
-{#                            {{ question.id }}#}
-{#                        </td>#}
-{#                        <td style="text-align: left; vertical-align: middle">#}
-{#                            {% if question.q_file %}#}
-{#                                <audio controls preload="none">#}
-{#                                    <source src="{{ question.q_file }}" type="audio/mpeg">#}
-{#                                    Your browser does not support the audio tag.#}
-{#                                </audio>#}
-{#                            {% else %}#}
-{#                                <div id="summary_Q_content{{ forloop.counter }}">#}
-{#                                    {{ question.q_content|summary:250 }}#}
-{#                                </div>#}
-{#                                <div id="full_Q_content{{ forloop.counter }}" style="display: none">#}
-{#                                    {{ question.q_content }}#}
-{#                                </div>#}
-{##}
-{#                            {% endif %}#}
-{#                        </td>#}
-{#                        <td style="text-align: center; vertical-align: middle">{{ question.q_type|readable_question_type }}</td>#}
-{##}
-{#                        <td class="functions-btn" style="vertical-align: middle">#}
-{#                            <ul>#}
-{#                                <li><button id="pass" type="button" onclick="window.location.href='{% url 'question_pass' question.id %}'">Pass</button></li>#}
-{#                                <li><button id="reject" type="button" onclick="window.location.href='{% url 'question_reject' question.id %}'">Reject</button></li>#}
-{#                                <li><button type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'">edit</button></li>#}
-{#                            </ul>#}
-{##}
-{#                        </td>#}
-{#                    </tr>#}
-{##}
-{#                    <tr id="detailData{{ forloop.counter }}" style="display: none;">#}
-{#                        <td colspan="3" style="text-align: left; vertical-align: middle; padding-left: 20%">#}
-{#                            <ol type="A">#}
-{#                                {% for option in question.choice_set.all %}#}
-{#                                    {% if option.is_answer %}#}
-{#                                        <li style="color: red">{{ option }}</li>#}
-{#                                    {% else %}#}
-{#                                        <li>{{ option }}</li>#}
-{#                                    {% endif %}#}
-{#                                {% endfor %}#}
-{#                            </ol>#}
-{#                        </td>#}
-{##}
-{#                        <td style="vertical-align: middle">#}
-{#                            備註：{% if question.fault_reason %}{{ question.fault_reason }}{% else %}無{% endif %}#}
-{#                        </td>#}
-{##}
-{#                        <td style="vertical-align: middle">#}
-{#                            <div class="detail">#}
-{#                              <ul style="text-align: left; font-size: 16px">#}
-{#                                  <li>更新時間：{{ question.update_time|date:'H:i, m/d/Y' }}</li>#}
-{#                                  <li>難度：{{ question.difficulty }}</li>#}
-{#                                  <li>建立者：{{ question.created_by.name }}</li>#}
-{#                              </ul>#}
-{#                            </div>#}
-{#                        </td>#}
-{#                    </tr>#}
-{#                {% endfor %}#}
-{#            </tbody>#}
-{#        </table>#}
-{#        {% else %}#}
-{#            <h2>目前暫無資料</h2>#}
-{#        {% endif %}#}
-{#    </div>#}
-
     <main class="review-table">
         <div class="container-fluid">
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="table-responsive-md">
-                        <h2>Review.<h3>（共 {{ reviewed_questions.count }} 條結果）</h3></h2>
+                        <h2>Review.<h3>（Total: {{ reviewed_questions.count }}）</h3></h2>
 
                         <table class="table table-hover table-bordered table-striped table-mc-light-blue">
                             <thead class="thead-light">
@@ -165,7 +73,7 @@
                                             <td class="text-center">
                                                 {% if question.q_file %}
                                                     <audio controls preload="none">
-                                                        <source src="{{ question.q_file }}" type="audio/mpeg">
+                                                        <source src="{{ question.q_file.url }}" type="audio/mpeg">
                                                         Your browser does not support the audio tag.
                                                     </audio>
                                                 {% else %}

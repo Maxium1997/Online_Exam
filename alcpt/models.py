@@ -49,8 +49,8 @@ class User(AbstractBaseUser):
     email_is_verified = models.BooleanField(default=False)
     name = models.CharField(max_length=20, blank=True, null=True)
     gender = models.PositiveSmallIntegerField(blank=True, null=True)
-    TESTEE_PREVILEGE = 1
-    privilege = models.PositiveSmallIntegerField(default=TESTEE_PREVILEGE)     # 1 => Testee
+    TESTEE_PRIVILEGE = 1
+    privilege = models.PositiveSmallIntegerField(default=TESTEE_PRIVILEGE)     # 1 => Testee
     created_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
     IDENTITY_CHOICES = (
@@ -187,7 +187,7 @@ class Exam(models.Model):
 # state: state of the question
 class Question(models.Model):
     q_type = models.PositiveSmallIntegerField()
-    q_file = models.TextField(blank=True, null=True)
+    q_file = models.FileField(upload_to='question_files', null=True)
     q_content = models.TextField(blank=True, null=True)
     difficulty = models.PositiveSmallIntegerField(default=0)
     issued_freq = models.IntegerField(default=0)

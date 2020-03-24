@@ -3,14 +3,15 @@ from math import ceil
 
 from alcpt.definitions import QuestionType
 from alcpt.models import Question, TestPaper, User
-from alcpt.utility import save_file
+from alcpt.managerfuncs.system import question_file_storage
 
 
 # A Q objects(django.db.models.Q) is an object used to encapsulate a collection of keyword arguments.
 def query_questions(*, question_type: int, difficulty: int, state: int, question_content: str):
     queries = Q()
     query_content = ""
-    all_questions = Question.objects.exclude(state=1).exclude(state=3).exclude(state=5)     # tboperator doesn't need state = 1,("審核通過") 3("等待審核"), 5("被回報錯誤，已處理")
+    # tboperator doesn't need state = 1,("審核通過") 3("等待審核"), 5("被回報錯誤，已處理")
+    all_questions = Question.objects.exclude(state=1).exclude(state=3).exclude(state=5)
 
     if state:
         queries &= Q(state=state)
@@ -72,7 +73,7 @@ def create_listening_question(q_file, q_type: str, created_by: User, difficulty:
     listening_question = Question.objects.create(q_type=q_type,
                                                  created_by=created_by,
                                                  difficulty=difficulty)
-    listening_question.q_file = save_file(file=q_file, path='question_{}'.format(listening_question.id))
+    question_file_storage(listening_question, q_file)
 
     listening_question.save()
 

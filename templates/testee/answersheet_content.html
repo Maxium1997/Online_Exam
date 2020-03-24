@@ -10,10 +10,6 @@
             var dataIndex = 'detailData'+index;
             var data = document.getElementById(dataIndex);
             var iconRightIndex = 'iconRight'+index;
-            {#var summaryIndex = 'summary_Q_content'+index;#}
-            {#var summary_Q_content = document.getElementById(summaryIndex);#}
-            {#var fullIndex = 'full_Q_content'+index;#}
-            {#var full_Q_content = document.getElementById(fullIndex);#}
             var iconRight = document.getElementById(iconRightIndex);
             var iconDownIndex = 'iconDown'+index;
             var iconDown = document.getElementById(iconDownIndex);
@@ -22,14 +18,10 @@
                 data.style.display = "table-row";
                 iconRight.style.display = "none";
                 iconDown.style.display = "block";
-                {#summary_Q_content.style.display = 'none';#}
-                {#full_Q_content.style.display = 'block';#}
             } else {
                 data.style.display = "none";
                 iconRight.style.display = "block";
                 iconDown.style.display = "none";
-                {#summary_Q_content.style.display = 'block';#}
-                {#full_Q_content.style.display = 'none';#}
             }
         }
     </script>
@@ -101,7 +93,7 @@
                                         <td class="text-left">
                                             {% if answer.question.q_file %}
                                                 <audio controls preload="none">
-                                                    <source src="{{ answer.question.q_file }}" type="audio/mpeg">
+                                                    <source src="{{ answer.question.q_file.url }}" type="audio/mpeg">
                                                     Your browser does not support the audio tag.
                                                 </audio>
                                             {% else %}
