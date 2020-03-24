@@ -78,3 +78,12 @@ def create_listening_question(q_file, q_type: str, created_by: User, difficulty:
     listening_question.save()
 
     return listening_question
+
+
+def delete_question(question: Question):
+    for choice in question.choice_set.all():
+        choice.delete()
+
+    question.q_file.delete(save=True)
+
+    question.delete()

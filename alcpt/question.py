@@ -306,9 +306,6 @@ def question_multiCreate(request):
             table = wb.sheets()[0]
             all_questions = []
 
-            # q_type = request.POST.get('question_type', )
-            # q_difficulty = request.POST.get('question_difficulty', )
-
             for i in range(table.nrows):
                 question = []
                 for j in range(table.ncols):
@@ -391,11 +388,8 @@ def question_delete(request, question_id):
     try:
         question = Question.objects.get(id=question_id)
         if question.state == 6 or question.state == 2:
-            choices = question.choice_set.all()
-            for choice in choices:
-                choice.delete()
-
-            question.delete()
+            tboperator.delete_question(question)
+            messages.success(request, "Successfully deleted, question id - {}.".format(question_id))
 
         else:
             messages.warning(request, 'Failed deleted, question id - {}.'.format(question_id))
