@@ -41,14 +41,17 @@ def group_list(request):
 def group_create(request):
     if request.method == 'POST':
         group_name = request.POST.get('group_name',)
-        group = Group.objects.create(name=group_name, created_by=request.user)
-        group.save()
 
-        messages.success(request, 'Group create successfully.')
+        try:
+            group = Group.objects.create(name=group_name, created_by=request.user)
+        except:
+            messages.error(request, "Failed created, this name has existed.")
+            return render(request, 'group/testee_group_create.html', locals())
+
+        messages.success(request, 'Successfully created.')
         return redirect('testee_group_edit', group_id=group.id)
 
     else:
-        groups_names = [_.name for _ in Group.objects.all()]
         return render(request, 'group/testee_group_create.html', locals())
 
 

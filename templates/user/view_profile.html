@@ -18,7 +18,11 @@
                                 User Photo.
                             </div>
 
-                            <img class="card-img-top" src="{{ viewed_user.photo.url }}" alt="{{ viewed_user.name }}">
+                            {% if viewed_user.photo %}
+                                <img class="card-img-top" src="{{ viewed_user.photo.url }}" alt="{{ viewed_user.name }}">
+                            {% else %}
+                                <img class="card-img-top" src="..." alt="{{ viewed_user.name }}">
+                            {% endif %}
 
                             <div class="card-body">
                                 <p class="card-text">{{ viewed_user.introduction|linebreaksbr }}</p>
@@ -146,7 +150,11 @@
                                 User Photo.
                             </div>
 
-                            <img class="card-img-top" src="{{ viewed_user.photo.url }}" alt="{{ viewed_user.name }}">
+                            {% if viewed_user.photo %}
+                                <img class="card-img-top" src="{{ viewed_user.photo.url }}" alt="{{ viewed_user.name }}">
+                            {% else %}
+                                <img class="card-img-top" src="..." alt="{{ viewed_user.name }}">
+                            {% endif %}
 
                             <div class="card-body">
                                 <p class="card-text">{{ viewed_user.introduction|linebreaksbr }}</p>
