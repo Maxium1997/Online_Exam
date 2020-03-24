@@ -7,6 +7,7 @@ from django.contrib.auth.hashers import make_password
 
 from alcpt.models import User, Department, Squadron, Student
 from alcpt.definitions import UserType
+from alcpt.managerfuncs import system
 from alcpt.exceptions import IllegalArgumentError
 from alcpt.utility import save_file
 
@@ -60,13 +61,13 @@ def create_users(reg_ids: list, privilege: int):
 
 
 def update_user(user: User, name: str, gender: int, introduction: str, photo):
+    if photo:
+        system.user_photo_storage(user, photo)
+
     user = user
     user.name = name
     user.gender = gender
     user.introduction = introduction
-
-    if photo:
-        user.photo = save_file(file=photo, path='photo_{}'.format(user.reg_id))
 
     user.save()
 
