@@ -62,8 +62,8 @@
                             <tbody>
                                 {% if reviewed_questions %}
                                     {% for question in questionList %}
-                                        <tr id="mainData{{ forloop.counter }}" onclick="toggle('{{ forloop.counter }}')" style="cursor: pointer;">
-                                            <td class="text-center">
+                                        <tr>
+                                            <td class="text-center" id="mainData{{ forloop.counter }}" onclick="toggle('{{ forloop.counter }}')" style="cursor: pointer;">
                                                 <i id="iconRight{{ forloop.counter }}" class="fa fa-angle-right"></i>
                                                 <i id="iconDown{{ forloop.counter }}" class="fa fa-angle-down" style="display: none;"></i>
                                             </td>
@@ -77,11 +77,11 @@
                                                         Your browser does not support the audio tag.
                                                     </audio>
                                                 {% else %}
-                                                    <div id="summary_Q_content{{ forloop.counter }}">
+                                                    <div id="summary_Q_content{{ forloop.counter }}" class="text-left">
                                                         {{ question.q_content|summary:90 }}
                                                     </div>
-                                                    <div id="full_Q_content{{ forloop.counter }}" style="display: none">
-                                                        {{ question.q_content }}
+                                                    <div id="full_Q_content{{ forloop.counter }}" style="display: none" class="text-left">
+                                                        {{ question.q_content|linebreaksbr }}
                                                     </div>
                                                 {% endif %}
                                             </td>
@@ -141,7 +141,7 @@
                                     {% endfor %}
                                 {% else %}
                                     <tr>
-                                        <td colspan="6"><h4>No Data.</h4></td>
+                                        <td colspan="6">No Data.</td>
                                     </tr>
                                 {% endif %}
                             </tbody>

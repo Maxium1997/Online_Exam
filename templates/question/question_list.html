@@ -102,8 +102,8 @@
                             <tbody>
                                 {% if questions %}
                                     {% for question in questionList %}
-                                        <tr id="mainData{{ forloop.counter }}" onclick="toggle('{{ forloop.counter }}')" style="cursor: pointer;">
-                                            <td class="text-center">
+                                        <tr>
+                                            <td class="text-center" id="mainData{{ forloop.counter }}" onclick="toggle('{{ forloop.counter }}')" style="cursor: pointer;">
                                                 <i id="iconRight{{ forloop.counter }}" class="fa fa-angle-right"></i>
                                                 <i id="iconDown{{ forloop.counter }}" class="fa fa-angle-down" style="display: none"></i>
                                             </td>
@@ -201,7 +201,7 @@
                                         </tr>
                                     {% endfor %}
                                 {% else %}
-                                    <tr><td colspan="6"><h4>找不到符合的條件「{{ query_content|readable_question_query_content }}」的題目。</h4></td></tr>
+                                    <tr><td colspan="6">Cannot query these conditions「{{ query_content|readable_question_query_content }}」questions。</td></tr>
                                 {% endif %}
                             </tbody>
                         </table>

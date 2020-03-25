@@ -62,6 +62,8 @@ def create_users(reg_ids: list, privilege: int):
 
 def update_user(user: User, name: str, gender: int, introduction: str, photo):
     if photo:
+        if user.photo:
+            user.photo.delete()
         system.user_photo_storage(user, photo)
 
     user = user
