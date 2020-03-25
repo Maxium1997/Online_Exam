@@ -40,24 +40,25 @@ def query_users(*, department: Department, grade: int, squadron: Squadron, name:
 
 # systemmanager create many users
 # A Q objects(django.db.models.Q) is an object used to encapsulate a collection of keyword arguments.
-def create_users(reg_ids: list, privilege: int):
-    queries = Q()
-
-    for reg_id in reg_ids:
-        queries |= Q(reg_id=reg_id)
-
-    existed_users = User.objects.filter(queries)
-
-    if existed_users:
-        raise IllegalArgumentError("Existed user: {}".format(', '.join([user.reg_id for user in existed_users])))
-
-    # bulk_create an object manager method which takes as input an array of objects created using the class constructor
-    User.objects.bulk_create([User(reg_id=reg_id,
-                                   identity=2,
-                                   privilege=privilege,
-                                   password=make_password(reg_id)) for reg_id in reg_ids])
-
-    return User.objects.filter(queries)
+# def create_users(reg_ids: list, privilege: int):
+# def create_users(reg_ids: list, privilege: int, identity: int):
+#     queries = Q()
+#
+#     for reg_id in reg_ids:
+#         queries |= Q(reg_id=reg_id)
+#
+#     existed_users = User.objects.filter(queries)
+#
+#     if existed_users:
+#         raise IllegalArgumentError("Existed user: {}".format(', '.join([user.reg_id for user in existed_users])))
+#
+#     # bulk_create an object manager method which takes as input an array of objects created using the class constructor
+#     User.objects.bulk_create([User(reg_id=reg_id,
+#                                    identity=2,
+#                                    privilege=privilege,
+#                                    password=make_password(reg_id)) for reg_id in reg_ids])
+#
+#     return User.objects.filter(queries)
 
 
 def update_user(user: User, name: str, gender: int, introduction: str, photo):

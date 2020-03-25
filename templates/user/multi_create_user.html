@@ -5,39 +5,7 @@
 {% block scripts %}
     <script type="text/javascript">
         var passPrivilege = true;
-        var passID = false;
-
-        function IDValid(kind) {
-            var regIDs = document.getElementById('reg_ids');
-            var usersFile = document.getElementById('users_file');
-
-            if(kind === 'reg_ids'){
-                regIDs.disabled = false;
-                usersFile.disabled = true;
-                if(regIDs.value !== ''){
-                    usersFile.value = '';
-                    usersFile.disabled = true;
-                    passID = true;
-                } else {
-                    usersFile.disabled = false;
-                    passID = false;
-                }
-            }
-
-            if(kind === 'file') {
-                regIDs.disabled = true;
-                usersFile.disabled = false;
-                if(usersFile.value !== ''){
-                    regIDs.value = '';
-                    regIDs.disabled = true;
-                    passID = true;
-                } else{
-                    regIDs.disabled = false;
-                    passID = false;
-                }
-            }
-            is_valid();
-        }
+        var passFile = false;
 
         function privilege_not_empty() {
             var privilegeInvalid = document.getElementById('privilege_invalid');
@@ -51,7 +19,6 @@
             if (system.checked === false && testM.checked === false && tbM.checked === false &&
                 tbO.checked === false && viewer.checked === false && testee.checked === false) {
                 privilegeInvalid.innerHTML = "<span style='color: red; font-size: 14px'>Choose one privilege at least</span>";
-                privilegeInvalid.style.display = 'block';
                 passPrivilege = false;
             } else {
                 privilegeInvalid.innerHTML = '';
@@ -60,15 +27,24 @@
             }
             is_valid();
         }
-        
+
+        function file_not_empty(){
+            if (document.getElementById('users_file')){
+                passFile = true;}
+            else{
+                passFile = false;}
+            is_valid();
+        }
+
         function is_valid() {
             var submit = document.getElementById('submit');
 
-            if(passID === true && passPrivilege === true){
+            if(passFile === true && passPrivilege === true){
                 submit.disabled = false;
             } else{
                 submit.disabled = true;
             }
+            document.getElementById('test').innerHTML =  "~";
         }
     </script>
 {% endblock %}
@@ -90,12 +66,8 @@
                             <div class="card-header">Multiple Create User.</div>
 
                             <div class="card-body">
-                                <h5 class="subtitle mb-2 text-muted">Account List.</h5>
-                                <textarea class="form-control" id="reg_ids" name="reg_ids" rows="5" onkeyup="IDValid('reg_ids')" placeholder="account1, account2, ..."></textarea>
-                                <small>Only accept numbers and letters, and please distinguish by comma.<strong> User default password is the same with account.</strong></small>
-
                                 <h5 class="subtitle mb-2 text-muted">Upload File.</h5>
-                                <input type="file" id="users_file" name="users_file" accept=".xls, .xlsx" onchange="IDValid('file')">
+                                <input type="file" id="users_file" name="users_file" accept=".xls, .xlsx" onchange="file_not_empty()">
 
                                 <h5 class="subtitle mb-2 text-muted">Privilege.<span id="privilege_invalid" class="privilege_invalid"></span></h5>
                                 <div class="container">
@@ -114,14 +86,30 @@
                                             </div>
                                         </div>
                                     </div>
-
-
                                 </div>
+
+                                <h5 class="card-subtitle mb-2 text-muted">Account Format.</h5>
+                                <p class="card-text">
+                                <p style="color: red">&ast;Account請勿出現特殊字元： ' or " or ; or \ or / or , or # or *</p>
+                                </p>
+
+                                <h5 class="card-subtitle mb-2 text-muted">File Format.</h5>
+                                <p class="card-text">
+                                    <p style="color: red">&ast;Field Order：Account／Name／Identity</p>
+                                </p>
+
+                                <h5 class="card-subtitle mb-2 text-muted">Tips.</h5>
+                                <p class="card-text mark">
+                                    <strong>identity.</strong><br>
+                                    1 -> Visitor<br>
+                                    2 -> Student<br>
+                                    3 -> Teacher<br>
+                                </p>
 
                                 <div class="dropdown-divider"></div>
 
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary" id="submit" disabled>Submit</button>
                                     <button type="reset" class="btn btn-light">Reset</button>
                                     <button type="button" class="btn btn-secondary" onclick="history.go(-1)">Cancel</button>
                                 </div>
@@ -136,5 +124,16 @@
         .multi-create-user-form .container .card .card-body .button-group ul{
             padding-left: 10px;
         }
+        .mark{
+            background-color: rgb(248, 248, 248);
+
+            border-left-style: solid;
+            border-left-width: 4px;
+            border-left-color: rgb(200, 200, 200);
+            opacity: 0.6;
+
+            padding-left: 10px;
+        }
     </style>
 {% endblock %}
+
