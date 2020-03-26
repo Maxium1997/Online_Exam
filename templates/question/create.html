@@ -63,8 +63,19 @@
                                         File.
                                     </h5>
                                     <p class="card-text">
-                                        <input type="file" name="question_file" id="question_file" accept="audio/mpeg" onchange="OpenButton('listening')" required>
-                                        <span style="color: red">*僅供選取「mpeg」類型檔案</span>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="question_file" name="question_file" accept="audio/mpeg" onchange="OpenButton('listening')">
+                                                <label class="custom-file-label" for="question_file">Select mpeg file</label>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            // to change the label, the selected file name will display
+                                            $(".custom-file-input").on("change", function() {
+                                                var fileName = $(this).val().split("\\").pop();
+                                                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                                            });
+                                        </script>
                                     </p>
 
                                     <h5 class="card-subtitle mb-2 text-muted">

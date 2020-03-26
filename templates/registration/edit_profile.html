@@ -33,7 +33,19 @@
                                 {% else %}
                                     <img class="card-img-top" src="..." alt="{{ user.name }}">
                                 {% endif %}
-                                <input type="file" name="photo_file" id="photo_file" accept="image/*">
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="photo_file" name="photo_file" accept="image/*">
+                                        <label class="custom-file-label" for="photo_file">Select image file</label>
+                                    </div>
+                                </div>
+                                <script>
+                                    // to change the label, the selected file name will display
+                                    $(".custom-file-input").on("change", function() {
+                                        var fileName = $(this).val().split("\\").pop();
+                                        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                                    });
+                                </script>
 
                                 <div class="card-body">
                                     <p class="card-text">

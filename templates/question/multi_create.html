@@ -2,6 +2,19 @@
 
 {% load web_filters %}
 
+{% block scripts %}
+    <script type="text/javascript">
+        function file_not_empty(){
+            if (document.getElementById('questions_file')){
+                document.getElementById('submit').disabled = false;
+            }
+            else{
+                document.getElementById('submit').disabled = true;
+            }
+        }
+    </script>
+{% endblock %}
+
 {% block path %}
     <li class="breadcrumb-item active" aria-current="page">Create {% if kind == 'listening' %}Listening {% else %}Reading {% endif %}（Multiple）</li>
 {% endblock %}
@@ -11,7 +24,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <form method="post">
+                    <form enctype="multipart/form-data" method="post">
                         {% csrf_token %}
 
                         <div class="card">
@@ -20,12 +33,27 @@
                             <div class="card-body">
                                 <h5 class="card-subtitle mb-2 text-muted">File.</h5>
                                 <p class="card-text">
-                                    <input type="file" name="questions_file" accept=".xls, .xlsx .csv">
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="questions_file" name="questions_file" accept=".xls, .xlsx" onchange="file_not_empty()">
+                                            <label class="custom-file-label" for="questions_file">Select .xls and .xlsx file</label>
+                                        </div>
+                                        <div class="input-group-append">
+                                            <button type="submit" id="submit" class="btn btn-outline-secondary" disabled><i class="fa fa-upload"></i></button>
+                                        </div>
+                                    </div>
+                                    <script>
+                                        // to change the label, the selected file name will display
+                                        $(".custom-file-input").on("change", function() {
+                                            var fileName = $(this).val().split("\\").pop();
+                                            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                                        });
+                                    </script>
                                 </p>
 
-                                <h5 class="card-subtitle mb-2 text-muted">File Format.</h5>
+                                <h5 class="card-subtitle mb-2 text-muted">File Criteria.</h5>
                                 <p class="card-text">
-                                    <p style="color: red">*僅供選取「.xls」或「.xlsx」類型檔案</p>
+                                    <p style="color: red">*Only accept「.xls」or「.xlsx」file.</p>
                                     <p style="color: red">&ast;Field Order：Content／Option1／Option2／Option3／Option4／Answer／Type／Difficulty</p>
                                 </p>
 
@@ -46,8 +74,7 @@
                             </div>
 
                             <footer class="card-footer">
-                                <div class="text-right">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                <div class="text-center">
                                     <button type="button" class="btn btn-secondary" onclick="history.go(-1);">Cancel</button>
                                 </div>
                             </footer>

@@ -67,7 +67,22 @@
 
                             <div class="card-body">
                                 <h5 class="subtitle mb-2 text-muted">Upload File.</h5>
-                                <input type="file" id="users_file" name="users_file" accept=".xls, .xlsx" onchange="file_not_empty()">
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="users_file" name="users_file" accept=".xls, .xlsx" onchange="file_not_empty()">
+                                        <label class="custom-file-label" for="users_file">Select .xls and .xlsx file</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button type="submit" id="submit" class="btn btn-outline-secondary" disabled><i class="fa fa-upload"></i></button>
+                                    </div>
+                                </div>
+                                <script>
+                                    // to change the label, the selected file name will display
+                                    $(".custom-file-input").on("change", function() {
+                                        var fileName = $(this).val().split("\\").pop();
+                                        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                                    });
+                                </script>
 
                                 <h5 class="subtitle mb-2 text-muted">Privilege.<span id="privilege_invalid" class="privilege_invalid"></span></h5>
                                 <div class="container">
@@ -88,14 +103,10 @@
                                     </div>
                                 </div>
 
-                                <h5 class="card-subtitle mb-2 text-muted">Account Format.</h5>
-                                <p class="card-text">
-                                <p style="color: red">&ast;Account請勿出現特殊字元： ' or " or ; or \ or / or , or # or *</p>
-                                </p>
-
-                                <h5 class="card-subtitle mb-2 text-muted">File Format.</h5>
+                                <h5 class="card-subtitle mb-2 text-muted">File Criteria.</h5>
                                 <p class="card-text">
                                     <p style="color: red">&ast;Field Order：Account／Name／Identity</p>
+                                    <p style="color: red">&ast;Account do not accept these specific characters： ' or " or ; or \ or / or , or # or *</p>
                                 </p>
 
                                 <h5 class="card-subtitle mb-2 text-muted">Tips.</h5>
@@ -109,8 +120,6 @@
                                 <div class="dropdown-divider"></div>
 
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary" id="submit" disabled>Submit</button>
-                                    <button type="reset" class="btn btn-light">Reset</button>
                                     <button type="button" class="btn btn-secondary" onclick="history.go(-1)">Cancel</button>
                                 </div>
                             </div>
