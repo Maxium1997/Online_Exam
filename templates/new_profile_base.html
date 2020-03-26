@@ -65,6 +65,7 @@
                     <button id="edit_profile" onclick="window.location.href='{% url 'profile_edit' %}'">Edit Profile</button>
                     <button id="email" onclick="window.location.href='{% url 'email' %}'">Email</button>
                     <button id="password_change" onclick="window.location.href='{% url 'password_change' %}'">Password Change</button>
+                    <button id="real_exam_record" onclick="alert('Function is developing. Stay tuned.🤪');">Real Exam Record</button>
                     {% if request.user|get_report_notification == 0 %}
                         <button id="report" onclick="window.location.href='{% url 'report_list' %}'">Report</button>
                     {% else %}
