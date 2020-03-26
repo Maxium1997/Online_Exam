@@ -267,7 +267,11 @@
                                     User Photo.
                                 </div>
 
-                                <img class="card-img-top" src="{{ edited_user.photo }}" alt="{{ edited_user.name }}">
+                                {% if user.photo %}
+                                    <img class="card-img-top" src="{{ edited_user.photo.url }}" alt="{{ edited_user.name }}">
+                                {% else %}
+                                    <img class="card-img-top" src="..." alt="{{ edited_user.name }}">
+                                {% endif %}
 
                                 <div class="card-body">
                                     <p class="card-text">{{ edited_user.introduction|linebreaksbr }}</p>
