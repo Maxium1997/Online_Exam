@@ -139,23 +139,26 @@ def user_create(request):
 @permission_check(UserType.SystemManager)
 def user_multiCreate(request):
     if request.method == 'POST':
-        if request.POST.get('reg_ids'):
-            new_accounts = []
-            for account in request.POST.get('reg_ids').split(','):
-                account = account.strip().lower()
-                if not re.match('[a-z0-9]+', account):
-                    raise IllegalArgumentError('Account can only contain letters and numbers.')
-
-                new_accounts.append(account)
-
-        elif request.FILES.get('users_file',):
+        if request.FILES.get('users_file',):
             wb = xlrd.open_workbook(filename=None, file_contents=request.FILES['users_file'].read())
             table = wb.sheets()[0]
-            new_accounts = []
+            new_users = []
+
             for i in range(table.nrows):
-                for j in range(table.ncols):
-                    if isinstance(table.cell_value(i, j), float):
-                        new_accounts.append(int(table.cell_value(i, j)))
+                row = table.row_values(i)
+                if row[0]:  # account
+                    if isinstance(row[0], float):
+                        row[0] = int(row[0])
+                    if isinstance(row[0], str):
+                        if re.findall("[#*'”;/\\\ ,|+=-]", row[0]):
+                            continue
+                    if not isinstance(row[2], float) or row[2] == '':   # identity
+                        row[2] = 1
+                    if isinstance(row[2], float):
+                        row[2] = int(row[2])
+                        if row[2] < 1 or row[2] > 3:
+                            row[2] = 1
+                    new_users.append(row)   # valid user
 
         else:
             messages.warning(request, 'Must enter textarea or load a file.')
@@ -172,11 +175,11 @@ def user_multiCreate(request):
         else:
             privilege_value = UserType.Testee.value[0]
 
-        new_users = systemmanager.create_users(reg_ids=new_accounts,
-                                               privilege=privilege_value,)
-
-        if privilege_value & UserType.Testee.value[0]:
-            Student.objects.bulk_create([Student(stu_id=new_user.reg_id, user=new_user) for new_user in new_users])
+        for user in new_users:
+            new_user = User.objects.create_user(reg_id=user[0], privilege=privilege_value, password=user[0])
+            new_user.name = user[1]
+            new_user.identity = user[2]
+            new_user.save()
 
         messages.success(request, 'Successfully Created users - {}'.format(len(new_users)))
 
