@@ -82,9 +82,10 @@ def toggle(request, action):
         selected_proclamations = request.POST.getlist('proclamation')
 
         if action == 'read':
-            # for selected_proclamation in selected_proclamations:
-            #     Notification.objects.get(id=selected_proclamation).is_read = True
-            messages.success(request, "{}".format(selected_proclamations))
+            for selected_proclamation in selected_proclamations:
+                proclamation = Proclamation.objects.get(id=selected_proclamation)
+                proclamation.is_read = True
+                proclamation.save()
         elif action == 'delete':
             for selected_proclamation in selected_proclamations:
                 Proclamation.objects.get(id=selected_proclamation).delete()

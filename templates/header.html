@@ -111,7 +111,7 @@
                         </button>
 
                         <!-- Modal for notification center -->
-                        <form id="notificationForm" name="notificationForm" action="{% url 'proclamation_toggle' action='delete' %}" method="post">
+                        <form id="notificationForm" name="notificationForm" method="post">
                             {% csrf_token %}
                             <div class="modal fade" id="NotificationCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog" role="document">
@@ -145,8 +145,20 @@
                                         </div>
 
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-light">Delete</button>
-                                            <a class="btn btn-secondary" style="color: white" data-dismiss="modal">Cancel</a>
+                                            <button type="button" class="btn btn-secondary" onclick="set_action('read');">Read</button>
+                                            <button type="button" class="btn btn-light" onclick="set_action('delete');">Delete</button>
+                                            <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <script>
+                                                function set_action(action){
+                                                    var form = document.getElementById('notificationForm');
+                                                    if (action === 'read'){
+                                                        form.action = '/proclamation/read/toggle';
+                                                    }else{
+                                                        form.action = '/proclamation/delete/toggle';
+                                                    }
+                                                    form.submit();
+                                                }
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
