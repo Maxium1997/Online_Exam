@@ -385,8 +385,9 @@ def manual_pick(request, testpaper_id, question_type):
                     question_type = q_type
                     break
 
-            all_questions = Question.objects.filter(state=1).filter(q_type=question_type.value[0])
+            all_questions = Question.objects.filter(state=1).filter(q_type=question_type.value[0]).order_by('id')
             selected_questions = testpaper.question_list.filter(q_type=question_type.value[0])
+            limit_number = QuestionTypeCounts.Exam.value[0][question_type.value[0]-1]
 
             return render(request, 'exam/manual_pick.html', locals())
     except ObjectDoesNotExist:

@@ -38,7 +38,7 @@
                 <div class="col-md-12">
                     <form action="{% url 'manual_pick' testpaper.id question_type.value.0 %}" method="post">
                         {% csrf_token %}
-                        <h2>Manual Pick({{ question_type.value.1 }})</h2>
+                        <h2>Manual Pick - {{ question_type.value.1 }}（<span id="selected_number">{{ selected_questions.count }}</span>／{{ limit_number }}）</h2>
 
                         <div class="table-responsive">
                             <table class="table table-hover">
@@ -55,7 +55,7 @@
                                 <tbody>
                                     {% for question in all_questions %}
                                         <tr>
-                                            <td><input type="checkbox" name="question" value="{{ question.id }}" {% if question in selected_questions %}checked{% endif %}></td>
+                                            <td><input type="checkbox" class="passed-questions" name="question" value="{{ question.id }}" {% if question in selected_questions %}checked{% endif %}></td>
 
                                             <td>{{ question.id }}</td>
 
@@ -97,6 +97,23 @@
                                             </td>
                                         </tr>
                                     {% endfor %}
+                                    <script>
+                                        var limit = {{ limit_number }};
+                                        $('input[type=checkbox]').on('change', function (e) {
+                                            if ($('input[type=checkbox]:checked').length > limit) {
+                                                $(this).prop('checked', false);
+                                                alert("Limit number: " + limit);
+                                                return false;
+                                            }else{
+                                                showChecked();
+                                                function showChecked(){
+                                                    document.getElementById("selected_number").textContent = "" + document.querySelectorAll("input:checked").length;
+                                                }
+                                                document.querySelectorAll("input[name=question]").forEach(i=>{i.oncheck = function(){showChecked();}});
+                                            }
+                                        });
+
+                                    </script>
                                 </tbody>
                             </table>
                         </div>
