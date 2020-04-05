@@ -72,7 +72,7 @@ def manager_index(request):
 @require_http_methods(["GET"])
 def review(request):
     # 過濾掉狀態為"暫存"、"審核通過"、"被回報錯誤，已處理"
-    reviewed_questions = Question.objects.filter(state=3)
+    reviewed_questions = Question.objects.filter(state=3).order_by('id')
     page = request.GET.get('page', 1)
     paginator = Paginator(reviewed_questions, 10)  # the second parameter is used to display how many items. Now is 10
 
