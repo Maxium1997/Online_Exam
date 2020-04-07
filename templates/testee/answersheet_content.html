@@ -58,6 +58,18 @@
                                                 <div class="modal-body" style="font-size: 20px">
                                                     <ul>
                                                         <li>
+                                                            <p>
+                                                                If your <u>answer is correct</u>, then it will display only one color in all choices and
+                                                                there will display <i class="fa fa-check" style="color: green"></i> after the question.
+                                                            </p>
+                                                        </li>
+                                                        <li>
+                                                            <p>
+                                                                If you <u>didn't answer the question</u>, then it will display only one color in all choices and
+                                                                also display <i class="fa fa-question" style="color: red"></i> after the question.
+                                                            </p>
+                                                        </li>
+                                                        <li>
                                                             <p style="color: red">
                                                                 Red color means your selected the wrong answer on the exam.
                                                             </p>
@@ -67,14 +79,7 @@
                                                                 Green color means the sentence is correct but you miss it.
                                                             </p>
                                                         </li>
-                                                        <li>
-                                                            <p>
-                                                                If your answer is correct, then it will display only one color in all choices.
-                                                            </p>
-                                                        </li>
                                                     </ul>
-
-
                                                 </div>
 
                                                 <div class="modal-footer">
@@ -106,11 +111,15 @@
                                             {% endif %}
                                         </td>
                                         <td>
-                                            {% for option in answer.question.choice_set.all %}
-                                                {% if answer.selected == forloop.counter and option.is_answer %}
-                                                    <i class="fa fa-check" style="color: green; font-size: 20px"></i>
-                                                {% endif %}
-                                            {% endfor %}
+                                            {% if answer.selected == -1 %}
+                                                <i class="fa fa-question" style="color: red; font-size: 20px"></i>
+                                            {% else %}
+                                                {% for option in answer.question.choice_set.all %}
+                                                    {% if answer.selected == forloop.counter and option.is_answer %}
+                                                        <i class="fa fa-check" style="color: green; font-size: 20px"></i>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
                                         </td>
                                     </tr>
 

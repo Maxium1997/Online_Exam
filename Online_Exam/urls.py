@@ -173,6 +173,7 @@ urlpatterns = [
             re_path(r'^list$', testee.exam_list, name='testee_exam_list'),
             re_path(r'^start/(?P<exam_id>[0-9]+)$', testee.start_exam, name='testee_start_exam'),
             re_path(r'^answering/(?P<exam_id>[0-9]+)/(?P<answer_id>[0-9]+)$', testee.answering, name='testee_answering'),
+            re_path(r'^(?P<exam_id>[0-9]+)/settle$', testee.settle, name='testee_settle_exam'),
         ])),
 
         re_path(r'^answer_sheet/content/(?P<answersheet_id>[0-9]+)$', testee.view_answersheet_content, name='view_answersheet_content'),

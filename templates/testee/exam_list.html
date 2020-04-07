@@ -43,6 +43,7 @@
                                                     <td class="text-center" data-title="Other">
                                                         {% if not exam|is_finished:request.user %}
                                                             <a href="{% url 'testee_start_exam' exam.id %}" class="btn btn-primary">Start.</a>
+                                                            <a href="{% url 'testee_settle_exam' exam.id %}" class="btn btn-danger">Settle.</a>
                                                         {% else %}
                                                             <button type="button" class="btn btn-success" disabled>Finished.</button>
                                                         {% endif %}

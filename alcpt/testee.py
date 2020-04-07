@@ -181,6 +181,9 @@ def answering(request, exam_id, answer_id):
         exam = Exam.objects.get(id=exam_id)
         answer = Answer.objects.get(id=answer_id)
         answer_sheet = AnswerSheet.objects.get(exam=exam, user=request.user)
+        if answer_sheet.is_finished:
+            messages.warning(request, "You had completed this exam.")
+            return redirect('testee_score_list')
         if answer not in answer_sheet.answer_set.all():
             messages.warning(request, 'Not your answer: {}'.format(answer_id))
             return redirect('testee_answering', exam_id=exam.id, answer_id=list(answer_sheet.answer_set.all())[0].id)
@@ -223,3 +226,22 @@ def answering(request, exam_id, answer_id):
         answers = answer_sheet.answer_set.all()
 
         return render(request, 'testee/answering.html', locals())
+
+
+# Settle exam score directly.
+@permission_check(UserType.Testee)
+def settle(request, exam_id):
+    try:
+        exam = Exam.objects.get(id=exam_id)
+        try:
+            answer_sheet = AnswerSheet.objects.get(exam=exam, user=request.user)
+            score = testmanager.calculate_score(exam.id, answer_sheet)
+            messages.success(request, "You have settled this exam score directly. You got {} point in this exam.".format(score))
+            return redirect('testee_score_list')
+        except ObjectDoesNotExist:
+            messages.error(request, "Query failed, you may not start this exam.")
+            return redirect('testee_exam_list')
+
+    except ObjectDoesNotExist:
+        messages.error(request, "Query failed, Exam doesn't exist.")
+        return redirect('testee_exam_list')
