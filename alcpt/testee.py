@@ -177,6 +177,9 @@ def start_exam(request, exam_id):
 @permission_check(UserType.Testee)
 @require_http_methods(["GET", "POST"])
 def answering(request, exam_id, answer_id):
+    exam = Exam.objects.get(id=exam_id)
+    hour = exam.finish_time.hour
+    minute = exam.finish_time.minute
     try:
         exam = Exam.objects.get(id=exam_id)
         answer = Answer.objects.get(id=answer_id)
