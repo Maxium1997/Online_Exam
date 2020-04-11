@@ -68,7 +68,7 @@
 
                                     <div class="text-right">
                                         <button type="submit" class="btn btn-primary" {% if replying_report.state == 3 %}disabled{% endif %}>Comment</button>
-                                        <button type="button" class="btn btn-secondary" onclick="history.go(-1)">Cancel</button>
+                                        <button type="button" class="btn btn-secondary" onclick="window.location=document.referrer;">Cancel</button>
                                         {% if replying_report.state != 3 %}
                                             <button type="button" class="btn btn-success" onclick="window.location.href='{% url 'report_done' replying_report.id %}'">Close</button>
                                         {% endif %}

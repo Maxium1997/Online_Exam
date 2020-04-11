@@ -42,8 +42,8 @@
                                                     <td class="text-center" data-title="Type">{{ exam.exam_type|readable_exam_type }}</td>
                                                     <td class="text-center" data-title="Other">
                                                         {% if not exam|is_finished:request.user %}
-                                                            <a href="{% url 'testee_start_exam' exam.id %}" class="btn btn-primary">Start.</a>
-                                                            <a href="{% url 'testee_settle_exam' exam.id %}" class="btn btn-danger">Settle.</a>
+                                                            <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'testee_start_exam' exam.id %}'">Start.</button>
+                                                            <button type="button" class="btn btn-danger" onclick="window.location.href='{% url 'testee_settle_exam' exam.id %}'">Settle.</button>
                                                         {% else %}
                                                             <button type="button" class="btn btn-success" disabled>Finished.</button>
                                                         {% endif %}
@@ -89,7 +89,7 @@
                                                     <td class="text-center">{{ exam.duration }} min.</td>
                                                     <td class="text-center">
                                                         {% if not exam|is_finished:request.user %}
-                                                            <a href="{% url 'testee_start_exam' exam.id %}" class="btn btn-primary">Start.</a>
+                                                            <button type="button" class="btn btn-primary" onclick="window.location.href='{% url 'testee_start_exam' exam.id %}'">Start.</button>
                                                         {% else %}
                                                             <button type="button" class="btn btn-success" disabled>Finished.</button>
                                                         {% endif %}
