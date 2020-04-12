@@ -5,8 +5,8 @@
 {% block scripts %}
     <script>
         function toggle(index){
-            var mainDataIndex = 'mainData'+index;
-            var mainData = document.getElementById(mainDataIndex);
+            var angle_right_btnIndex = 'angle_right_btn_'+index;
+            var angle_right_btn = document.getElementById(angle_right_btnIndex);
             var dataIndex = 'detailData'+index;
             var data = document.getElementById(dataIndex);
             var iconRightIndex = 'iconRight'+index;
@@ -15,10 +15,12 @@
             var iconDown = document.getElementById(iconDownIndex);
 
             if (data.style.display === "none"){
+                angle_right_btn.innerHTML = '<i class="fa fa-angle-down"></i>';
                 data.style.display = "table-row";
                 iconRight.style.display = "none";
                 iconDown.style.display = "block";
             } else {
+                angle_right_btn.innerHTML = '<i class="fa fa-angle-right"></i>';
                 data.style.display = "none";
                 iconRight.style.display = "block";
                 iconDown.style.display = "none";
@@ -41,59 +43,66 @@
                         <table class="table table-hover">
                             <thead class="thead-light">
                                 <tr>
+                                    <th></th>
                                     <th scope="col">Serial.</th>
                                     <th scope="col">Content.</th>
-                                    <th scope="col" class="text-center">
+                                    <th scope="col" class="text-right">
                                         <button type="button" class="btn" data-toggle="modal" data-target="#promptContent">
                                             <i class="fa fa-question-circle"></i>
                                         </button>
-                                    </th>
-                                    <div class="modal fade" id="promptContent" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header text-center">
-                                                    <h5 class="modal-title" id="ModalLongTitle">Tips</h5>
-                                                </div>
+                                        <div class="modal fade text-left" id="promptContent" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header text-center">
+                                                        <h5 class="modal-title" id="ModalLongTitle">Tips</h5>
+                                                    </div>
 
-                                                <div class="modal-body" style="font-size: 20px">
-                                                    <ul>
-                                                        <li>
-                                                            <p>
-                                                                If your <u>answer is correct</u>, then it will display only one color in all choices and
-                                                                there will display <i class="fa fa-check" style="color: green"></i> after the question.
-                                                            </p>
-                                                        </li>
-                                                        <li>
-                                                            <p>
-                                                                If you <u>didn't answer the question</u>, then it will display only one color in all choices and
-                                                                also display <i class="fa fa-question" style="color: red"></i> after the question.
-                                                            </p>
-                                                        </li>
-                                                        <li>
-                                                            <p style="color: red">
-                                                                Red color means your selected the wrong answer on the exam.
-                                                            </p>
-                                                        </li>
-                                                        <li>
-                                                            <p style="color: green">
-                                                                Green color means the sentence is correct but you miss it.
-                                                            </p>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                    <div class="modal-body" style="font-size: 20px">
+                                                        <ul>
+                                                            <li>
+                                                                <p>
+                                                                    If your <u>answer is correct</u>, then it will display only one color in all choices and
+                                                                    there will display <i class="fa fa-check" style="color: green"></i> after the question.
+                                                                </p>
+                                                            </li>
+                                                            <li>
+                                                                <p>
+                                                                    If you <u>didn't answer the question</u>, then it will display only one color in all choices and
+                                                                    also display <i class="fa fa-question" style="color: red"></i> after the question.
+                                                                </p>
+                                                            </li>
+                                                            <li>
+                                                                <p style="color: red">
+                                                                    Red color means your selected the wrong answer on the exam.
+                                                                </p>
+                                                            </li>
+                                                            <li>
+                                                                <p style="color: green">
+                                                                    Green color means the sentence is correct but you miss it.
+                                                                </p>
+                                                            </li>
+                                                            <li>
+                                                                <p>
+                                                                    If you think there is a problem with the question, you can click <i class="fa fa-exclamation-triangle"></i> to report it.
+                                                                </p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
 
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 {% for answer in answersheet.answer_set.all %}
-                                    <tr id="mainData{{ forloop.counter }}" onclick="toggle('{{ forloop.counter }}')" style="cursor: pointer;">
+                                    <tr id="mainData{{ forloop.counter }}">
+                                        <td id="angle_right_btn_{{ forloop.counter }}" onclick="toggle('{{ forloop.counter }}')" style="cursor: pointer;"><i class="fa fa-angle-right"></i></td>
                                         <td>{{ forloop.counter }}</td>
                                         <td class="text-left">
                                             {% if answer.question.q_file %}
@@ -103,14 +112,14 @@
                                                 </audio>
                                             {% else %}
                                                 <div id="summary_Q_content{{ forloop.counter }}">
-                                                    {{ answer.question.q_content|summary:125 }}
+                                                    {{ answer.question.q_content|summary:110 }}
                                                 </div>
                                                 <div id="full_Q_content{{ forloop.counter }}" style="display: none">
                                                     {{ answer.question.q_content|linebreaksbr }}
                                                 </div>
                                             {% endif %}
                                         </td>
-                                        <td>
+                                        <td class="text-right">
                                             {% if answer.selected == -1 %}
                                                 <i class="fa fa-question" style="color: red; font-size: 20px"></i>
                                             {% else %}
@@ -125,7 +134,7 @@
 
                                     <tr id="detailData{{ forloop.counter }}" style="display: none;">
                                         <td></td>
-                                        <td colspan="2" style="text-align: left;">
+                                        <td colspan="2" style="text-align: left">
                                             <ol type="A">
                                                 {% for option in answer.question.choice_set.all %}
                                                     {% if answer.selected == forloop.counter and option.is_answer %}
@@ -140,6 +149,7 @@
                                                 {% endfor %}
                                             </ol>
                                         </td>
+                                        <td class="text-right"><i class="fa fa-exclamation-triangle" style="cursor: pointer;" onclick="window.location.href='{% url 'report_question' question_id=answer.question.id %}'"></i></td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from .models import Question, AnswerSheet, Student, User, Exam, TestPaper, Answer
+from .models import Question, AnswerSheet, Student, User, Exam, TestPaper, Answer, ReportCategory, Report
 from .exceptions import *
 from .decorators import permission_check
 from .definitions import UserType, QuestionType, ExamType
@@ -248,3 +248,35 @@ def settle(request, exam_id):
     except ObjectDoesNotExist:
         messages.error(request, "Query failed, Exam doesn't exist.")
         return redirect('testee_exam_list')
+
+
+def report_question(request, question_id):
+    if request.method == 'POST':
+        try:
+            category = ReportCategory.objects.get(id=int(request.POST.get('category')))
+            reported_question = Question.objects.filter(id=question_id).update(state=4)
+
+            supplement_note = request.POST.get('supplement_note')
+
+            question_report = Report.objects.create(staff_notification=True,
+                                                    category=category,
+                                                    question=reported_question,
+                                                    supplement_note=supplement_note,
+                                                    created_by=request.user,
+                                                    state=1)
+
+            question_report.save()
+
+            messages.success(request, 'Thanks for your report, we will review this question as soon as possible.')
+
+            return redirect('testee_score_list')
+
+        except ObjectDoesNotExist:
+            messages.error(request, 'Category or Question does not exist.')
+            categories = ReportCategory.objects.all()
+            return render(request, 'testee/report_question.html', locals())
+
+    else:
+        categories = ReportCategory.objects.all()
+        reported_question = Question.objects.get(id=question_id)
+        return render(request, 'testee/report_question.html', locals())
