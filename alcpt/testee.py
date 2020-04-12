@@ -279,4 +279,7 @@ def report_question(request, question_id):
     else:
         categories = ReportCategory.objects.all()
         reported_question = Question.objects.get(id=question_id)
+        if reported_question.state == 4:
+            messages.warning(request, "This question had been reported, thank you.")
+            return redirect(request.META.get('HTTP_REFERER'))
         return render(request, 'testee/report_question.html', locals())

@@ -17,6 +17,26 @@
                             <div class="card-header">{{ replying_report.category }}#{{ replying_report.id }}</div>
 
                             <div class="card-body">
+                                {% if replying_report.question %}
+                                    <h5>Question.</h5>
+                                    {% if replying_report.question.q_file %}
+                                        <audio controls preload="none">
+                                            <source src="{{ replying_report.question.q_file.url }}" type="audio/mpeg">
+                                            Your browser does not support the audio tag.
+                                        </audio>
+                                    {% else %}
+                                        <div>
+                                            {{ replying_report.question.q_content|linebreaksbr }}
+                                        </div>
+                                    {% endif %}
+                                    <h5>Choice.</h5>
+                                    <ol type="A">
+                                        {% for choice in replying_report.question.choice_set.all %}
+                                            <li {% if choice.is_answer %}style="color: green"{% endif %}>{{ choice }}</li>
+                                        {% endfor %}
+                                    </ol>
+                                {% endif %}
+
                                 <h5>Supplement Note</h5>
                                 <div class="dropdown-divider"></div>
                                 <p>{{ replying_report.supplement_note }}</p>

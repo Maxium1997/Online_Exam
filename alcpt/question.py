@@ -128,27 +128,76 @@ def question_edit(request, question_id):
             return redirect('tbmanager_question_list')
 
         if request.method == 'POST':
-            question.q_content = request.POST.get('q_content', )
+            if question.state == 4:
+                if question.q_file:
+                    new_question = Question.objects.create(q_type=question.q_type,
+                                                           q_file=question.q_file,
+                                                           difficulty=question.difficulty,
+                                                           issued_freq=question.issued_freq,
+                                                           correct_freq=question.correct_freq,
+                                                           created_by=request.user,
+                                                           last_updated_by=request.user,
+                                                           state=1)
+                else:
+                    new_question = Question.objects.create(q_type=question.q_type,
+                                                           q_content=question.q_content,
+                                                           difficulty=question.difficulty,
+                                                           issued_freq=question.issued_freq,
+                                                           correct_freq=question.correct_freq,
+                                                           created_by=request.user,
+                                                           last_updated_by=request.user,
+                                                           state=1)
+                new_question.save()
 
-            for choice in question.choice_set.all():
-                choice.is_answer = 0
-                choice.save()
+                original_answer_choice_id = 0
+                for choice in question.choice_set.all():
+                    if choice.is_answer:
+                        original_answer_choice_id = choice.id
+                        choice.is_answer = False
+                    else:
+                        choice.is_answer = False
+                    choice.save()
+                Choice.objects.filter(id=request.POST.get('answer_choice')).update(is_answer=True)
 
-            try:
-                choice = Choice.objects.get(id=request.POST.get('answer_choice'))
-                choice.is_answer = 1
-                choice.save()
-                question.state = 1
-                question.last_updated_by = request.user
+                for choice in question.choice_set.all():
+                    Choice.objects.create(c_content=choice.c_content,
+                                          question=new_question,
+                                          is_answer=choice.is_answer)
+
+                for choice in question.choice_set.all():
+                    if choice.id == original_answer_choice_id:
+                        choice.is_answer = True
+                    else:
+                        choice.is_answer = False
+                    choice.save()
+
+                question.state = 5
                 question.save()
 
-                messages.success(request, 'Successfully updated.')
+                messages.success(request, "Successfully processed the question")
+                return redirect('tbmanager_question_list')
+            else:
+                question.q_content = request.POST.get('q_content')
 
-                return redirect('question_review')
-            except ObjectDoesNotExist:
-                messages.error(request,
-                               'Choice does not exist, choice id: {}'.format(request.POST.get('answer_choice')))
-                return render(request, 'question/question_edit.html', locals())
+                for choice in question.choice_set.all():
+                    choice.is_answer = 0
+                    choice.save()
+
+                try:
+                    choice = Choice.objects.get(id=request.POST.get('answer_choice'))
+                    choice.is_answer = 1
+                    choice.save()
+                    question.state = 1
+                    question.last_updated_by = request.user
+                    question.save()
+
+                    messages.success(request, 'Successfully updated.')
+
+                    return redirect('question_review')
+                except ObjectDoesNotExist:
+                    messages.error(request,
+                                   'Choice does not exist, choice id: {}'.format(request.POST.get('answer_choice')))
+                    return render(request, 'question/question_edit.html', locals())
         else:
             return render(request, 'question/question_edit.html', locals())
 

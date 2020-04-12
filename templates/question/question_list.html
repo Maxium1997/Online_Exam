@@ -150,10 +150,14 @@
                                                         <button class="btn btn-primary" id="submit" type="button" onclick="window.location.href='{% url 'question_submit' question.id %}'" disabled>Submit</button>
                                                         <button class="btn btn-warning" id="edit" type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'" disabled>Edit</button>
                                                         <button class="btn btn-danger" id="delete" type="button" onclick="window.location.href='{% url 'question_delete' question.id %}'" disabled>Delete</button>
-                                                    {% elif question.state == 2 or question.state == 3 %}
-                                                        <a href="{% url 'question_pass' question.id %}" class="btn btn-success" onclick="return confirm('Sure to pass?')">Pass</a>
+{#                                                    {% elif question.state == 2 or question.state == 3 %}#}
+{#                                                        <a href="{% url 'question_pass' question.id %}" class="btn btn-success" onclick="return confirm('Sure to pass?')">Pass</a>#}
+{#                                                        <button class="btn btn-warning" id="edit" type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'">Edit</button>#}
+{#                                                        <button class="btn btn-danger" id="delete" onclick="window.location.href='{% url 'question_reject' question.id %}'">Reject</button>#}
+                                                    {% elif question.state == 4 %}
+                                                        <button class="btn btn-primary" id="submit" type="button" onclick="window.location.href='{% url 'question_submit' question.id %}'" disabled>Submit</button>
                                                         <button class="btn btn-warning" id="edit" type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'">Edit</button>
-                                                        <button class="btn btn-danger" id="delete" onclick="window.location.href='{% url 'question_reject' question.id %}'">Reject</button>
+                                                        <button class="btn btn-danger" id="delete" type="button" onclick="window.location.href='{% url 'question_delete' question.id %}'" disabled>Delete</button>
                                                     {% else %}
                                                         <button class="btn btn-warning" id="edit" type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'" disabled>Edit</button>
                                                         <button class="btn btn-danger" id="delete" type="button" onclick="window.location.href='{% url 'question_delete' question.id %}'" disabled>Delete</button>
