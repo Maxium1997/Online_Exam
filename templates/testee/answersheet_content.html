@@ -120,14 +120,18 @@
                                             {% endif %}
                                         </td>
                                         <td class="text-right">
-                                            {% if answer.selected == -1 %}
-                                                <i class="fa fa-question" style="color: red; font-size: 20px"></i>
+                                            {% if answer.question.state == 5 %}
+                                                <i class="fa fa-exclamation-circle" style="color: red; font-size: 20px"></i>
                                             {% else %}
-                                                {% for option in answer.question.choice_set.all %}
-                                                    {% if answer.selected == forloop.counter and option.is_answer %}
-                                                        <i class="fa fa-check" style="color: green; font-size: 20px"></i>
-                                                    {% endif %}
-                                                {% endfor %}
+                                                {% if answer.selected == -1 %}
+                                                    <i class="fa fa-question" style="color: red; font-size: 20px"></i>
+                                                {% else %}
+                                                    {% for option in answer.question.choice_set.all %}
+                                                        {% if answer.selected == forloop.counter and option.is_answer %}
+                                                            <i class="fa fa-check" style="color: green; font-size: 20px"></i>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -149,7 +153,13 @@
                                                 {% endfor %}
                                             </ol>
                                         </td>
-                                        <td class="text-right"><i class="fa fa-exclamation-triangle" style="cursor: pointer;" onclick="window.location.href='{% url 'report_question' question_id=answer.question.id %}'"></i></td>
+                                        <td class="text-right">
+                                            {% if answer.question.state == 5 %}
+                                                <i class="fa fa-exclamation-triangle" style="cursor: pointer;" onclick="alert('This question had been modified.')"></i>
+                                            {% else %}
+                                                <i class="fa fa-exclamation-triangle" style="cursor: pointer;" onclick="window.location.href='{% url 'report_question' question_id=answer.question.id %}'"></i>
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
