@@ -178,8 +178,9 @@ def start_exam(request, exam_id):
 @require_http_methods(["GET", "POST"])
 def answering(request, exam_id, answer_id):
     exam = Exam.objects.get(id=exam_id)
-    # hour = exam.finish_time.strftime('%H')
-    # hour = exam.finish_time.strftime('%M')
+    if exam.exam_type == 1:
+        hour = exam.finish_time.hour
+        minute = exam.finish_time.minute
     try:
         exam = Exam.objects.get(id=exam_id)
         answer = Answer.objects.get(id=answer_id)
