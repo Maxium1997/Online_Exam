@@ -144,7 +144,7 @@ def readable_state(state: int):
         (1, 'pass'),
         (2, 'reject'),
         (3, 'pending'),
-        (4, 'reported'),
+        (4, 'faulty'),
         (5, 'handle'),
         (6, 'saved'),
     )

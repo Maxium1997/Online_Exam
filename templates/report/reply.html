@@ -18,7 +18,7 @@
 
                             <div class="card-body">
                                 {% if replying_report.question %}
-                                    <h5>Question.</h5>
+                                    <h5>Question Content<a href="{% url 'question_edit' replying_report.question.id %}"><i class="fa fa-link"></i></a></h5>
                                     {% if replying_report.question.q_file %}
                                         <audio controls preload="none">
                                             <source src="{{ replying_report.question.q_file.url }}" type="audio/mpeg">
@@ -29,7 +29,7 @@
                                             {{ replying_report.question.q_content|linebreaksbr }}
                                         </div>
                                     {% endif %}
-                                    <h5>Choice.</h5>
+                                    <h5>Choice</h5>
                                     <ol type="A">
                                         {% for choice in replying_report.question.choice_set.all %}
                                             <li {% if choice.is_answer %}style="color: green"{% endif %}>{{ choice }}</li>

@@ -75,7 +75,7 @@ def exam_create(request):
                 exam.testeeList.add(testee)
             exam.save()
 
-            notification_mail(list(selected_group.member.all()), notification_mail_content)
+            # notification_mail(list(selected_group.member.all()), notification_mail_content)
 
             # create proclamation to notice all testees the exam start time.
             proclamation_content = "You will start " + exam.name + "\n" + \
