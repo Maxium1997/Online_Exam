@@ -31,16 +31,16 @@ urlpatterns = [
     ])),
 
     re_path(r'^about/', include([
-        re_path(r'^SystemManager', views.about_SystemManager, name='about_SystemManager'),
-        re_path(r'^TestManager', views.about_TestManager, name='about_TestManager'),
-        re_path(r'^TBManager', views.about_TBManager, name='about_TBManager'),
-        re_path(r'^TBOperator', views.about_TBOperator, name='about_TBOperator'),
-        re_path(r'^Viewer', views.about_Viewer, name='about_Viewer'),
-        re_path(r'^Testee', views.about_Testee, name='about_Testee'),
-        re_path(r'^developer', views.about_developer, name='about_developer'),
+        re_path(r'^SystemManager$', views.about_SystemManager, name='about_SystemManager'),
+        re_path(r'^TestManager$', views.about_TestManager, name='about_TestManager'),
+        re_path(r'^TBManager$', views.about_TBManager, name='about_TBManager'),
+        re_path(r'^TBOperator$', views.about_TBOperator, name='about_TBOperator'),
+        re_path(r'^Viewer$', views.about_Viewer, name='about_Viewer'),
+        re_path(r'^Testee$', views.about_Testee, name='about_Testee'),
+        re_path(r'^developer$', views.about_developer, name='about_developer'),
     ])),
 
-    re_path(r'operation_manual/', include([
+    re_path(r'^operation_manual/', include([
         re_path(r'^System$', views.OM_System, name='OM_System'),
         re_path(r'^Report$', views.OM_Report, name='OM_Report'),
         re_path(r'^User$', views.OM_User, name='OM_User'),
@@ -72,8 +72,6 @@ urlpatterns = [
         re_path(r'^(?P<action>(read|delete))/toggle$', proclamation.toggle, name='proclamation_toggle'),
     ])),
 
-    re_path(r'^notification$', proclamation.index, name='notification_center'),
-
     re_path(r'^email_verification$', registration.verification, name='email_verification'),
     re_path(r'^email_verification_done/(?P<encode_email>[\w\=\!\@\#\$\%\^\&\*\(\)\s]+)', registration.verify_done, name='verify_done'),
 
@@ -96,54 +94,55 @@ urlpatterns = [
         re_path(r'^create$', system.user_create, name='user_create'),
         re_path(r'^multiCreate$', system.user_multiCreate, name='user_multiCreate'),
         re_path(r'^edit/(?P<reg_id>[a-zA-Z0-9]+)$', system.user_edit, name='user_edit'),
-
-        re_path(r'^unit_list/$', system.unit, name='unit_list'),
-        re_path(r'^unit_list/', include([
-            re_path(r'^create$', system.create_unit, name='unit_create'),
-            re_path(r'^(?P<unit_kind>(squadron|department))/(?P<unit_name>[\w]+)$', system.unit_member_list, name='unit_member_list'),
-            # url(r'^check_unit_name$', system.check_unit_name, name='check_unit_name'),
-            re_path(r'^(?P<unit_kind>(squadron|department))/(?P<unit_name>[\w]+)/edit$', system.unit_edit, name='unit_edit'),
-        ])),
-
-        re_path(r'^report_category/', include([
-            re_path(r'^list$', system.report_category_list, name='report_category_list'),
-            re_path(r'^create$', system.report_category_create, name='report_category_create'),
-            re_path(r'^detail/(?P<category_id>[0-9]+)$', system.report_category_detail, name='report_category_detail'),
-            re_path(r'^(?P<category_id>[0-9]+)/edit$', system.report_category_edit, name='report_category_edit'),
-        ])),
-
-        re_path(r'^view_profile/(?P<reg_id>[a-zA-Z0-9]+)$', system.view_profile, name='view_profile'),
     ])),
 
+    re_path(r'^unit/', include([
+        re_path(r'^list$', system.unit, name='unit_list'),
+        re_path(r'^create$', system.create_unit, name='unit_create'),
+        re_path(r'^(?P<unit_kind>(squadron|department))/(?P<unit_name>[\w]+)$', system.unit_member_list, name='unit_member_list'),
+        # url(r'^check_unit_name$', system.check_unit_name, name='check_unit_name'),
+        re_path(r'^(?P<unit_kind>(squadron|department))/(?P<unit_name>[\w]+)/edit$', system.unit_edit, name='unit_edit'),
+    ])),
+
+    re_path(r'^report_category/', include([
+        re_path(r'^list$', system.report_category_list, name='report_category_list'),
+        re_path(r'^create$', system.report_category_create, name='report_category_create'),
+        re_path(r'^detail/(?P<category_id>[0-9]+)$', system.report_category_detail, name='report_category_detail'),
+        re_path(r'^(?P<category_id>[0-9]+)/edit$', system.report_category_edit, name='report_category_edit'),
+    ])),
+
+    re_path(r'^view_profile/(?P<reg_id>[a-zA-Z0-9]+)$', system.view_profile, name='view_profile'),
+
     # 考試管理員
-    re_path(r'^exam$', exam.exam_list, name='exam_list'),
     re_path(r'^exam/', include([
+        re_path(r'^list$', exam.exam_list, name='exam_list'),
         re_path(r'^create$', exam.exam_create, name='exam_create'),
         re_path(r'^(?P<exam_id>[0-9]+)/content$', exam.exam_content, name='exam_content'),
         re_path(r'^(?P<exam_id>[0-9]+)/edit$', exam.exam_edit, name='exam_edit'),
         re_path(r'^(?P<exam_id>[0-9]+)/delete$', exam.exam_delete, name='exam_delete'),
+    ])),
 
-        re_path(r'^testpaper/', include([
-            re_path(r'^list$', exam.testpaper_list, name='testpaper_list'),
-            re_path(r'^create$', exam.testpaper_create, name='testpaper_create'),
-            re_path(r'^(?P<testpaper_id>[0-9]+)/content$', exam.testpaper_content, name='view_testpaper_content'),
-            re_path(r'^(?P<testpaper_id>[0-9]+)/edit$', exam.testpaper_edit, name='testpaper_edit'),
-            re_path(r'^(?P<testpaper_id>[0-9]+)/delete$', exam.testpaper_delete, name='testpaper_delete'),
-            re_path(r'^(?P<testpaper_id>[0-9]+)/(?P<question_type>[0-9]+)/auto_pick', exam.auto_pick, name='auto_pick'),
-            re_path(r'^(?P<testpaper_id>[0-9]+)/(?P<question_type>[0-9]+)/manual_pick', exam.manual_pick, name='manual_pick'),
-        ])),
-        re_path(r'^testee_group$', group.group_list, name='testee_group_list'),
-        re_path(r'^testee_group/', include([
-            url(r'^create$', group.group_create, name='testee_group_create'),
-            re_path(r'^(?P<group_id>[0-9]+)/edit$', group.group_edit, name='testee_group_edit'),
-            re_path(r'^(?P<group_id>[0-9]+)/delete$', group.group_delete, name='testee_group_delete'),
-            re_path(r'^(?P<group_id>[0-9]+)/content$', group.group_content, name='testee_group_member_list'),
-        ])),
+    re_path(r'^testpaper/', include([
+        re_path(r'^list$', exam.testpaper_list, name='testpaper_list'),
+        re_path(r'^create$', exam.testpaper_create, name='testpaper_create'),
+        re_path(r'^(?P<testpaper_id>[0-9]+)/content$', exam.testpaper_content, name='view_testpaper_content'),
+        re_path(r'^(?P<testpaper_id>[0-9]+)/edit$', exam.testpaper_edit, name='testpaper_edit'),
+        re_path(r'^(?P<testpaper_id>[0-9]+)/delete$', exam.testpaper_delete, name='testpaper_delete'),
+        re_path(r'^(?P<testpaper_id>[0-9]+)/(?P<question_type>[0-9]+)/auto_pick', exam.auto_pick, name='auto_pick'),
+        re_path(r'^(?P<testpaper_id>[0-9]+)/(?P<question_type>[0-9]+)/manual_pick', exam.manual_pick, name='manual_pick'),
+    ])),
+
+    re_path(r'^testee_group/', include([
+        re_path(r'^list$', group.group_list, name='testee_group_list'),
+        re_path(r'^create$', group.group_create, name='testee_group_create'),
+        re_path(r'^(?P<group_id>[0-9]+)/edit$', group.group_edit, name='testee_group_edit'),
+        re_path(r'^(?P<group_id>[0-9]+)/delete$', group.group_delete, name='testee_group_delete'),
+        re_path(r'^(?P<group_id>[0-9]+)/content$', group.group_content, name='testee_group_member_list'),
     ])),
 
     # 題庫管理員
-    re_path(r'^question$', question.manager_index, name='tbmanager_question_list'),
     re_path(r'^question/', include([
+        re_path(r'^list$', question.manager_index, name='tbmanager_question_list'),
         re_path(r'^review$', question.review, name='question_review'),
         re_path(r'^(?P<question_id>[0-9]+)/pass$', question.question_pass, name='question_pass'),
         re_path(r'^(?P<question_id>[0-9]+)/reject$', question.question_reject, name='question_reject'),
@@ -151,9 +150,9 @@ urlpatterns = [
     ])),
 
     # 題目操作員
-    re_path(r'^operator$', question.operator_index, name='tboperator_question_list'),
     re_path(r'^operator/', include([
-        re_path(r'^question_multiCreate', question.question_multiCreate, name="question_multiCreate"),
+        re_path(r'^list$', question.operator_index, name='tboperator_question_list'),
+        re_path(r'^question_multiCreate$', question.question_multiCreate, name="question_multiCreate"),
         re_path(r'^submit/(?P<question_id>[0-9]+)$', question.question_submit, name='question_submit'),
         re_path(r'^(?P<kind>(listening|reading))/question_create$', question.question_create, name='question_create'),
         re_path(r'^(?P<question_id>[0-9]+)/edit$', question.operator_edit, name='operator_edit'),
@@ -161,15 +160,15 @@ urlpatterns = [
     ])),
 
     # 成績檢閱者
-    re_path(r'^viewer$', viewer.index, name='exam_score_list'),
     re_path(r'^viewer/', include([
+        re_path(r'^exam_score_list$', viewer.index, name='exam_score_list'),
         re_path(r'^(?P<exam_id>[0-9]+)/detail$', viewer.exam_score_detail, name='exam_score_detail'),
         re_path(r'^(?P<exam_id>[0-9]+)/detail/(?P<reg_id>[a-zA-Z0-9]+)/info$', viewer.view_testee_info, name='view_testee_info'),
     ])),
 
     # 受測者部分
-    re_path(r'^testee$', testee.score_list, name='testee_score_list'),  # 受測者主頁（顯示自我成績）
     re_path(r'^testee/', include([
+        re_path(r'^score/list$', testee.score_list, name='testee_score_list'),
         re_path(r'^exam/', include([
             re_path(r'^list$', testee.exam_list, name='testee_exam_list'),
             re_path(r'^start/(?P<exam_id>[0-9]+)$', testee.start_exam, name='testee_start_exam'),
