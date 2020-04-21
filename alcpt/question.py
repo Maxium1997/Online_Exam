@@ -111,7 +111,7 @@ def question_reject(request, question_id):
             question.state = 2
             question.last_updated_by = request.user
             question.save()
-            return redirect(request.META.get('HTTP_REFERER',))
+            return redirect('question_review')
         else:
             return render(request, 'question/reject_reason.html', locals())
     except ObjectDoesNotExist:

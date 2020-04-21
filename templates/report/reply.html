@@ -44,7 +44,13 @@
 
                             <div class="card-footer">
                                 <footer class="blockquote-footer">
-                                    <cite title="Source Title"><a href="{% url 'view_profile' replying_report.created_by %}">{{ replying_report.created_by }}</a> in {{ replying_report.created_time }}<br></cite>
+                                    <cite title="Source Title">
+                                        {% if request.user|has_perm:'SystemManager' %}
+                                            <a href="{% url 'view_profile' replying_report.created_by %}">{{ replying_report.created_by }}</a> in {{ replying_report.created_time }}<br>
+                                        {% else %}
+                                            {{ replying_report.created_by }} in {{ replying_report.created_time }}<br>
+                                        {% endif %}
+                                    </cite>
                                     {% if replying_report.state == 2 %}
                                         <label class="btn btn-danger float-right">Processing</label>
                                     {% elif replying_report.state == 3 %}
@@ -93,7 +99,6 @@
                                             <button type="button" class="btn btn-success" onclick="window.location.href='{% url 'report_done' replying_report.id %}'">Close</button>
                                         {% endif %}
                                     </div>
-
                                 </form>
                             </div>
                         </div>
