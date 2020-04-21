@@ -176,7 +176,7 @@ urlpatterns = [
             re_path(r'^(?P<exam_id>[0-9]+)/settle$', testee.settle, name='testee_settle_exam'),
         ])),
 
-        re_path(r'^answer_sheet/content/(?P<answersheet_id>[0-9]+)$', testee.view_answersheet_content, name='view_answersheet_content'),
+        re_path(r'^answer_sheet/(?P<answersheet_id>[0-9]+)/content$', testee.view_answersheet_content, name='view_answersheet_content'),
 
         re_path(r'^practice/', include([
             re_path(r'^(?P<kind>(listening|reading))$', testee.practice_create, name='testee_practice_create'),
