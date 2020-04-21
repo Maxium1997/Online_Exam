@@ -18,7 +18,7 @@
 
                             <div class="card-body">
                                 {% if replying_report.question %}
-                                    <h5>Question.</h5>
+                                    <h5>Question Content<a href="{% url 'question_edit' replying_report.question.id %}"><i class="fa fa-link"></i></a></h5>
                                     {% if replying_report.question.q_file %}
                                         <audio controls preload="none">
                                             <source src="{{ replying_report.question.q_file.url }}" type="audio/mpeg">
@@ -29,7 +29,7 @@
                                             {{ replying_report.question.q_content|linebreaksbr }}
                                         </div>
                                     {% endif %}
-                                    <h5>Choice.</h5>
+                                    <h5>Choice</h5>
                                     <ol type="A">
                                         {% for choice in replying_report.question.choice_set.all %}
                                             <li {% if choice.is_answer %}style="color: green"{% endif %}>{{ choice }}</li>
@@ -44,7 +44,13 @@
 
                             <div class="card-footer">
                                 <footer class="blockquote-footer">
-                                    <cite title="Source Title"><a href="{% url 'view_profile' replying_report.created_by %}">{{ replying_report.created_by }}</a> in {{ replying_report.created_time }}<br></cite>
+                                    <cite title="Source Title">
+                                        {% if request.user|has_perm:'SystemManager' %}
+                                            <a href="{% url 'view_profile' replying_report.created_by %}">{{ replying_report.created_by }}</a> in {{ replying_report.created_time }}<br>
+                                        {% else %}
+                                            {{ replying_report.created_by }} in {{ replying_report.created_time }}<br>
+                                        {% endif %}
+                                    </cite>
                                     {% if replying_report.state == 2 %}
                                         <label class="btn btn-danger float-right">Processing</label>
                                     {% elif replying_report.state == 3 %}
@@ -93,7 +99,6 @@
                                             <button type="button" class="btn btn-success" onclick="window.location.href='{% url 'report_done' replying_report.id %}'">Close</button>
                                         {% endif %}
                                     </div>
-
                                 </form>
                             </div>
                         </div>

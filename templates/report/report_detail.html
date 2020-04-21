@@ -17,7 +17,27 @@
                             <div class="card-header">{{ viewed_report.category }}#{{ viewed_report.id }}</div>
 
                             <div class="card-body">
-                                <h5>Supplement Note.</h5>
+                                {% if viewed_report.question %}
+                                    <h5>Question Content</h5>
+                                    {% if viewed_report.question.q_file %}
+                                        <audio controls preload="none">
+                                            <source src="{{ viewed_report.question.q_file.url }}" type="audio/mpeg">
+                                            Your browser does not support the audio tag.
+                                        </audio>
+                                    {% else %}
+                                        <div>
+                                            {{ viewed_report.question.q_content|linebreaksbr }}
+                                        </div>
+                                    {% endif %}
+                                    <h5>Choice</h5>
+                                    <ol type="A">
+                                        {% for choice in viewed_report.question.choice_set.all %}
+                                            <li {% if choice.is_answer %}style="color: green"{% endif %}>{{ choice }}</li>
+                                        {% endfor %}
+                                    </ol>
+                                {% endif %}
+
+                                <h5>Supplement Note</h5>
                                 <div class="dropdown-divider"></div>
                                 <p>{{ viewed_report.supplement_note }}</p>
                             </div>
@@ -26,10 +46,10 @@
                                 <footer class="blockquote-footer">
                                     <cite title="Source Title">{{ viewed_report.created_by }} in {{ viewed_report.created_time }}<br></cite>
                                     {% if viewed_report.state == 2 %}
-                                        <label class="btn btn-danger float-right">Processing.</label>
+                                        <label class="btn btn-danger float-right">Processing</label>
                                     {% elif viewed_report.state == 3 %}
                                         <cite title="Source Title">Resolved by {{ viewed_report.resolved_by }} in {{ viewed_report.resolved_time }}</cite>
-                                        <label class="btn btn-success float-right">Solved.</label>
+                                        <label class="btn btn-success float-right">Solved</label>
                                     {% endif %}
                                 </footer>
                             </div>
@@ -57,7 +77,7 @@
                             </div>
 
                             <div class="card-footer">
-                                    <button type="button" class="btn btn-primary float-right" onclick="history.go(-1)">OK</button>
+                                    <button type="button" class="btn btn-primary float-right" onclick="window.location=document.referrer;">OK</button>
                             </div>
                         </div>
                     </div>

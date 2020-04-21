@@ -75,7 +75,7 @@ def exam_create(request):
                 exam.testeeList.add(testee)
             exam.save()
 
-            notification_mail(list(selected_group.member.all()), notification_mail_content)
+            # notification_mail(list(selected_group.member.all()), notification_mail_content)
 
             # create proclamation to notice all testees the exam start time.
             proclamation_content = "You will start " + exam.name + "\n" + \
@@ -345,9 +345,12 @@ def testpaper_edit(request, testpaper_id):
 def testpaper_delete(request, testpaper_id):
     try:
         testpaper = TestPaper.objects.get(id=testpaper_id)
-        if testpaper.is_testpaper and testpaper.valid:
+        if testpaper.is_testpaper and testpaper.is_used:
             messages.warning(request, 'Failed deleted test paper - {}.'.format(testpaper.id))
         else:
+            for question in testpaper.question_list.all():
+                testpaper.question_list.remove(question)
+
             messages.success(request, 'Successfully deleted test paper - {}.'.format(testpaper.id))
             testpaper.delete()
         return redirect('testpaper_list')

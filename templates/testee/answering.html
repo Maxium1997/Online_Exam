@@ -7,16 +7,16 @@
 {% endblock %}
 
 {% block content %}
-    <script language="JavaScript">
+    <script type="text/javascript">
         function checkTime(){
             var now=new Date();
             var h=now.getHours();//小時
             var m=now.getMinutes();//分鐘
             if(({{ hour }} - h == 0)&&({{ minute }} - m <= 0)){
-                alert("時間到");
+                alert("Time's up");
                 document.location.href="{% url 'testee_settle_exam' exam.id %}";
             }
-            setTimeout(checkTime,500);//每間隔0.5秒就呼叫自已一次
+            setTimeout(checkTime,1000);//每間隔1秒就呼叫自已一次
         }
         checkTime();
     </script>

@@ -20,7 +20,7 @@ def manager_index(request):
     question_types = [_ for _ in QuestionType]
 
     state_choices = [(1, 'Pass'),
-                     (4, 'Reported'),
+                     (4, 'Faulty'),
                      (5, 'Handle')]
     states = []
     for x in state_choices:
@@ -123,9 +123,9 @@ def question_reject(request, question_id):
 def question_edit(request, question_id):
     try:
         question = Question.objects.get(id=question_id)
-        if question.state == 1:
-            messages.warning(request, 'Failed edited, the question had been passed.')
-            return redirect('tbmanager_question_list')
+        if question.state == 1 or question.state == 5:
+            messages.warning(request, 'Failed edited, the question had been passed or handled.')
+            return redirect(request.META.get('HTTP_REFERER',))
 
         if request.method == 'POST':
             if question.state == 4:
@@ -217,7 +217,7 @@ def operator_index(request):
     state_choices = [
         (6, 'Saved'),
         (2, 'Reject'),
-        (4, 'Reported')]
+        (4, 'Faulty')]
 
     difficulty_choices = [(1, '1'),
                           (2, '2'),

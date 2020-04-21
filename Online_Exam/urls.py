@@ -54,7 +54,7 @@ urlpatterns = [
 
     re_path(r'^report$', system.report, name='report'),
     re_path(r'^report/', include([
-        re_path(r'^(?P<question_id>[0-9]+)', testee.report_question, name='report_question'),
+        re_path(r'^(?P<question_id>[0-9]+)$', testee.report_question, name='report_question'),
         re_path(r'^list$', registration.report_list, name='report_list'),
         re_path(r'^(?P<report_id>[0-9]+)/detail$', registration.report_detail, name='report_detail'),
         re_path(r'^(?P<report_id>[0-9]+)/view$', system.view_report_detail, name='view_report_detail'),

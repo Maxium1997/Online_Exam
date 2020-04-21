@@ -267,7 +267,7 @@
                                     User Photo.
                                 </div>
 
-                                {% if user.photo %}
+                                {% if edited_user.photo %}
                                     <img class="card-img-top" src="{{ edited_user.photo.url }}" alt="{{ edited_user.name }}">
                                 {% else %}
                                     <img class="card-img-top" src="..." alt="{{ edited_user.name }}">
@@ -433,7 +433,11 @@
                                     User Photo.
                                 </div>
 
-                                <img class="card-img-top" src="{{ edited_user.photo }}" alt="{{ edited_user.name }}">
+                                {% if edited_user.photo %}
+                                    <img class="card-img-top" src="{{ edited_user.photo.url }}" alt="{{ edited_user.name }}">
+                                {% else %}
+                                    <img class="card-img-top" src="..." alt="{{ edited_user.name }}">
+                                {% endif %}
 
                                 <div class="card-body">
                                     <p class="card-text">{{ eidted_user.introduction|linebreaksbr }}</p>

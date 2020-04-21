@@ -16,7 +16,8 @@ from django.db import IntegrityError
 from django.contrib import messages
 
 from alcpt.managerfuncs import systemmanager
-from alcpt.models import User, Student, Department, Squadron, Proclamation, ReportCategory, Report, Reply
+from alcpt.models import User, Student, Department, Squadron, ReportCategory, Report, Reply
+from alcpt.proclamation import notify
 from alcpt.definitions import UserType, Identity
 from alcpt.decorators import permission_check, login_required
 from alcpt.exceptions import IllegalArgumentError
@@ -551,6 +552,16 @@ def report_reply(request, report_id):
 
         reply = request.POST.get('reply')
         new_reply = Reply.objects.create(source=replying_report, content=reply, created_by=request.user)
+
+        proclamation_content = "The administrator has responded the problem you encountered.\n" \
+                               "Please refer to the notification center for more details."
+        notify(title='Reply',
+               text=proclamation_content,
+               is_read=False,
+               is_public=False,
+               announcer=request.user,
+               users=[replying_report.created_by])
+
         replying_report.user_notification = True
         replying_report.save()
         return redirect('responsible_report_list', responsibility=permission)

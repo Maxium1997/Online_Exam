@@ -7,6 +7,7 @@ from django.http.response import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .models import Question, AnswerSheet, Student, User, Exam, TestPaper, Answer, ReportCategory, Report
@@ -251,11 +252,13 @@ def settle(request, exam_id):
         return redirect('testee_exam_list')
 
 
+@login_required
 def report_question(request, question_id):
     if request.method == 'POST':
         try:
             category = ReportCategory.objects.get(id=int(request.POST.get('category')))
-            reported_question = Question.objects.filter(id=question_id).update(state=4)
+            Question.objects.filter(id=question_id).update(state=4)
+            reported_question = Question.objects.get(id=question_id)
 
             supplement_note = request.POST.get('supplement_note')
 
