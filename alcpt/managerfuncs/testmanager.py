@@ -19,6 +19,8 @@ def create_testpaper(name: str, created_by: User, is_testpaper: int):
 
 def edit_testpaper(testpaper: TestPaper, name: str):
     testpaper.name = name
+    # a buttom that can valid the testpaper
+    
     testpaper.save()
 
     return testpaper
