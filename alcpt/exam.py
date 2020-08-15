@@ -293,6 +293,19 @@ def testpaper_create(request):
 
 
 @permission_check(UserType.TestManager)
+def testpaper_valid(request, testpaper_id):
+    try:
+        testpaper = TestPaper.objects.get(id=testpaper_id)
+        testpaper.valid = True
+        testpaper.save()
+        return redirect('testpaper_list')
+    except ObjectDoesNotExist:
+        messages.error(request, 'Test paper does not exist, test paper id: {}'.format(testpaper_id))
+        return redirect('testpaper_list')
+
+    
+
+@permission_check(UserType.TestManager)
 def testpaper_edit(request, testpaper_id):
     try:
         testpaper = TestPaper.objects.get(id=testpaper_id)
@@ -404,7 +417,7 @@ def auto_pick(request, testpaper_id, question_type):
 
         if testmanager.quantity_confirmation(testpaper=testpaper):
             messages.warning(request, 'This type had reached limit amount.')
-            return redirect('/exam/testpaper/{}/edit'.format(testpaper_id))
+            return redirect('/testpaper/{}/edit'.format(testpaper_id))
 
         selected_num = testmanager.auto_pick(testpaper=testpaper, question_type=int(question_type))
 
@@ -412,4 +425,4 @@ def auto_pick(request, testpaper_id, question_type):
     except ObjectDoesNotExist:
         messages.error(request, 'Test paper does not exist, test paper id - {}'.format(testpaper_id))
 
-    return redirect('/exam/testpaper/{}/edit'.format(testpaper_id))
+    return redirect('/testpaper/{}/edit'.format(testpaper_id))

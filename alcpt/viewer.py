@@ -31,7 +31,7 @@ def exam_score_detail(request, exam_id):
     try:
         exam = Exam.objects.get(id=exam_id)
         testees = exam.testeeList.all()
-
+        #testees 的年級和 系別
         qualified = 0
         unqualified = 0
         not_tested = 0
