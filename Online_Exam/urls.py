@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from django.urls import path, re_path
 
 from alcpt import registration, system, views, exam, question, viewer, testee, group, proclamation
+#from alcpt.dash_apps import line_chart
 
 urlpatterns = [
     re_path(r'^admin/', admin.site.urls),
@@ -170,6 +171,7 @@ urlpatterns = [
     # 受測者部分
     re_path(r'^testee/', include([
         re_path(r'^score/list$', testee.score_list, name='testee_score_list'),
+        #path('django_plotly_dash/', include('django_plotly_dash.urls')),
         re_path(r'^exam/', include([
             re_path(r'^list$', testee.exam_list, name='testee_exam_list'),
             re_path(r'^start/(?P<exam_id>[0-9]+)$', testee.start_exam, name='testee_start_exam'),
