@@ -87,6 +87,9 @@ def score_list(request):
     except EmptyPage:
         answersheetList = paginator.page(paginator.num_pages)
 
+    # xaxis : Score
+    # yaxis : Times
+    # Line chart
     x_data = ['10', '20', '30', '40', '50', '60', '70', '80', '90', '100']
     y_data = [one, two, three, four, five, six, seven, eight, nine, ten]
     color = ['#FF0000','#FF5B00','#FF7900','#FFB600','#FFE700','#E1FF00','#B6FF00','#86FF00','#55FF00','#18FF00']
@@ -108,6 +111,32 @@ def score_list(request):
     )
     fig = go.Figure(data=data, layout=layout)
     bar_chart = pyo.plot(fig, output_type='div')
+
+    #Pie chart
+    qualify = ['合格', '不合格']
+    qualify_count = [qualified, unqualified]
+
+    trace = go.Pie(labels = qualify,
+                   values = qualify_count,
+                   hole = .4,
+                   type= 'pie')
+
+    data = [trace]
+    layout = go.Layout({
+        'title': '合格率分析',
+        'annotations': [
+             {
+                'font': {
+                   'size': 20
+                },
+                'showarrow': False,
+                'text': '合格率',
+             },
+          ]
+        }
+    )
+    fig = go.Figure(data=data, layout=layout)
+    pie_chart = pyo.plot(fig, output_type='div')
 
 
     return render(request, 'testee/score_list.html', locals())

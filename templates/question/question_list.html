@@ -147,16 +147,16 @@
                                             <td class="functions-btn">
                                                 {% if request.user|has_perm:"TBManager" %}
                                                     {% if question.state == 1 %}
-                                                        <button class="btn btn-primary" id="submit" type="button" onclick="window.location.href='{% url 'question_submit' question.id %}'" disabled>Submit</button>
-                                                        <button class="btn btn-warning" id="edit" type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'" disabled>Edit</button>
-                                                        <button class="btn btn-danger" id="delete" type="button" onclick="window.location.href='{% url 'question_delete' question.id %}'" disabled>Delete</button>
+                                                        <button class="btn btn-primary" id="submit" type="button" onclick="window.location.href='{% url 'question_pass' question.id %}'" >Submit</button>
+                                                        <button class="btn btn-warning" id="edit" type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'" >Edit</button>
+                                                        <button class="btn btn-danger" id="delete" type="button" onclick="window.location.href='{% url 'question_delete' question.id %}'" >Delete</button>
                                                     {% elif question.state == 4 %}
-                                                        <button class="btn btn-primary" id="submit" type="button" onclick="window.location.href='{% url 'question_submit' question.id %}'" disabled>Submit</button>
+                                                        <button class="btn btn-primary" id="submit" type="button" onclick="window.location.href='{% url 'question_submit' question.id %}'" >Submit</button>
                                                         <button class="btn btn-warning" id="edit" type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'">Edit</button>
-                                                        <button class="btn btn-danger" id="delete" type="button" onclick="window.location.href='{% url 'question_delete' question.id %}'" disabled>Delete</button>
+                                                        <button class="btn btn-danger" id="delete" type="button" onclick="window.location.href='{% url 'question_delete' question.id %}'" >Delete</button>
                                                     {% else %}
-                                                        <button class="btn btn-warning" id="edit" type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'" disabled>Edit</button>
-                                                        <button class="btn btn-danger" id="delete" type="button" onclick="window.location.href='{% url 'question_delete' question.id %}'" disabled>Delete</button>
+                                                        <button class="btn btn-warning" id="edit" type="button" onclick="window.location.href='{% url 'question_edit' question.id %}'" >Edit</button>
+                                                        <button class="btn btn-danger" id="delete" type="button" onclick="window.location.href='{% url 'question_delete' question.id %}'" >Delete</button>
                                                     {% endif %}
 
                                                 {% elif request.user|has_perm:"TBOperator" %}
