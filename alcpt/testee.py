@@ -274,7 +274,7 @@ def answering(request, exam_id, answer_id):
         answering_ans.selected = selected_answer
         answering_ans.save()
 
-        if len(Answer.objects.filter(answer_sheet=answer_sheet).filter(selected=-1)) is 0:
+        if len(Answer.objects.filter(answer_sheet=answer_sheet).filter(selected=-1)) == 0:
             messages.success(request, 'You had finished the exam.')
             score = testmanager.calculate_score(exam.id, answer_sheet)
             return redirect('testee_score_list')
